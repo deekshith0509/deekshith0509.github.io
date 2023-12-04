@@ -50,14 +50,11 @@
       font-weight: bold;
       text-decoration: none;
       cursor: pointer;
-      position: relative;
-      display: inline-block;
-      transition: color 0.3s, background-color 0.3s, transform 0.3s;
+      transition: color 0.3s, transform 0.3s;
     }
 
     a.external-link:hover {
       color: #004080;
-      background-color: rgba(255, 255, 255, 0.1);
       transform: scale(1.05);
     }
 
@@ -88,6 +85,35 @@
     body {
       cursor: url('https://example.com/custom-cursor.png'), auto;
     }
+
+    /* Additional styles for the tools section */
+
+    #search-bar {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    select {
+      padding: 8px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+    }
+
+    #search-button {
+      padding: 8px;
+      background-color: #0366d6;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #search-button:hover {
+      background-color: #004080;
+    }
   </style>
 </head>
 
@@ -97,6 +123,31 @@
 
   <h2>Contents from My GitHub Repository:</h2>
   <ul id="repository-contents"></ul>
+
+  <div id="tools">
+    <div id="search-bar">
+      <h2>Search your query-with your search-engine</h2>
+      <input type="text" id="search-input" placeholder="Enter your search">
+      <select id="search-engine">
+        <option value="google">Google</option>
+        <option value="bing">Bing</option>
+        <option value="yahoo">Yahoo</option>
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="baidu">Baidu</option>
+        <option value="yandex">Yandex</option>
+        <option value="ask">Ask</option>
+        <option value="aol">AOL</option>
+        <option value="dogpile">Dogpile</option>
+        <option value="excite">Excite</option>
+        <option value="infospace">InfoSpace</option>
+        <option value="webcrawler">WebCrawler</option>
+        <option value="ixquick">Ixquick</option>
+        <option value="startpage">StartPage</option>
+        <!-- Add more search engines as needed -->
+      </select>
+      <button id="search-button" onclick="performSearch()">Search</button>
+    </div>
+  </div>
 
   <script>
     const githubUsername = 'deekshith0509';
@@ -149,6 +200,75 @@
           newWindow.document.write(htmlContent);
         })
         .catch(error => console.error('Error fetching HTML content:', error));
+    }
+
+    function performSearch() {
+      const searchInput = document.getElementById('search-input').value;
+      const searchEngineSelect = document.getElementById('search-engine');
+      const selectedSearchEngine = searchEngineSelect.value;
+
+      // Perform actions based on the selected search engine
+      switch (selectedSearchEngine) {
+        case 'google':
+          // Open Google search in a new tab
+          window.open(`https://www.google.com/search?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'bing':
+          // Open Bing search in a new tab
+          window.open(`https://www.bing.com/search?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'yahoo':
+          // Open Yahoo search in a new tab
+          window.open(`https://search.yahoo.com/search?p=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'duckduckgo':
+          // Open DuckDuckGo search in a new tab
+          window.open(`https://duckduckgo.com/?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'baidu':
+          // Open Baidu search in a new tab
+          window.open(`https://www.baidu.com/s?wd=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'yandex':
+          // Open Yandex search in a new tab
+          window.open(`https://yandex.com/search/?text=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'ask':
+          // Open Ask search in a new tab
+          window.open(`https://www.ask.com/web?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'aol':
+          // Open AOL search in a new tab
+          window.open(`https://search.aol.com/aol/search?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'dogpile':
+          // Open Dogpile search in a new tab
+          window.open(`https://www.dogpile.com/search/web?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'excite':
+          // Open Excite search in a new tab
+          window.open(`https://www.excite.com/search?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'infospace':
+          // Open InfoSpace search in a new tab
+          window.open(`https://www.infospace.com/search/web?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'webcrawler':
+          // Open WebCrawler search in a new tab
+          window.open(`https://www.webcrawler.com/serp?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'ixquick':
+          // Open Ixquick search in a new tab
+          window.open(`https://www.ixquick.com/do/search?q=${encodeURIComponent(searchInput)}`);
+          break;
+        case 'startpage':
+          // Open StartPage search in a new tab
+          window.open(`https://www.startpage.com/sp/search?q=${encodeURIComponent(searchInput)}`);
+          break;
+        // Add more cases for additional search engines as needed
+        default:
+          break;
+      }
     }
   </script>
 
