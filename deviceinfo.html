@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Information</title>
+</head>
+<body>
+  <h1>Device Information</h1>
+  <ul>
+    <li><strong>User Agent:</strong> <span id="userAgent"></span></li>
+    <li><strong>Platform:</strong> <span id="platform"></span></li>
+    <li><strong>Browser:</strong> <span id="browser"></span></li>
+    <li><strong>Browser Version:</strong> <span id="browserVersion"></span></li>
+    <li><strong>Screen Width:</strong> <span id="screenWidth"></span></li>
+    <li><strong>Screen Height:</strong> <span id="screenHeight"></span></li>
+    <li><strong>Color Depth:</strong> <span id="colorDepth"></span></li>
+    <li><strong>Device Pixel Ratio:</strong> <span id="devicePixelRatio"></span></li>
+    <li><strong>Touch Support:</strong> <span id="touchSupport"></span></li>
+    <li><strong>Language:</strong> <span id="language"></span></li>
+    <li><strong>Timezone:</strong> <span id="timezone"></span></li>
+  </ul>
+
+  <script>
+    // Get user agent
+    document.getElementById('userAgent').textContent = navigator.userAgent;
+
+    // Get platform
+    document.getElementById('platform').textContent = navigator.platform;
+
+    // Get browser name
+    document.getElementById('browser').textContent = getBrowserName();
+
+    // Get browser version
+    document.getElementById('browserVersion').textContent = getBrowserVersion();
+
+    // Get screen width
+    document.getElementById('screenWidth').textContent = window.screen.width + ' pixels';
+
+    // Get screen height
+    document.getElementById('screenHeight').textContent = window.screen.height + ' pixels';
+
+    // Get color depth
+    document.getElementById('colorDepth').textContent = window.screen.colorDepth + ' bits';
+
+    // Get device pixel ratio
+    document.getElementById('devicePixelRatio').textContent = window.devicePixelRatio || 'N/A';
+
+    // Check for touch support
+    document.getElementById('touchSupport').textContent = ('ontouchstart' in window || navigator.maxTouchPoints) ? 'Supported' : 'Not Supported';
+
+    // Get user's language
+    document.getElementById('language').textContent = navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage || 'N/A';
+
+    // Get user's timezone
+    document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'N/A';
+
+    // Function to get browser name
+    function getBrowserName() {
+      const userAgent = navigator.userAgent;
+      const browsers = {
+        chrome: /chrome/i,
+        safari: /safari/i,
+        firefox: /firefox/i,
+        ie: /internet explorer/i,
+        edge: /edge/i,
+        opera: /opera|OPR/i,
+        brave: /brave/i,
+        samsung: /SamsungBrowser/i,
+      };
+
+      for (const key in browsers) {
+        if (browsers[key].test(userAgent)) {
+          return key;
+        }
+      }
+
+      return 'Unknown';
+    }
+
+    // Function to get browser version
+    function getBrowserVersion() {
+      const userAgent = navigator.userAgent;
+      const browserRegex = {
+        chrome: /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/i,
+        safari: /version\/([0-9]+)\.([0-9]+)\.([0-9]+)/i,
+        firefox: /firefox\/([0-9]+)\.([0-9]+)/i,
+        ie: /MSIE\s([0-9]+)\.([0-9]+)/i,
+        edge: /edge\/([0-9]+)\.([0-9]+)/i,
+        opera: /(opera|OPR)\/([0-9]+)\.([0-9]+)\.([0-9]+)/i,
+        brave: /brave\/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/i,
+        samsung: /SamsungBrowser\/([0-9]+)\.([0-9]+)\.([0-9]+)/i,
+      };
+
+      for (const key in browserRegex) {
+        const match = userAgent.match(browserRegex[key]);
+        if (match) {
+          return match.slice(1).join('.');
+        }
+      }
+
+      return 'Unknown';
+    }
+  </script>
+</body>
+</html>
