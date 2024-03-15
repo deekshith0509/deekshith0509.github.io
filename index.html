@@ -245,90 +245,85 @@
     }
 
     function performSearch() {
-      const searchInput = document.getElementById('search-input').value;
+      const searchInput = document.getElementById('search-input').value.toLowerCase();
       const searchEngineSelect = document.getElementById('search-engine');
       const selectedSearchEngine = searchEngineSelect.value;
 
-      // Perform actions based on the selected search engine
+      // Set of video-related keywords
+      const videoKeywords = new Set(['video', 'videos', 'clip', 'clips']);
+      // Set of shopping-related keywords
+      const shoppingKeywords = new Set(['shopping', 'products', 'items',"item", 'mobiles', 'electronics']);
+
+      // Split the search input into words
+      const words = searchInput.split(' ');
+
+      // Check if the last word is a video-related keyword
+      const lastWord = words[words.length - 1];
+      if (videoKeywords.has(lastWord)) {
+        // If yes, remove the last word
+        words.pop();
+        // Redirect to YouTube with the modified query
+        window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(words.join(' ').trim()));
+        return;
+      }
+
+      // Check if the last word is a shopping-related keyword
+      if (shoppingKeywords.has(lastWord)) {
+        // If yes, remove the last word
+        words.pop();
+        // Redirect to Flipkart or Amazon with the modified query
+        window.open('https://www.flipkart.com/search?q=' + encodeURIComponent(words.join(' ').trim()));
+        return;
+      }
+
+      // Perform search based on selected search engine
       switch (selectedSearchEngine) {
         case 'google':
-          // Open Google search in a new tab
-          window.open(`https://www.google.com/search?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.google.com/search?q=' + encodeURIComponent(searchInput));
           break;
         case 'bing':
-          // Open Bing search in a new tab
-          window.open(`https://www.bing.com/search?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.bing.com/search?q=' + encodeURIComponent(searchInput));
           break;
         case 'yahoo':
-          // Open Yahoo search in a new tab
-          window.open(`https://search.yahoo.com/search?p=${encodeURIComponent(searchInput)}`);
+          window.open('https://search.yahoo.com/search?p=' + encodeURIComponent(searchInput));
           break;
         case 'duckduckgo':
-          // Open DuckDuckGo search in a new tab
-          window.open(`https://duckduckgo.com/?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://duckduckgo.com/?q=' + encodeURIComponent(searchInput));
           break;
         case 'baidu':
-          // Open Baidu search in a new tab
-          window.open(`https://www.baidu.com/s?wd=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(searchInput));
           break;
         case 'yandex':
-          // Open Yandex search in a new tab
-          window.open(`https://yandex.com/search/?text=${encodeURIComponent(searchInput)}`);
+          window.open('https://yandex.com/search/?text=' + encodeURIComponent(searchInput));
           break;
         case 'ask':
-          // Open Ask search in a new tab
-          window.open(`https://www.ask.com/web?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.ask.com/web?q=' + encodeURIComponent(searchInput));
           break;
         case 'aol':
-          // Open AOL search in a new tab
-          window.open(`https://search.aol.com/aol/search?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://search.aol.com/aol/search?q=' + encodeURIComponent(searchInput));
           break;
         case 'dogpile':
-          // Open Dogpile search in a new tab
-          window.open(`https://www.dogpile.com/search/web?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.dogpile.com/search/web?q=' + encodeURIComponent(searchInput));
           break;
         case 'excite':
-          // Open Excite search in a new tab
-          window.open(`https://www.excite.com/search?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.excite.com/search?q=' + encodeURIComponent(searchInput));
           break;
         case 'infospace':
-          // Open InfoSpace search in a new tab
-          window.open(`https://www.infospace.com/search/web?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.infospace.com/search/web?q=' + encodeURIComponent(searchInput));
           break;
         case 'webcrawler':
-          // Open WebCrawler search in a new tab
-          window.open(`https://www.webcrawler.com/serp?q=${encodeURIComponent(searchInput)}`);
+          window.open('https://www.webcrawler.com/serp?q=' + encodeURIComponent(searchInput));
           break;
         case 'tb':
-          window.open(`https://www.1tamilblasters.tel/index.php?/search/&q=${encodeURIComponent(searchInput)}&search_and_or=and&sortby=relevancy`);
+          window.open('https://www.1tamilblasters.tel/index.php?/search/&q=' + encodeURIComponent(searchInput) + '&search_and_or=and&sortby=relevancy');
           break;
         case 'imdb':
-          // Open IMDb search in a new tab
-          window.open(`https://www.imdb.com/find/?q=${encodeURIComponent(searchInput)}&ref_=nv_sr_sm`);
+          window.open('https://www.imdb.com/find/?q=' + encodeURIComponent(searchInput) + '&ref_=nv_sr_sm');
           break;
-        // Add more cases for additional search engines as needed
+        // Add more cases for additional search engines if needed
         default:
           break;
       }
-
-      // Display search results section
-      document.getElementById('search-results').style.display = 'block';
-
-      // Fetch and display some mock search results
-      fetch(`https://api.example.com/search?q=${encodeURIComponent(searchInput)}`)
-        .then(response => response.json())
-        .then(data => {
-          const searchResultsList = document.getElementById('search-results-list');
-          searchResultsList.innerHTML = ''; // Clear previous results
-
-          // Display up to 5 search results
-          for (let i = 0; i < Math.min(5, data.results.length); i++) {
-            const resultItem = document.createElement('li');
-            resultItem.textContent = data.results[i].title;
-            searchResultsList.appendChild(resultItem);
-          }
-        })
-        .catch(error => console.error('Error fetching search results:', error));
     }
   </script>
 </body>
