@@ -184,7 +184,7 @@
   <div id="tools">
     <div id="search-bar">
       <h2>Search Your Query with Your Preferred Search Engine</h2>
-      <input type="text" id="search-input" placeholder="Enter your search">
+      <input type="text" id="search-input" placeholder="Enter your search" autofocus>
       <select id="search-engine">
         <option value="google">Google</option>
         <option value="bing">Bing</option>
@@ -224,7 +224,6 @@
       const seconds = now.getSeconds().toString().padStart(2, '0');
       document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
     }
-
     // Function to fetch weather forecast
     function fetchWeather() {
       const apiKey = '25c97ed9fb1bb9e5768b3b12bbfe9137';
@@ -381,6 +380,23 @@
           break;
       }
     }
+
+
+        const inputField = document.getElementById('search-input');
+
+        // Add key press event listener to the input field
+        inputField.addEventListener('keypress', function(event) {
+            // Check if the Enter key (key code 13) is pressed
+            if (event.key === 'Enter') {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+
+                // Call a function or open a new window here
+                performSearch();
+            }
+        });
+
+
   </script>
 </body>
 </html>
