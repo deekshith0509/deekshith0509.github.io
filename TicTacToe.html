@@ -133,10 +133,12 @@ function handleClick(event) {
     if (checkWin(humanPlayer)) {
       showMessage('You win!');
       celebrateWinner();
+      setTimeout(resetGame, 3000); // Reset after 3 seconds
       return;
     }
     if (checkDraw()) {
       showMessage('It\'s a draw!');
+      setTimeout(resetGame, 3000); // Reset after 3 seconds
       return;
     }
     currentPlayer = computerPlayer;
@@ -144,10 +146,12 @@ function handleClick(event) {
     document.getElementById(bestMove).textContent = computerPlayer;
     if (checkWin(computerPlayer)) {
       showMessage('Computer wins!');
+      setTimeout(resetGame, 3000); // Reset after 3 seconds
       return;
     }
     if (checkDraw()) {
       showMessage('It\'s a draw!');
+      setTimeout(resetGame, 3000); // Reset after 3 seconds
       return;
     }
     currentPlayer = humanPlayer;
@@ -197,6 +201,21 @@ function celebrateWinner() {
   setTimeout(() => {
     fireworksContainer.remove();
   }, 2000);
+}
+
+function resetGame() {
+  // Clear all cell contents
+  cells.forEach(cell => {
+    cell.textContent = '';
+  });
+
+  // Hide the message
+  const messageDiv = document.getElementById('message');
+  messageDiv.textContent = '';
+  messageDiv.style.display = 'none';
+
+  // Reset current player to humanPlayer
+  currentPlayer = humanPlayer;
 }
 
 function minimax(board, depth, isMaximizingPlayer) {
