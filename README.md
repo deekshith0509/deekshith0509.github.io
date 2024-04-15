@@ -11,7 +11,7 @@ Python, Bash, Javascript, HTML, CSS, Java, C, C#, R, Php, SQL.
     This repo was created for hoisting my portfolio.Eventually with the time,This was added with some of my best ideas.I hope,You can Enjoy my work.
 ## Authors
 
-- [@Deekshith0509](https://github.com/deekshith0509/deekshith0509)
+- [@Deekshith0509](https://github.com/deekshith0509/)
 
 
 ## Features
