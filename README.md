@@ -2,7 +2,7 @@
 ## 🚀 About Me 
 I'm a full stack developer...
 ## 🛠 Skills
-Python, Bash, Javascript, HTML, CSS, Java, C, c#, R, Php, SQL. 
+Python, Bash, Javascript, HTML, CSS, Java, C, C#, R, Php, SQL. 
 
 
 # Repo Info
