@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        #content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .music-player {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .player-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .player-controls button {
+            font-size: 24px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .player-controls button:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="range"] {
+            width: 80%;
+            margin: 20px 0;
+            -webkit-appearance: none;
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #007bff;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .song-info {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #songListContainer {
+            width: 100%;
+            max-height: 50vh;
+            overflow-y: auto;
+            margin-top: 30px;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #songList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #songList li {
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+
+        #songList li:hover {
+            background-color: #e9e9e9;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1 style="color: #007bff;">Local Music Player</h1>
+        <div class="music-player">
+            <div class="player-controls">
+                <button id="prevBtn">⏮️</button>
+                <button id="playPauseBtn">▶️</button>
+                <button id="nextBtn">⏭️</button>
+            </div>
+            <input type="range" id="progressBar" value="0" max="100">
+            <div class="song-info" id="songInfo">
+                <span id="songName">Song Name</span> -
+                <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
+            </div>
+            <button id="newSongBtn" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">New Song</button>
+            <audio id="audioPlayer" src=""></audio>
+        </div>
+
+        <div id="songListContainer">
+            <h2>Song List</h2>
+            <ul id="songList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const progressBar = document.getElementById('progressBar');
+            const songName = document.getElementById('songName');
+            const currentTime = document.getElementById('currentTime');
+            const totalDuration = document.getElementById('totalDuration');
+            const newSongBtn = document.getElementById('newSongBtn');
+            const songList = document.getElementById('songList');
+
+            let isPlaying = false;
+            let currentSongIndex = 0;
+            let songs = [];
+
+            function loadSong(index) {
+                if (songs.length === 0) {
+                    alert('Please select a directory containing audio files.');
+                    return;
+                }
+
+                currentSongIndex = index;
+                const currentSong = songs[index];
+                audioPlayer.src = currentSong.src;
+                audioPlayer.load();
+                songName.textContent = currentSong.title;
+                if (isPlaying) audioPlayer.play();
+            }
+
+            function playPauseSong() {
+                if (!isPlaying) {
+                    audioPlayer.play();
+                    playPauseBtn.textContent = '❚❚';
+                } else {
+                    audioPlayer.pause();
+                    playPauseBtn.textContent = '▶';
+                }
+                isPlaying = !isPlaying;
+            }
+
+            function nextSong() {
+                if (songs.length === 0) return;
+                currentSongIndex = (currentSongIndex + 1) % songs.length;
+                loadSong(currentSongIndex);
+            }
+
+            function prevSong() {
+                if (songs.length === 0) return;
+                currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                loadSong(currentSongIndex);
+            }
+
+            function updateProgressBar() {
+                const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressBar.value = progress;
+                const formattedCurrentTime = formatTime(audioPlayer.currentTime);
+                const formattedTotalDuration = formatTime(audioPlayer.duration);
+                currentTime.textContent = formattedCurrentTime;
+                totalDuration.textContent = formattedTotalDuration;
+            }
+
+            function seekSong(event) {
+                const seekTime = (event.target.value / 100) * audioPlayer.duration;
+                audioPlayer.currentTime = seekTime;
+            }
+
+            function formatTime(time) {
+                const minutes = Math.floor(time / 60);
+                const seconds = Math.floor(time % 60);
+                return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+
+            function populateSongList() {
+                songList.innerHTML = ''; // Clear existing list
+                songs.forEach((song, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = song.title;
+                    listItem.addEventListener('click', () => {
+                        loadSong(index);
+                    });
+                    songList.appendChild(listItem);
+                });
+            }
+
+            newSongBtn.addEventListener('click', () => {
+                const directoryInput = document.createElement('input');
+                directoryInput.type = 'file';
+                directoryInput.setAttribute('webkitdirectory', true);
+                directoryInput.setAttribute('directory', true);
+                directoryInput.addEventListener('change', (event) => {
+                    const files = event.target.files;
+                    songs = [];
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        if (file.type.startsWith('audio/')) {
+                            const newSong = {
+                                src: URL.createObjectURL(file),
+                                title: file.name
+                            };
+                            songs.push(newSong);
+                        }
+                    }
+                    if (songs.length > 0) {
+                        loadSong(0); // Load the first song in the list
+                        populateSongList(); // Populate the song list
+                    } else {
+                        alert('No audio files found in the selected directory.');
+                    }
+                });
+                directoryInput.click();
+            });
+
+            playPauseBtn.addEventListener('click', playPauseSong);
+            nextBtn.addEventListener('click', nextSong);
+            prevBtn.addEventListener('click', prevSong);
+            progressBar.addEventListener('input', seekSong);
+
+            audioPlayer.addEventListener('timeupdate', updateProgressBar);
+            audioPlayer.addEventListener('ended', nextSong);
+
+            // Load initial song (empty song list)
+            loadSong(currentSongIndex);
+        });
+    </script>
+</body>
+</html>
