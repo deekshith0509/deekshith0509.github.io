@@ -9,7 +9,7 @@ Python, Bash, JavaScript, HTML, CSS, Java, C, C#, R, Php, SQL.
 This repo was created for hoisting my portfolio.Eventually with the time,This was added with some of my best ideas.I hope,You can Enjoy my work.
 ## Authors
 
-- [@Deekshith0509](https://github.com/deekshith0509/deekshith0509)
+- [@Deekshith0509](https://github.com/deekshith0509/)
 
 
 ## Features
@@ -31,7 +31,7 @@ Music-Player includes all the basic features,a normal musicplayer possess,Due to
 
 ## Deployment
 
- You can clone my repo for personal use.These files are made by [me](https://github.com/deekshith0509/deekshith0509)
+ You can clone my repo for personal use.These files are made by [me](https://github.com/deekshith0509/)
 
 ```bash
     pkg update && pkg upgrade -y
