@@ -27,7 +27,7 @@ This repo was created for hoisting my portfolio.Eventually with the time,This wa
 ## Limitations
 
 Music-Player includes all the basic features,a normal musicplayer possess,Due to the browser security policies and restrictions,Music-Player may not work as expected directly from online through github.So,Run it locally to experience it.
-    Besides Music-Player,There is also a conflict in the device-info retrieval code.Only due to the Browser browser Limitations......
+    Besides Music-Player,There is also a conflict in the device-info retrieval code because of the Browser Limitations......
 
 ## Deployment
 
