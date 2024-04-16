@@ -1,106 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Device Information</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Information</title>
 </head>
 <body>
-  <h1>Device Information</h1>
-  <ul>
-    <li><strong>User Agent:</strong> <span id="userAgent"></span></li>
-    <li><strong>Platform:</strong> <span id="platform"></span></li>
-    <li><strong>Browser:</strong> <span id="browser"></span></li>
-    <li><strong>Browser Version:</strong> <span id="browserVersion"></span></li>
-    <li><strong>Screen Width:</strong> <span id="screenWidth"></span></li>
-    <li><strong>Screen Height:</strong> <span id="screenHeight"></span></li>
-    <li><strong>Color Depth:</strong> <span id="colorDepth"></span></li>
-    <li><strong>Device Pixel Ratio:</strong> <span id="devicePixelRatio"></span></li>
-    <li><strong>Touch Support:</strong> <span id="touchSupport"></span></li>
-    <li><strong>Language:</strong> <span id="language"></span></li>
-    <li><strong>Timezone:</strong> <span id="timezone"></span></li>
-  </ul>
+    <h1>Machine Information</h1>
 
-  <script>
-    // Get user agent
-    document.getElementById('userAgent').textContent = navigator.userAgent;
+    <div id="machineInfo">
+        <p><strong>User Agent:</strong> <span id="userAgent"></span></p>
+        <p><strong>Browser Language:</strong> <span id="browserLanguage"></span></p>
+        <p><strong>Screen Resolution:</strong> <span id="screenResolution"></span></p>
+        <p><strong>Cookies Enabled:</strong> <span id="cookiesEnabled"></span></p>
+        <p><strong>Local Storage:</strong> <span id="localStorageInfo"></span></p>
+        <p><strong>Operating System:</strong> <span id="operatingSystem"></span></p>
+        <p><strong>Platform:</strong> <span id="platform"></span></p>
+        <p><strong>Memory (RAM):</strong> <span id="memory"></span></p>
+        <p><strong>Processor:</strong> <span id="processor"></span></p>
+        <p><strong>Network Information:</strong></p>
+        <ul>
+            <li><strong>Connection Type:</strong> <span id="connectionType"></span></li>
+            <li><strong>Effective Network Type:</strong> <span id="effectiveNetworkType"></span></li>
+            <li><strong>Online Status:</strong> <span id="onlineStatus"></span></li>
+            <li><strong>IP Address:</strong> <span id="ipAddress"></span></li>
+            <li><strong>Location:</strong> <span id="location"></span></li>
+        </ul>
+    </div>
 
-    // Get platform
-    document.getElementById('platform').textContent = navigator.platform;
+    <script>
+        // Get user agent
+        document.getElementById('userAgent').textContent = navigator.userAgent;
 
-    // Get browser name
-    document.getElementById('browser').textContent = getBrowserName();
+        // Get browser language
+        document.getElementById('browserLanguage').textContent = navigator.language || navigator.userLanguage;
 
-    // Get browser version
-    document.getElementById('browserVersion').textContent = getBrowserVersion();
+        // Get screen resolution
+        document.getElementById('screenResolution').textContent = `${screen.width}x${screen.height}`;
 
-    // Get screen width
-    document.getElementById('screenWidth').textContent = window.screen.width + ' pixels';
+        // Check if cookies are enabled
+        document.getElementById('cookiesEnabled').textContent = navigator.cookieEnabled ? 'Yes' : 'No';
 
-    // Get screen height
-    document.getElementById('screenHeight').textContent = window.screen.height + ' pixels';
-
-    // Get color depth
-    document.getElementById('colorDepth').textContent = window.screen.colorDepth + ' bits';
-
-    // Get device pixel ratio
-    document.getElementById('devicePixelRatio').textContent = window.devicePixelRatio || 'N/A';
-
-    // Check for touch support
-    document.getElementById('touchSupport').textContent = ('ontouchstart' in window || navigator.maxTouchPoints) ? 'Supported' : 'Not Supported';
-
-    // Get user's language
-    document.getElementById('language').textContent = navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage || 'N/A';
-
-    // Get user's timezone
-    document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'N/A';
-
-    // Function to get browser name
-    function getBrowserName() {
-      const userAgent = navigator.userAgent;
-      const browsers = {
-        chrome: /chrome/i,
-        safari: /safari/i,
-        firefox: /firefox/i,
-        ie: /internet explorer/i,
-        edge: /edge/i,
-        opera: /opera|OPR/i,
-        brave: /brave/i,
-        samsung: /SamsungBrowser/i,
-      };
-
-      for (const key in browsers) {
-        if (browsers[key].test(userAgent)) {
-          return key;
+        // Check local storage availability
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('storageTest', 'test');
+                localStorage.removeItem('storageTest');
+                document.getElementById('localStorageInfo').textContent = 'Supported';
+            } else {
+                document.getElementById('localStorageInfo').textContent = 'Not Supported';
+            }
+        } catch (e) {
+            document.getElementById('localStorageInfo').textContent = 'Error accessing local storage';
         }
-      }
 
-      return 'Unknown';
-    }
+        // Get operating system information
+        const osInfo = `${navigator.platform} ${navigator.appVersion}`;
+        document.getElementById('operatingSystem').textContent = osInfo;
 
-    // Function to get browser version
-    function getBrowserVersion() {
-      const userAgent = navigator.userAgent;
-      const browserRegex = {
-        chrome: /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/i,
-        safari: /version\/([0-9]+)\.([0-9]+)\.([0-9]+)/i,
-        firefox: /firefox\/([0-9]+)\.([0-9]+)/i,
-        ie: /MSIE\s([0-9]+)\.([0-9]+)/i,
-        edge: /edge\/([0-9]+)\.([0-9]+)/i,
-        opera: /(opera|OPR)\/([0-9]+)\.([0-9]+)\.([0-9]+)/i,
-        brave: /brave\/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/i,
-        samsung: /SamsungBrowser\/([0-9]+)\.([0-9]+)\.([0-9]+)/i,
-      };
+        // Get platform (desktop, mobile, etc.)
+        const platform = navigator.platform.toLowerCase();
+        document.getElementById('platform').textContent = platform;
 
-      for (const key in browserRegex) {
-        const match = userAgent.match(browserRegex[key]);
-        if (match) {
-          return match.slice(1).join('.');
+        // Get total memory (RAM) if available
+        const memoryInfo = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown';
+        document.getElementById('memory').textContent = memoryInfo;
+
+        // Get processor information if available
+        const processorInfo = navigator.cpuArchitecture || navigator.oscpu || 'Unknown';
+        document.getElementById('processor').textContent = processorInfo;
+
+        // Check network information
+        const connectionType = navigator.connection ? navigator.connection.type : 'Unknown';
+        document.getElementById('connectionType').textContent = connectionType;
+
+        const effectiveNetworkType = navigator.connection ? navigator.connection.effectiveType : 'Unknown';
+        document.getElementById('effectiveNetworkType').textContent = effectiveNetworkType;
+
+        const onlineStatus = navigator.onLine ? 'Online' : 'Offline';
+        document.getElementById('onlineStatus').textContent = onlineStatus;
+
+        // Get public IP address using a third-party service
+        fetch('https://api64.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ipAddress').textContent = data.ip || 'Not Available';
+            })
+            .catch(error => {
+                console.error('Error fetching IP address:', error);
+                document.getElementById('ipAddress').textContent = 'Not Available';
+            });
+
+        // Get geolocation (requires user permission)
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+
+                // Fetch location name based on latitude and longitude using OpenCage Data API with your API key
+                fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=9d1c47ac7729497f91cafaeb3c7bc97b`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const location = data.results[0]?.formatted || 'Unknown';
+                        document.getElementById('location').textContent = location;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching location:', error);
+                        document.getElementById('location').textContent = 'Unknown';
+                    });
+            }, error => {
+                console.error('Error getting geolocation:', error);
+                document.getElementById('location').textContent = 'Geolocation not available';
+            });
+        } else {
+            document.getElementById('location').textContent = 'Geolocation not supported';
         }
-      }
-
-      return 'Unknown';
-    }
-  </script>
+    </script>
 </body>
 </html>
