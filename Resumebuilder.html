@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Resume Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .form {
+            margin-bottom: 20px;
+        }
+
+        .form label,
+        .form textarea,
+        .form input,
+        .form select {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .preview {
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .preview-content {
+            padding-top: 80px; /* Space for circular image field */
+        }
+
+        .circular-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            overflow: hidden;
+        }
+
+        .circular-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Button styles */
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Template 1 Styles */
+        .template1 .preview-content {
+            text-align: left;
+        }
+
+        .template1 h2 {
+            color: #007bff;
+        }
+
+        .template1 p {
+            color: #555;
+        }
+
+        /* Template 2 Styles */
+        .template2 .preview-content {
+            text-align: center;
+        }
+
+        .template2 h2 {
+            color: #ff6f61;
+        }
+
+        .template2 p {
+            color: #777;
+        }
+
+        /* Template 3 Styles */
+        .template3 .preview-content {
+            text-align: right;
+        }
+
+        .template3 h2 {
+            color: #5cb85c;
+        }
+
+        .template3 p {
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dynamic Resume Builder</h1>
+
+        <!-- Template selection dropdown -->
+        <label for="template">Select Template:</label>
+        <select id="template" onchange="applyTemplate()">
+            <option value="template1">Template 1</option>
+            <option value="template2">Template 2</option>
+            <option value="template3">Template 3</option>
+        </select>
+
+        <div class="form">
+            <!-- Image upload -->
+            <label for="imageUpload">Upload Image:</label>
+            <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+            
+            <!-- Resume input fields -->
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" placeholder="Your Full Name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Your Email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" placeholder="Your Phone Number">
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" placeholder="Your Address">
+
+            <label for="summary">Summary:</label>
+            <textarea id="summary" placeholder="Brief summary about yourself"></textarea>
+
+            <label for="experience">Experience:</label>
+            <textarea id="experience" placeholder="Your work experience"></textarea>
+
+            <label for="education">Education:</label>
+            <textarea id="education" placeholder="Your educational background"></textarea>
+
+            <label for="skills">Skills:</label>
+            <textarea id="skills" placeholder="Your skills (e.g., programming languages, tools)"></textarea>
+
+            <!-- Update Preview button -->
+            <button onclick="updatePreview()">Update Preview</button>
+        </div>
+
+        <!-- Resume preview section -->
+        <div class="preview" id="resumePreview">
+            <!-- Preview will be dynamically updated here -->
+            <div class="circular-image"></div>
+            <div class="preview-content"></div>
+        </div>
+
+        <!-- Download PDF button -->
+        <button onclick="downloadResume()">Download PDF</button>
+    </div>
+
+    <!-- Include jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+
+    <script>
+        function applyTemplate() {
+            const selectedTemplate = document.getElementById('template').value;
+            const previewContent = document.querySelector('.preview-content');
+            previewContent.className = `preview-content ${selectedTemplate}`;
+        }
+
+        function updatePreview() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const summary = document.getElementById('summary').value;
+            const experience = document.getElementById('experience').value;
+            const education = document.getElementById('education').value;
+            const skills = document.getElementById('skills').value;
+
+            const preview = document.querySelector('.preview-content');
+            let resumeContent = `
+                <h2>${fullName}</h2>
+                <p>Email: ${email}</p>
+                <p>Phone: ${phone}</p>
+                <p>Address: ${address}</p>
+                <h3>Summary</h3>
+                <p>${summary}</p>
+                <h3>Experience</h3>
+                <p>${experience}</p>
+                <h3>Education</h3>
+                <p>${education}</p>
+                <h3>Skills</h3>
+                <p>${skills}</p>
+            `;
+
+            preview.innerHTML = resumeContent;
+
+            const imageUpload = document.getElementById('imageUpload');
+            if (imageUpload.files && imageUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgElement = '<img src="' + e.target.result + '" alt="Profile Image">';
+                    document.querySelector('.circular-image').innerHTML = imgElement;
+                };
+                reader.readAsDataURL(imageUpload.files[0]);
+            }
+        }
+
+        function downloadResume() {
+            const resumePreview = document.getElementById('resumePreview');
+
+            html2canvas(resumePreview, { scrollY: -window.scrollY }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                const imgWidth = 210;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save('resume.pdf');
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                alert('Failed to generate PDF. Please try again.');
+            });
+        }
+
+        function handleImageUpload(event) {
+            const imageUpload = event.target;
+            if (imageUpload.files && imageUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgElement = '<img src="' + e.target.result + '" alt="Profile Image">';
+                    document.querySelector('.circular-image').innerHTML = imgElement;
+                };
+                reader.readAsDataURL(imageUpload.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
