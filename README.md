@@ -21,8 +21,11 @@ This repo was created for hoisting my portfolio.Eventually with the time,This wa
 ## Acknowledgements
 
  - [Termux](https://f-droid.org/en/packages/com.termux/)
+
+     >![alt text](https://f-droid.org/repo/com.termux/en-US/icon_7jMZ7XD80oeucmGEaTwktIRZexLtGWvJfKdVD6Wu2SI=.png)
  - [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
  - [check my other Repos](https://github.com/deekshith0509/)
+
 ## Limitations
 
 Music-Player includes all the basic features,a normal musicplayer possess,Due to the browser security policies and restrictions,Music-Player may not work as expected directly from online through github.So,Run it locally to experience it.
