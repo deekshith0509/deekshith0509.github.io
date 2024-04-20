@@ -11,6 +11,16 @@ This repo was created for hoisting my portfolio.Eventually with the time,This wa
 
 - [@Deekshith0509](https://github.com/deekshith0509/)
 
+        _           _        _     _ _   _
+    
+
+
+   
+      __| | ___  ___| | _____| |__ (_) |_| |__
+     / _` |/ _ \/ _ \ |/ / __| '_ \| | __| '_ \
+    | (_| |  __/  __/   <\__ \ | | | | |_| | | | 
+     \__,_|\___|\___|_|\_\___/_| |_|_|\__|_| |_|
+
 
 ## Features
 
@@ -35,5 +45,7 @@ Music-Player includes all the basic features,a normal musicplayer possess,Due to
 
 ```bash
     pkg update && pkg upgrade -y
+
     pkg install git
     git clone https://github.com/deekshith0509/deekshith0509.github.io
+
