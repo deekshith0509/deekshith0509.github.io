@@ -11,9 +11,6 @@ This repo was created for hoisting my portfolio.Eventually with the time,This wa
 
 - [@Deekshith0509](https://github.com/deekshith0509/)
 
-        _           _        _     _ _   _
-    
-
 
    
       __| | ___  ___| | _____| |__ (_) |_| |__
