@@ -5,6 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My GitHub Page</title>
   <style>
+@font-face {
+  font-family: myFirstFont;
+  src: url(sansation_bold.woff);
+  font-weight: bold;
+}
+
+    #repository-contents-container {      font-family: 'Arial', sans-serif;
+      color: #fff;
+      margin: 20px;
+      overflow: auto;
+      background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s infinite;
+      
+      max-width: 1200px;
+		align: "center"
+            width: 40%; /* Set the desired width */
+            margin: 0 auto; /* Center align horizontally */
+            height: 300px; /* Set a fixed height */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #544585;
+            overflow-y: auto; /* Enable vertical scrollbar */
+            color: #ffffff; /* Text color */
+            font-family: Arial, sans-serif; /* Font family */
+            font-size: 14px; /* Font size */
+        }
+
+        .external-link {
+            color: blue; /* Style external links */
+        }
 	input:hover{
 	cursor:help;
 	}
@@ -219,9 +251,14 @@ body::-webkit-scrollbar-thumb {
   <h1>Welcome to My GitHub Page</h1>
 
   <h2>Contents from My GitHub Repository:</h2>
-  <ul id="repository-contents"></ul>
+ <div id="repository-contents-container">
+        <!-- Fetched repository contents will be displayed here -->
+        <h2 id="name"></h2>
+        <ul id="repository-contents"></ul>
+    </div>
 
-  <div id="tools">
+
+  <div id="tools" >
     <div id="search-bar">
       <h2>Search Your Query with Your Preferred Search Engine</h2>
       <input type="text" id="search-input" placeholder="Enter your search" autofocus>
@@ -293,12 +330,6 @@ body::-webkit-scrollbar-thumb {
 
     const nameElement = document.getElementById('name');
 
-    fetch(`https://api.github.com/users/${githubUsername}`)
-      .then(response => response.json())
-      .then(data => {
-        nameElement.textContent = data.name || githubUsername;
-      })
-      .catch(error => console.error('Error fetching user information:', error));
 
     fetch(`https://api.github.com/repos/${githubUsername}/${repositoryName}/contents`)
       .then(response => response.json())
@@ -437,41 +468,54 @@ body::-webkit-scrollbar-thumb {
             }
         });
 function initVoiceSearch() {
-      const voiceSearchButton = document.getElementById('voice-search-button');
+  const voiceSearchButton = document.getElementById('voice-search-button');
+  const searchInput = document.getElementById('search-input');
 
-      // Check if browser supports speech recognition
-      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
+  // Check if elements exist
+  if (!voiceSearchButton || !searchInput) {
+    console.error('Voice search elements not found');
+    return;
+  }
 
-        // Set language for speech recognition (optional)
-        recognition.lang = 'en-US';
+  // Check if browser supports speech recognition
+  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
 
-        // Event listener for voice search button click
-        voiceSearchButton.addEventListener('click', () => {
-          recognition.start(); // Start speech recognition when button is clicked
-        });
+    // Set language for speech recognition (optional)
+    recognition.lang = 'en-US';
 
-        // Event listener for when speech recognition detects speech
-        recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript.trim();
-          document.getElementById('search-input').value = transcript; // Set input value to captured speech
-          performSearch(); // Perform search using captured speech
-        };
-
-        // Event listener for speech recognition errors
-        recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error);
-        };
-      } else {
-        // Browser doesn't support speech recognition
-        console.error('Speech recognition not supported');
-        voiceSearchButton.disabled = true;
+    // Event listener for voice search button click
+    voiceSearchButton.addEventListener('click', () => {
+      if (recognition && recognition.state === 'inactive') {
+        recognition.start(); // Start speech recognition when button is clicked
+      } else if (recognition && recognition.state === 'listening') {
+        recognition.stop(); // Stop recognition if already listening
       }
-    }
+    });
 
-    // Call the function to initialize voice search
-    initVoiceSearch();
+    // Event listener for when speech recognition detects speech
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript.trim();
+      searchInput.value = transcript; // Set input value to captured speech
+      performSearch(); // Perform search using captured speech
+    };
+
+    // Event listener for speech recognition errors
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+    };
+  } else {
+    // Browser doesn't support speech recognition
+    console.error('Speech recognition not supported');
+    voiceSearchButton.disabled = true;
+  }
+}
+
+// Call the function to initialize voice search when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initVoiceSearch();
+});
 
   </script>
 </body>
