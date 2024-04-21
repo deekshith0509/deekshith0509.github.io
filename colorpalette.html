@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        #colorInput {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .colorBox {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .colorBox:hover {
+            transform: scale(1.1);
+        }
+        #paletteContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        #saveButton {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+        #saveButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Palette Generator</h1>
+    <input type="color" id="colorInput" value="#ff0000">
+    <button onclick="generatePalette()">Generate Palette</button>
+    <div id="paletteContainer"></div>
+    <button id="saveButton" > Click on the desired color to copy its code. </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.2/tinycolor.min.js"></script>
+    <script>
+        function generatePalette() {
+            const baseColor = document.getElementById('colorInput').value;
+            const colorPalette = [];
+
+            // Generate complementary colors
+            const baseTinyColor = tinycolor(baseColor);
+            const complementaryColor = baseTinyColor.complement().toString();
+            const splitComplementaryColor = baseTinyColor.splitcomplement().map(c => c.toString());
+            const triadicColors = baseTinyColor.triad().map(c => c.toString());
+
+            colorPalette.push(baseColor, complementaryColor, ...splitComplementaryColor, ...triadicColors);
+
+            displayPalette(colorPalette);
+        }
+
+        function displayPalette(colors) {
+            const paletteContainer = document.getElementById('paletteContainer');
+            paletteContainer.innerHTML = '';
+
+            colors.forEach(color => {
+                const colorBox = document.createElement('div');
+                colorBox.className = 'colorBox';
+                colorBox.style.backgroundColor = color;
+                colorBox.title = color;
+                colorBox.addEventListener('click', () => copyToClipboard(color));
+                paletteContainer.appendChild(colorBox);
+            });
+        }
+
+        function copyToClipboard(color) {
+            navigator.clipboard.writeText(color)
+                .then(() => alert(`Copied: ${color}`))
+                .catch(err => console.error('Error copying color:', err));
+        }
+
+      
+    </script>
+</body>
+</html>
