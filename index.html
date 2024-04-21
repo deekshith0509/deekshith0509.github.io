@@ -153,11 +153,22 @@ body::-webkit-scrollbar-thumb {
       transition: background-color 0.3s;
       font-size: 1em;
     }
-
+	#voice-search-button {
+      padding: 10px 20px;
+      background-color: #0366d6;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 1em;
+    }
     #search-button:hover {
       background-color: #004080;
     }
-
+    #voice-search-button:hover{
+        background-color: #004080;
+	}
     /* Add styles for the search results */
     #search-results {
       margin-top: 30px;
@@ -232,6 +243,7 @@ body::-webkit-scrollbar-thumb {
         <!-- Add more search engines as needed -->
       </select>
       <button id="search-button" onclick="performSearch()">Search</button>
+ <button id="voice-search-button">Voice Search</button> 
     </div>
   </div>
 
@@ -424,7 +436,42 @@ body::-webkit-scrollbar-thumb {
                 performSearch();
             }
         });
+function initVoiceSearch() {
+      const voiceSearchButton = document.getElementById('voice-search-button');
 
+      // Check if browser supports speech recognition
+      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        // Set language for speech recognition (optional)
+        recognition.lang = 'en-US';
+
+        // Event listener for voice search button click
+        voiceSearchButton.addEventListener('click', () => {
+          recognition.start(); // Start speech recognition when button is clicked
+        });
+
+        // Event listener for when speech recognition detects speech
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript.trim();
+          document.getElementById('search-input').value = transcript; // Set input value to captured speech
+          performSearch(); // Perform search using captured speech
+        };
+
+        // Event listener for speech recognition errors
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+        };
+      } else {
+        // Browser doesn't support speech recognition
+        console.error('Speech recognition not supported');
+        voiceSearchButton.disabled = true;
+      }
+    }
+
+    // Call the function to initialize voice search
+    initVoiceSearch();
 
   </script>
 </body>
