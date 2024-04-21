@@ -47,43 +47,88 @@
         #saveButton:hover {
             background-color: #0056b3;
         }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <h1>Color Palette Generator</h1>
     <input type="color" id="colorInput" value="#ff0000">
-    <button onclick="generatePalette()">Generate Palette</button>
+    <button onclick="generateAndDisplayPalette()">Generate Palette</button>
     <div id="paletteContainer"></div>
-    <button id="saveButton" > Click on the desired color to copy its code. </button>
+    <button id="saveButton">Click on a color to copy its code.</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.2/tinycolor.min.js"></script>
     <script>
-        function generatePalette() {
+        let colorPalettes = [];
+
+        function generateAndDisplayPalette() {
             const baseColor = document.getElementById('colorInput').value;
-            const colorPalette = [];
-
-            // Generate complementary colors
             const baseTinyColor = tinycolor(baseColor);
-            const complementaryColor = baseTinyColor.complement().toString();
-            const splitComplementaryColor = baseTinyColor.splitcomplement().map(c => c.toString());
-            const triadicColors = baseTinyColor.triad().map(c => c.toString());
 
-            colorPalette.push(baseColor, complementaryColor, ...splitComplementaryColor, ...triadicColors);
+            // Clear previous palettes
+            colorPalettes = [];
 
-            displayPalette(colorPalette);
+            // Generate a new palette
+            const newPalette = generateRandomPalette(baseTinyColor);
+
+            // Add the new palette to the list of color palettes
+            colorPalettes.push(newPalette);
+
+            // Display all color palettes
+            displayAllPalettes();
         }
 
-        function displayPalette(colors) {
+        function generateRandomPalette(baseColor) {
+            const palette = [];
+            palette.push(baseColor.toString());
+            palette.push(baseColor.complement().toString());
+            palette.push(...baseColor.splitcomplement().map(c => c.toString()));
+            palette.push(...baseColor.triad().map(c => c.toString()));
+
+            // Shuffle the palette array to randomize colors
+            shuffleArray(palette);
+
+            return palette;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function displayAllPalettes() {
             const paletteContainer = document.getElementById('paletteContainer');
             paletteContainer.innerHTML = '';
 
-            colors.forEach(color => {
-                const colorBox = document.createElement('div');
-                colorBox.className = 'colorBox';
-                colorBox.style.backgroundColor = color;
-                colorBox.title = color;
-                colorBox.addEventListener('click', () => copyToClipboard(color));
-                paletteContainer.appendChild(colorBox);
+            colorPalettes.forEach(palette => {
+                const paletteWrapper = document.createElement('div');
+                paletteWrapper.classList.add('paletteWrapper');
+
+                palette.forEach(color => {
+                    const colorBox = document.createElement('div');
+                    colorBox.className = 'colorBox';
+                    colorBox.style.backgroundColor = color;
+                    colorBox.title = color;
+                    colorBox.addEventListener('click', () => copyToClipboard(color));
+                    paletteWrapper.appendChild(colorBox);
+                });
+
+                paletteContainer.appendChild(paletteWrapper);
             });
         }
 
@@ -93,7 +138,8 @@
                 .catch(err => console.error('Error copying color:', err));
         }
 
-      
+        // Automatically generate new palette on page load
+        generateAndDisplayPalette();
     </script>
 </body>
 </html>
