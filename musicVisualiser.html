@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio File Metadata Viewer & Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #audioFileInput {
+            margin-bottom: 20px;
+        }
+
+        #metadataContainer {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+        }
+
+        #visualizerCanvas {
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            background-color: #eee;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Audio File Metadata Viewer & Visualizer</h1>
+
+        <input type="file" id="audioFileInput" accept="audio/*">
+        <div id="metadataContainer"></div>
+        <canvas id="visualizerCanvas"></canvas>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioFileInput = document.getElementById('audioFileInput');
+            const metadataContainer = document.getElementById('metadataContainer');
+            const visualizerCanvas = document.getElementById('visualizerCanvas');
+            const ctx = visualizerCanvas.getContext('2d');
+
+            let audioElement;
+            let analyser;
+            let dataArray;
+            const WIDTH = visualizerCanvas.width;
+            const HEIGHT = visualizerCanvas.height;
+            const barCount = 100;
+            let bars = [];
+
+            audioFileInput.addEventListener('change', async function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                try {
+                    const tags = await getAudioTags(file);
+                    displayMetadata(tags);
+                    playAudio(file);
+                } catch (error) {
+                    console.error('Error reading tags:', error);
+                    displayError('Error reading file tags. Please try another file.');
+                }
+            });
+
+            async function getAudioTags(file) {
+                return new Promise((resolve, reject) => {
+                    jsmediatags.read(file, {
+                        onSuccess: function(tag) {
+                            resolve(tag);
+                        },
+                        onError: function(error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+
+            function displayMetadata(tags) {
+                metadataContainer.innerHTML = '';
+
+                const tagData = tags.tags;
+                const keys = Object.keys(tagData);
+
+                if (keys.length === 0) {
+                    metadataContainer.textContent = 'No metadata found.';
+                    return;
+                }
+
+                const table = document.createElement('table');
+                const tbody = document.createElement('tbody');
+
+                keys.forEach(key => {
+                    const row = document.createElement('tr');
+                    const keyCell = document.createElement('td');
+                    const valueCell = document.createElement('td');
+
+                    keyCell.textContent = key;
+                    if (key === 'picture') {
+                        const artwork = tagData[key];
+                        if (artwork && artwork.data) {
+                            const imageUrl = `data:${artwork.format};base64,${arrayBufferToBase64(artwork.data)}`;
+                            const img = document.createElement('img');
+                            img.src = imageUrl;
+                            img.alt = 'Album Artwork';
+                            img.style.maxWidth = '200px';
+                            valueCell.appendChild(img);
+                        } else {
+                            valueCell.textContent = 'No album artwork';
+                        }
+                    } else {
+                        valueCell.textContent = formatValue(tagData[key]);
+                    }
+
+                    row.appendChild(keyCell);
+                    row.appendChild(valueCell);
+                    tbody.appendChild(row);
+                });
+
+                table.appendChild(tbody);
+                metadataContainer.appendChild(table);
+            }
+
+            function playAudio(file) {
+                if (audioElement) {
+                    audioElement.pause();
+                    audioElement = null;
+                }
+
+                audioElement = new Audio();
+                audioElement.src = URL.createObjectURL(file);
+
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaElementSource(audioElement);
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+                for (let i = 0; i < barCount; i++) {
+                    bars.push({
+                        x: i * (WIDTH / barCount),
+                        y: HEIGHT / 2,
+                        width: WIDTH / barCount - 2,
+                        height: 0,
+                        color: `hsl(${(i * 360) / barCount}, 100%, 50%)`,
+                        speed: Math.random() * 4 + 1
+                    });
+                }
+
+                audioElement.addEventListener('play', () => {
+                    animateBars();
+                });
+
+                audioElement.addEventListener('pause', () => {
+                    cancelAnimationFrame(animateBars);
+                });
+
+                audioElement.play().catch(error => {
+                    console.error('Audio playback error:', error);
+                    displayError('Error playing audio. Please try another file.');
+                });
+            }
+
+            function animateBars() {
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+                bars.forEach((bar, i) => {
+                    const barHeight = dataArray[i] / 2;
+                    const maxHeight = HEIGHT - 50;
+
+                    if (barHeight > bar.height && bar.height < maxHeight) {
+                        bar.height = Math.min(bar.height + bar.speed, barHeight);
+                    } else if (bar.height > barHeight) {
+                        bar.height = Math.max(bar.height - 2, barHeight);
+                    }
+
+                    ctx.fillStyle = bar.color;
+                    ctx.fillRect(bar.x, HEIGHT - bar.height, bar.width, bar.height);
+                });
+
+                requestAnimationFrame(animateBars);
+            }
+
+            function formatValue(value) {
+                if (Array.isArray(value)) {
+                    return value.join(', ');
+                } else {
+                    return value;
+                }
+            }
+
+            function arrayBufferToBase64(buffer) {
+                let binary = '';
+                const bytes = new Uint8Array(buffer);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return window.btoa(binary);
+            }
+
+            function displayError(message) {
+                metadataContainer.innerHTML = `<p style="color: red;">${message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
