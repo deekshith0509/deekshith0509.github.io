@@ -211,6 +211,33 @@ body::-webkit-scrollbar-thumb {
       display: none; /* Hidden by default */
     }
 
+      #search-engine {
+            padding: 10px;
+            font-size: 16px;
+            color: black; /* Default text color */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        /* Style the options when the select is expanded */
+       #search-engine {
+            color: white; /* Default text color for options */
+            background-color: #584f7b; /* Default background color for options */
+        }
+
+        /* Style the options when hovered over */
+       #search-engine:hover {
+            background-color: #584f7b; /* Change background color on hover */
+        }
+
+        /* Style the select element when expanded (focus) */
+        #search-engine:focus {
+            color: white; /* Change text color when expanded */
+            border-color: hsl(132, 22%, 40%); /* Change border color when expanded */
+            box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Add shadow when focused */
+        }
     #search-results h3 {
       font-size: 1.5em;
       margin-bottom: 10px;
@@ -251,15 +278,13 @@ body::-webkit-scrollbar-thumb {
 <h1><a href="https://github.com/deekshith0509/" style="color: #6d3c73;">Developed BY</a></h1>
 
 </body>
-
   <h2>My Repository:</h2>
+<br>
  <div id="repository-contents-container">
         <!-- Fetched repository contents will be displayed here -->
         <h2 id="name"></h2>
         <ul id="repository-contents"></ul>
     </div>
-
-
   <div id="tools" >
     <div id="search-bar">
       <h2>Search Your Query with Your Preferred Search Engine</h2>
