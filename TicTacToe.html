@@ -63,6 +63,12 @@
     display: none;
   }
 
+  .scoreboard {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  
   /* Firework Animation Keyframes */
   @keyframes fireworks {
     0%, 50% {
@@ -105,12 +111,19 @@
   </div>
 
   <div id="message" class="message"></div>
+
+  <div class="scoreboard">
+    <p>Human Score: <span id="humanScore">0</span></p>
+    <p>Computer Score: <span id="computerScore">0</span></p>
+  </div>
 </div>
 
 <script>
 const humanPlayer = 'X';
 const computerPlayer = 'O';
 let currentPlayer = humanPlayer;
+let humanScore = 0;
+let computerScore = 0;
 
 const winningCombinations = [
   [0, 1, 2],
@@ -132,6 +145,8 @@ function handleClick(event) {
     cell.textContent = humanPlayer;
     if (checkWin(humanPlayer)) {
       showMessage('You win!');
+      humanScore++;
+      updateScoreboard();
       celebrateWinner();
       setTimeout(resetGame, 3000); // Reset after 3 seconds
       return;
@@ -146,6 +161,8 @@ function handleClick(event) {
     document.getElementById(bestMove).textContent = computerPlayer;
     if (checkWin(computerPlayer)) {
       showMessage('Computer wins!');
+      computerScore++;
+      updateScoreboard();
       setTimeout(resetGame, 3000); // Reset after 3 seconds
       return;
     }
@@ -267,6 +284,11 @@ function getBestMove() {
     }
   }
   return bestMove;
+}
+
+function updateScoreboard() {
+  document.getElementById('humanScore').textContent = humanScore;
+  document.getElementById('computerScore').textContent = computerScore;
 }
 </script>
 
