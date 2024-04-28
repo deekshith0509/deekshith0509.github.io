@@ -1,7 +1,7 @@
+<div align="center">
+
 [![ deekshith ](https://img.shields.io/badge/deekshith-profile-blue.svg)](https://github.com/deekshith0509?tab=repositories) [![ deekshith ](https://img.shields.io/badge/Jonah-All-blue.svg)](https://github.com/jonahprashanth) [![ deekshith ](https://img.shields.io/badge/Vikram-All-blue.svg)](https://github.com/vikram-73/) [![ deekshith ](https://img.shields.io/badge/Arvind-All-blue.svg)](https://github.com/Aravind-webD)
-
-
-
+</div>
 
 ## 🚀 About Me 
 I'm a full stack developer...
