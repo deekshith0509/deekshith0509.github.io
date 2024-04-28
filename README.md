@@ -8,7 +8,7 @@ Python, Bash, JavaScript, HTML, CSS, Java, C, C#, R, Php, SQL.
 ------
 
 
-This repo was created for hoisting my portfolio.Eventually with the time,This was added with some of my best ideas.It consists I hope,You can Enjoy my work.
+This repo was created for hoisting my portfolio.Eventually with the time,This was added with some of my best ideas.I hope,You can Enjoy my work.
 Welcome aboard the journey through my repository, where innovation meets creativity and technology transcends boundaries. Let's embark on an exploration of the diverse features and inspirations that make this repository a treasure trove of possibilities.
 Crafted by a Passionate Developer
 
