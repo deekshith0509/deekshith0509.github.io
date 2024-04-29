@@ -5,55 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My GitHub Page</title>
   <style>
+/* Your existing CSS styles */
 @font-face {
   font-family: myFirstFont;
   src: url(sansation_bold.woff);
   font-weight: bold;
 }
 
-    #repository-contents-container {      font-family: 'Arial', sans-serif;
-      color: #fff;
-      margin: 20px;
-      overflow: auto;
-      background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
-      background-size: 400% 400%;
-      animation: gradientAnimation 15s infinite;
-      
-      max-width: 1200px;
-		align: "center"
-            width: 40%; /* Set the desired width */
-            margin: 0 auto; /* Center align horizontally */
-            height: 300px; /* Set a fixed height */
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #544585;
-            overflow-y: auto; /* Enable vertical scrollbar */
-            color: #ffffff; /* Text color */
-            font-family: Arial, sans-serif; /* Font family */
-            font-size: 14px; /* Font size */
-        }
+#repository-contents-container {
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  margin: 20px auto; /* Adjust margin for center alignment */
+  overflow: auto;
+  background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s infinite;
+  max-width: 90%; /* Adjust max-width for responsiveness */
+  width: 90%; /* Adjust width for responsiveness */
+  height: 300px; /* Fixed height */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #544585;
+  overflow-y: auto;
+  color: #ffffff;
+  font-size: 14px;
+}
 
-        .external-link {
-            color: blue; /* Style external links */
-        }
-	input:hover{
-	cursor:help;
-	}
-	#tools select:hover{cursor:pointer;}
+/* Additional adjustments for smaller screens */
+@media (max-width: 768px) {
+  #repository-contents-container {
+    max-width: 90%;
+    width: 90%;
+    font-size: 12px; /* Adjust font size for smaller screens */
+    height: 200px !important; /* Fixed height for smaller screens */
+    overflow-y: scroll; /* Add a scrollbar when content exceeds the height */
+  }
+}
 
-    body {
-      font-family: 'Arial', sans-serif;
-      color: #fff;
-      margin: 20px;
-      overflow: auto;
-      background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
-      background-size: 400% 400%;
-      animation: gradientAnimation 15s infinite;
-      
-      max-width: 1200px;
-    }
+}
 
+
+.external-link {
+  color: blue;
+}
+
+input:hover {
+  cursor: help;
+}
+
+#tools select:hover {
+  cursor: pointer;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  margin: 20px;
+  overflow: auto;
+  background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s infinite;
+  max-width: 1200px;
+}
 
 /* Customize scrollbar (for WebKit browsers like Chrome and Safari) */
 body::-webkit-scrollbar {
@@ -69,208 +83,211 @@ body::-webkit-scrollbar-thumb {
   border-radius: 5px;
 }
 
-
-/* Example media query for responsive design */
+/* Example media query for adjusting font size for smaller screens */
 @media (max-width: 768px) {
   body {
-    font-size: 14px; /* Adjust font size for smaller screens */
+    font-size: 14px;
+  }
+  
+  /* Additional adjustments for smaller screens */
+  #repository-contents-container {
+    width: 80%; /* Adjust width for smaller screens */
+    font-size: 12px; /* Adjust font size for smaller screens */
+    height: auto; /* Remove fixed height for smaller screens */
   }
 }
-    h1,
-    h2 {
-      animation: fadeInUp 1s ease-in-out;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
 
-    h1 {
-      color: #fff;
-      font-size: 3em;
-      margin-bottom: 20px;
-    }
+/* Your existing CSS styles continued... */
+h1,
+h2 {
+  animation: fadeInUp 1s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
 
-    h2 {
-      color: #fff;
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
+h1 {
+  color: #fff;
+  font-size: 3em;
+  margin-bottom: 20px;
+}
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+h2 {
+  color: #fff;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
 
-    li {
-      margin-bottom: 10px;
-      opacity: 0;
-      animation: fadeInUp 1s ease-in-out forwards;
-      transition: background-color 0.3s, transform 0.3s;
-      cursor: pointer;
-      border-radius: 5px;
-      padding: 10px;
-    }
+ul {
+  list-style: none;
+  padding: 0;
+}
 
-    li:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-5px);
-    }
+li {
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeInUp 1s ease-in-out forwards;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px;
+}
 
-    a.external-link {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-      cursor: pointer;
-      transition: color 0.3s, transform 0.3s;
-    }
+li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px);
+}
 
-    a.external-link:hover {
-      color: #ffcc00;
-      transform: scale(1.1);
-    }
+a.external-link {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}
 
-    @keyframes gradientAnimation {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
+a.external-link:hover {
+  color: #ffcc00;
+  transform: scale(1.1);
+}
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
-    /* Custom cursor styles */
-    body {
-      cursor: url('https://example.com/custom-cursor.png'), auto;
-    }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    /* Additional styles for the tools section */
-    #tools {
-      margin-top: 30px;
-      text-align: center;
-    }
+/* Custom cursor styles */
+body {
+  cursor: url('https://example.com/custom-cursor.png'), auto;
+}
 
-    #search-bar {
-      margin-bottom: 30px;
-    }
+/* Additional styles for the tools section */
+#tools {
+  margin-top: 30px;
+  text-align: center;
+}
 
-    input[type="text"],
-    select {
-      padding: 10px;
-      margin-right: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 250px;
-      font-size: 1em;
-    }
+#search-bar {
+  margin-bottom: 30px;
+}
 
-    #search-button {
-      padding: 10px 20px;
-      background-color: #0366d6;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 1em;
-    }
-	#voice-search-button {
-      padding: 10px 20px;
-      background-color: #0366d6;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 1em;
-    }
-    #search-button:hover {
-      background-color: #004080;
-    }
-    #voice-search-button:hover{
-        background-color: #004080;
-	}
-    /* Add styles for the search results */
-    #search-results {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      display: none; /* Hidden by default */
-    }
+input[type="text"],
+select {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px;
+  font-size: 1em;
+}
 
-      #search-engine {
-            padding: 10px;
-            font-size: 16px;
-            color: black; /* Default text color */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-            transition: all 0.3s ease;
-        }
+#search-button,
+#voice-search-button {
+  padding: 10px 20px;
+  background-color: #0366d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1em;
+}
 
-        /* Style the options when the select is expanded */
-       #search-engine {
-            color: white; /* Default text color for options */
-            background-color: #584f7b; /* Default background color for options */
-        }
+#search-button:hover,
+#voice-search-button:hover {
+  top:90px
+  background-color: #004080;
+}
 
-        /* Style the options when hovered over */
-       #search-engine:hover {
-            background-color: #584f7b; /* Change background color on hover */
-        }
+/* Add styles for the search results */
+#search-results {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  display: none; /* Hidden by default */
+}
 
-        /* Style the select element when expanded (focus) */
-        #search-engine:focus {
-            color: white; /* Change text color when expanded */
-            border-color: hsl(132, 22%, 40%); /* Change border color when expanded */
-            box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Add shadow when focused */
-        }
-    #search-results h3 {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-    }
+#search-engine {
+  padding: 10px;
+  font-size: 16px;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  transition: all 0.3s ease;
+}
 
-    #search-results ol {
-      list-style: decimal;
-      padding-left: 20px;
-    }
+/* Style the options when the select is expanded */
+#search-engine {
+  color: white;
+  background-color: #584f7b;
+}
 
-    #search-results li {
-      margin-bottom: 5px;
-    }
+/* Style the options when hovered over */
+#search-engine:hover {
+  background-color: #584f7b;
+}
 
-    /* New styles for clock */
-    #clock {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 1.2em;
-      color: #fff;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
+/* Style the select element when expanded (focus) */
+#search-engine:focus {
+  color: white;
+  border-color: hsl(132, 22%, 40%);
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+}
 
-    /* New styles for weather forecast */
-    #weather {
-      position: absolute;
-      top: 70px;
-      right: 20px;
-      font-size: 1em;
-      color: #fff;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
+#search-results h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+#search-results ol {
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+#search-results li {
+  margin-bottom: 5px;
+}
+
+/* New styles for clock */
+#clock {
+  position: absolute;
+  top: 10px; /* Decrease this value to move the element up */
+  right: 20px;
+  font-size: 1.2em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* New styles for weather forecast */
+#weather {
+  position: absolute;
+  top: 90px; /* Increase this value to move the element down */
+  right: 20px;
+  font-size: 1em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+
   </style>
 </head>
 <body>
