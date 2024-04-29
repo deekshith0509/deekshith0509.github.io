@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My GitHub Page</title>
+  <style>
+
+
+
+body {
+  padding: 25px;
+  background-color: white;
+  color: black;
+  font-size: 20px;
+     font-family: "Open Sans", sans-serif;
+}
+
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+.dark-mode #repository-contents-container{
+   background-color: #191970; 
+   color: lightblue;
+}
+
+.dark-mode #developer-link{
+   color: green;
+
+
+
+}
+
+
+#toggle{
+position: absolute;
+top: 10px;
+  right: 20px;
+  font-size: 1em;
+  //color: #3498db; /* Applying the color */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+
+}
+#repository-contents-container {
+  font-family: 'Arial', sans-serif;
+  
+  margin: 20px auto; /* Adjust margin for center alignment */
+  overflow: auto;
+  background-size: 400% 400%;
+  max-width: 70%; /* Adjust max-width for responsiveness */
+  width: 50%; /* Adjust width for responsiveness */
+  height: 250px; /* Fixed height */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow-y: auto;
+  font-size: 18px;
+    font-family: "Trirong", serif;
+  background-color: #f2f2f2;
+  color: orange;
+}
+
+/* Additional adjustments for smaller screens */
+@media (max-width: 768px) {
+  #repository-contents-container {
+    max-width: 90%;
+    width: 90%;
+    font-size: 12px; /* Adjust font size for smaller screens */
+    height: 200px !important; /* Fixed height for smaller screens */
+    overflow-y: scroll; /* Add a scrollbar when content exceeds the height */
+  }
+}
+
+}
+
+/* Example media query for adjusting font size for smaller screens */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+a.external-link {
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+  color: #ffcc00;
+}
+
+a.external-link:hover {
+  color: #ffcc00;
+  transform: scale(1.1);
+}
+  /* Additional adjustments for smaller screens */
+  #repository-contents-container {
+    width: 80%; /* Adjust width for smaller screens */
+    font-size: 12px; /* Adjust font size for smaller screens */
+    height: auto; /* Remove fixed height for smaller screens */
+  }
+}
+.dark-mode .external-link{
+   color:orange;
+   }
+.external-link {
+  color: blue;
+}
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+}
+
+/* Example media query for adjusting font size for smaller screens */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  /* Additional adjustments for smaller screens */
+  #repository-contents-container {
+    width: 80%; /* Adjust width for smaller screens */
+    font-size: 12px; /* Adjust font size for smaller screens */
+    height: auto; /* Remove fixed height for smaller screens */
+  }
+}
+body {
+  cursor: url('C:\Users\deeks\Downloads\c.png'), auto;
+}
+
+#search-bar {
+  margin-bottom: 30px;
+}
+
+input[type="text"],
+select {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px;
+  font-size: 1em;
+}
+#search-button,
+#voice-search-button {
+  padding: 10px 20px;
+  background-color: #0366d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1em;
+}
+
+#search-button:hover,
+#voice-search-button:hover {
+  top: 90px;
+  background-color: #004080;
+  border: 2px solid #002d59; /* Add a border */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow */
+  transition: all 0.3s ease; /* Add a transition effect */
+  /* Additional customizations */
+}
+
+
+#dark {
+  position: absolute;
+  top: 05px; /* Decrease this value to move the element up */
+  right: 20px;
+  font-size: 1.2em;
+  //color: #3498db; /* Applying the color */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+#clock {
+  position: absolute;
+  top: 55px; /* Decrease this value to move the element up */
+  right: 20px;
+  font-size: 1.2em;
+  //color: #3498db; /* Applying the color */
+
+}
+
+/* New styles for weather forecast */
+#weather {
+  position: absolute;
+  top: 90px; /* Increase this value to move the element down */
+  right: 20px;
+  font-size: 1em;
+  //color: #3498db; /* Applying the color */
+
+}
+li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px);
+}
+
+a.external-link {
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}
+
+a.external-link:hover {
+  color: #ffcc00;
+  transform: scale(1.1);
+}
+
+
+
+
+/* Example media query for adjusting font size for smaller screens */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  /* Additional adjustments for smaller screens */
+  #repository-contents-container {
+    width: 80%; /* Adjust width for smaller screens */
+    font-size: 12px; /* Adjust font size for smaller screens */
+    height: auto; /* Remove fixed height for smaller screens */
+  }
+}
+input:hover {
+  cursor: help;
+}
+
+#tools select:hover {
+  cursor: pointer;
+}
+
+#f1 {
+  position: absolute;
+  top: 10px; /* Increase this value to move the element down */
+  right: 20px;
+  font-size: 1em;
+  //color: #3498db; /* Applying the color */
+
+}
+
+
+
+
+
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+   <input id="toggle" class="toggle" type="checkbox" placeholder="dark" >
+<h3 id ="f1">Dark</h3>
+
+<div  id="developer-link">
+
+<h1><a href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
+
+
+</body>  <h2 id="f2">My Repository:</h2>
+</div>
+ <div id="repository-contents-container">
+        <!-- Fetched repository contents will be displayed here -->
+        <h2 id="name"></h2>
+        <ul id="repository-contents"></ul>
+    </div>
+  <div id="tools" align="center" >
+    <div id="search-bar">
+      <h2>Search Your Query with Your Preferred Search Engine</h2>
+      <input type="text" id="search-input" placeholder="Enter your search" autofocus>
+      <select id="search-engine">
+        <option value="google">Google</option>
+        <option value="bing">Bing</option>
+        <option value="yahoo">Yahoo</option>
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="baidu">Baidu</option>
+        <option value="yandex">Yandex</option>
+        <option value="ask">Ask</option>
+        <option value="aol">AOL</option>
+        <option value="dogpile">Dogpile</option>
+        <option value="excite">Excite</option>
+        <option value="YT">Youtube</option>
+        <option value="webcrawler">WebCrawler</option>
+        <option value="tb">TamilBlasters</option>
+        <option value="imdb">IMDb</option>
+        <!-- Add more search engines as needed -->
+      </select>
+      <button id="search-button" onclick="performSearch()">Search</button>
+ <button id="voice-search-button">Voice Search</button> 
+    </div>
+  </div>
+
+  <!-- Clock and weather forecast -->
+  <div id="clock"></div>
+  <div id="weather"></div>
+  <script>
+    // Function to update clock
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    // Function to fetch weather forecast
+    function fetchWeather() {
+      const apiKey = '25c97ed9fb1bb9e5768b3b12bbfe9137';
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Hyderabad&units=metric&appid=${apiKey}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const weatherDescription = data.weather[0].description;
+          const temperature = data.main.temp;
+          document.getElementById('weather').textContent = `Weather: ${weatherDescription}, Temperature: ${temperature}°C`;
+        })
+        .catch(error => console.error('Error fetching weather:', error));
+    }
+
+    // Update clock and fetch weather when the page loads
+    updateClock();
+    fetchWeather();
+
+    // Update clock every second
+    setInterval(updateClock, 1000);
+
+    // Existing JavaScript code remains unchanged
+    const githubUsername = 'deekshith0509';
+    const repositoryName = 'deekshith0509.github.io';
+
+    const nameElement = document.getElementById('name');
+
+
+    fetch(`https://api.github.com/repos/${githubUsername}/${repositoryName}/contents`)
+      .then(response => response.json())
+      .then(contents => {
+        const contentsList = document.getElementById('repository-contents');
+        contents.forEach(item => {
+          const listItem = document.createElement('li');
+
+          if (item.type === 'file') {
+            const fileLink = document.createElement('a');
+            fileLink.textContent = item.name;
+
+            if (item.name.endsWith('.html')) {
+              fileLink.classList.add('external-link');
+              fileLink.onclick = () => openHtmlFileInNewTab(item.download_url);
+            } else {
+              fileLink.href = item.download_url;
+              fileLink.setAttribute('download', item.name);
+              fileLink.classList.add('external-link');
+            }
+
+            listItem.appendChild(fileLink);
+          } else {
+            listItem.textContent = item.name;
+          }
+
+          contentsList.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error('Error fetching repository contents:', error));
+
+    function openHtmlFileInNewTab(fileUrl) {
+      fetch(fileUrl)
+        .then(response => response.text())
+        .then(htmlContent => {
+          const newWindow = window.open();
+          newWindow.document.write(htmlContent);
+        })
+        .catch(error => console.error('Error fetching HTML content:', error));
+    }
+
+    function performSearch() {
+      const searchInput = document.getElementById('search-input').value.toLowerCase();
+      const searchEngineSelect = document.getElementById('search-engine');
+      const selectedSearchEngine = searchEngineSelect.value;
+
+      // Set of video-related keywords
+      const videoKeywords = new Set(['video', 'videos', 'clip', 'clips']);
+      // Set of shopping-related keywords
+      const shoppingKeywords = new Set(['shopping', 'products', 'items',"item", 'mobiles', 'electronics']);
+
+      // Split the search input into words
+      const words = searchInput.split(' ');
+
+      // Check if the last word is a video-related keyword
+      const lastWord = words[words.length - 1];
+      if (videoKeywords.has(lastWord)) {
+        // If yes, remove the last word
+        words.pop();
+        // Redirect to YouTube with the modified query
+        window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(words.join(' ').trim()));
+        return;
+      }
+
+      // Check if the last word is a shopping-related keyword
+      if (shoppingKeywords.has(lastWord)) {
+        // If yes, remove the last word
+        words.pop();
+        // Redirect to Flipkart or Amazon with the modified query
+        window.open('https://www.flipkart.com/search?q=' + encodeURIComponent(words.join(' ').trim()));
+        return;
+      }
+
+      // Perform search based on selected search engine
+      switch (selectedSearchEngine) {
+        case 'google':
+          window.open('https://www.google.com/search?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'bing':
+          window.open('https://www.bing.com/search?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'yahoo':
+          window.open('https://search.yahoo.com/search?p=' + encodeURIComponent(searchInput));
+          break;
+        case 'duckduckgo':
+          window.open('https://duckduckgo.com/?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'baidu':
+          window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(searchInput));
+          break;
+        case 'yandex':
+          window.open('https://yandex.com/search/?text=' + encodeURIComponent(searchInput));
+          break;
+        case 'ask':
+          window.open('https://www.ask.com/web?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'aol':
+          window.open('https://search.aol.com/aol/search?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'dogpile':
+          window.open('https://www.dogpile.com/search/web?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'excite':
+          window.open('https://www.excite.com/search?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'YT':
+          window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(searchInput));
+          break;
+        case 'webcrawler':
+          window.open('https://www.webcrawler.com/serp?q=' + encodeURIComponent(searchInput));
+          break;
+        case 'tb':
+          window.open('https://www.1tamilblasters.tel/index.php?/search/&q=' + encodeURIComponent(searchInput) + '&search_and_or=and&sortby=relevancy');
+          break;
+        case 'imdb':
+          window.open('https://www.imdb.com/find/?q=' + encodeURIComponent(searchInput) + '&ref_=nv_sr_sm');
+          break;
+        // Add more cases for additional search engines if needed
+        default:
+          break;
+      }
+    }
+
+
+        const inputField = document.getElementById('search-input');
+
+        // Add key press event listener to the input field
+        inputField.addEventListener('keypress', function(event) {
+            // Check if the Enter key (key code 13) is pressed
+            if (event.key === 'Enter') {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+
+                // Call a function or open a new window here
+                performSearch();
+            }
+        });
+function initVoiceSearch() {
+  const voiceSearchButton = document.getElementById('voice-search-button');
+  const searchInput = document.getElementById('search-input');
+
+  // Check if elements exist
+  if (!voiceSearchButton || !searchInput) {
+    console.error('Voice search elements not found');
+    return;
+  }
+
+  // Check if browser supports speech recognition
+  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    // Set language for speech recognition (optional)
+    recognition.lang = 'en-US';
+
+    // Event listener for voice search button click
+    voiceSearchButton.addEventListener('click', () => {
+      if (recognition && recognition.state === 'inactive') {
+        recognition.start(); // Start speech recognition when button is clicked
+      } else if (recognition && recognition.state === 'listening') {
+        recognition.stop(); // Stop recognition if already listening
+      }
+    });
+
+    // Event listener for when speech recognition detects speech
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript.trim();
+      searchInput.value = transcript; // Set input value to captured speech
+      performSearch(); // Perform search using captured speech
+    };
+
+    // Event listener for speech recognition errors
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+    };
+  } else {
+    // Browser doesn't support speech recognition
+    console.error('Speech recognition not supported');
+    voiceSearchButton.disabled = true;
+  }
+}
+
+// Call the function to initialize voice search when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initVoiceSearch();
+});
+    const toggle = document.querySelector('.toggle');
+    const hours = new Date().getHours();
+    toggle.checked = hours > 7 && hours < 20; // Set default state based on browser time
+
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        document.body.classList.add('dark-mode'); // Enable dark mode
+      } else {
+        document.body.classList.remove('dark-mode'); // Disable dark mode
+      }
+    });
+
+
+  </script>
+</body>
+
+</html>
