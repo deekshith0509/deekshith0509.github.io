@@ -1,3 +1,5 @@
+<!---
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
@@ -30,6 +32,7 @@ font-family: 'Trirong', sans-serif;
   font-style: italic;
 }
 </style>
+--->
 <div align = "center" >
 
 [![ deekshith ](https://img.shields.io/badge/deekshith-profile-white.svg)](https://github.com/deekshith0509?tab=repositories) [![ deekshith ](https://img.shields.io/badge/Jonah-All-red.svg)](https://github.com/jonahprashanth) [![ deekshith ](https://img.shields.io/badge/Vikram-All-green.svg)](https://github.com/vikram-73/) [![ deekshith ](https://img.shields.io/badge/Arvind-All-blue.svg)](https://github.com/Aravind-webD)
