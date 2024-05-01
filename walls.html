@@ -209,13 +209,12 @@
       });
   }
 
-
 function openPreviewWindow(imageUrl) {
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   const previewWindow = window.open('', '_blank');
   const container = document.createElement('div');
-  container.style.position = 'relative';
+  container.style.position = 'absolute';
   container.style.width = '100%';
   container.style.height = '100%';
   container.style.display = 'flex';
@@ -236,25 +235,19 @@ function openPreviewWindow(imageUrl) {
   container.appendChild(imageElement);
 
   const buttonContainer = document.createElement('div');
-  buttonContainer.style.position = 'absolute';
-  buttonContainer.style.bottom = '10px';
-  buttonContainer.style.right = '10px';
+  buttonContainer.style.position = 'fixed'; // Changed to fixed
+  buttonContainer.style.bottom = '20px';
+  buttonContainer.style.right = '19px';
   buttonContainer.style.display = 'flex';
   buttonContainer.style.flexDirection = 'column';
   buttonContainer.style.alignItems = 'flex-end';
   container.appendChild(buttonContainer);
 
-  // Media query for Android and smaller screens
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = `
-    @media (max-width: 600px) {
-      button {
-        padding: 3px 6px;
-        font-size: 12px;
-      }
-    }
-  `;
-  previewWindow.document.head.appendChild(styleSheet);
+  // Adjust button styles based on screen size
+  if (isAndroid) {
+    buttonContainer.style.bottom = '52px';
+    buttonContainer.style.right = '5px';
+  }
 
   // Button creation function
   function createButton(text, backgroundColor, clickHandler) {
@@ -264,38 +257,58 @@ function openPreviewWindow(imageUrl) {
     button.style.color = '#fff';
     button.style.border = 'none';
     button.style.borderRadius = '5px';
-    button.style.padding = '5px 10px';
+    button.style.padding = isAndroid ? '20px 40px' : '10px 20px'; // Adjusted padding for Android
     button.style.cursor = 'pointer';
-    button.style.marginTop = '5px';
+    button.style.fontSize = isAndroid ? "40px" : "16px";
     button.addEventListener('click', clickHandler);
     return button;
   }
+
 
   // Download button
   const downloadButton = createButton('Download', '#007bff', () => {
     downloadImage(event, imageUrl);
   });
   buttonContainer.appendChild(downloadButton);
+buttonContainer.appendChild(document.createElement('br'));
 
-  // Copy link button
-  const copyLinkButton = createButton('Copy Image Link', '#28a745', () => {
-    navigator.clipboard.writeText(imageUrl);
+// Copy link button
+const copyLinkButton = createButton('Copy Image Link', '#28a745', () => {
+  if (isAndroid) {
+    // For Android, use the fallback method
+    const tempInput = document.createElement('input');
+    tempInput.value = imageUrl;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
     alert('Image link copied to clipboard!');
-  });
-  buttonContainer.appendChild(copyLinkButton);
+  } else {
+    // For other platforms, use navigator.clipboard
+    navigator.clipboard.writeText(imageUrl)
+      .then(() => {
+        alert('Image link copied to clipboard!');
+      })
+      .catch((error) => {
+        console.error('Failed to copy: ', error);
+      });
+  }
+});
+buttonContainer.appendChild(copyLinkButton);
 
-  // Developer link button
-  const developerLinkButton = createButton('Developer Link', '#dc3545', () => {
-    window.open('https://github.com/deekshith0509', '_blank');
-  });
-  buttonContainer.appendChild(developerLinkButton);
+// Add a spacer between buttons
+buttonContainer.appendChild(document.createElement('br'));
+
+// Developer link button
+const developerLinkButton = createButton('Developer Link', '#dc3545', () => {
+  // Open the developer link in the same window
+  window.open('https://github.com/deekshith0509');
+});
+buttonContainer.appendChild(developerLinkButton);
 }
 
-
-
-
-
-
 </script>
+
 </body>
 </html>
