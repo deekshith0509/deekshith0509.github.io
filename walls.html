@@ -1,1 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallpapers</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+  }
 
+  header {
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  h1 {
+    margin: 0;
+    font-weight: bold;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .wallpaper-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .wallpaper {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    height: 250px; /* Fixed height */
+    border-radius: 8px;
+    overflow: hidden; /* Hide overflow to crop the image */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .context-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+  }
+
+  .context-menu button,
+  .context-menu a {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    text-align: left;
+    text-decoration: none;
+    color: #333;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .context-menu button:hover,
+  .context-menu a:hover {
+    background-color: #f5f5f5;
+  }
+
+@media only screen and (max-width: 600px) {
+  .wallpaper-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Display two columns on smaller screens */
+  }
+}
+
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>Wallpapers</h1>
+</header>
+<div class="container">
+  <div class="wallpaper-container" id="wallpapers"></div>
+</div>
+
+<script>
+  let currentContextMenu = null;
+
+  function openContextMenu(e) {
+    e.preventDefault(); // Prevent default context menu
+    closeContextMenu();
+    const imageUrl = e.target.src;
+    const menu = document.createElement('div');
+    menu.classList.add('context-menu');
+    menu.innerHTML = `
+      <button onclick="setWallpaper('${imageUrl}')">Set as Wallpaper</button>
+      <a href="#" onclick="downloadImage(event, '${imageUrl}')">Download</a>
+    `;
+    menu.style.position = 'absolute';
+    menu.style.left = `${e.pageX}px`;
+    menu.style.top = `${e.pageY}px`;
+    document.body.appendChild(menu);
+    currentContextMenu = menu;
+    document.addEventListener('click', closeContextMenuOnce);
+  }
+
+  function closeContextMenu() {
+    if (currentContextMenu) {
+      currentContextMenu.remove();
+      currentContextMenu = null;
+    }
+  }
+
+  function closeContextMenuOnce() {
+    closeContextMenu();
+    document.removeEventListener('click', closeContextMenuOnce);
+  }
+
+  const wallpapersContainer = document.getElementById('wallpapers');
+  const imageCache = new Map();
+
+  const githubRepo = 'deekshith0509/deekshith0509.github.io';
+  const githubFolder = 'assets';
+
+  function fetchAndCacheImage(url) {
+    if (imageCache.has(url)) {
+      return Promise.resolve(imageCache.get(url));
+    } else {
+      return fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+          imageCache.set(url, blob);
+          return blob;
+        });
+    }
+  }
+
+  fetch(`https://api.github.com/repos/${githubRepo}/contents/${githubFolder}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const imageFiles = data.filter(item => item.type === 'file' && /\.(jpg|jpeg|png)$/i.test(item.name));
+      imageFiles.forEach(file => {
+        const imageUrl = file.download_url;
+        const imageElement = document.createElement('img');
+        imageElement.src = imageUrl;
+        imageElement.classList.add('wallpaper');
+    
+        imageElement.addEventListener('contextmenu', openContextMenu);
+        imageElement.addEventListener('click', (e) => {
+          openPreviewWindow(e.target.src);
+        });
+        wallpapersContainer.appendChild(imageElement);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching images:', error);
+      const errorElement = document.createElement('div');
+      errorElement.textContent = 'Error fetching images. Please try again later.';
+      wallpapersContainer.appendChild(errorElement);
+    });
+
+  function setWallpaper(imageUrl) {
+    alert('Set as wallpaper: ' + imageUrl);
+  }
+
+  function downloadImage(event, imageUrl) {
+    event.preventDefault();
+    fetchAndCacheImage(imageUrl)
+      .then(blob => {
+        const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `image.${fileExtension}`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      })
+      .catch(error => {
+        console.error('Error downloading image:', error);
+        alert('Error downloading image. Please try again later.');
+      });
+  }
+
+
+function openPreviewWindow(imageUrl) {
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  const previewWindow = window.open('', '_blank');
+  const container = document.createElement('div');
+  container.style.position = 'relative';
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.display = 'flex';
+  container.style.justifyContent = 'center';
+  container.style.alignItems = 'center';
+  previewWindow.document.body.appendChild(container);
+
+  const imageElement = document.createElement('img');
+  imageElement.src = imageUrl;
+  imageElement.style.maxWidth = '100%';
+  imageElement.style.maxHeight = '100%';
+  imageElement.style.cursor = 'zoom-in';
+  imageElement.addEventListener('click', () => {
+    if (previewWindow && !previewWindow.closed) {
+      previewWindow.close();
+    }
+  });
+  container.appendChild(imageElement);
+
+  const buttonContainer = document.createElement('div');
+  buttonContainer.style.position = 'absolute';
+  buttonContainer.style.bottom = '10px';
+  buttonContainer.style.right = '10px';
+  buttonContainer.style.display = 'flex';
+  buttonContainer.style.flexDirection = 'column';
+  buttonContainer.style.alignItems = 'flex-end';
+  container.appendChild(buttonContainer);
+
+  // Media query for Android and smaller screens
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @media (max-width: 600px) {
+      button {
+        padding: 3px 6px;
+        font-size: 12px;
+      }
+    }
+  `;
+  previewWindow.document.head.appendChild(styleSheet);
+
+  // Button creation function
+  function createButton(text, backgroundColor, clickHandler) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.style.backgroundColor = backgroundColor;
+    button.style.color = '#fff';
+    button.style.border = 'none';
+    button.style.borderRadius = '5px';
+    button.style.padding = '5px 10px';
+    button.style.cursor = 'pointer';
+    button.style.marginTop = '5px';
+    button.addEventListener('click', clickHandler);
+    return button;
+  }
+
+  // Download button
+  const downloadButton = createButton('Download', '#007bff', () => {
+    downloadImage(event, imageUrl);
+  });
+  buttonContainer.appendChild(downloadButton);
+
+  // Copy link button
+  const copyLinkButton = createButton('Copy Image Link', '#28a745', () => {
+    navigator.clipboard.writeText(imageUrl);
+    alert('Image link copied to clipboard!');
+  });
+  buttonContainer.appendChild(copyLinkButton);
+
+  // Developer link button
+  const developerLinkButton = createButton('Developer Link', '#dc3545', () => {
+    window.open('https://github.com/deekshith0509', '_blank');
+  });
+  buttonContainer.appendChild(developerLinkButton);
+}
+
+
+
+
+
+
+</script>
+</body>
+</html>
