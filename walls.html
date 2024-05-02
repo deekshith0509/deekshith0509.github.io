@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wallpapers</title>
 <style>
+
+.custom-cursor {
+    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+	user-select:none;
+}
+
+
+
   body {
     margin: 0;
     padding: 0;
@@ -96,7 +104,7 @@
 </head>
 <body>
 <header>
-  <h1>Wallpapers</h1>
+  <h1 class="custom-cursor" onclick="refreshPage()">Wallpapers</h1>
 </header>
 <div class="container">
   <div class="wallpaper-container" id="wallpapers"></div>
@@ -243,6 +251,8 @@ function openPreviewWindow(imageUrl) {
   buttonContainer.style.alignItems = 'flex-end';
   container.appendChild(buttonContainer);
 
+buttonContainer.classList.add('custom-cursor');
+
   // Adjust button styles based on screen size
   if (isAndroid) {
     buttonContainer.style.bottom = '52px';
@@ -295,6 +305,7 @@ const copyLinkButton = createButton('Copy Image Link', '#28a745', () => {
       });
   }
 });
+
 buttonContainer.appendChild(copyLinkButton);
 
 // Add a spacer between buttons
@@ -302,11 +313,26 @@ buttonContainer.appendChild(document.createElement('br'));
 
 // Developer link button
 const developerLinkButton = createButton('Developer Link', '#dc3545', () => {
+  // Create an anchor element
+  const anchor = document.createElement('a');
+  // Set the href attribute
+  anchor.href = 'https://github.com/deekshith0509';
   // Open the developer link in the same window
-  window.open('https://github.com/deekshith0509');
+  anchor.target = '_blank';
+  // Click the anchor element to navigate to the link
+  anchor.click();
 });
+
+
+
 buttonContainer.appendChild(developerLinkButton);
 }
+
+
+   function refreshPage() {
+		window.scrollTo(0,0);
+            location.reload(); // Reload the entire page
+        }
 
 </script>
 
