@@ -402,7 +402,8 @@ select {
 
           if (item.type === 'file') {
             const fileLink = document.createElement('a');
-            fileLink.textContent = item.name;
+            fileLink.textContent = item.name.split('.').slice(0, -1).join('.');
+
 
             if (item.name.endsWith('.html')) {
               fileLink.classList.add('external-link');
@@ -414,11 +415,10 @@ select {
             }
 
             listItem.appendChild(fileLink);
-          } else {
-            listItem.textContent = item.name;
-          }
+         
 
-          contentsList.appendChild(listItem);
+          contentsList.appendChild(listItem); } 
+
         });
       })
       .catch(error => console.error('Error fetching repository contents:', error));
