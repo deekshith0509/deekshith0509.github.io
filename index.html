@@ -174,7 +174,7 @@ a.external-link:hover {
 
 /* Custom cursor styles */
 body {
-  cursor: url('https://example.com/custom-cursor.png'), auto;
+  cursor: url('c.png'), auto;
 }
 
 /* Additional styles for the tools section */
@@ -220,14 +220,6 @@ select {
 }
 
 /* Add styles for the search results */
-#search-results {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  display: none; /* Hidden by default */
-}
 
 #developer-link {
   color: #6d3c73;
@@ -286,13 +278,16 @@ select {
 
 /* New styles for clock */
 #clock {
-  position: absolute;
-  top: 10px; /* Decrease this value to move the element up */
-  right: 20px;
+	cursor: pointer;
+  position: absolute; /* Keep it relative to its parent */
+  top: 10px;
+  right: 20px; /* Maintain its position on the right */
   font-size: 1.2em;
-  color: #3498db; /* Applying the color */
+  color: #3498db;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
+
+
 
 /* New styles for weather forecast */
 #weather {
@@ -310,9 +305,6 @@ select {
 <body>
 
 <h1><a id="developer-link" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
-
-
-</body>
   <h2>My Repository:</h2>
 <br>
  <div id="repository-contents-container">
@@ -346,16 +338,14 @@ select {
     </div>
   </div>
 
-  <div id="search-results">
-    <h3>Search Results</h3>
-    <ol id="search-results-list"></ol>
-  </div>
 
   <!-- Clock and weather forecast -->
-  <div id="clock"></div>
+  <div id="clock" onclick="refreshPage()"></div>
+
   <div id="weather"></div>
 
   <script>
+
     // Function to update clock
     function updateClock() {
       const now = new Date();
@@ -579,6 +569,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initVoiceSearch();
 });
 
+   function refreshPage() {
+		window.scrollTo(0,0);
+            location.reload(); // Reload the entire page
+        }
+
+
   </script>
+
 </body>
 </html>
