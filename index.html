@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My GitHub Page</title>
   <style>
+
+.custom-cursor{
+ cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+ }
+
+
+
+
+
+
+
 /* Your existing CSS styles */
 @font-face {
   font-family: myFirstFont;
@@ -13,6 +24,7 @@
 }
 
 #repository-contents-container {
+ cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
   font-family: 'Arial', sans-serif;
   color: #fff;
   margin: 20px auto; /* Adjust margin for center alignment */
@@ -55,10 +67,11 @@ input:hover {
 }
 
 #tools select:hover {
-  cursor: pointer;
+   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c1.png'), auto;
 }
 
 body {
+   user-select: none;
   font-family: 'Arial', sans-serif;
   color: #fff;
   margin: 20px;
@@ -126,7 +139,7 @@ li {
   opacity: 0;
   animation: fadeInUp 1s ease-in-out forwards;
   transition: background-color 0.3s, transform 0.3s;
-  cursor: pointer;
+   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
   border-radius: 5px;
   padding: 10px;
 }
@@ -140,7 +153,7 @@ a.external-link {
   color: #fff;
   font-weight: bold;
   text-decoration: none;
-  cursor: pointer;
+ cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
   transition: color 0.3s, transform 0.3s;
 }
 
@@ -172,19 +185,18 @@ a.external-link:hover {
   }
 }
 
-/* Custom cursor styles */
-body {
-  cursor: url('c.png'), auto;
-}
+
 
 /* Additional styles for the tools section */
 #tools {
   margin-top: 30px;
   text-align: center;
+ cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c1.png'), auto;
 }
 
 #search-bar {
   margin-bottom: 30px;
+
 }
 
 input[type="text"],
@@ -195,6 +207,7 @@ select {
   border-radius: 5px;
   width: 250px;
   font-size: 1em;
+
 }
 
 #search-button,
@@ -204,7 +217,6 @@ select {
   color: #fff;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
   transition: background-color 0.3s;
   font-size: 1em;
 }
@@ -216,6 +228,7 @@ select {
   border: 2px solid #002d59; /* Add a border */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow */
   transition: all 0.3s ease; /* Add a transition effect */
+	 cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c2.png'), auto;
   /* Additional customizations */
 }
 
@@ -242,17 +255,22 @@ select {
   border-radius: 5px;
   width: 200px;
   transition: all 0.3s ease;
+  
 }
 
 /* Style the options when the select is expanded */
 #search-engine {
   color: white;
   background-color: #584f7b;
+  
+
 }
 
 /* Style the options when hovered over */
 #search-engine:hover {
   background-color: #584f7b;
+   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c1.png'), auto;
+	
 }
 
 /* Style the select element when expanded (focus) */
@@ -262,29 +280,17 @@ select {
   box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
 }
 
-#search-results h3 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-#search-results ol {
-  list-style: decimal;
-  padding-left: 20px;
-}
-
-#search-results li {
-  margin-bottom: 5px;
-}
 
 /* New styles for clock */
 #clock {
-	cursor: pointer;
+	 cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c1.png'), auto;
   position: absolute; /* Keep it relative to its parent */
   top: 10px;
   right: 20px; /* Maintain its position on the right */
   font-size: 1.2em;
   color: #3498db;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  
 }
 
 
@@ -304,7 +310,7 @@ select {
 </head>
 <body>
 
-<h1><a id="developer-link" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
+<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
   <h2>My Repository:</h2>
 <br>
  <div id="repository-contents-container">
