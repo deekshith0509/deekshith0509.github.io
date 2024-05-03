@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
+
   <title>My GitHub Page</title>
   <style>
 
@@ -11,39 +13,37 @@
  }
 
 /* Your existing CSS styles */
-@font-face {
-  font-family: myFirstFont;
-  src: url(sansation_bold.woff);
-  font-weight: bold;
-}
+
 
 #repository-contents-container {
- cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-  font-family: 'Arial', sans-serif;
+  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+  font-family: 'Google Sans', sans-serif;
+  font-style: italic;
   color: #fff;
   margin: 20px auto; /* Adjust margin for center alignment */
   overflow: auto;
-  background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
+  background: linear-gradient(169deg,rgba(0, 199, 0, 1.0), rgba(0, 0, 255, 0.5), rgba( 255, 0, 0, 1.0));
   background-size: 400% 400%;
-  animation: gradientAnimation 15s infinite;
+  animation: gradientAnimation 10s infinite;
   max-width: 90%; /* Adjust max-width for responsiveness */
   width: 90%; /* Adjust width for responsiveness */
   height: 300px; /* Fixed height */
   padding: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: #544585;
   overflow-y: auto;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
+   align :center;
 }
 
 /* Additional adjustments for smaller screens */
 @media (max-width: 768px) {
   #repository-contents-container {
-    max-width: 90%;
-    width: 90%;
-    font-size: 12px; /* Adjust font size for smaller screens */
+    max-width: 95%;
+    width: 95%;
+    font-size: 16px; /* Adjust font size for smaller screens */
     height: 200px !important; /* Fixed height for smaller screens */
     overflow-y: scroll; /* Add a scrollbar when content exceeds the height */
   }
@@ -65,12 +65,12 @@ input:hover {
 }
 
 body {
-   user-select: none;
+  user-select: none;
   font-family: 'Arial', sans-serif;
   color: #fff;
   margin: 20px;
   overflow: auto;
-  background: linear-gradient(45deg, #2980b9, #2c3e50, #8e44ad, #3498db);
+  background: linear-gradient(45deg,rgba(0, 0, 110, 1.0), rgba(160, 0, 0, 1.0), rgba(0, 155, 0, 1.0));
   background-size: 400% 400%;
   animation: gradientAnimation 15s infinite;
   max-width: 1200px;
@@ -99,7 +99,7 @@ body::-webkit-scrollbar-thumb {
   /* Additional adjustments for smaller screens */
   #repository-contents-container {
     width: 80%; /* Adjust width for smaller screens */
-    font-size: 12px; /* Adjust font size for smaller screens */
+    font-size: 14px; /* Adjust font size for smaller screens */
     height: auto; /* Remove fixed height for smaller screens */
   }
 }
@@ -192,16 +192,28 @@ a.external-link:hover {
 
 }
 
-input[type="text"],
-select {
+#search-input{
   padding: 10px;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 250px;
   font-size: 1em;
-
 }
+#search-input::placeholder {
+  color: #555; /* Placeholder text color */
+  font-family: 'Google Sans', sans-serif; /* Use Google Sans font with fallback to generic sans-serif */
+  font-style: italic; /* Placeholder text style */
+  font-weight: bold; /* Placeholder text weight */
+  font-size: 16px; /* Placeholder text size */
+  text-transform: uppercase; /* Convert text to uppercase */
+  letter-spacing: 1px; /* Adjust letter spacing */
+  opacity: 0.8; /* Adjust opacity */
+}
+
+
+
+
 
 #search-button,
 #voice-search-button {
@@ -209,7 +221,8 @@ select {
   background-color: #0366d6;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  margin: 10px;
+  border-radius: 8px;
   transition: background-color 0.3s;
   font-size: 1em;
 }
@@ -275,31 +288,36 @@ select {
 /* New styles for clock */
 #clock {
   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
-  position: absolute; /* Keep it relative to its parent */
-  top: 10px;
-  right: 20px; /* Maintain its position on the right */
+  position: relative; /* Position relative to its parent container */
+  float: right; /* Float to the right */
   font-size: 1.2em;
-  color: #3498db;
+  color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  
+  margin-top: 20px; /* Adjust the distance from the top */
+  margin-right: 20px; /* Adjust the distance from the right */
 }
 
 
 
-/* New styles for weather forecast */
 #weather {
-  position: absolute;
-  top: 90px; /* Increase this value to move the element down */
-  right: 20px;
-  font-size: 1em;
-  color: #3498db; /* Applying the color */
+  position: relative; /* Position relative to its parent container */  font-size: 1em;
+  float: right; /* Float to the right */
+  color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-top: 70px; /* Adjust the distance from the top */
+  margin-right: -70px; /* Adjust the distance from the right */
 }
 
 
   </style>
 </head>
 <body>
+
+  <!-- Clock and weather forecast -->
+  <div id="clock" onclick="refreshPage()"></div>
+
+  <div id="weather"></div>
+
 
 <h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
   <h2>My Repository:</h2>
@@ -336,10 +354,6 @@ select {
   </div>
 
 
-  <!-- Clock and weather forecast -->
-  <div id="clock" onclick="refreshPage()"></div>
-
-  <div id="weather"></div>
 
   <script>
 
