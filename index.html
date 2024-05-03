@@ -286,27 +286,29 @@ a.external-link:hover {
 
 
 /* New styles for clock */
+
+
+
 #clock {
   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
-  position: relative; /* Position relative to its parent container */
-  float: right; /* Float to the right */
+  position: absolute; /* Position absolute to its parent container */
+  top: 20px; /* Align to the top */
+  right: 20px; /* Align to the right */
   font-size: 1.2em;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  margin-top: 20px; /* Adjust the distance from the top */
-  margin-right: 20px; /* Adjust the distance from the right */
 }
-
-
 
 #weather {
-  position: relative; /* Position relative to its parent container */  font-size: 1em;
-  float: right; /* Float to the right */
+  position: absolute; /* Position absolute to its parent container */
+  top: 50px; /* Align to the top */
+  right: 20px; /* Align to the right */
+  font-size: 1em;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  margin-top: 70px; /* Adjust the distance from the top */
-  margin-right: -70px; /* Adjust the distance from the right */
 }
+
+
 
 
   </style>
@@ -314,7 +316,8 @@ a.external-link:hover {
 <body>
 
   <!-- Clock and weather forecast -->
-  <div id="clock" onclick="refreshPage()"></div>
+  <div id="clock" onclick="refreshPage()" style="float: right;"></div>
+
 
   <div id="weather"></div>
 
@@ -330,7 +333,7 @@ a.external-link:hover {
   <div id="tools" >
     <div id="search-bar">
       <h2>Search Your Query with Your Preferred Search Engine</h2>
-      <input type="text" id="search-input" placeholder="Enter your search" autofocus>
+      <input type="text" id="search-input" placeholder="Enter your search" >
       <select id="search-engine">
         <option value="google">Google</option>
         <option value="bing">Bing</option>
@@ -614,6 +617,17 @@ function initVoiceSearch() {
 document.addEventListener('DOMContentLoaded', () => {
   initVoiceSearch();
 });
+   document.addEventListener('keydown', function(event) {
+  // Check if the key combination is Ctrl + F
+  if (event.ctrlKey && event.key === 'q') {
+    // Trigger the input
+    var input = document.getElementById('search-input');
+    if (input) {
+      input.focus();
+    }
+  }
+});
+
 
    function refreshPage() {
 		window.scrollTo(0,0);
