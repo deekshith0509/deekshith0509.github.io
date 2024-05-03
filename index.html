@@ -392,19 +392,54 @@ select {
             fileLink.textContent = item.name.split('.').slice(0, -1).join('.');
 
 
-            if (item.name.endsWith('.html')) {
-              fileLink.classList.add('external-link');
-              fileLink.onclick = () => openHtmlFileInNewTab(item.download_url);
-            } else {
-              fileLink.href = item.download_url;
-              fileLink.setAttribute('download', item.name);
-              fileLink.classList.add('external-link');
-            }
 
-            listItem.appendChild(fileLink);
-         
 
-          contentsList.appendChild(listItem); } 
+
+
+
+
+if (item.name.endsWith('.html')) {
+    // If it's an HTML file, store its URL in local storage
+    localStorage.setItem(item.name, item.download_url); // Store HTML file URL in local storage
+    fileLink.classList.add('external-link');
+    fileLink.onclick = () => openHtmlFileFromLocalStorage(item.name);
+} else {
+    // For other file types, provide a direct download link
+    fileLink.href = item.download_url;
+    fileLink.setAttribute('download', item.name);
+    fileLink.classList.add('external-link');
+}
+
+listItem.appendChild(fileLink);
+contentsList.appendChild(listItem);
+
+function openHtmlFileFromLocalStorage(fileName) {
+    const htmlFileUrl = localStorage.getItem(fileName);
+    if (htmlFileUrl) {
+        // Fetch the HTML content
+        fetch(htmlFileUrl)
+            .then(response => response.text())
+            .then(htmlContent => {
+                // Create a new Blob containing the HTML content
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                // Open the newly created HTML file in a new tab
+                window.open(url, '_blank');
+            })
+            .catch(error => console.error('Error fetching HTML file:', error));
+    } else {
+        console.error('HTML file URL not found in local storage:', fileName);
+    }
+}
+
+
+
+
+
+
+
+ } 
 
         });
       })
