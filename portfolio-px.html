@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Deekshith</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Base styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+
+/* Existing CSS styles */
+
+.parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#home {
+    background-image: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/c149534t.jpg'); /* Replace with your image */
+}
+
+#about {
+    background-image: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/photo_2024-04-02_21-52-26_upscayl_4x_realesrgan-x4plus.jpg'); /* Replace with your image */
+}
+
+#projects {
+    background-image: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/pexels-semws-2670898.jpg'); /* Replace with your image */
+}
+
+#contact {
+    background-image: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/photo_2020-06-25_10-26-33_upscayl_4x_ultrasharp.jpg'); /* Replace with your image */
+}
+
+
+
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-image: linear-gradient(to right, #007bff, #3b7eff);
+            color: #C0C0C0;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+		color: white;
+        }
+
+        header p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+		color:#C0C0C0;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+		color:#C0C0C0;
+        }
+
+        nav ul li a:hover {
+            color: #ccc;
+        }
+
+        .intro {
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        section {
+            padding: 80px 0;
+            text-align: center;
+		color:#C0C0C0;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .project {
+            background-color: grey;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 40px;
+		color:white;
+        }
+
+        .project:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background-color: #0056b3;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .social-icons a {
+            color: #fff;
+            font-size: 24px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #ccc;
+        }
+
+        /* Form styles */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+	
+
+
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header id="home" class= "parallax">
+        <nav>
+            <div class="container">
+                <h1>Deekshith</h1>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="intro">
+                <h2>Welcome to My Portfolio</h2>
+                <p>I am Deekshith, a passionate and innovative B.Tech Computer Science student from an autonomous college. I have a deep interest and expertise in Linux, Android, Python, and various scripting languages, including Bash and Java. Enthusiastic about exploring cutting-edge technologies and solving complex problems, I thrive in dynamic environments where creativity and technical skills are valued.</p>
+                <p>With a strong foundation in cybersecurity, I have completed several courses on Udemy and qualified for the NDG Linux Essentials certification from Cisco. I have also completed the Google Cybersecurity Specialization certification, covering topics such as Assets, Threats, and Vulnerabilities; Sound the Alarm: Detection and Response; Automate Cybersecurity Tasks with Python; Put It to Work: Prepare for Cybersecurity Jobs; Foundations of Cybersecurity; Connect and Protect: Networks and Network Security; Tools of the Trade: Linux and SQL; and Play It Safe: Manage Security Risks.</p>
+                <a href="#about" class="btn">Learn More</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <!-- About section -->
+        <section id="about" class="parallax">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>As a forward-thinking individual with a passion for technology, I am dedicated to pushing the boundaries of innovation and driving positive change. My ambition is to leverage my skills and knowledge to make meaningful contributions to the tech industry, while continuously learning and growing along the way.</p>
+            </div>
+        </section>
+
+        <!-- Projects section -->
+        <section id="projects" class="parallax">
+            <div class="container">
+                <h2>Projects</h2>
+                <!-- List your projects with brief descriptions -->
+                <div class="project">
+                    <h3>Custom ROM Development</h3>
+                    <p>Designed and implemented custom ROMs tailored to specific Android devices, incorporating performance optimizations and unique features to enhance user experience.</p>
+                </div>
+                <div class="project">
+                    <h3>Application Scripts</h3>
+                    <p>Developed a diverse range of application scripts, including weather forecasters, encryption tools, and link shorteners, to automate tasks and streamline processes for personal and professional use.</p>
+                </div>
+                <div class="project">
+                    <h3>Dynamic Search Engine Integration</h3>
+                    <p>Created innovative solutions for dynamically integrating multiple search engines into a single webpage based on user preferences, demonstrating advanced programming skills and user-centric design principles.</p>
+                </div>
+                <!-- Add more projects as needed -->
+            </div>
+        </section>
+
+        <!-- Contact section -->
+        <section id="contact" class="parallax">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <p>Interested in collaborating on exciting projects or discussing opportunities? Feel free to reach out to me via the form below!</p>
+                <!-- Contact form -->
+                <form id="contact-form">
+                    <input type="text" name="name" placeholder="Your Name">
+                    <input type="email" name="email" placeholder="Your Email">
+                    <textarea name="message" placeholder="Your Message"></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer section -->
+    <footer class = "parallax">
+        <div class="container">
+            <p>&copy; 2024 Deekshith. All rights reserved.</p>
+            <!-- Social media icons -->
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for smooth scrolling and form submission handling -->
+    <script>
+        // Smooth scrolling animation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Implement form submission logic here (e.g., AJAX request)
+            alert('Form submitted successfully!');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
