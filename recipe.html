@@ -7,92 +7,127 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             background-color: #f8f8f8;
-	    overflow:auto
+            margin: 0;
+            padding: 0;
+            cursor: url("https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur"),auto;
+	    user-select: none;
         }
 
-      
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         input[type="text"] {
-            width: 80%;
+            width: calc(100% - 140px);
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+             margin: 0 auto;
+	    display: block;
+	    cursor: url("https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonques.cur"),auto;
         }
 
         button {
-            padding: 12px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-      .container {
-    text-align: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    max-width: 80%; /* Limit the maximum width of the container */
-    overflow: hidden; /* Hide any overflow content */
+    width: 120px;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 auto; /* Center the button horizontally */  
+    
+    display: block; /* Ensure the button takes full width */
 }
 
-#recipeOutput {
+
+        button:hover {
+        cursor: url("https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur"),auto;    
+        background-color: #0056b3;
+        }
+         
+        #recipeOutput h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        #recipeOutput {
     margin-top: 20px;
-    text-align: left;
-    overflow: auto;
-    max-height: 60vh; /* Limit the maximum height of the recipe output */
+    text-align: center; /* Center-align content within the recipe output */
 }
 
 #recipeOutput img {
-    max-width: 100%; /* Ensure the recipe image fits within its container */
-    height: auto; /* Maintain aspect ratio */
-    align: center
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: block; /* Ensure the image is treated as a block element */
+    margin-left: auto; /* Center-align the image horizontally */
+    margin-right: auto;
 }
 
-	/* Styling scrollbar (for WebKit browsers) */
-body {
-    scrollbar-width: thin; /* "auto" or "thin" or "none" */
-}
 
-body::-webkit-scrollbar {
-    width: 8px; /* Width of the scrollbar */
-}
+        #recipeOutput ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
 
-body::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color of the track */
-}
+        #recipeOutput ul li {
+            margin-bottom: 5px;
+            color: #555;
+        }
 
-body::-webkit-scrollbar-thumb {
-    background-color: #888; /* Color of the scrollbar */
-    border-radius: 4px; /* Rounded corners of the scrollbar thumb */
-}
+        #recipeOutput a {
+            color: #007bff;
+            text-decoration: none;
+        }
 
-body::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Color of the scrollbar thumb on hover */
-}
-
+        #recipeOutput a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Recipe Generator</h1>
+        <h1 id =" s1 " onclick="refreshpage()">Recipe Generator</h1>
         <input type="text" id="ingredientInput" placeholder="Enter ingredients (comma-separated)">
+<br>
         <button onclick="generateRecipe()">Generate Recipe</button>
         <div id="recipeOutput"></div>
     </div>
 
     <script>
+        document.addEventListener('keydown', function(event) {
+            // Check if Ctrl + F is pressed
+            if (event.ctrlKey && event.key === 'f') {
+                event.preventDefault(); // Prevent default browser behavior (search)
+                document.getElementById('ingredientInput').focus(); // Focus on input field
+            }
+        });
+
+        document.getElementById('ingredientInput').addEventListener('keydown', function(event) {
+            // Check if Enter is pressed
+            if (event.key === 'Enter') {
+                generateRecipe(); // Call generateRecipe function
+            }
+        });
+
         async function generateRecipe() {
             const ingredientInput = document.getElementById('ingredientInput').value.trim();
             const ingredients = ingredientInput.split(',').map(ingredient => ingredient.trim());
@@ -118,25 +153,36 @@ body::-webkit-scrollbar-thumb:hover {
             }
         }
 
-function displayRecipe(recipe) {
-    const recipeOutput = document.getElementById('recipeOutput');
+        function displayRecipe(recipe) {
+            const recipeOutput = document.getElementById('recipeOutput');
 
-    // Create a new div element to hold the recipe content
-    const recipeDiv = document.createElement('div');
-    recipeDiv.innerHTML = `
-        <h2>${recipe.label}</h2>
-        <img src="${recipe.image}" alt="${recipe.label}" style="max-width: 100%;">
-        <p><strong>Ingredients:</strong></p>
-        <ul>
-            ${recipe.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}
-        </ul>
-        <p><strong>Instructions:</strong> ${recipe.url ? `<a href="${recipe.url}" target="_blank">View Full Recipe</a>` : 'Not available'}</p>
-    `;
+            // Create a new div element to hold the recipe content
+            const recipeDiv = document.createElement('div');
+            recipeDiv.innerHTML = `
+                <h2>${recipe.label}</h2>
+                <img src="${recipe.image}" alt="${recipe.label}">
+                <p><strong>Ingredients:</strong></p>
+                <ul>
+                    ${recipe.ingredientLines.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                </ul>
+                <p><strong>Instructions:</strong> ${recipe.url ? `<a href="${recipe.url}" target="_blank">View Full Recipe</a>` : 'Not available'}</p>
+            `;
 
-    // Append the recipe content to the existing recipeOutput div
-    recipeOutput.appendChild(recipeDiv);
-}
+            // Append the recipe content to the existing recipeOutput div
+            recipeOutput.innerHTML = ''; // Clear previous content
+            recipeOutput.appendChild(recipeDiv);
+        }
+	    // Add an event listener for when the page is loaded
+    window.addEventListener('load', function() {
+        // Reset the input field by setting its value to an empty string
+        document.getElementById('ingredientInput').value = '';
+    });
 
+
+  function refreshpage() {
+		window.scrollTo(0,0);
+            location.reload(); // Reload the entire page
+        }
     </script>
 </body>
 </html>
