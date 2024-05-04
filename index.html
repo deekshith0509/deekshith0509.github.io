@@ -73,7 +73,8 @@ body {
   background: linear-gradient(45deg,rgba(0, 0, 110, 1.0), rgba(160, 0, 0, 1.0), rgba(0, 155, 0, 1.0));
   background-size: 400% 400%;
   animation: gradientAnimation 15s infinite;
-  max-width: 1200px;
+  align: center; 
+ max-width: 1200px;
 }
 
 /* Customize scrollbar (for WebKit browsers like Chrome and Safari) */
@@ -198,7 +199,9 @@ a.external-link:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 250px;
-  font-size: 1em;
+  font-family: 'Google Sans', sans-serif; /* Use Google Sans font with fallback to generic sans-serif */ 
+ font-size: 1em;
+ font-style: italic;
 }
 #search-input::placeholder {
   color: #555; /* Placeholder text color */
@@ -240,17 +243,14 @@ a.external-link:hover {
 
 /* Add styles for the search results */
 
-#developer-link {
-  color: #6d3c73;
-  text-decoration: underline; /* Add underline effect */
-  transition: transform 0.3s ease, color 0.3s ease; /* Add transition for smooth animation */
-}
 
 #developer-link:hover {
+position:relative;
   transform: scale(0.9); /* Zoom out effect on hover */
   color: #8e44ad; /* Change text color on hover */
   /* Add any additional customizations here */
 }
+
 
 
 #search-engine {
@@ -275,7 +275,7 @@ a.external-link:hover {
 /* Style the options when hovered over */
 #search-engine:hover {
   background-color: #584f7b;	
-}
+}  
 
 /* Style the select element when expanded (focus) */
 #search-engine:focus {
@@ -300,15 +300,30 @@ a.external-link:hover {
 }
 
 #weather {
-  position: absolute; /* Position absolute to its parent container */
-  top: 50px; /* Align to the top */
-  right: 20px; /* Align to the right */
   font-size: 1em;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  z-index: 9999; /* Ensure the weather element is above other elements */
 }
 
+#developer-link {
+  position: relative;
+  color: #6d3c73;
+  text-decoration: underline;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
 
+@media only screen and (max-width: 768px) {
+  #weather {
+    top: 45px; /* Adjust the position for smaller screens */
+    right: 10px; /* Adjust the position for smaller screens */
+  }
+
+  
+}
 
 
   </style>
@@ -316,15 +331,15 @@ a.external-link:hover {
 <body>
 
   <!-- Clock and weather forecast -->
-  <div id="clock" onclick="refreshPage()" style="float: right;"></div>
+  <div id="clock" onclick="refreshPage()" ></div>
 
 
   <div id="weather"></div>
 
-
-<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
-  <h2>My Repository:</h2>
 <br>
+<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
+  <h2 id="repo">My Repository:</h2>
+
  <div id="repository-contents-container">
         <!-- Fetched repository contents will be displayed here -->
         <h2 id="name"></h2>
