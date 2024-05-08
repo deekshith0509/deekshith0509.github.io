@@ -23,9 +23,9 @@
   margin: 20px auto; /* Adjust margin for center alignment */
   overflow: auto;
   background: linear-gradient(169deg,rgba(0, 199, 0, 1.0), rgba(0, 0, 255, 0.5), rgba( 255, 0, 0, 1.0));
-  background-size: 400% 400%;
-  animation: gradientAnimation 10s infinite;
-  max-width: 90%; /* Adjust max-width for responsiveness */
+  background-size: 600% 600%;
+  animation: gradientAnimation 5s infinite;
+  max-width: 95%; /* Adjust max-width for responsiveness */
   width: 90%; /* Adjust width for responsiveness */
   height: 300px; /* Fixed height */
   padding: 20px;
@@ -35,7 +35,6 @@
   overflow-y: auto;
   color: #ffffff;
   font-size: 16px;
-   align :center;
 }
 
 /* Additional adjustments for smaller screens */
@@ -70,11 +69,12 @@ body {
   color: #fff;
   margin: 20px;
   overflow: auto;
-  background: linear-gradient(45deg,rgba(0, 0, 110, 1.0), rgba(160, 0, 0, 1.0), rgba(0, 155, 0, 1.0));
+  background: linear-gradient(45deg, rgba(0,155, 0, 1.0),rgba(200, 0, 0, 1.0), rgba(0, 145, 0, 1.0));
   background-size: 400% 400%;
   animation: gradientAnimation 15s infinite;
   align: center; 
  max-width: 1200px;
+ background-attachment:fixed;
 }
 
 /* Customize scrollbar (for WebKit browsers like Chrome and Safari) */
@@ -233,22 +233,13 @@ a.external-link:hover {
 #search-button:hover,
 #voice-search-button:hover {
   top: 90px;
+   animation: fadeInUp 1s ease forwards;
   background-color: #004080;
   border: 2px solid #002d59; /* Add a border */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow */
   transition: all 0.3s ease; /* Add a transition effect */
 	 cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/rgb.cur'), auto;
   /* Additional customizations */
-}
-
-/* Add styles for the search results */
-
-
-#developer-link:hover {
-position:relative;
-  transform: scale(0.9); /* Zoom out effect on hover */
-  color: #8e44ad; /* Change text color on hover */
-  /* Add any additional customizations here */
 }
 
 
@@ -311,10 +302,26 @@ position:relative;
 
 #developer-link {
   position: relative;
-  color: #6d3c73;
+  color: green;
   text-decoration: underline;
   transition: transform 0.3s ease, color 0.3s ease;
 }
+
+#developer-link:hover {
+  position: relative;
+  color: white !important; /* Change to your desired hover color .*/
+  animation: glow 1.4s ease infinite alternate; /* Apply glow animation on hover */
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 5px rgb(87, 208, 47), 0 0 10px rgb(87, 208, 47), 0 0 15px rgb(87, 208, 47), 0 0 20px rgb(87, 208, 47); /* Initial shadow */
+  }
+  100% {
+    text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 15px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0); /* Final shadow */
+  }
+}
+
 
 @media only screen and (max-width: 768px) {
   #weather {
@@ -337,7 +344,7 @@ position:relative;
   <div id="weather"></div>
 
 <br>
-<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" style="color: #6d3c73; text-decoration: none;"><u>Developed BY</u></a></h1>
+<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" ><u>Developed BY</u></a></h1>
   <h2 id="repo">My Repository:</h2>
 
  <div id="repository-contents-container">
