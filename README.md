@@ -7,6 +7,7 @@
 
 <style>
 
+
 #d1{
 font-family: 'AudioWide', sans-serif;
 }
@@ -33,6 +34,7 @@ font-family: 'Trirong', sans-serif;
 }
 </style>
 --->
+
 <div align = "center" >
 
 [![ deekshith ](https://img.shields.io/badge/deekshith-profile-white.svg)](https://github.com/deekshith0509?tab=repositories) [![ deekshith ](https://img.shields.io/badge/Jonah-All-red.svg)](https://github.com/jonahprashanth) [![ deekshith ](https://img.shields.io/badge/Vikram-All-green.svg)](https://github.com/vikram-73/) [![ deekshith ](https://img.shields.io/badge/Arvind-All-blue.svg)](https://github.com/Aravind-webD)
@@ -53,7 +55,7 @@ I'm a full stack developer...
 Python, Bash, JavaScript, HTML, CSS, Java, C, C#, R, Php, SQL. 
 </div>
 
-# Repo Info
+# ℹ️Repo Info
 ------
 <div id ="d2">
 This repo was created for hoisting my portfolio.Eventually with the time,This was added with some of my best ideas.I hope,You can Enjoy my work.
@@ -61,40 +63,88 @@ Welcome aboard the journey through my repository, where innovation meets creativ
 Crafted by a Passionate Developer
 
 Behind every line of code and every pixel on the screen stands a passionate developer, [@Deekshith0509](https://github.com/deekshith0509/). With a relentless drive for excellence, I continuously enrich this repository with new ideas and projects to captivate and inspire.
-Unveiling Spectacular Features
 </div>
 
-## features
-<div id ="d4">
+## ⚓Updates
+
+- **QR Code Generator and Decoder**: Generate and decode QR codes easily with this tool.
+
+
+- **Functional Music Player**: Enjoy a feature-rich music player with various functionalities.
+
+- **Audio Visualizer and Audio Metadata Viewer**: Experience sound visually with this captivating audio visualizer. View metadata information of audio files effortlessly.
+
+- **CSV Viewer**: Easily view and analyze CSV files with this tool.
+
+- **JSON Viewer and Editor**: View and edit JSON files seamlessly.
+
+- **Currency Converter**: Convert currencies based on real-time exchange rates.
+
+- **Java Applications**: Miscellaneous Java applications for various purposes like age calculation, factorial, primes, string manipulation, sorting, leap year calculation, etc.
+
+- **HTML Editor and Viewer**: Edit and preview HTML code in real-time.
+
+- **Translator**: Translate text between different languages.
+
+- **Library for Books**: Access a vast library of books covering various genres and topics.
+
+- **Wallpapers Website**: Explore a collection of high-quality wallpapers for your desktop or mobile device.
+
+- **Parallax Portfolio**: Showcase your portfolio with stunning parallax effects, enhancing the visual appeal.
+
+- **Resume Validator**: Ensure your resume meets industry standards with this handy validator tool.
+
  
->Prepare to be amazed as we unveil the spectacular features that await you:
- - Personal Portfolio: Step into my digital universe and witness the culmination of my skills and projects.
-  - Dive into the Digital Ocean: Navigate effortlessly through multiple search engines, empowering you to explore the vast expanse of the internet.
-  - Battle of Wits: Engage in a strategic showdown with the Tic-Tac-Toe game, powered by the formidable MinMax algorithm.
-  - Harmony of Melodies: Immerse yourself in a symphony of sound with the local music player, bringing your favorite tunes to life.
-  - Unlock Your Device's Secrets: Peel back the layers of mystery with native device info, including geolocation data, revealing the fascinating intricacies of your digital companion.
-  - Palette of Possibilities: Paint your projects with vibrant hues using the dynamic color palette generator, sparking creativity with every click.
-  - Emoji Magic: Transform emotions into art with the emoji to PNG converter, turning ordinary expressions into extraordinary images.
-  - Music in Motion: Watch as sound comes alive with the music visualizer, transforming auditory experiences into mesmerizing visuals.
-  - Culinary Concoctions: Embark on a culinary journey with the recipe instructor, guiding you through the art of gastronomy with ease and precision.
+## 🪶Features
+
+<div id ="d4">
+
+
+Prepare to be amazed as we unveil the extraordinary features awaiting you:
+
+- **Personal Portfolio**: Explore my digital universe showcasing my skills and projects.
+
+- **Dive into the Digital Ocean**: Easily navigate through various search engines, empowering you to explore the vast internet.
+
+- **Battle of Wits**: Challenge yourself with the strategic Tic-Tac-Toe game, powered by an advanced algorithm.
+
+- **Harmony of Melodies**: Immerse yourself in a symphony of sound using the local music player, bringing your favorite tunes to life.
+
+- **Unlock Your Device's Secrets**: Discover hidden insights about your device, including geolocation data.
+
+- **Palette of Possibilities**: Experiment with vibrant colors using the dynamic color palette generator, igniting creativity with every click.
+
+- **Emoji Magic**: Express emotions creatively with the emoji to PNG converter, turning ordinary expressions into captivating images.
+
+- **Music in Motion**: Visualize sound with the music visualizer, transforming auditory experiences into mesmerizing visuals.
+
+- **Culinary Concoctions**: Embark on a culinary journey with the recipe instructor, guiding you through the art of gastronomy with ease and precision.
+
+
 </div>
 
-##    Gratitude to Guiding Lights
+##   👩‍💻Gratitude to Guiding Lights
 
 >As we navigate this digital landscape, let's take a moment to express gratitude to our guiding lights:
- - [Termux](https://f-droid.org/en/packages/com.termux/): Our trusty companion in the realm of terminal emulation, empowering us to push the boundaries of mobile development.|any other terminal which is capable of running git.
+ - [Termux](https://f-droid.org/en/packages/com.termux/): Our trusty companion in the realm of terminal emulation, empowering us to push the boundaries of mobile development.|any other terminal which is capable of running git.This could be the best choice to deploy or archive projects from Android.
 
      >![alt text](https://f-droid.org/repo/com.termux/en-US/icon_7jMZ7XD80oeucmGEaTwktIRZexLtGWvJfKdVD6Wu2SI=.png) 
 
   
  - [HTML Documentation](https://developer.mozilla.org/en-US/docs/Web/HTML): A beacon of knowledge illuminating the path to web development mastery, guiding us with clarity and precision.
  - [Rest API Concepts](https://www.ibm.com/topics/rest-apis#:~:text=AI%20Topic%20Updates-,What%20is%20a%20REST%20API%3F,transfer%20(REST)%20architectural%20style.): A cornerstone of modern web architecture, fueling our quest for seamless integration and interaction.
+ - [BLOB](https://developer.mozilla.org/en-US/docs/Web/API/Blob): Data is crucial for storing large binary data types such as images, videos, and documents efficiently within databases.
 
-## Limitations
+
+## ⚠️Limitations
 <div id ="d5">
 
  >Even as we revel in the boundless possibilities, let us acknowledge and embrace the limitations that shape our journey:
- - Harmonizing with Browser Policies: Navigate the intricacies of browser security policies as we optimize the music player for local enjoyment.
+
+ - ~~Initially,It uses direct instance of the html files to view the web-rendered HTML code.Refreshing the opened webpage will automatically redirects the user to the homepage.~~
+
+ - ~~Harmonizing with Browser Policies: Navigate the intricacies of browser security policies as we optimize the music player for local enjoyment.~~
+ - Due to the android browser's limitations since kitkat,its not possible to access entire directly using files applications which is the base case for web-kit-directory.
  - Navigating Browser Boundaries: Journey through the labyrinth of browser limitations, overcoming obstacles to deliver seamless device info retrieval.
 </div>
 
@@ -126,7 +176,7 @@ Unveiling Spectacular Features
     Besides Music-Player,There is also a conflict in the device-info retrieval code because of the Browser Limitations......
 --->
 
-## Deployment
+## 💻Deployment
 
  You can clone my repo for personal use.These files are made by [me](https://github.com/deekshith0509/)
 
