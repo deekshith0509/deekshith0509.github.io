@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandas Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        #header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .custom-file-upload {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+			border-radius: 5px;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #45a049;
+        }
+
+        #filterContainer {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #filterInput {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #filterButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            width: 70px;
+            height: 40px;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #filterButton:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        th.fixed-header {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+        }
+
+        #statsContainer {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			
+        }
+
+        #statsContainer p {
+            margin: 0;
+            padding-bottom: 10px;
+        }
+
+        #statsContainer p:last-child {
+            padding-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+    <h1>Pandas Tool</h1>
+    <label for="fileInput" class="custom-file-upload">Upload CSV File</label>
+    <input type="file" id="fileInput" accept=".csv">
+</div>
+<br>
+<div id="filterContainer">
+    <input type="text" id="filterInput" placeholder="Enter text to filter">
+    <input type="button" id="filterButton" value="Filter">
+</div>
+<div id="tableContainer"></div>
+<div id="statsContainer"></div>
+
+<script>
+    let data = [];
+
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) {
+            alert("No search results found");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const csv = e.target.result;
+            data = parseCSV(csv);
+
+            renderTable(data);
+            calculateStats(data);
+        };
+
+        reader.onerror = function(e) {
+            console.error("Error reading file:", e.target.error);
+            alert("An error occurred while reading the file. Please try again.");
+        };
+
+        reader.readAsText(file);
+    });
+	function displayHeaders(headers) {
+    const headerDiv = document.getElementById('header');
+    const headerText = document.createElement('p');
+    headerText.textContent = "Column Headings: " + headers.join(', '); // Display headings as comma-separated string
+    headerDiv.appendChild(headerText);
+}
+
+    document.getElementById('filterButton').addEventListener('click', function() {
+        const filterText = document.getElementById('filterInput').value.toLowerCase();
+        const filteredData = data.filter(row => row.some(cell => cell.toLowerCase().includes(filterText)));
+
+        renderTable(filteredData);
+        calculateStats(filteredData);
+    });
+
+    function parseCSV(csv) {
+        const rows = csv.trim().split('\n');
+        const parsedData = [];
+
+        for (let i = 0; i < rows.length; i++) {
+            let row = [];
+            let insideQuotes = false;
+            let insideSpecialChars = false;
+            let cell = '';
+
+            for (let j = 0; j < rows[i].length; j++) {
+                const char = rows[i][j];
+                if (char === ',' && !insideQuotes && !insideSpecialChars) {
+                    row.push(cell);
+                    cell = '';
+                } else if (char === '"' && !insideSpecialChars) {
+                    insideQuotes = !insideQuotes;
+                } else if (char === '(' || char === '[' || char === '{') {
+                    insideSpecialChars = true;
+                    cell += char;
+                } else if (char === ')' || char === ']' || char === '}') {
+                    insideSpecialChars = false;
+                    cell += char;
+                } else {
+                    cell += char;
+                }
+            }
+
+            row.push(cell);
+            parsedData.push(row);
+        }
+
+        return parsedData;
+    }
+
+    function renderTable(data) {
+        const tableContainer = document.getElementById('tableContainer');
+        tableContainer.innerHTML = '';
+		if (data.length === 0) {
+        // Handle case when data array is empty
+        alert("no valid searchresults found");
+		console.log("NO valid csv file");
+        return;
+    }
+
+
+        const table = document.createElement('table');
+        const headerRow = document.createElement('tr');
+
+        data[0].forEach((cell, index) => {
+            const th = document.createElement('th');
+            th.textContent = cell;
+            th.dataset.index = index;
+            th.classList.add('fixed-header');
+            th.addEventListener('click', () => sortTable(index));
+            headerRow.appendChild(th);
+        });
+
+        table.appendChild(headerRow);
+
+        for (let i = 1; i < data.length; i++) {
+            const row = document.createElement('tr');
+            data[i].forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                row.appendChild(td);
+            });
+            table.appendChild(row);
+        }
+
+        tableContainer.appendChild(table);
+    }
+
+    function sortTable(columnIndex) {
+        const table = document.querySelector('table');
+        const rows = Array.from(table.querySelectorAll('tr')).slice(1);
+
+        const sortedRows = rows.sort((a, b) => {
+            const aValue = a.children[columnIndex].textContent;
+            const bValue = b.children[columnIndex].textContent;
+            return aValue.localeCompare(bValue);
+        });
+
+        table.innerHTML = '';
+        sortedRows.forEach(row => table.appendChild(row));
+    }
+
+    function calculateStats(data) {
+        const statsContainer = document.getElementById('statsContainer');
+        statsContainer.innerHTML = '';
+
+        const numRows = data.length - 1; // Exclude header row
+        const numCols = data[0].length;
+
+        const stats = document.createElement('div');
+        stats.innerHTML = `<p>Number of Rows: ${numRows}</p><p>Number of Columns: ${numCols}</p>`;
+        statsContainer.appendChild(stats);
+    }
+	document.getElementById('filterInput').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        document.getElementById('filterButton').click();
+    }
+});
+
+</script>
+</body>
+</html>
