@@ -43,10 +43,22 @@ font-family: 'Trirong', sans-serif;
 
 <div id="d1">
 
-## 🚀 About Me  
+## 🚀 About Me 🏳️
+<h1 style="font-size:80%; word-wrap: break-word;">
+
+``` 
+ ____            _        _     _ _   _
+|  _ \  ___  ___| | _____| |__ (_) |_| |__
+| | | |/ _ \/ _ \ |/ / __| '_ \| | __| '_ \
+| |_| |  __/  __/   <\__ \ | | | | |_| | | |_ _ _
+|____/ \___|\___|_|\_\___/_| |_|_|\__|_| |_(_|_|_)
+```
+
+</h1>
+
 I'm a full stack developer...
 
-</div>
+</h2>
 
 
 ## 🛠 Skills
@@ -62,7 +74,7 @@ This repo was created for hoisting my portfolio.Eventually with the time,This wa
 Welcome aboard the journey through my repository, where innovation meets creativity and technology transcends boundaries. Let's embark on an exploration of the diverse features and inspirations that make this repository a treasure trove of possibilities.
 Crafted by a Passionate Developer
 
-Behind every line of code and every pixel on the screen stands a passionate developer, [@Deekshith0509](https://github.com/deekshith0509/). With a relentless drive for excellence, I continuously enrich this repository with new ideas and projects to captivate and inspire.
+Behind every line of code and every pixel on the screen stands a passionate developer, [Deekshith0509](https://github.com/deekshith0509/). With a relentless drive for excellence, I continuously enrich this repository with new ideas and projects to captivate and inspire.
 </div>
 
 ## ⚓Updates
@@ -186,3 +198,7 @@ Prepare to be amazed as we unveil the extraordinary features awaiting you:
     pkg install git
     git clone https://github.com/deekshith0509/deekshith0509.github.io
 ```
+
+
+
+
