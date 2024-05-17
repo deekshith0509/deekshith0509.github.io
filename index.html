@@ -25,7 +25,7 @@
   background: linear-gradient(169deg,rgba(0, 199, 0, 1.0), rgba(0, 0, 255, 0.5), rgba( 255, 0, 0, 1.0));
   background-size: 600% 600%;
   animation: gradientAnimation 5s infinite;
-  max-width: 95%; /* Adjust max-width for responsiveness */
+  max-width: 80%; /* Adjust max-width for responsiveness */
   width: 90%; /* Adjust width for responsiveness */
   height: 300px; /* Fixed height */
   padding: 20px;
@@ -72,8 +72,6 @@ body {
   background: linear-gradient(45deg, rgba(0,155, 0, 1.0),rgba(200, 0, 0, 1.0), rgba(0, 145, 0, 1.0));
   background-size: 400% 400%;
   animation: gradientAnimation 15s infinite;
-  align: center; 
- max-width: 1200px;
  background-attachment:fixed;
 }
 
@@ -200,8 +198,9 @@ a.external-link:hover {
   border-radius: 5px;
   width: 250px;
   font-family: 'Google Sans', sans-serif; /* Use Google Sans font with fallback to generic sans-serif */ 
- font-size: 1em;
- font-style: italic;
+  font-size: 1em;
+  font-style: italic; /* Apply italic style */
+  font-weight: bold;
 }
 #search-input::placeholder {
   color: #555; /* Placeholder text color */
@@ -241,9 +240,6 @@ a.external-link:hover {
 	 cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/rgb.cur'), auto;
   /* Additional customizations */
 }
-
-
-
 #search-engine {
   padding: 10px;
   font-size: 16px;
@@ -252,53 +248,26 @@ a.external-link:hover {
   border-radius: 5px;
   width: 200px;
   transition: all 0.3s ease;
- 
-  
 }
-
 /* Style the options when the select is expanded */
 #search-engine {
   color: white;
-  background-color: #584f7b;
-  
+  background-color: #584f7b; 
 }
-
 /* Style the options when hovered over */
 #search-engine:hover {
   background-color: #584f7b;	
 }  
-
 /* Style the select element when expanded (focus) */
 #search-engine:focus {
   color: white;
   border-color: hsl(132, 22%, 40%);
   box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
 }
-
-
 /* New styles for clock */
 
 
 
-#clock {
-  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
-  position: absolute; /* Position absolute to its parent container */
-  top: 20px; /* Align to the top */
-  right: 20px; /* Align to the right */
-  font-size: 1.2em;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-}
-
-#weather {
-  font-size: 1em;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  position: absolute;
-  top: 50px;
-  right: 20px;
-  z-index: 9999; /* Ensure the weather element is above other elements */
-}
 
 #developer-link {
   position: relative;
@@ -328,14 +297,79 @@ a.external-link:hover {
     top: 45px; /* Adjust the position for smaller screens */
     right: 10px; /* Adjust the position for smaller screens */
   }
-
   
 }
+
+
+/* For larger screens, display the joke normally */
+#joke {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+}
+
+/* For smaller screens, apply the marquee effect */
+@media screen and (max-width: 768px) {
+
+
+    #joke {
+	    text-decoration: underline;
+        position: static; /* Remove absolute positioning */
+        width: 100%; /* Make it full-width */
+        white-space: nowrap; /* Prevent line breaks */
+        animation: marquee 10s linear infinite; /* Apply marquee animation */
+    }
+	#quote {
+	    text-decoration: underline;
+        position: static; /* Remove absolute positioning */
+        width: 100%; /* Make it full-width */
+        white-space: nowrap; /* Prevent line breaks */
+        animation: marquee 15s linear infinite; /* Apply marquee animation */
+    }
+    @keyframes marquee {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-150%); }
+    }
+}
+
+
+#clock {
+  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
+  position: relative; /* Position absolute to its parent container */
+  top: calc(100vh-50px);
+  font-size: 1.2em;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+#weather {
+  font-size: 1em;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  z-index: 9999; /* Ensure the weather element is above other elements */
+}
+#quote-container {
+     text-align: center;
+
+}
+
+#quote {
+  display: inline-block;
+  text-align: center;
+}
+
+
+
 
 
   </style>
 </head>
 <body>
+
+    <p id="joke"></p>
 
   <!-- Clock and weather forecast -->
   <div id="clock" onclick="refreshPage()" ></div>
@@ -377,9 +411,9 @@ a.external-link:hover {
  <button id="voice-search-button">Voice Search</button> 
     </div>
   </div>
-
-
-
+  <div id="quote-container">
+      <div id="quote"></div>
+</div>
   <script>
 
     // Function to update clock
@@ -649,6 +683,81 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+
+     // Array of jokes with corresponding dates
+       var jokes = {
+    "2024-05-10": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25.",
+    "2024-05-11": "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+    "2024-05-12": "Why do programmers prefer iOS? Because they can't handle too many windows!",
+    "2024-05-13": "Why was the function a bad communicator? It had too many arguments.",
+    "2024-05-14": "Why do Java developers wear glasses? Because they can't C#.",
+    "2024-05-15": "What's a programmer's favorite hangout place? The Foo Bar.",
+    "2024-05-16": "Why did the programmer quit his job? He didn't get arrays.",
+    "2024-05-17": "How do you comfort a JavaScript bug? You console it.",
+    "2024-05-18": "Why was the JavaScript developer sad? Because he didn't Node how to Express himself.",
+    "2024-05-19": "Why did the developer go broke? Because he used up all his cache.",
+    "2024-05-20": "Why don't programmers like nature? It has too many bugs.",
+    "2024-05-21": "Why did the programmer sit on the roof all day? Because they wanted a higher level of programming.",
+    "2024-05-22": "Why do programmers prefer dark mode? Because light attracts bugs!",
+    "2024-05-23": "Why did the developer go to therapy? Because they had too many unresolved issues.",
+    "2024-05-24": "Why don't programmers like the outdoors? It's too much exposure.",
+    "2024-05-25": "Why did the programmer go broke buying Bitcoins? Because they kept spending bits and bytes!",
+    "2024-05-26": "Why did the programmer get in trouble with their boss? They couldn't control their arrays.",
+    "2024-05-27": "Why did the computer go to therapy? Because it had too many bytes of emotional baggage.",
+    "2024-05-28": "Why did the SQL query go to the beach? To find some joins!",
+    "2024-05-29": "Why was the JavaScript developer always happy? Because they kept making callbacks!",
+    "2024-05-30": "Why did the programmer always carry a ladder? Because they always wanted to reach the next level!",
+    "2024-06-01": "Why did the teacher wear sunglasses? Because their students were so bright!",
+    "2024-06-02": "Why was the math book sad? Because it had too many problems!",
+    "2024-06-03": "Why was the English teacher always cold? Because their students could never put on the right story jacket!",
+    "2024-06-04": "Why did the geography teacher go to jail? Because they took their students on a field trip without permission!",
+    "2024-06-05": "Why did the history teacher go to the beach? To teach the waves a lesson!",
+    "2024-06-06": "Why was the music teacher always so happy? Because they could always find the right key!",
+    "2024-06-07": "Why did the biology teacher always carry a pencil? In case they needed to draw blood!",
+    "2024-06-08": "Why did the doctor carry a red pen? In case they needed to draw some blood!",
+    "2024-06-09": "Why did the doctor always carry a stethoscope? To keep in tune with their patients!",
+    "2024-06-10": "Why was the surgeon always calm? Because they knew how to stay sutured!",
+    "2024-06-11": "Why did the dentist always make jokes? To keep their patients in stitches!",
+    "2024-06-12": "Why was the optometrist always so focused? Because they had an eye for detail!",
+    "2024-06-13": "Why did the psychiatrist become a doctor? Because they wanted to cure the mind!",
+    "2024-06-14": "Why did the chef always carry pepper? In case they needed to spice things up!",
+    "2024-06-15": "Why did the architect become a musician? Because they wanted to build harmonious structures!",
+    "2024-06-16": "Why did the engineer always carry a ruler? In case they needed to draw a straight line!",
+    "2024-06-17": "Why did the accountant become a comedian? Because they wanted to balance the books with laughter!",
+    "2024-06-18": "Why did the lawyer always carry a briefcase? In case they needed to make a strong case!",
+    "2024-06-19": "Why did the pilot become a sailor? Because they wanted to navigate the high seas of the sky!",
+    "2024-06-20": "Why was the font always confident? Because it had bold ambitions!",
+    "2024-06-21": "Why did the CSS file always feel left out? Because it couldn't join the HTML party!",
+    "2024-06-22": "Why was the computer so good at singing? Because it had perfect pitch!",
+    "2024-06-23": "Why did the keyboard break up with the mouse? It wanted a more tactile relationship!",
+    "2024-06-24": "Why did the algorithm break up with the data? It found a better match in the cloud!",
+    "2024-06-25": "Why did the internet go to therapy? It had too many connection issues!",
+    "2024-06-26": "Why was the cloud always so positive? Because it always looked up!",
+    "2024-06-27": "Why did the programmer become a gardener? They wanted to debug their plants!",
+    "2024-06-28": "Why was the computer cold? It left its Windows open!",
+    "2024-06-29": "Why was the database always forgetful? It had too many tables to remember!"
+};
+
+      var resultDiv = document.getElementById('quote');
+      fetch('https://api.quotable.io/random')
+        .then(response => response.json())
+        .then(data => {
+          resultDiv.innerHTML = `<blockquote>${data.content}</blockquote><p>- ${data.author}</p>`;
+        })
+
+
+
+        // Get current date
+        var currentDate = new Date().toISOString().split('T')[0];
+
+        // Display joke for the current date
+        if (jokes[currentDate]) {
+            document.getElementById("joke").textContent = jokes[currentDate];
+        } else {
+            document.getElementById("joke").textContent = "Sorry, no joke for today!";
+        }
+
 
 
    function refreshPage() {
