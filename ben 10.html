@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html ng-keydown="keyDownHandler($event)" lang="en" ng-app="ben10FanWiki">
+<head>
+	<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Margarine&family=Poetsen+One&family=Roboto+Slab:wght@100..900&family=Teachers:ital,wght@0,400..800;1,400..800&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+	<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Jacquard+12&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Calistoga&family=Jacquard+12&family=Sedan+SC&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Calistoga&family=Jacquard+12&display=swap" rel="stylesheet">
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben 10 Fan Wiki BY Deekshith</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+body {
+    user-select: none;
+    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Pseudo-element for background blur */
+body::before {
+    content: "";
+    position:fixed;
+    top: -10px;;
+    left: -10px;
+    width: 108%;
+    height: 108%;
+    background-image: url('https://static.wikia.nocookie.net/ben10/images/f/f6/Classic_Homepage_background.png/');
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(7px);
+    z-index: -1;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    nav ul {
+        margin-left: -30px !important; /* Adjust margin for smaller screens */
+        margin-right: -10px !important; /* Adjust margin for smaller screens */
+        flex-wrap: nowrap; /* Prevent items from wrapping */
+        overflow-x: auto; /* Enable horizontal scrolling */
+		
+    justify-content: flex-start !important;
+    }
+
+    nav ul li {
+	    padding: 10px 20px;
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: #444;
+    display: flex;
+    margin-left: -70px; /* Remove left margin */
+    margin-right: -18px; /* Remove right margin */
+    justify-content: center;
+    }
+
+
+nav ul li {
+    padding: 10px 20px;
+    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur'), auto;
+    border-right: 1px solid #ccc;
+    color: #fff;
+    text-align:center;
+    transition: background-color 0.3s;
+    font-weight:bold;
+    font-family: "Josefin Sans", sans-serif; /* Add this line to change font style */
+    width: auto;
+}
+
+nav ul li:hover{
+    color:red;
+}
+
+nav ul li:last-child {
+    border-right: none;
+}
+
+
+
+nav ul li.active {
+    background-color: #666;
+	color: rgb(255, 255, 122);
+}
+
+.section {
+    display: none;
+    padding: 20px;
+}
+
+.section.active {
+    display: block;
+}
+
+
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    color: black;
+	font-family: "Agbalumo", system-ui;
+    animation: 1glitterAnimation 2s infinite; /* Apply glitter animation */
+}
+
+
+.section h3 {
+	margin-left: 30px;
+	font-family: "Sedan SC", serif;
+
+}
+
+.section img {
+    margin-top: 30px;
+    margin-right: 30px;
+    margin-left: 10px;
+    max-height: 450px;
+    border-radius: 15px;
+    max-width: 100%; /* Ensures image does not overflow its parent container */
+    height: auto; /* Allows the image to scale proportionally */
+}
+
+
+.sub-section {
+    display: none;
+    margin-left: 20px;
+    height: auto;
+	margin-right: 10px;
+    overflow-wrap: break-word; /* Ensure text wraps within the div */
+}
+
+.sub-section p{
+
+  font-family: "Comic Neue", cursive;
+
+  font-weight: 550;
+}
+.sub-section.active {
+    text-align: center;
+    display: block;
+}
+
+.character-list {
+    display: flex;
+    flex-wrap: wrap;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.character {
+	
+	border-radius:10px;
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: rgb(255, 255, 122);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.character:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Default styles */
+.logo-img {
+    position:absolute;
+	left:10px;
+    z-index:99999;
+    width: 100px; /* Default width */
+}
+ #curs {
+ position:absolute;
+ left:4%;
+ align: center;
+ text-align: center;
+ width: 95%;
+ }
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .logo-img {
+        width: 80px; /* Adjusted width for smaller screens */
+    }
+    
+    .section img {
+		margin-left: -4px;
+        margin-top: -10px; /* Adjust margin-top for smaller screens */
+    }
+    
+    .section h3 {
+        margin-left: 20px; /* Remove left margin for smaller screens */
+    }
+#charactersSection .sub-section img,
+#aliensSection .sub-section img,
+#placesSection .sub-section img,
+#eventsSection .sub-section img,
+#finalBattlesSection .sub-section img {
+    width: 100%;
+    height: auto;
+}
+ #curs {
+ position:absolute;
+ text-align: center;
+ width: 95%;
+ }
+#banner{
+height:100px;
+}
+ #banner img{
+ height: 100px !important;
+ }
+ #heading {
+	top: -10px !important;	
+	font-size: 50px !important;
+	
+	
+}
+
+ .character-list {
+	margin-left:-5px;
+	margin-right: -5px;
+ 
+ }
+ .larger-font {
+    text-align: center;
+    font-size: 30px;
+	margin-bottom: 18px !important;
+}
+
+ 
+ 
+ 
+}
+
+
+
+
+ #message {
+            display: none; /* Initially hide the message */
+            text-align: center;
+            font-size: 18px;
+            margin-top:-10px;
+            color: #2e924b;
+			margin-left:10px;
+        }
+
+
+#banner img {
+    width: 100%;
+    height: 170px; /* Fixed height */
+    object-fit: cover;
+    object-position: 50% 2%; /* Align the top of the image */
+    margin-bottom: -5px;
+}
+
+
+#heading {
+    position: absolute;
+    top: 0px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    user-select: none;
+    cursor: url("https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/omnitrix.cur"), auto;
+    font-family: "Calistoga", serif;  /* Change font to a blocky style */
+    font-size: 80px;
+    z-index: 1; /* Ensure the heading appears above the image */
+    background-attachment: fixed;
+	animation: glitterAnimation 6s ease-in-out infinite alternate;
+}
+
+@keyframes glitterAnimation {
+    0% {
+        text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white, 0 0 20px white, 0 0 25px white, 0 0 30px white, 0 0 35px white;
+        color:hsl(90, 100%, 25%); /* Starting color */
+    }
+    50% {
+        text-shadow: none;
+        color: black; /* Change color midway */
+    }
+    100% {
+        text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white, 0 0 20px white, 0 0 25px white, 0 0 30px white, 0 0 35px white;
+        color: #008080; /* Return to the starting color */
+    }
+}
+
+
+@keyframes glowAnimation {
+    from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+    to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4); }
+}
+
+ .larger-font {
+    font-size: 30px;
+	margin-bottom:-10px;
+	font-style: italic;
+	font-weight: bold;
+	font-variant: small-caps;
+	text-align: left;
+	margin-left: 20px;
+	word-wrap: break-word;
+}
+
+    </style>
+</head>
+
+<div id="banner">
+    <img src="https://static.wikia.nocookie.net/ben10/images/7/7c/Ben10-background-static.png/revision/latest/scale-to-width-down/1000?cb=20180607174817" alt="Ben 10 Banner">
+</div>
+  	 <h1 id="heading" onclick="refreshpage()">Ben 10</h1>
+<body ng-controller="MainController" ng-keydown="keyDownHandler($event)">
+    <nav id ="curs">
+        <ul>
+            <li ng-click="showSection('characters')" ng-class="{ 'active': currentSection === 'characters' }">Characters</li>
+            <li ng-click="showSection('aliens')" ng-class="{ 'active': currentSection === 'aliens' }">Aliens</li>
+            <li ng-click="showSection('places')" ng-class="{ 'active': currentSection === 'places' }">Places</li>
+            <li ng-click="showSection('events')" ng-class="{ 'active': currentSection === 'events' }">Events</li>
+            <li ng-click="showSection('finalBattles')" ng-class="{ 'active': currentSection === 'finalBattles' }">Final Battles</li>
+        </ul>
+    </nav>
+	<br>
+    <div class="section" id="charactersSection">
+        <h2>Characters</h2>
+        <div class="character-list">
+            <div class="character" ng-repeat="character in characters" ng-click="toggleSubSection($index)">
+                <div class="section1">
+				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ character.name }}</h3>
+                <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
+                    <img ng-src="{{ character.image }}" alt="{{ character.name }}">
+                    <p>{{ character.bio }}</p>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="aliensSection">
+        <h2>Aliens</h2>
+        <div class="character-list">
+            <div class="character" ng-repeat="alien in aliens" ng-click="toggleSubSection($index)">
+                <div class="section1">
+				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ alien.name }}</h3>
+                <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
+                    <img ng-src="{{ alien.image }}" alt="{{ alien.name }}">
+                    <p>{{ alien.description }}</p>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+<div class="section" id="placesSection">
+    <h2>Places</h2>
+    <div class="character-list">
+        <div class="character" ng-repeat="place in places" ng-click="toggleSubSection($index)">
+            <div class="section1">
+			<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ place.name }}</h3>
+            <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
+                    <img ng-src="{{ place.image }}" alt="{{ place.name }}">
+                    <p>{{ place.description }}</p>
+                </div>
+        </div></div>
+    </div>
+</div>
+
+<div class="section" id="eventsSection">
+        <h2>Moments</h2>
+        <div class="character-list">
+            <div class="character" ng-repeat="event in events" ng-click="toggleSubSection($index)">
+                <div class="section1">
+				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ event.name }}</h3>
+                <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }"><br>
+                    <img ng-src="{{ event.image }}" alt="{{ event.name }}">
+                    <p>{{ event.description }}</p>
+                </div>
+            </div></div>
+        </div>
+    </div>
+
+    <div class="section" id="finalBattlesSection">
+        <h2>Final Battles</h2>
+        <div class="character-list">
+            <div class="character" ng-repeat="battle in finalBattles" ng-click="toggleSubSection($index)">
+                <div class="section1">
+				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ battle.name }}</h3>
+                <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
+                    <img ng-src="{{ battle.image }}" alt="{{ battle.name }}">
+                    <p>{{ battle.description }}</p>
+                </div>
+            </div></div>
+        </div>
+    </div>
+
+<p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
+
+
+
+    <script>
+        angular.module('ben10FanWiki', [])
+            .controller('MainController', function ($scope) {
+                $scope.characters = [
+					
+                    { name: 'Ben Tennyson', image: "https://static.wikia.nocookie.net/ben10/images/f/fe/TEN_%28461%29.png", bio: "Ben Tennyson is the main protagonist in the Ben 10 franchise, which spans across various animated television series, movies, comic books, and video games. He is a young boy who discovers a powerful alien device called the Omnitrix during a summer vacation with his cousin Gwen and their Grandpa Max. The Omnitrix allows him to transform into various alien species, each with its own unique abilities and characteristics." },
+					{name: "Azmuth",image: "https://static.wikia.nocookie.net/ben10/images/c/cf/TToE_%28661%29.png/",bio: "Azmuth is a highly intelligent and enigmatic Galvan scientist in the Ben 10 series, revered as one of the most brilliant minds in the galaxy. As the creator of the Omnitrix, a powerful device capable of transforming its wearer into various alien forms, Azmuth plays a pivotal role in Ben Tennyson's adventures. Despite his small stature, Azmuth possesses immense wisdom and knowledge, often guiding Ben and his allies with his profound insights and strategic thinking. However, Azmuth is also known for his stubbornness and reluctance to intervene directly, preferring to observe and manipulate events from behind the scenes. Throughout the series, Azmuth's motives and allegiances remain shrouded in mystery, adding to his mystique and intrigue as a central figure in the Ben 10 universe."},
+                    { name: 'Gwen Tennyson', image: 'https://static.wikia.nocookie.net/ben10/images/c/c3/Nega_%28434%29.png/', bio: "Gwen Tennyson is one of the main characters in the 'Ben 10' franchise. She is the cousin of the protagonist, Ben Tennyson, and plays a crucial role throughout the series. Gwen is depicted as an intelligent, resourceful, and courageous young girl who often finds herself involved in the various adventures and battles that Ben encounters. Despite not possessing any superpowers like Ben, Gwen compensates with her quick thinking, problem-solving skills, and proficiency in magic, which she discovers later in the series." },
+                    {name:"Vilgax",image:"https://static.wikia.nocookie.net/ben10/images/0/03/Secrets_%28424%29.png",bio: "Vilgax is a formidable and relentless antagonist in the 'Ben 10' series. As a powerful warlord and conqueror, he possesses immense strength, intelligence, and cunning. Vilgax is a squid-like alien with red eyes, sharp teeth, and a muscular physique. He is driven by a relentless desire to obtain the Omnitrix, a powerful device that grants its wielder the ability to transform into various alien forms. Vilgax will stop at nothing to achieve his goal, often engaging in fierce battles with Ben Tennyson, the Omnitrix's current bearer. Despite facing numerous defeats, Vilgax remains a persistent threat, constantly scheming and plotting new ways to seize control of the Omnitrix and conquer the universe."},
+					{name: "Kevin Levin",image: "https://static.wikia.nocookie.net/ben10/images/a/ab/GM_%28403%29.png",bio: "Kevin Levin is a complex character in the 'Ben 10' series, initially introduced as a villain before later becoming one of Ben Tennyson's closest allies. He possesses the unique ability to absorb and manipulate various forms of energy, making him a formidable adversary and valuable asset in battles. Kevin has a troubled past, having grown up on the streets and faced hardships that shaped his cynical outlook on life. Despite his rough exterior, Kevin harbors a sense of loyalty and morality, often demonstrating acts of heroism and selflessness. Over time, he develops a strong bond with Ben and Gwen Tennyson, becoming an integral part of their team. Kevin's journey from antagonist to ally showcases his growth and redemption throughout the series."},
+					{name: "Max Tennyson", image: "https://static.wikia.nocookie.net/ben10/images/f/ff/Secrets_%28932%29.png/", bio: "Max Tennyson, known as Grandpa Max, is a seasoned Plumber and the wise, adventurous grandfather of Ben and Gwen Tennyson. Sporting a rugged appearance with his gray hair, goatee, and trademark Hawaiian shirt, Max is a skilled fighter with extensive knowledge of extraterrestrial life and advanced technology. He provides guidance and support to Ben and Gwen, drawing from his years of experience battling alien threats. Max's resourcefulness and bravery make him a formidable ally, often playing a crucial role in their adventures. Despite his tough exterior, he is deeply caring and protective, always putting his family's safety first. Max's legacy as a Plumber and his enduring spirit inspire his grandchildren to uphold justice and protect the Earth."},
+					{name: "Tetrax",image: "https://static.wikia.nocookie.net/ben10/images/e/ef/Hunted_%281179%29.png/",bio: "Tetrax Shard, a reformed Petrosapien mercenary from Petropia, is a crucial ally to Ben Tennyson in the Ben 10 series. Initially a self-centered bounty hunter, Tetrax worked for the villain Vilgax, inadvertently contributing to the destruction of his home planet. This event catalyzed his transformation into a hero dedicated to preventing powerful weapons from falling into evil hands. Resembling Diamondhead, Tetrax's appearance includes a shiny grey bodysuit with triangular motifs and a retractable black helmet. Skilled in hand-to-hand combat and strategy, Tetrax boasts immense durability and the ability to fire crystal shards. His advanced suit and array of high-tech gadgets, including a multifunctional blaster and a personal hoverboard, aid in his missions. Despite his tough exterior, Tetrax is deeply remorseful for his past actions and is committed to protecting the Omnitrix and mentoring Ben, ultimately assisting in the restoration of Petropia and its people."},
+					// Add more characters here...
+									];
+                $scope.aliens = [
+				{name: "Alien X",image: "https://static.wikia.nocookie.net/ben10/images/7/73/WXI1_%28416%29.png/",description: "Alien X, also known as a Celestialsapien, is one of the most powerful aliens in the Ben 10 universe. Originating from the Forge of Creation, Alien X embodies the pinnacle of cosmic evolution. As a Celestialsapien, Alien X possesses godlike powers, capable of bending reality to its will. However, unlike other species, Alien X's abilities are governed by a consensus among its three distinct personalities: Serena, Bellicus, and Ben Tennyson. Each personality represents different aspects of Alien X's power, requiring a unanimous decision for any action. This unique trait makes Alien X both incredibly powerful and incredibly difficult to control. Despite these challenges, Alien X's abilities are unmatched, allowing it to reshape the fabric of reality itself. With its immense power and enigmatic nature, Alien X remains a force to be reckoned with, embodying the mysteries and complexities of the universe."},
+				{name: "CannonBolt",image: "https://static.wikia.nocookie.net/ben10/images/d/d2/Tick_%28957%29.png/",description: "Cannonbolt is a powerful alien transformation in the Ben 10 series, known for his incredible strength and armored shell. When Ben Tennyson activates the Omnitrix, he can morph into Cannonbolt, adopting the form of a large, spherical creature with a tough, green exoskeleton. Cannonbolt's physiology grants him enhanced durability and resilience, allowing him to withstand high-impact attacks and roll into a powerful, armored ball to crash through obstacles and enemies with ease. Additionally, Cannonbolt possesses incredible agility and speed, making him a formidable combatant in both offense and defense. With his unique abilities and indomitable spirit, Cannonbolt proves to be a valuable asset in battles against villains and threats to Earth and beyond."},
+				{name: "Feedback",image: "https://static.wikia.nocookie.net/ben10/images/5/5f/The_More_Things_Change%2C_Part_1_%2859%29.png/",description: "Feedback is an electrifying alien in the Ben 10 series, known for his ability to absorb and manipulate energy. Originally created by the Galvan inventor Azmuth, Feedback possesses a unique physiology that allows him to absorb various forms of energy, including electricity, radiation, and mana. Once absorbed, Feedback can channel this energy through his body, unleashing powerful blasts or enhancing his physical capabilities. Additionally, Feedback can store absorbed energy within his containment suit, enabling him to use it later or amplify his attacks. Despite his formidable powers, Feedback is vulnerable to energy-draining attacks and requires a steady source of energy to maintain his strength. With his dynamic abilities and energetic personality, Feedback adds a spark of excitement to Ben Tennyson's arsenal, proving to be a valuable asset in battles against formidable foes."},
+				{name: "Ghostfreak",image: "https://static.wikia.nocookie.net/ben10/images/4/47/GhT_%28465%29.png/",description: "Ghostfreak, also known as Ectonurite, is a mysterious and eerie alien in the Ben 10 series. Originating from the planet Anur Phaetos, Ghostfreak possesses a ghost-like appearance and a multitude of spectral abilities. In his true form, Ghostfreak is a floating, ghostly figure with a skeletal visage and glowing green eyes. He has the ability to phase through solid objects, turn invisible, and manipulate shadows to his advantage. Additionally, Ghostfreak can detach his ghostly form from his physical body, allowing him to possess other beings and control them from within. However, Ghostfreak's powers come with a dark side – his true form is housed within a containment suit to prevent him from taking over Ben Tennyson's body. Despite his sinister nature, Ghostfreak proves to be a formidable ally in battles against supernatural threats, harnessing his spectral abilities to turn the tide in his favor."},
+				{name: "Greymatter",image: "https://static.wikia.nocookie.net/ben10/images/c/cf/Hunted_%281342%29.png/", description: "Greymatter, also known as Galvan, is a diminutive alien with a big intellect in the Ben 10 series. Despite his small size, Greymatter possesses extraordinary intelligence, surpassing even the most advanced human minds. Originating from the planet Galvan Prime, Greymatter's species are renowned for their advanced technology and scientific prowess. With his keen intellect and analytical mind, Greymatter excels in problem-solving and strategizing, often outsmarting larger and more powerful adversaries. Additionally, Greymatter's size grants him enhanced agility and dexterity, allowing him to navigate tight spaces and outmaneuver opponents. While physically frail, Greymatter compensates with his superior intellect, making him an invaluable asset to Ben Tennyson's team in battles against formidable foes."},                    
+				{ name: 'Heatblast', image: ' https://static.wikia.nocookie.net/ben10/images/d/db/Alliance_%28660%29.png/', description: "Heatblast, a fiery Pyronite from Ben 10 possesses unparalleled pyrokinetic abilities, manipulating intense heat and fire effortlessly. With a body of living flame, he withstands extreme temperatures and propels himself through the air with fiery jets. His arsenal includes launching fireballs, creating defensive walls of flames, and engulfing foes in infernos. Notably, Heatblast can absorb heat energy to augment his power, making him a force to be reckoned with in battle. Despite his fiery temperament, he exhibits heroism, defending innocents and confronting villains. As a fan-favorite alien, Heatblast epitomizes adventure and excitement, showcasing the diversity of Ben's transformations. His presence adds dynamism to the series, capturing the imagination of viewers with his explosive abilities and fiery demeanor." },
+                { name: 'FourArms', image: ' https://static.wikia.nocookie.net/ben10/images/f/fd/Unnaturals_%281629%29.png', description: "Four Arms is a formidable alien form in the Ben 10 series. With his robust physique and four powerful arms, he stands as a symbol of strength and resilience. His imposing presence and muscular build make him a force to be reckoned with in battles against villains and adversaries. Four Arms possesses incredible physical strength, allowing him to lift heavy objects effortlessly and deliver devastating punches. Despite his intimidating appearance, Four Arms also demonstrates a gentle and caring side, often using his might to protect the innocent and uphold justice. With his extraordinary abilities and unwavering determination, Four Arms proves to be a valuable asset to Ben Tennyson in his quest to safeguard the universe." },
+                {name: "ChromaStone", image: 'https://static.wikia.nocookie.net/ben10/images/6/67/IM_%28237%29.png/', description: "Chromastone, an alien from Ben 10, possesses a crystalline body with energy manipulation powers. Its appearance is humanoid, with a blue and black color scheme and crystalline structures covering its body. Chromastone's primary ability is to absorb and manipulate various forms of energy, including light and heat. It can store and release energy blasts, making it a formidable combatant. Additionally, Chromastone has enhanced durability due to its crystalline composition, making it resilient in battle. Its energy manipulation abilities extend to creating energy shields for defense. Chromastone's powers make it versatile in different combat situations, capable of adapting to various energy-based attacks. The alien's abilities are a result of its species' evolutionary traits, allowing it to thrive in environments rich with energy sources. Chromastone's energy absorption abilities grant it the advantage of replenishing its own energy levels during combat, ensuring prolonged engagements. Its crystalline form also grants it enhanced physical strength, further augmenting its combat prowess. Chromastone's design reflects its affinity for energy manipulation, with its crystalline structure resembling facets of a gemstone."},
+				{name: "DiamondHead", image:'https://static.wikia.nocookie.net/ben10/images/c/c6/TEN_%281302%29.png/', description:"Diamondhead, another alien from Ben 10, boasts a crystalline body composed of durable, diamond-like material. Its appearance features sharp, angular facets and a predominantly blue color scheme. Diamondhead possesses superhuman strength, allowing it to overpower opponents with ease. Its crystalline form grants it enhanced durability, making it highly resistant to physical attacks. The alien's primary ability is the generation and manipulation of crystalline structures, which it can form into various shapes for offense and defense. Diamondhead can launch razor-sharp crystal projectiles at high speeds, making it a formidable ranged combatant. Its crystalline body also grants it the ability to regenerate lost limbs and reform its body, enhancing its longevity in battle. Diamondhead's design reflects its affinity for crystal manipulation, with its appearance resembling a living gemstone. The alien's abilities are a result of its species' evolutionary traits, adapted for survival in harsh environments. Diamondhead's versatility in combat stems from its ability to create intricate crystalline structures for a multitude of purposes. Its formidable strength and durability make it a formidable opponent in battles against both alien threats and human adversaries."},
+				{name: "Upchuck",image: "https://static.wikia.nocookie.net/ben10/images/c/c1/TT_%2826%29.png/",description: "Upchuck, a small alien with a voracious appetite, has a round, green body with three stubby legs. Its wide mouth can devour almost anything and its stomach can store objects for later use. Despite its small size, Upchuck packs a powerful punch with its ability to eat and then expel energy balls. Its abilities make it a formidable opponent in combat, capable of surprising foes with its agility and unexpected attacks. Upchuck's appearance may seem harmless, but its insatiable hunger and powerful projectile abilities make it a force to be reckoned with."},
+				{name: "Upgrade",image: "https://static.wikia.nocookie.net/ben10/images/2/20/Tour_%28569%29.png/",description: "Upgrade, an Omnitrix DNA sample of a Galvanic Mechamorph from Galvan Prime's moon, Galvan B, possesses a black exterior adorned with green circuit-like stripes. His body comprises billions of nanites, granting him a fluid-like form. Upgrade's primary ability lies in technological possession, allowing him to merge with and control any technology, upgrading it to ultra-tech and effortlessly repairing damaged machinery. Additionally, he can generate solid constructs, emit powerful green plasma blasts, manipulate electricity, and stretch his body extensively. Despite his formidable abilities, Upgrade has vulnerabilities, including limitations in technological possession, susceptibility to electromagnetic pulses, and being powered down by specific devices. Overall, Upgrade is a versatile alien adept at manipulating technology to his advantage in various situations."},
+				// Add more aliens here...
+				
+
+
+				];
+
+                $scope.places = [
+				    {name: "Forge of Creation",image: "https://static.wikia.nocookie.net/ben10/images/d/d6/TFOC132.PNG",description: "    Origin of the Forge of Creation:\n    The Forge of Creation is a primordial realm located outside the boundaries of time and space. It is believed to be the birthplace of the universe itself, where cosmic energies converged in a cosmic crucible, giving rise to the first forms of life. Within its ethereal confines, the very essence of existence coalesced, forming the foundation upon which the cosmos was built.\n\n    Celestialsapiens:\n    At the heart of the Forge of Creation resides the Celestialsapiens, an ancient and enigmatic species born from the raw energies of creation. These beings possess unparalleled reality-warping abilities, allowing them to manipulate matter, space, and time with ease. However, the Celestialsapiens' power is tempered by the necessity of a consensus among their multiple personalities, a unique trait that distinguishes them from all other species.\n\n    Spectacular Nature:\n    The Forge of Creation itself is a breathtaking spectacle, a realm of swirling energies and cosmic phenomena. Its landscape is a surreal blend of vibrant colors and celestial wonders, reflecting the raw power and mystique of the Celestialsapiens who call it home. Glowing nebulae and cascading starlight paint the heavens, while ethereal mists shroud ancient mysteries waiting to be unveiled.\n\n    Role in the Universe:\n    As a nexus of cosmic energies, the Forge of Creation exerts a profound influence on the fabric of reality throughout the universe. It is a place of immense significance, revered by many as a source of creation and power. The actions and decisions of the Celestialsapiens, as the guardians of the Forge, have far-reaching consequences, shaping the destiny of worlds and civilizations across the cosmos.\n\n    Guardianship:\n    The Celestialsapiens bear a sacred responsibility as the custodians of the Forge of Creation, entrusted with maintaining the delicate balance of the universe. Their timeless vigil ensures that the cosmic order remains intact, safeguarding against threats that seek to disrupt the harmony of existence. Through their wisdom and stewardship, the Forge endures as a beacon of cosmic light, guiding the destinies of all who dwell within the vast expanse of creation."},
+					{name: "Galvan Prime",image: "https://static.wikia.nocookie.net/ben10/images/7/77/UAF_Galvan_Prime_2.png/",description: "Galvan Prime is the home planet of the highly intelligent Galvan species in the Ben 10 series. Located in the Galvan system, this small, rocky planet is renowned for its advanced technology and scientific achievements. The surface of Galvan Prime is dotted with futuristic cities and bustling metropolises, where Galvans conduct research, develop new technologies, and exchange knowledge with other species. Despite its small size, Galvan Prime boasts a rich and diverse ecosystem, teeming with unique flora and fauna adapted to its harsh environmental conditions. At the heart of the planet lies the city of Galvan B, the capital and cultural center of Galvan society. Here, the Galvan High Council governs the planet, overseeing scientific endeavors and diplomatic relations with other civilizations. With its vast intellect and technological prowess, Galvan Prime serves as a beacon of innovation and progress, inspiring awe and admiration among the denizens of the universe."},
+					{ name: 'Bellwood', image: 'https://static.wikia.nocookie.net/ben10/images/7/7c/SZTWC_%281%29.png', description: "Bellwood City, a pivotal setting in the Ben 10 series, serves as the primary hometown of protagonist Ben Tennyson. Located in the United States, it offers a rich backdrop for the adventures of Ben, Gwen, and Grandpa Max. As a bustling urban center, Bellwood features diverse neighborhoods, from residential areas to bustling commercial districts. Notable landmarks include Plumber Headquarters, a secretive organization dedicated to protecting Earth from extraterrestrial threats, and Mr. Smoothy, a popular hangout spot for the trio. Bellwood's significance lies in its role as a nexus for both ordinary life and extraordinary encounters, serving as a launching pad for Ben's heroic exploits and alien battles."},
+                    { name: 'Null Void', image: 'https://static.wikia.nocookie.net/ben10/images/5/51/WXI2_%281%29.png/', description: "Null Void, an extradimensional prison in the Ben 10 universe, serves as a confining realm for dangerous beings. Existing outside conventional space and time, it's a desolate wasteland characterized by its barren landscapes and ominous atmosphere. With its swirling vortexes and surreal landscapes, the Null Void presents a surreal and foreboding environment. Plumber agents often utilize Null Void technology to contain and imprison intergalactic threats, preventing them from wreaking havoc on Earth. Despite its desolation, the Null Void remains a crucial tool in maintaining peace across the cosmos, serving as a formidable deterrent against those who dare to challenge the forces of order."},
+					{name: "Petropia",image: "https://static.wikia.nocookie.net/ben10/images/5/51/Petropia.png/",description: "Petropia is a craggy, geode-like planet, home to Petrosapiens and Crystalsapiens, characterized by jagged crystal formations and underground kingdoms. Its specialized crystals enable hard-light technology, such as Tetrax's X321 Hoverboard. Historically devastated by Vilgax using the Petropia Back-up Crystal, which a young Tetrax had sold to him, the planet was later restored by Ben (as Diamondhead) with Tetrax's help. This restoration involved using the crystal to align with Petropia's suns, reassembling the planet and reviving its inhabitants. Sugilite, a Crystalsapien, now guards the restored Petropia. The planet is larger than Earth and situated in a system with three suns. Notable visitors include Vilgax, Ben, Gwen, and Kevin, highlighting Petropia's significance in the Ben 10 universe."},
+                    // Add more places here...
+								];
+
+
+
+
+
+               $scope.events = [
+			   {name: 'The Omnitrix Incident',description: "When Ben first stumbled upon the Omnitrix, it marked a pivotal moment in his life and the Ben 10 series. During a summer vacation with his cousin Gwen and their Grandpa Max, Ben inadvertently discovers the powerful alien device. The Omnitrix, resembling a wristwatch-like device, attaches itself to Ben's wrist, forever altering the course of his destiny. Initially unaware of its capabilities, Ben's curiosity leads him to experiment with the Omnitrix, triggering its transformative abilities. This momentous event sets the stage for Ben's extraordinary journey as he embarks on countless adventures across the cosmos, using the Omnitrix to morph into various alien forms and combat threats to Earth and beyond. The discovery of the Omnitrix not only grants Ben incredible powers but also challenges him to embrace his newfound responsibilities as a hero and protector of the universe.",image: "https://static.wikia.nocookie.net/ben10/images/d/d2/OS01_%28Widescreen%29.png/" },
+			   {
+    name: "The Ghostfreaked Out",
+    description: "In one of the episodes of Ben 10, there's a significant event where Zs'Skayr, also known as Ghostfreak, emerges from the Omnitrix. Here's a brief description: The Unveiling of Ghostfreak: During a battle against a powerful enemy, Ben Tennyson transforms into one of his alien forms, Ghostfreak, using the Omnitrix. However, something unexpected happens during the transformation process. Omnitrix Malfunction: As Ghostfreak materializes, Ben realizes that he's unable to control this transformation. The Omnitrix seems to glitch, and Ghostfreak starts to exhibit unusual behavior. Ghostfreak's Rebellion: To Ben's shock, Ghostfreak breaks free from the Omnitrix's control. Instead of obeying Ben's commands, Ghostfreak rebels against him, asserting its own will and intentions. Struggle for Control: Ben finds himself in a precarious situation as he struggles to regain control over Ghostfreak. However, the alien entity proves to be formidable, using its ghostly powers to resist Ben's attempts to subdue it. Consequences of Freedom: With Ghostfreak unleashed, Ben must confront the consequences of this unexpected turn of events. The rebellious alien poses a threat not only to Ben but also to those around him. Race Against Time: As Ghostfreak wreaks havoc, Ben and his allies must race against time to find a way to contain or neutralize the rogue alien before it causes irreparable damage. Lessons Learned: The event serves as a reminder of the risks and challenges associated with wielding the power of the Omnitrix. Ben learns valuable lessons about responsibility, control, and the importance of understanding his alien forms. Resolution: Through determination and quick thinking, Ben eventually manages to reassert control over Ghostfreak, restoring order and preventing further chaos. The experience leaves a lasting impact on Ben, shaping his understanding of the Omnitrix and its capabilities. Overall, the emergence of Ghostfreak from the Omnitrix marks a pivotal moment in Ben's journey, highlighting the complexities of his alien transformations and the challenges he must overcome as a hero.",
+    image: "https://static.wikia.nocookie.net/ben10/images/b/b0/Laugh_%281346%29.png"
+},
+{
+name: "Death of Chromastone and Return of DiamondHead",
+description:" In the climactic showdown of 'Vengeance of Vilgax: Part 2,' Vilgax delivers a fatal blow to Ben Tennyson's Chromastone, shattering his crystalline form into countless fragments. Yet, from the shattered remnants arises Diamondhead, born from the sacrifice of his fallen comrade. Empowered by Chromastone's remnants, Diamondhead confronts Vilgax with unwavering determination. With each strike, he chips away at Vilgax's defenses, refusing to yield to the overwhelming power of his foe. In a battle that shakes the very foundations of reality, Diamondhead emerges victorious, delivering the decisive blow that sends Vilgax crashing to defeat. As the dust settles, Diamondhead stands triumphant, a symbol of resilience and heroism in the face of adversity.",
+image:"https://static.wikia.nocookie.net/ben10/images/0/0a/VoV2_%28599%29.png"
+
+},
+{
+  name: "Kevin absorbs Ultimatrix",
+  description: "Episode Title: The Ultimate Enemy: Part 2\n\nUltimate Aggregor's Ambition: Ultimate Aggregor, a powerful Osmosian villain obsessed with obtaining the five aliens of ultimate power, continues his relentless pursuit of power and domination. Having already absorbed the abilities of four of the five aliens, Aggregor sets his sights on capturing the fifth and final one.\n\nBattle with Ben and Team: Ben Tennyson, along with his friends Gwen and Kevin, confronts Ultimate Aggregor in a fierce battle to prevent him from achieving his nefarious goals. Despite their best efforts, Aggregor proves to be a formidable adversary, using his enhanced abilities to overpower them at every turn.\n\nUltimate Aggregor's Transformation: As the battle reaches its climax, Ultimate Aggregor successfully captures the fifth alien of ultimate power and begins the process of absorbing its abilities. In a dazzling display of energy manipulation, Aggregor undergoes a breathtaking transformation, ascending to an even higher level of power and becoming virtually unstoppable.\n\nKevin's Desperate Act: Faced with the imminent threat posed by Ultimate Aggregor's newfound power, Kevin Levin makes a daring and risky decision. Drawing upon his own abilities as an Osmosian, Kevin absorbs the energy of the Ultimatrix, hoping to gain the power necessary to defeat Aggregor once and for all.\n\nKevin's Transformation: The absorption of the Ultimatrix's power triggers a dramatic transformation in Kevin, as he becomes a living conduit of unimaginable energy. His appearance undergoes a profound change, with his body crackling with pulsating energy as he transcends his previous limitations.\n\nShowdown: With both Kevin and Ultimate Aggregor wielding incredible power, the stage is set for an epic showdown that will determine the fate of the universe. The two adversaries clash in a battle of titanic proportions, their immense energies colliding in a dazzling display of light and power.\n\nResolution: In the climactic finale, Ben and his allies work together to devise a strategy to defeat Ultimate Aggregor and save Kevin from his own destructive impulses. Through courage, teamwork, and sacrifice, they manage to outmaneuver Aggregor and restore Kevin to his senses, averting catastrophe and bringing an end to Ultimate Aggregor's reign of terror.\n\nThis episode is filled with intense action, high-stakes drama, and pivotal character moments, making it a memorable chapter in the Ben 10 saga.",
+  image: "https://static.wikia.nocookie.net/ben10/images/5/53/TFOC306.PNG/"
+},
+
+
+{
+    name: "Saving the Universe in 'A New Dawn' Episode",
+    image: "https://static.wikia.nocookie.net/ben10/images/c/c0/AND_feedback.png/",
+    description: "In the climactic finale of Ben 10: Omniverse, titled 'A New Dawn,' Feedback emerges as the key player in saving the universe from impending doom. As the universe faces a catastrophic threat, Ben Tennyson must assemble his team of aliens to confront the villainous Maltruant, who seeks to rewrite history and reshape reality in his own image. With time running out and the fate of the universe hanging in the balance, Ben transforms into Feedback, harnessing the full extent of his energy absorption abilities to counter Maltruant's temporal manipulation. In a pulse-pounding battle that spans across time and space, Feedback channels the combined energies of his allies and unleashes a devastating final blow against Maltruant, thwarting his plans and restoring order to the universe. Through his selfless actions and unwavering determination, Feedback proves to be the ultimate hero, ensuring that a new dawn of hope and possibility emerges for all beings across the cosmos."
+},
+{
+name: "The Highbreed Invasion Finale",
+image: "https://static.wikia.nocookie.net/ben10/images/0/01/WotW2_%28541%29.png",
+description: "In the 'War of the Worlds: Part 2' episode of Ben 10: Alien Force, the Highbreed fleet arrives on Earth, prompting Ben, Gwen, and Kevin to devise a plan to capture the Highbreed Commander and force a retreat. After battling through Highbreed forces, Ben, as Swampfire, confronts the Commander while Gwen and Kevin fight DNAliens. Kevin is severely injured, leading Gwen to transform into her powerful Anodite form, but Kevin persuades her to revert to avoid losing her humanity. The Plumbers' Helpers and Max return from the Null Void to assist in defeating more DNAliens. Swampfire captures the Commander, who reveals only the Highbreed Supreme can call off the invasion.The team, along with Azmuth, travels to the planet Augstaka to confront the Highbreed Supreme. Captured and imprisoned, Ben transforms into Humungousaur to escape, and they confront the Highbreed Council. Azmuth reveals the Highbreed's genetic purity has caused their sterility and imminent extinction. Ben uses the Omnitrix to repair the Highbreed's genetic damage, mixing their DNA with other species. Initially horrified, the Highbreed are convinced by Reinrassig III to embrace their new genetic diversity. Reinrassig becomes the new Highbreed Supreme and recalls the fleet from Earth.Post-battle, Max mentors the Plumbers' Helpers, Julie heads home, and Ben promises to walk her to school. Darkstar remains at large, and Kevin and Gwen decide to attend an auto show. Paradox returns Azmuth to Galvan Prime. The Omnitrix reboots, unlocking new aliens, and Ben transforms into one of them in the episode's final moment."
+},
+{
+name: "Savior of Petropia",
+image: "https://static.wikia.nocookie.net/ben10/images/e/e9/TSoC_%28563%29.png/",
+description: "In the episode, Ben, Kevin, and Gwen encounter Tetrax, who demands Ben transform into Chromastone to help resurrect his home planet, Petropia. Tetrax uses a sonic device to reveal Chromastone within Diamondhead and gives him a crucial crystal. Vilgax arrives, demanding the crystal, prompting a chase. The Crystalsapien flies to Petropia's ruins, aligning with the suns to restore the planet. As Vilgax attacks, Ben and the team intervene. Vilgax steals the crystal, but it is drained of power. The dying Crystalsapien grows another crystal for Ben. Ben transforms into Diamondhead, uses the crystal to restore Petropia and its inhabitants, and revives the Crystalsapien, Sugilite. The episode ends with Tetrax planning to confront Vilgax, while Vilgax catches Ben's cold."
+},
+    // Add more events here...
+];
+
+
+
+
+
+
+
+
+
+
+               $scope.finalBattles = [
+    { 
+        name: 'Battle against Group of villains', 
+        description: `In the final episode of the classic Ben 10 series, titled "The Final Battle: Part 2," Ben Tennyson, in his alien form as Upchuck, faces off against a formidable lineup of classic Ben 10 villains in an epic showdown. Here's a description of the episode:
+
+Setting the Stage: As the ultimate battle unfolds, Ben finds himself confronting some of his most notorious foes from past encounters, including Vilgax, Zs'Skayr (Ghostfreak), Charmcaster, Hex, and Dr. Animo.
+
+Strategic Utilization of Powers: Despite being outnumbered, Ben strategically utilizes Upchuck's unique abilities, including his powerful acid saliva and enhanced durability, to combat the diverse array of villains.
+
+Teamwork and Allies: Throughout the battle, Ben receives assistance from his friends and allies, including Gwen Tennyson, Grandpa Max, and Kevin Levin, who provide support and guidance in the face of overwhelming odds.
+
+Intense Confrontations: Each confrontation with the villains is marked by intense action sequences and strategic maneuvering, as Ben employs a combination of agility, combat skills, and alien powers to gain the upper hand.
+
+Triumphant Victory: Despite the villains' relentless onslaught, Ben's determination and resourcefulness ultimately lead to victory. Through sheer determination and teamwork, Ben and his allies manage to defeat the combined forces of evil, thwarting their nefarious plans and saving the day once again.
+
+Character Growth and Resolution: The final battle serves as a testament to Ben's growth as a hero throughout his journey. It highlights the importance of courage, resilience, and the power of unity in overcoming adversity.
+
+Closure and Reflection: As the dust settles and peace is restored, Ben takes a moment to reflect on his experiences and the lessons he's learned along the way. The episode concludes with a sense of closure and the promise of new adventures on the horizon.
+
+Overall, the final episode encapsulates the essence of the classic Ben 10 series, delivering thrilling action, heartwarming moments, and a satisfying conclusion to Ben's epic journey as a hero.`,
+        image: "https://static.wikia.nocookie.net/ben10/images/1/12/Nega_%28564%29.png" 
+    },
+    {
+        name: 'The Vilgax Attack',
+        description: `Excited by his new abilities, Ben begins experimenting with the Omnitrix's transformative powers.
+        Meanwhile, the ruthless alien warlord Vilgax learns of the Omnitrix's existence and seeks to possess it for his own nefarious purposes.
+        Vilgax sends his minion, Kevin 11, to retrieve the Omnitrix, leading to a series of confrontations with Ben and his family.
+        Ben faces off against Vilgax in a climactic battle, using his alien forms to combat Vilgax's advanced technology and combat skills.
+        Despite Vilgax's relentless pursuit, Ben ultimately prevails, forcing Vilgax to retreat and abandon his plans.
+        The encounter serves as a pivotal moment for Ben, reinforcing the importance of using his powers responsibly and protecting the Omnitrix from falling into the wrong hands.
+        Ben emerges from the battle with a newfound sense of maturity and purpose, ready to face the challenges that lie ahead as a hero.
+        As the episode concludes, Ben's journey as a guardian of the Omnitrix continues, with many more adventures awaiting him in the cosmos.`,
+        image : "https://static.wikia.nocookie.net/ben10/images/e/e4/Perfect_%28959%29.png/" 
+    },
+{
+	name: "The Big Tick",
+    image: "https://static.wikia.nocookie.net/ben10/images/d/dd/Tick_%28678%29.png/",
+    description: "In the 'The Big Tick' episode of Ben 10, a colossal alien tick arrives on Earth with the destructive intent of devouring the planet. As Ben Tennyson transforms into the new alien Cannonbolt for the first time, he faces the daunting task of stopping this monstrous threat. With the help of his grandfather Max and cousin Gwen, Ben must navigate through a series of challenges and confrontations with the tick's worshippers, who believe it to be a divine entity destined to cleanse the planet. Despite the odds stacked against them, Ben perseveres, utilizing his unique alien powers and strategic thinking to combat the tick's devastating effects. As the battle intensifies, Ben's determination and resourcefulness are put to the test, leading to a thrilling showdown between Cannonbolt and the monstrous tick. Through courage, teamwork, and quick thinking, Ben ultimately emerges victorious, saving Earth from certain destruction and earning a newfound respect for his alien abilities."
+},		
+{
+  name: "AlienX Vs Galactic Gladiator",
+  description: "In Ben 10: Omniverse, the clash between Alien X and Galactic Gladiator is a cosmic spectacle of immense proportions. These titans collide, causing reality itself to tremble under their power. Alien X, with his reality-warping abilities, confronts Galactic Gladiator's formidable strength and skill. The battlefield transforms into a dazzling display of cosmic energy, with shockwaves rippling across the universe. Despite Alien X's godlike power, Galactic Gladiator proves to be a worthy adversary, matching him blow for blow. The universe's fate hangs in the balance as these cosmic champions vie for supremacy. In a climactic finale, one emerges victorious, leaving an indelible mark on cosmic history. This moment epitomizes the grandeur and scale of Ben 10: Omniverse, captivating audiences with its cosmic spectacle and high-stakes drama.",
+  image: "https://static.wikia.nocookie.net/ben10/images/3/31/UVT_%28242%29.png"
+},
+    { 
+        name: 'Ultimate Aggregor showdown', 
+		description: "The epic clash between Ultimate Aggregor and Ultimate Kevin unfolds in the dimensional void, a realm where the laws of physics are distorted and reality itself is in flux. Ultimate Aggregor, fueled by his relentless pursuit of power, faces off against Ultimate Kevin, who has absorbed the abilities of the Ultimatrix. Both adversaries are at the peak of their power, unleashing devastating energy blasts and wielding incredible strength. As their titanic battle rages on, the very fabric of the dimensional void trembles under the force of their attacks, creating a spectacle of cosmic proportions. The outcome of this epic showdown remains uncertain, as the fate of the universe hangs in the balance.",
+	    image: "https://static.wikia.nocookie.net/ben10/images/e/e0/TFOC286.PNG" 
+    },
+	{name: "Vilgax's Vicious Vendetta: Albedo's Last Stand",description: "In The Final Battle: Part 1 of Ben 10: Alien Force, the confrontation between Ben and his adversary, Albedo, intensifies dramatically. Albedo's theft of the Ultimatrix and his abduction of Gwen and Kevin propel Ben into a desperate race against time to rescue them. With Vilgax as his ally, Albedo's menace escalates, pushing Ben to his limits. Albedo's mastery of the Ultimatrix grants him unprecedented power, unveiling formidable new transformations like Ultimate Humungousaur. Despite Ben's bravery, he faces overwhelming odds against Albedo's cunning tactics and Vilgax's menacing presence. The episode unfolds with intense action, emotional turmoil, and a pivotal decision as Ben weighs the safety of his friends against the fate of the world.",image: "https://static.wikia.nocookie.net/ben10/images/b/b4/TFB2_%28104%29.png/"},
+    {name: "Nemesis Unleashed - Vilgax and Kevin's Vengeance",description: "Back With a Vengeance, the thirteenth and final episode of Ben 10's second season, sees Ben unlocking the Omnitrix's Master Control, granting instant transformations. Vilgax and Kevin join forces to capture Ben and seize the Omnitrix. A confrontation occurs at Niagara Falls, leading to a dramatic showdown. Ben sacrifices the Omnitrix to save Gwen, but Kevin betrays them by forcibly removing it. In the Null Void, Vilgax and Kevin are trapped, while Ben ultimately reclaims the Omnitrix. The episode explores Ben's arrogance and the consequences of power abuse, with Gwen's resourcefulness ultimately saving the day.",image: "https://static.wikia.nocookie.net/ben10/images/9/94/MER_%28377%29.png/"},
+	
+	// Add more final battles here...
+];
+
+
+                $scope.showSection = function (section) {
+    // Reset the activeCharacter index to collapse all subsections
+    $scope.activeCharacter = -1;
+
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(function (el) {
+        el.classList.remove('active');
+    });
+
+    // Show selected section
+    document.getElementById(section + 'Section').classList.add('active');
+
+    // Set current section for highlighting in the menu
+    $scope.currentSection = section;
+};
+
+
+$scope.toggleSection = function (section) {
+    // Get the expanded section
+    var activeSection = document.getElementById(section + 'Section');
+    
+    // Check if the section is already expanded
+    var isActive = activeSection.classList.contains('active');
+
+    // Collapse all sections
+    document.querySelectorAll('.section').forEach(function (el) {
+        el.classList.remove('active');
+    });
+
+    // If the section is not already expanded, expand it
+    if (!isActive) {
+        // Calculate the offset of the expanded section relative to the top of the viewport
+        var offsetTop = activeSection.getBoundingClientRect().top;
+        
+        // Expand the section
+        activeSection.classList.add('active');
+        
+        // Scroll the page to the top of the expanded section
+        window.scrollTo({
+            top: window.pageYOffset + offsetTop,
+            behavior: 'smooth'
+        });
+    }
+};
+
+
+
+
+ $scope.toggleSubSection = function (index) {
+                    if ($scope.activeCharacter === index) {
+                        $scope.activeCharacter = -1; // Collapse if already expanded
+                    } else {
+                        $scope.activeCharacter = index; // Expand if collapsed
+                    }
+                };
+
+                // Initially show characters section
+                $scope.showSection('characters');
+				
+				
+				
+				
+				 $scope.keyDownHandler = function(event) {
+                // Check for specific key combinations
+                if (event.key === 'a' && event.ctrlKey) {
+                    // Switch to aliens section
+                    $scope.showSection('aliens');
+					event.preventDefault();
+                } else if (event.key === 'e' && event.ctrlKey) {
+                    // Switch to events section
+                    $scope.showSection('events');
+					event.preventDefault();
+                } else if (event.key.toLowerCase() === 'c' && event.ctrlKey) {
+                    // Switch to characters section
+                    $scope.showSection('characters');
+					event.preventDefault();
+                } else if (event.key.toLowerCase() === 'p' && event.ctrlKey) {
+                    // Switch to places section
+                    $scope.showSection('places');
+					event.preventDefault();
+                } else if (event.key.toLowerCase() === 'f' && event.ctrlKey) {
+                    // Switch to final battles section
+                    $scope.showSection('finalBattles');
+					event.preventDefault();
+                }
+                // Add more else if blocks for other sections if needed
+            };
+            });
+			angular.element(document).ready(function () {
+        angular.element(document).on('keydown', function (event) {
+            angular.element(document.body).scope().keyDownHandler(event);
+        });
+    });
+			
+			   function refreshpage() {
+		window.scrollTo(0,0);
+            location.reload(); // Reload the entire page
+        }
+
+
+        // Function to display the message for a specific time
+        function showMessageForTime() {
+            var messageElement = document.getElementById('message');
+            messageElement.style.display = 'block'; // Show the message
+            
+            // Hide the message after 5 seconds (5000 milliseconds)
+            setTimeout(function () {
+                messageElement.style.display = 'none'; // Hide the message
+            }, 3000);
+        }
+
+        // Call the function when the page is loaded
+        window.onload = function () {
+            showMessageForTime();
+        };
+		
+    </script>
+</body>
+
+</html>

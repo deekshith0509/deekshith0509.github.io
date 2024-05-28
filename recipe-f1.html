@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealDB API Demo</title>
+    <style>
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode {
+    background-color: rgba(17, 17, 17, 0.8); /* Dark mode background color with reduced opacity */
+    color: #fff;
+}
+
+.dark-mode body::before {
+    opacity: 0.6; /* Dark mode: reduce the opacity of the background image */
+}
+
+/* Header styles */
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 32px;
+    transition: color 0.3s ease;
+}
+
+/* Dark mode toggle button */
+#darkModeToggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+#darkModeToggle:hover {
+    background-color: #0056b3;
+}
+
+/* Dropdown menu styles */
+select {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 80%;
+    max-width: 400px;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+select:hover,
+select:focus {
+    border-color: #007bff;
+}
+
+/* Input container styles */
+.input-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.input-container input[type="text"] {
+    flex: 1;
+    margin: 0 20px 0 20px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.input-container input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.input-container button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Result container styles */
+#resultContainer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Meal container styles */
+.meal-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Meal card styles */
+.meal {
+    width: calc(33.33% - 20px);
+    margin: 0 10px 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.meal:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.meal img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Button styles */
+#b1 {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#b1:hover {
+    background-color: #0056b3;
+}
+
+/* Input container in dark mode */
+.dark-mode .input-container input[type="text"],
+.dark-mode .input-container button {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.dark-mode select {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+.dark-mode {
+	background-color: black;
+}
+.dark-mode .meal {
+	background-color: gray;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+        <button id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <h1 align="center" >MealDB API Demo</h1>
+
+    <!-- Dropdown menu for selecting actions -->
+    <select id="actionSelect" onchange="selectAction()">
+	    <option value="">select an Option</option>
+        <option value="search">Search meal by name</option>
+        <option value="listByFirstLetter">List all meals by first letter</option>
+        <option value="lookupById">Lookup full meal details by id</option>
+        <option value="random">Lookup a single random meal</option>
+        <option value="listCategories">List all meal categories</option>
+        <option value="listAllCategories">List all Categories, Area, Ingredients</option>
+        <option value="filterByIngredient">Filter by main ingredient</option>
+        <option value="filterByCategory">Filter by Category</option>
+        <option value="filterByArea">Filter by Area</option>
+    </select>
+
+    <!-- Input fields based on selected action -->
+    <div id="inputContainer" class="input-container">
+        <!-- Inputs will be added dynamically here -->
+    </div>
+
+    <!-- Button to trigger action -->
+    <button id ="b1" onclick="performAction()">Perform Action</button>
+
+    <!-- Container for displaying results -->
+    <div id="resultContainer" class="result-container">
+        <!-- Results will be displayed here -->
+    </div>
+
+    <script>
+        // Function to dynamically show input fields based on selected action
+        function selectAction() {
+            const actionSelect = document.getElementById('actionSelect');
+            const selectedAction = actionSelect.value;
+            const inputContainer = document.getElementById('inputContainer');
+            inputContainer.innerHTML = ''; // Clear previous input fields
+
+            switch(selectedAction) {
+                case 'search':
+                case 'listByFirstLetter':
+                case 'lookupById':
+                case 'filterByIngredient':
+                case 'filterByCategory':
+                case 'filterByArea':
+                    inputContainer.innerHTML = `
+                        <input type="text" id="textInput" placeholder="Enter value">
+                    `;
+                    break;
+                case 'random':
+                    // No input fields needed for random action
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Function to perform selected action
+        function performAction() {
+            const actionSelect = document.getElementById('actionSelect');
+            const selectedAction = actionSelect.value;
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = ''; // Clear previous results
+
+            switch(selectedAction) {
+                case 'search':
+                    searchMeal();
+                    break;
+                case 'listByFirstLetter':
+                    listMealsByFirstLetter();
+                    break;
+                case 'lookupById':
+                    lookupMealDetails();
+                    break;
+                case 'random':
+                    fetchRandomMeal();
+                    break;
+                case 'listCategories':
+                    listMealCategories();
+                    break;
+                case 'listAllCategories':
+                    listCategories();
+                    break;
+                case 'filterByIngredient':
+                    filterByIngredient();
+                    break;
+                case 'filterByCategory':
+                    filterByCategory();
+                    break;
+                case 'filterByArea':
+                    filterByArea();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Search meal by name
+        function searchMeal() {
+            const mealName = document.getElementById('textInput').value;
+            fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error searching for meal:', error));
+        }
+
+        // Function to display search results
+       // Function to display search results
+function displaySearchResults(data) {
+    const resultContainer = document.getElementById('resultContainer');
+    resultContainer.innerHTML = '';
+
+    // Check if data.meals exists and it is an array
+    if (data.meals && Array.isArray(data.meals)) {
+        data.meals.forEach(meal => {
+            // Create elements to display meal information
+            const mealDiv = document.createElement('div');
+            mealDiv.classList.add('meal');
+            mealDiv.innerHTML = `
+                <h3>${meal.strMeal}</h3>
+                <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                <p>ID: ${meal.idMeal}</p>
+            `;
+            resultContainer.appendChild(mealDiv);
+        });
+    } else {
+        resultContainer.innerHTML = '<p>No meals found.</p>';
+    }
+}
+
+
+
+        // List all meals by first letter
+        function listMealsByFirstLetter() {
+            const firstLetter = document.getElementById('textInput').value.toLowerCase();
+            fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${firstLetter}`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error listing meals by first letter:', error));
+        }
+
+        // Lookup full meal details by id
+        function lookupMealDetails() {
+            const mealId = document.getElementById('textInput').value;
+            fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayMealDetails(data);
+                })
+                .catch(error => console.error('Error looking up meal details:', error));
+        }
+
+        // Function to display meal details
+        function displayMealDetails(data) {
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = '';
+            if (data.meals) {
+                const meal = data.meals[0];
+                const mealDiv = document.createElement('div');
+                mealDiv.innerHTML = `
+                    <h3>${meal.strMeal}</h3>
+                    <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                    <p>${meal.strInstructions}</p>
+                `;
+                resultContainer.appendChild(mealDiv);
+            } else {
+                resultContainer.innerHTML = '<p>No meal found.</p>';
+            }
+        }
+
+        // Lookup a single random meal
+        function fetchRandomMeal() {
+            fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+                .then(response => response.json())
+                .then(data => {
+                    displayMealDetails(data);
+                })
+                .catch(error => console.error('Error fetching random meal:', error));
+        }
+
+        // List all meal categories
+        function listMealCategories() {
+            fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
+                .then(response => response.json())
+                .then(data => {
+                    const resultContainer = document.getElementById('resultContainer');
+                    resultContainer.innerHTML = '';
+                    if (data.categories) {
+                        const categoriesList = document.createElement('ul');
+                        data.categories.forEach(category => {
+                            const categoryItem = document.createElement('li');
+                            categoryItem.textContent = category.strCategory;
+                            categoriesList.appendChild(categoryItem);
+                        });
+                        resultContainer.appendChild(categoriesList);
+                    } else {
+                        resultContainer.innerHTML = '<p>No categories found.</p>';
+                    }
+                })
+                .catch(error => console.error('Error listing meal categories:', error));
+        }
+
+        // List all Categories, Area, Ingredients
+        function listCategories() {
+            fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
+                .then(response => response.json())
+                .then(data => {
+                    const resultContainer = document.getElementById('resultContainer');
+                    resultContainer.innerHTML = '';
+                    if (data.meals) {
+                        const categoriesList = document.createElement('ul');
+                        data.meals.forEach(item => {
+                            const categoryItem = document.createElement('li');
+                            categoryItem.textContent = item.strCategory;
+                            categoriesList.appendChild(categoryItem);
+                        });
+                        resultContainer.appendChild(categoriesList);
+                    } else {
+                        resultContainer.innerHTML = '<p>No categories found.</p>';
+                    }
+                })
+                .catch(error => console.error('Error listing categories, area, ingredients:', error));
+        }
+
+        // Filter by main ingredient
+        function filterByIngredient() {
+            const ingredient = document.getElementById('textInput').value;
+            fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`)
+                .then(response => response.json())
+                .then(data => {
+				    console.log(data)
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error filtering by ingredient:', error));
+        }
+
+        // Filter by Category
+        function filterByCategory() {
+            const category = document.getElementById('textInput').value;
+            fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error filtering by category:', error));
+        }
+
+        // Filter by Area
+        function filterByArea() {
+            const area = document.getElementById('textInput').value;
+            fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error filtering by area:', error));
+        }
+		
+		
+		
+document.addEventListener('keydown', function(event) {
+    // Check if the key pressed is 'q' and Ctrl key is pressed simultaneously
+    if (event.key === 'q' && event.ctrlKey) {
+        // Focus on the select element with ID "actionSelect"
+        document.getElementById('actionSelect').focus();
+    }
+    
+    // Check if the key pressed is 'f' and Ctrl key is pressed simultaneously
+    if (event.key === 'f' && event.ctrlKey) {
+        // Trigger click event on the button with ID "b1"
+        document.getElementById('b1').click();
+		event.preventDefault();
+    }
+    
+if (event.key === 'Enter') {
+    // Check if the focused element is the select element
+    if (document.activeElement.id === 'actionSelect') {
+        // Focus on the input field with ID "textInput"
+        let textInput = document.getElementById('textInput');
+        if (textInput) {
+            textInput.focus();
+        } else {
+            // If there is no input field, directly click on button "b1"
+            document.getElementById('b1').click();
+        }
+    } else if (document.activeElement.id === 'textInput') {
+        // Check if the input field is focused
+        document.getElementById('b1').click();
+    } else {
+        // If there is no input field, directly click on button "b1"
+        document.getElementById('b1').click();
+    }
+}
+
+});
+
+	// Function to toggle dark mode
+function toggleDarkMode() {
+    var body = document.body;
+    body.classList.toggle("dark-mode");
+}
+		
+		
+    </script>
+</body>
+</html>
