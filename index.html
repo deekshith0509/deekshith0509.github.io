@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
 
   <title>My GitHub Page</title>
   <style>
@@ -11,9 +12,6 @@
 .custom-cursor{
     cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neon.cur'), auto;
  }
-
-/* Your existing CSS styles */
-
 
 #repository-contents-container {
   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
@@ -67,7 +65,7 @@ body {
   user-select: none;
   font-family: 'Arial', sans-serif;
   color: #fff;
-  margin: 20px;
+  margin: 30px;
   overflow: auto;
   background: linear-gradient(45deg, rgba(0,155, 0, 1.0),rgba(200, 0, 0, 1.0), rgba(0, 145, 0, 1.0));
   background-size: 400% 400%;
@@ -249,6 +247,7 @@ a.external-link:hover {
   width: 200px;
   transition: all 0.3s ease;
 }
+
 /* Style the options when the select is expanded */
 #search-engine {
   color: white;
@@ -272,7 +271,8 @@ a.external-link:hover {
 #developer-link {
   position: relative;
   color: green;
-  text-decoration: underline;
+text-decoration: underline overline #556B2F;
+font-family: "Exo 2", sans-serif;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
@@ -291,55 +291,113 @@ a.external-link:hover {
   }
 }
 
-
-@media only screen and (max-width: 768px) {
-  #weather {
-    top: 45px; /* Adjust the position for smaller screens */
-    right: 10px; /* Adjust the position for smaller screens */
-  }
-  
-}
-
-
 /* For larger screens, display the joke normally */
-#joke {
+#joke{
     position: absolute;
     top: 10px; /* Adjust as needed */
-    right: 10px; /* Adjust as needed */
+	right: -10px;
 }
 
 /* For smaller screens, apply the marquee effect */
 @media screen and (max-width: 768px) {
 
+    /* General style for marquee elements */
+    .marquee {
+        text-decoration: underline;
+        position: relative; /* Set relative positioning */
+        margin: 0 -10px 0 -10px;
+        white-space: nowrap; /* Prevent line breaks */
+        overflow: hidden; /* Hide overflowing content */
+		
+    }
 
-    #joke {
-	    text-decoration: underline;
-        position: static; /* Remove absolute positioning */
-        width: 100%; /* Make it full-width */
-        white-space: nowrap; /* Prevent line breaks */
-        animation: marquee 10s linear infinite; /* Apply marquee animation */
+    /* Apply marquee animation */
+    .marquee-content {
+        display: inline-block;
+		
+        animation: marquee 20s linear infinite; /* Apply marquee animation */
     }
-	#quote {
-	    text-decoration: underline;
-        position: static; /* Remove absolute positioning */
-        width: 100%; /* Make it full-width */
-        white-space: nowrap; /* Prevent line breaks */
-        animation: marquee 15s linear infinite; /* Apply marquee animation */
-    }
+
     @keyframes marquee {
         0% { transform: translateX(100%); }
         100% { transform: translateX(-150%); }
     }
+#joke {
+	bottom: 10px !important;
+    position: relative !important;
+    height: auto !important; /* Adjust the height value as needed */
 }
+
+#temp {
+	height: auto !important;
+
+}
+#clock {
+    position: relative;
+	top: 34px;
+    display: inline-block;
+	font-size: 2.4em !important;
+	font-family: cursive;
+}
+#quote {
+border: none !important;
+}
+
+.bl {
+    position: absolute;
+    top: 0;
+	left:0;
+    width: 4px; /* Set the width to match the border width */
+    height: 100%; /* Occupy the full height of the quote */
+    background-color: black; /* Set the border color */
+}
+
+
+.b2 {
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 4px; /* Set the width to match the border width */
+    height: 100%; /* Occupy the full height of the quote */
+    background-color: black; /* Set the border color */
+	border-bottom: solid 4px #123456;
+}
+.quotes-text {
+	display: none;
+	}
+#joke-text {
+	display: none;
+	}
+  #weather {
+    Position: absolute;
+    top: 95px !important; /* Adjust the position for smaller screens */
+    right: 10px; /* Adjust the position for smaller screens */
+  }
+
+
+
+
+body {
+	margin-top: 30px;
+}
+
+div {
+    margin: 1px 0px 15px 0px; /* Top, Right, Bottom, Left */
+}
+
+}
+
 
 
 #clock {
   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
   position: relative; /* Position absolute to its parent container */
-  top: calc(100vh-50px);
-  font-size: 1.2em;
+  top: calc(190vh-50px);
+  font-size: 3.6em;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  display: inline-block;
+  font-family: cursive;
 }
 
 #weather {
@@ -347,7 +405,7 @@ a.external-link:hover {
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   position: absolute;
-  top: 50px;
+  top: 49px;
   right: 20px;
   z-index: 9999; /* Ensure the weather element is above other elements */
 }
@@ -359,9 +417,26 @@ a.external-link:hover {
 #quote {
   display: inline-block;
   text-align: center;
+  border: 3.6mm ridge rgba(211, 100, 50, .3);
 }
 
+.quotes-text {
+    position: relative;
+    top: -10px; /* Adjust this value as needed */
+	text-decoration: underline dotted red;
+	font-family:cursive;
+	font-size:30px;
+}
 
+#temp {
+	position: relative;
+	bottom:20px;
+	border-width: 10px 10px 10px 10px;
+    width: 100%; /* Ensures the text spans the entire width of the screen */
+    padding: 16px; /* Example padding */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+    text-align: center; /* Centers the text horizontally */
+}
 
 
 
@@ -369,7 +444,11 @@ a.external-link:hover {
 </head>
 <body>
 
-    <p id="joke"></p>
+<div class="marquee" ><div id="temp"><span class="bl"></span>
+    <div class="marquee-content" id="joke"></div>
+	<span class="b2"></span>
+</div></div>
+
 
   <!-- Clock and weather forecast -->
   <div id="clock" onclick="refreshPage()" ></div>
@@ -378,8 +457,8 @@ a.external-link:hover {
   <div id="weather"></div>
 
 <br>
-<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" ><u>Developed BY</u></a></h1>
-  <h2 id="repo">My Repository:</h2>
+<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" >Developed BY</a></h1>
+  <h2 id="repo" style="font-family: serif;">My Repository:</h2>
 
  <div id="repository-contents-container">
         <!-- Fetched repository contents will be displayed here -->
@@ -412,7 +491,9 @@ a.external-link:hover {
     </div>
   </div>
   <div id="quote-container">
-      <div id="quote"></div>
+      <div class= "marquee" ><span class="bl"></span><div class="quotes-text">Random-Quote</div><div id="quote" class="marquee-content"></div>
+<span class="b2"></span>
+</div>
 </div>
   <script>
 
@@ -745,18 +826,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
           resultDiv.innerHTML = `<blockquote>${data.content}</blockquote><p>- ${data.author}</p>`;
         })
-
-
-
         // Get current date
         var currentDate = new Date().toISOString().split('T')[0];
 
-        // Display joke for the current date
-        if (jokes[currentDate]) {
-            document.getElementById("joke").textContent = jokes[currentDate];
-        } else {
-            document.getElementById("joke").textContent = "Sorry, no joke for today!";
-        }
+if (jokes[currentDate]) {
+    document.getElementById("joke").innerHTML = `<p id="joke-text" style="display: inline;">Joke🤣: </p><p style="display: inline;">${jokes[currentDate]}</p>`;
+} else {
+    document.getElementById("joke").textContent = "Sorry, no joke for today!";
+}
 
 
 
