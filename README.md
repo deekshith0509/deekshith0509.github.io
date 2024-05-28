@@ -79,6 +79,44 @@ Behind every line of code and every pixel on the screen stands a passionate deve
 
 ## ⚓Updates
 
+-  ***Ben 10-FanPage***: Created with the passion towards an animation franchise Ben-10.
+
+- ***Advanced JavaScript functions***: Easily calculate ages, Factorial, Prime Numbers, BMI, Sorting, Temperature Conversion, etc...
+
+- ***Story Telling***: Dynamic Interaction of the user with the Story based on various events according to the user's choice.
+
+- ***QR functionality***: Generates QR code while typing and also used to decode an existing QR code into a Text Format.
+
+
+
+- so on.......
+
+ 
+## 🪶Features
+
+<div id ="d4">
+
+
+Prepare to be amazed as we unveil the extraordinary features awaiting you:
+- **Personal Portfolio**: Show all your skills and projects.
+
+- **Dive into the Digital Ocean**: Easily search the internet with different search engines.
+
+- **Battle of Wits**: Play Tic-Tac-Toe against a smart computer.
+
+- **Harmony of Melodies**: Listen to your favorite music with a local player.
+
+- **Unlock Your Device's Secrets**: Find hidden info about your device, like location data.
+
+- **Palette of Possibilities**: Create and play with colors using a color palette generator.
+
+- **Emoji Magic**: Turn emojis into PNG images to express yourself.
+
+- **Music in Motion**: See your music with a visualizer.
+
+- **Culinary Concoctions**: Follow recipes easily with a recipe guide.
+
+
 - **QR Code Generator and Decoder**: Generate and decode QR codes easily with this tool.
 
 
@@ -98,40 +136,13 @@ Behind every line of code and every pixel on the screen stands a passionate deve
 
 - **Translator**: Translate text between different languages.
 
-- **Library for Books**: Access a vast library of books covering various genres and topics.
+- **Library of Books**: Access a vast library of books covering various genres and topics.
 
 - **Wallpapers Website**: Explore a collection of high-quality wallpapers for your desktop or mobile device.
 
 - **Parallax Portfolio**: Showcase your portfolio with stunning parallax effects, enhancing the visual appeal.
 
 - **Resume Validator**: Ensure your resume meets industry standards with this handy validator tool.
-
- 
-## 🪶Features
-
-<div id ="d4">
-
-
-Prepare to be amazed as we unveil the extraordinary features awaiting you:
-
-- **Personal Portfolio**: Explore my digital universe showcasing my skills and projects.
-
-- **Dive into the Digital Ocean**: Easily navigate through various search engines, empowering you to explore the vast internet.
-
-- **Battle of Wits**: Challenge yourself with the strategic Tic-Tac-Toe game, powered by an advanced algorithm.
-
-- **Harmony of Melodies**: Immerse yourself in a symphony of sound using the local music player, bringing your favorite tunes to life.
-
-- **Unlock Your Device's Secrets**: Discover hidden insights about your device, including geolocation data.
-
-- **Palette of Possibilities**: Experiment with vibrant colors using the dynamic color palette generator, igniting creativity with every click.
-
-- **Emoji Magic**: Express emotions creatively with the emoji to PNG converter, turning ordinary expressions into captivating images.
-
-- **Music in Motion**: Visualize sound with the music visualizer, transforming auditory experiences into mesmerizing visuals.
-
-- **Culinary Concoctions**: Embark on a culinary journey with the recipe instructor, guiding you through the art of gastronomy with ease and precision.
-
 
 </div>
 
