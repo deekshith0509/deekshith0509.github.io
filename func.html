@@ -161,7 +161,8 @@ button:hover::before {
     <button onclick="reverseArray()">Reverse Array</button>
     <button onclick="countVowels()">Count Vowels</button>
     <button onclick="calculateAge()">Calculate Age</button>
-    <button onclick="extractDigits()">Extract Digits</button>
+    <button onclick="convertNumber()">Convert Number</button>
+	<button onclick="extractDigits()">Extract Digits</button>
 </div>
 <div id="output" class="container">
     <!-- Output will be displayed here -->
@@ -573,12 +574,9 @@ function calculateAge() {
     var birthdayDurationDays = Math.floor(birthdayDurationHours / 24);
     var birthdayDurationMonths = Math.abs(currentDate.getMonth() - nextBirthday.getMonth()) + (12 * (nextBirthday.getFullYear() - currentDate.getFullYear())) - (currentDate.getDate() < nextBirthday.getDate() ? 1 : 0);
 
-    birthdayDurationHours %= 24;
-    birthdayDurationMinutes %= 60;
-    birthdayDurationSeconds %= 60;
 
     document.getElementById("output").innerText = "Your age is: " + years + " years, " + ageMonths + " months, " + ageDays + " days, " + totalHours + " hours, " + totalMinutes + " minutes, " + totalSeconds + " seconds.\n";
-    document.getElementById("output").innerText += "Upcoming birthday duration: " + birthdayDurationMonths + " months, " + birthdayDurationDays + " days, " + birthdayDurationHours + " hours, " + birthdayDurationMinutes + " minutes, " + birthdayDurationSeconds + " seconds.";
+    document.getElementById("output").innerText += "Upcoming birthday duration: " + birthdayDurationMonths + " months, " + birthdayDurationDays + " days, " + birthdayDurationHours + " hours, " + birthdayDurationMinutes + " minutes, " + birthdayDurationSeconds + " seconds."+"\n\nHMS is Accurate";
 }
 
 // Function to count leap years between two years
@@ -609,6 +607,45 @@ function countLeapYears(startYear, endYear) {
             document.getElementById("output").innerText = "No input provided!";
         }
     }
+
+
+function convertNumber() {
+    // Prompt user to enter number, current base, and target base separated by commas
+    const userInput = prompt("Enter the number, its current base, and the target base separated by commas (e.g., number, currentBase, targetBase):");
+
+    // Check if the user canceled the prompt or entered an empty string
+    if (!userInput) {
+        return;
+    }
+
+    // Split the input by commas and trim whitespace
+    const inputValues = userInput.split(",").map(value => value.trim());
+
+    // Check if the input contains exactly three values
+    if (inputValues.length !== 3) {
+        alert("Invalid input format. Please enter three values separated by commas.");
+        return;
+    }
+
+    // Extract the values for number, current base, and target base
+    const inputNumber = inputValues[0];
+    const inputBase = parseInt(inputValues[1]);
+    const conversionBase = parseInt(inputValues[2]);
+
+    // Check if the input values are valid numbers
+    if (isNaN(inputNumber) || isNaN(inputBase) || isNaN(conversionBase)) {
+        alert("Invalid input. Please enter valid numbers.");
+        return;
+    }
+
+    // Convert the input number to the desired base
+    const convertedNumber = parseInt(inputNumber, inputBase).toString(conversionBase);
+
+    // Display the result
+     document.getElementById("output").innerText = "The conversion of the current number "+ inputNumber+ " with base " + inputBase + " to target base "+ conversionBase +" is " + convertedNumber;
+}
+
+ 
 	
 	// Function to toggle dark mode
 function toggleDarkMode() {
