@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +24,7 @@
   background: linear-gradient(169deg,rgba(0, 199, 0, 1.0), rgba(0, 0, 255, 0.5), rgba( 255, 0, 0, 1.0));
   background-size: 600% 600%;
   animation: gradientAnimation 5s infinite;
-  max-width: 80%; /* Adjust max-width for responsiveness */
+  max-width: 100%; /* Adjust max-width for responsiveness */
   width: 90%; /* Adjust width for responsiveness */
   height: 300px; /* Fixed height */
   padding: 20px;
@@ -38,14 +39,21 @@
 /* Additional adjustments for smaller screens */
 @media (max-width: 768px) {
   #repository-contents-container {
-    max-width: 95%;
-    width: 95%;
+    margin: 0 auto;
+    max-width: 98%;
+	position: relative;
+	right: 19px;
+    width:98%;
     font-size: 16px; /* Adjust font size for smaller screens */
-    height: 200px !important; /* Fixed height for smaller screens */
+    height: 300px !important; /* Fixed height for smaller screens */
     overflow-y: scroll; /* Add a scrollbar when content exceeds the height */
+ }
+ 
+   body {
+    font-size: 14px;
   }
-}
-
+  
+ 
 }
 
 
@@ -87,19 +95,6 @@ body::-webkit-scrollbar-thumb {
   border-radius: 5px;
 }
 
-/* Example media query for adjusting font size for smaller screens */
-@media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-  
-  /* Additional adjustments for smaller screens */
-  #repository-contents-container {
-    width: 80%; /* Adjust width for smaller screens */
-    font-size: 14px; /* Adjust font size for smaller screens */
-    height: auto; /* Remove fixed height for smaller screens */
-  }
-}
 
 /* Your existing CSS styles continued... */
 h1,
@@ -223,21 +218,45 @@ a.external-link:hover {
   border: none;
   margin: 10px;
   border-radius: 8px;
-  transition: background-color 0.3s;
   font-size: 1em;
 }
 
 #search-button:hover,
 #voice-search-button:hover {
   top: 90px;
-   animation: fadeInUp 1s ease forwards;
   background-color: #004080;
   border: 2px solid #002d59; /* Add a border */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow */
   transition: all 0.3s ease; /* Add a transition effect */
-	 cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/rgb.cur'), auto;
+  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/rgb.cur'), auto;
   /* Additional customizations */
+  transform: scale(1.1); /* Scale the button slightly on hover */
+  color: #fff; /* Change text color to white */
 }
+
+#search-button:hover::before,
+#voice-search-button:hover::before {
+  content: ""; /* Add a pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  border-radius: 5px; /* Rounded corners */
+}
+
+#search-button:hover::after,
+#voice-search-button:hover::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: FontAwesome; /* Use FontAwesome for icons */
+  font-size: 24px;
+  color: #fff; /* White icon color */
+}
+
 #search-engine {
   padding: 10px;
   font-size: 16px;
@@ -374,8 +393,12 @@ border: none !important;
     right: 10px; /* Adjust the position for smaller screens */
   }
 
-
-
+.quotes-text {
+	display: none;
+}
+#search-input {
+	margin:10px;
+}
 
 body {
 	margin-top: 30px;
@@ -392,7 +415,7 @@ div {
 #clock {
   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
   position: relative; /* Position absolute to its parent container */
-  top: calc(190vh-50px);
+  top: 24px;
   font-size: 3.6em;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -421,12 +444,18 @@ div {
 }
 
 .quotes-text {
+    text-align: center;
+    text-decoration: underline dotted red;
+    font-family: cursive;
+    font-size: 30px;
     position: relative;
-    top: -10px; /* Adjust this value as needed */
-	text-decoration: underline dotted red;
-	font-family:cursive;
-	font-size:30px;
+	top: -10px;
+
 }
+.quotes-text span:hover{
+		cursor: pointer;
+}
+
 
 #temp {
 	position: relative;
@@ -468,7 +497,7 @@ div {
   <div id="tools" >
     <div id="search-bar">
       <h2>Search Your Query with Your Preferred Search Engine</h2>
-      <input type="text" id="search-input" placeholder="Enter your search" >
+      <input type="text" id="search-input"  x-webkit-speech placeholder="Enter your search" autocomplete="off">
       <select id="search-engine">
         <option value="google">Google</option>
         <option value="bing">Bing</option>
@@ -488,10 +517,11 @@ div {
       </select>
       <button id="search-button" onclick="performSearch()">Search</button>
  <button id="voice-search-button">Voice Search</button> 
+ <p id="voice-status"></p>
     </div>
-  </div>
+  </div><div class="quotes-text" onclick="fetchQuote()"><span>Random-Quote</span></div>
   <div id="quote-container">
-      <div class= "marquee" ><span class="bl"></span><div class="quotes-text">Random-Quote</div><div id="quote" class="marquee-content"></div>
+      <div class= "marquee" ><span class="bl"></span><div id="quote" class="marquee-content"></div>
 <span class="b2"></span>
 </div>
 </div>
@@ -586,14 +616,7 @@ function openHtmlFileFromLocalStorage(fileName) {
         console.error('HTML file URL not found in local storage:', fileName);
     }
 }
-
-
-
-
-
-
-
- } 
+} 
 
         });
       })
@@ -705,66 +728,80 @@ function openHtmlFileFromLocalStorage(fileName) {
                 performSearch();
             }
         });
-function initVoiceSearch() {
-  const voiceSearchButton = document.getElementById('voice-search-button');
-  const searchInput = document.getElementById('search-input');
 
-  // Check if elements exist
-  if (!voiceSearchButton || !searchInput) {
-    console.error('Voice search elements not found');
+        
+        // Call the function to initialize voice search when the DOM is fully loaded
+                document.addEventListener("DOMContentLoaded", function() {
+            const speechInput = document.getElementById("search-input");
+            const startButton = document.getElementById("voice-search-button");
+            const status = document.getElementById("voice-status");
+
+            // Check if the browser supports the Web Speech API
+            if (!('webkitSpeechRecognition' in window)) {
+    status.textContent = "Your browser does not support speech recognition.";
+    startButton.disabled = true;
+
+    // Hide the message after 5 seconds
+    setTimeout(function() {
+        status.textContent = "";
+    }, 5000); // 5000 milliseconds = 5 seconds
+
     return;
-  }
-
-  // Check if browser supports speech recognition
-  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-
-    // Set language for speech recognition (optional)
-    recognition.lang = 'en-US';
-
-    // Event listener for voice search button click
-    voiceSearchButton.addEventListener('click', () => {
-      if (recognition && recognition.state === 'inactive') {
-        recognition.start(); // Start speech recognition when button is clicked
-      } else if (recognition && recognition.state === 'listening') {
-        recognition.stop(); // Stop recognition if already listening
-      }
-    });
-
-    // Event listener for when speech recognition detects speech
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.trim();
-      searchInput.value = transcript; // Set input value to captured speech
-      performSearch(); // Perform search using captured speech
-    };
-
-    // Event listener for speech recognition errors
-    recognition.onerror = (event) => {
-      console.error('Speech recognition error:', event.error);
-    };
-  } else {
-    // Browser doesn't support speech recognition
-    console.error('Speech recognition not supported');
-    voiceSearchButton.disabled = true;
-  }
 }
 
-// Call the function to initialize voice search when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-  initVoiceSearch();
-});
-   document.addEventListener('keydown', function(event) {
-  // Check if the key combination is Ctrl + F
-  if (event.ctrlKey && event.key === 'q') {
-    // Trigger the input
-    var input = document.getElementById('search-input');
-    if (input) {
-      input.focus();
-    }
-  }
-});
 
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = "en-US";
+
+            startButton.addEventListener("click", function() {
+                recognition.start();
+                status.textContent = "Listening...";
+            });
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                speechInput.value = transcript;
+                status.textContent = "Speech recognized.";
+            };
+
+            recognition.onerror = function(event) {
+                status.textContent = "Error occurred in recognition: " + event.error;
+				setTimeout(function() {
+				status.textContent = "";}, 5000);
+            };
+
+            recognition.onend = function() {
+                status.textContent = "Stopped listening.";
+            };
+        });
+
+document.addEventListener('keydown', function(event) {
+    var input = document.getElementById('search-input');
+    var searchEngine = document.getElementById('search-engine');
+
+    if (event.ctrlKey && event.key === 'q') {
+        // Trigger the input
+        if (input) {
+            input.focus();
+        }
+    } else if (event.key === 'Enter' && input === document.activeElement ) {
+            if (searchEngine) {
+                searchEngine.focus();  
+        }
+    } else if (event.key === "Enter" && searchEngine ===document.activeElement){
+performSearch();
+		//var b1= document.getElementById("search-button");
+		//b1.focus();"""
+		
+	}
+	
+	
+		
+	
+	
+});
 
      // Array of jokes with corresponding dates
        var jokes = {
@@ -820,12 +857,15 @@ document.addEventListener('DOMContentLoaded', () => {
     "2024-06-29": "Why was the database always forgetful? It had too many tables to remember!"
 };
 
-      var resultDiv = document.getElementById('quote');
-      fetch('https://api.quotable.io/random')
-        .then(response => response.json())
-        .then(data => {
-          resultDiv.innerHTML = `<blockquote>${data.content}</blockquote><p>- ${data.author}</p>`;
-        })
+        function fetchQuote() {
+            var resultDiv = document.getElementById('quote');
+            fetch('https://api.quotable.io/random')
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.innerHTML = `<blockquote>${data.content}</blockquote><p>- ${data.author}</p>`;
+                });
+        }
+		fetchQuote()
         // Get current date
         var currentDate = new Date().toISOString().split('T')[0];
 
