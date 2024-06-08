@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Emoji Art Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        #emojiCanvas {
+            display: inline-block;
+            border: 2px solid #333;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Custom Emoji Art Generator</h1>
+    <label for="emojiInput">Enter Emojis (separated by comma):</label>
+    <br>
+    <input type="text" id="emojiInput" placeholder="e.g., 😀,🐶,🍕">
+    <br>
+    <label for="canvasSize">Canvas Size (number of emojis per row/column):</label>
+    <br>
+    <input type="number" id="canvasSize" min="5" max="30" value="10">
+    <br>
+    <button onclick="generateEmojiArt()">Generate Emoji Art</button>
+    <button onclick="exportEmojiArt()">Export as Image</button>
+    <br>
+    <canvas id="emojiCanvas" width="400" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('emojiCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function generateEmojiArt() {
+            const emojiInput = document.getElementById('emojiInput').value;
+            const emojis = emojiInput.split(',').map(emoji => emoji.trim());
+            const canvasSize = parseInt(document.getElementById('canvasSize').value);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cellSize = canvas.width / canvasSize;
+            let x = 0, y = 0;
+
+            emojis.forEach(emoji => {
+                ctx.font = `${cellSize}px Arial`;
+                ctx.fillText(emoji, x * cellSize, y * cellSize + cellSize);
+                x++;
+                if (x >= canvasSize) {
+                    x = 0;
+                    y++;
+                }
+            });
+        }
+
+        function exportEmojiArt() {
+            const image = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = image;
+            link.download = 'emoji_art.png';
+            link.click();
+        }
+    </script>
+</body>
+</html>
