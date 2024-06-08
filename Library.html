@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+    <title>Library Interface</title>
+    <style>
+        body {
+	     font-family: "Audiowide", sans-serif;
+	     cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+	    user-select:none;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+#d1 {
+    position: relative;
+    height: 110px;
+    overflow: hidden;
+    z-index: 1;
+    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur'), auto;
+}
+
+#d1 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover; /* Ensures the image covers the entire container */
+    filter:blur(3px);
+}
+
+
+#heading {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+        color: rgba(255, 255, 255, 100.8);
+    text-decoration: underline;
+    user-select: none;
+}
+
+
+
+        #library {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .book {
+            width: 200px;
+            /* Set a fixed width for each thumbnail */
+            height: 340px;
+            /* Allow height to adjust proportionally */
+            margin: 0 10px;
+            /* Add some margin between thumbnails */
+            overflow: hidden;
+            /* Hide overflow content to prevent stretching */
+            position: relative; /* Added position relative */
+        }
+
+        .book img {
+            width: 100%;
+            /* Make the image fill its parent container */
+            height: 280px;
+            /* Allow height to adjust proportionally */
+            border-radius: 10px;
+            /* Optional: Add border radius for rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Optional: Add shadow for visual effect */
+            cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto; /* Changed cursor to pointer */
+            transition: transform 0.3s; /* Added transition for smooth effect */
+        }
+
+        .book:hover img {
+            transform: scale(1.05); /* Changed hover effect */
+        }
+
+        .book p {
+            margin: 5px 0 0;
+            font-size: 14px;
+	    color : red;
+	    
+        }
+
+        @media screen and (max-width: 768px) {
+            .book {
+                width: calc(33.33% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .book {
+                width: calc(50% - 20px);
+            }
+        }
+
+        #pdf-viewer {
+            display: none;
+            /* Hide PDF viewer by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+
+        .pdf-container {
+            width: 70%;
+            height: 100%;
+            margin: 5% auto;
+            overflow: auto;
+        }
+
+        .pdf-container canvas {
+            display: block;
+            margin: 0 auto;
+            max-width:90%;
+            height: auto;
+	     cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: none;
+            /* Hide back button by default */
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+             cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur'), auto;
+            z-index: 1000;
+        }
+
+        .download-button {
+            display: none;
+            /* Hide download button by default */
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+             cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+            z-index: 1000;
+        }
+    </style>
+
+</head>
+
+<body>
+<div id ="d1">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/lib/1.jpg
+" alt="Library Image" >
+<h1 align="center" id="heading" onclick="refreshpage()">
+LIBRARY</h1></div>
+<div id="library"></div>
+
+    <div id="pdf-viewer">
+        <div class="pdf-container"></div>
+    </div>
+    <button class="back-button" id="back-btn">Back</button>
+    <button class="download-button" id="download-btn">Download PDF</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
+
+    <script>
+        const library = document.getElementById('library');
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const pdfContainer = document.querySelector('.pdf-container');
+        const backButton = document.getElementById('back-btn');
+        const downloadButton = document.getElementById('download-btn');
+        let currentPdfUrl = '';
+
+        fetch('https://api.github.com/repos/deekshith0509/deekshith0509.github.io/contents/assets/lib')
+            .then(response => response.json())
+            .then(data => {
+                const pdfFiles = data.filter(file => file.name.endsWith('.pdf'));
+
+                const fetchAndProcessSequentially = async (files) => {
+                    for (const file of files) {
+                        await processPDF(file);
+                    }
+                };
+
+                const processPDF = async (file) => {
+                    const pdfUrl = file.download_url;
+                    const pdfName = file.name;
+
+                    const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                    loadingTask.promise.then(pdf => {
+                        pdf.getPage(1).then(page => {
+                            const viewport = page.getViewport({ scale: 0.5 });
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+
+                            const renderTask = page.render(renderContext);
+                            renderTask.promise.then(() => {
+                                const thumbnailUrl = canvas.toDataURL();
+
+                                const bookDiv = document.createElement('div');
+                                bookDiv.classList.add('book');
+                                bookDiv.addEventListener('click', () => openPDF(pdfUrl));
+                                const img = document.createElement('img');
+                                const name = document.createElement('p');
+
+                                img.src = thumbnailUrl;
+                                name.textContent = pdfName;
+
+                                bookDiv.appendChild(img);
+                                bookDiv.appendChild(name);
+
+                                library.appendChild(bookDiv);
+                            });
+                        });
+                    }).catch(error => {
+                        console.error('Error loading PDF:', error);
+                    });
+                };
+
+                fetchAndProcessSequentially(pdfFiles);
+            })
+            .catch(error => {
+                console.error('Error fetching PDF files:', error);
+            });
+
+        function openPDF(url) {
+            currentPdfUrl = url; // Store current PDF URL
+            pdfContainer.innerHTML = ''; // Clear previous PDF content
+            pdfViewer.style.display = 'block'; // Show PDF viewer
+            backButton.style.display = 'block'; // Show back button
+            downloadButton.style.display = 'block'; // Show download button
+
+            pdfjsLib.getDocument(url).promise.then(pdf => {
+                const renderPage = (pageNum) => {
+                    if (pageNum > pdf.numPages) return;
+
+                    pdf.getPage(pageNum).then(page => {
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        const viewport = page.getViewport({ scale: 1 });
+                        const initialScale = 1;
+
+                        const scaledViewport = page.getViewport({ scale: initialScale });
+
+                        canvas.width = scaledViewport.width;
+                        canvas.height = scaledViewport.height;
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: scaledViewport
+                        };
+
+                        page.render(renderContext).promise.then(() => {
+                            pdfContainer.appendChild(canvas);
+                            renderPage(pageNum + 1);
+                        });
+                    });
+                };
+
+                renderPage(1);
+            });
+        }
+
+        // Add event listener to close PDF viewer when clicking outside the pages
+        pdfViewer.addEventListener('click', (event) => {
+            if (event.target === pdfViewer) {
+                closePDFViewer();
+            }
+        });
+
+        // Function to close PDF viewer
+        function closePDFViewer() {
+            pdfViewer.style.display = 'none'; // Hide PDF viewer
+            backButton.style.display = 'none'; // Hide back button
+            downloadButton.style.display = 'none'; // Hide download button
+        }
+
+        // Add event listener to the back button
+        backButton.addEventListener('click', () => {
+            closePDFViewer();
+        });
+
+        // Add event listener to download button
+        downloadButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch(currentPdfUrl); // Fetch the current PDF URL
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = currentPdfUrl.split('/').pop(); // Use the current PDF URL to set the download filename
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Error downloading PDF:', error);
+            }
+        });
+   function refreshpage() {
+		window.scrollTo(0,0);
+            location.reload(); // Reload the entire page
+        }
+    </script>
+</body>
+
+</html>
