@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben 10 Fan Wiki BY Deekshith</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <style>
+<style>
 body {
     user-select: none;
     cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
@@ -19,6 +19,8 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
+	overflow-x: hidden;
+
 }
 
 /* Pseudo-element for background blur */
@@ -38,17 +40,18 @@ body::before {
 
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
+	nav {
+	width: 100vw !important;
+	
+	}
     nav ul {
-        margin-left: -30px !important; /* Adjust margin for smaller screens */
-        margin-right: -10px !important; /* Adjust margin for smaller screens */
-        flex-wrap: nowrap; /* Prevent items from wrapping */
+	flex-wrap: nowrap; /* Prevent items from wrapping */
         overflow-x: auto; /* Enable horizontal scrolling */
+		justify-content: flex-start !important;
 		
-    justify-content: flex-start !important;
     }
 
     nav ul li {
-	    padding: 10px 20px;
         font-size: 14px; /* Reduce font size for smaller screens */
     }
 }
@@ -59,8 +62,6 @@ nav ul {
     margin: 0;
     background-color: #444;
     display: flex;
-    margin-left: -70px; /* Remove left margin */
-    margin-right: -18px; /* Remove right margin */
     justify-content: center;
     }
 
@@ -75,6 +76,7 @@ nav ul li {
     font-weight:bold;
     font-family: "Josefin Sans", sans-serif; /* Add this line to change font style */
     width: auto;
+	
 }
 
 nav ul li:hover{
@@ -94,9 +96,8 @@ nav ul li.active {
 
 .section {
     display: none;
-    padding: 20px;
+	padding : 0px 20px;	
 }
-
 .section.active {
     display: block;
 }
@@ -105,6 +106,7 @@ nav ul li.active {
 
 .section h2 {
     text-align: center;
+	padding-bottom:10px;
     margin-bottom: 10px;
     margin-left: 10px;
     color: black;
@@ -116,6 +118,8 @@ nav ul li.active {
 .section h3 {
 	margin-left: 30px;
 	font-family: "Sedan SC", serif;
+	
+
 
 }
 
@@ -178,13 +182,6 @@ nav ul li.active {
     z-index:99999;
     width: 100px; /* Default width */
 }
- #curs {
- position:absolute;
- left:4%;
- align: center;
- text-align: center;
- width: 95%;
- }
 
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
@@ -204,15 +201,12 @@ nav ul li.active {
 #aliensSection .sub-section img,
 #placesSection .sub-section img,
 #eventsSection .sub-section img,
-#finalBattlesSection .sub-section img {
+#finalBattlesSection .sub-section img ,
+#filesSection .sub-section img{
     width: 100%;
     height: auto;
 }
- #curs {
- position:absolute;
- text-align: center;
- width: 95%;
- }
+
 #banner{
 height:100px;
 }
@@ -237,19 +231,28 @@ height:100px;
 	margin-bottom: 18px !important;
 }
 
- 
+    .audio-container {
+        display: flex;
+        justify-content: center; /* Centers the audio element within its container */
+        width: 100%;
+    }
+
+    audio {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        margin-left: 15px !important ; /* Adjust the margin as needed */
+        box-sizing: border-box;
+    }
  
  
 }
-
-
-
 
  #message {
             display: none; /* Initially hide the message */
             text-align: center;
             font-size: 18px;
-            margin-top:-10px;
+            margin-top: 10px;
             color: #2e924b;
 			margin-left:10px;
         }
@@ -299,7 +302,7 @@ height:100px;
     to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4); }
 }
 
- .larger-font {
+.larger-font {
     font-size: 30px;
 	margin-bottom:-10px;
 	font-style: italic;
@@ -309,25 +312,44 @@ height:100px;
 	margin-left: 20px;
 	word-wrap: break-word;
 }
+audio {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 10px auto 0 auto; /* Adjusted to move the audio down by 10px */
+    position: relative;
+    right: 13px;
+    box-sizing: border-box; /* Ensure the border is included in the width calculation */
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: #CAD94C;
+    height: 60px; /* Set your desired height here */
+}
+
+    .audio-container {
+        display: flex;
+        justify-content: center; /* Centers the audio element within its container */
+        width: 100%;
+    }
 
     </style>
 </head>
-
 <div id="banner">
     <img src="https://static.wikia.nocookie.net/ben10/images/7/7c/Ben10-background-static.png/revision/latest/scale-to-width-down/1000?cb=20180607174817" alt="Ben 10 Banner">
 </div>
   	 <h1 id="heading" onclick="refreshpage()">Ben 10</h1>
 <body ng-controller="MainController" ng-keydown="keyDownHandler($event)">
-    <nav id ="curs">
+    <nav>
         <ul>
             <li ng-click="showSection('characters')" ng-class="{ 'active': currentSection === 'characters' }">Characters</li>
             <li ng-click="showSection('aliens')" ng-class="{ 'active': currentSection === 'aliens' }">Aliens</li>
             <li ng-click="showSection('places')" ng-class="{ 'active': currentSection === 'places' }">Places</li>
             <li ng-click="showSection('events')" ng-class="{ 'active': currentSection === 'events' }">Events</li>
-            <li ng-click="showSection('finalBattles')" ng-class="{ 'active': currentSection === 'finalBattles' }">Final Battles</li>
+            <li ng-click="showSection('finalBattles')" ng-class="{ 'active': currentSection === 'finalBattles' }">Battles (Final)</li>
+			<li ng-click="showSection('files')" ng-class="{ 'active': currentSection === 'files' }">Music</li>
         </ul>
     </nav>
-	<br>
     <div class="section" id="charactersSection">
         <h2>Characters</h2>
         <div class="character-list">
@@ -397,11 +419,27 @@ height:100px;
             </div></div>
         </div>
     </div>
-
+    <div class="section" id="filesSection">
+        <h2>Music</h2>
+        <div class="character-list">
+            <div class="character" ng-repeat="file in files" ng-click="toggleFile($index)">
+                <div class="section1">
+                    <h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ file.name }}</h3>
+                    <div  class="sub-section" ng-class="{ 'active': activeFile === $index }">
+                        <img ng-src="{{ file.image }}" alt="{{ file.name }}">
+						<div class="audio-container">
+						<audio controls id="audio-{{ $index }}">
+                            <source ng-src="{{ file.src }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        </div>
+                        <p>{{ file.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
-
-
-
     <script>
         angular.module('ben10FanWiki', [])
             .controller('MainController', function ($scope) {
@@ -428,6 +466,70 @@ height:100px;
 				{name: "DiamondHead", image:'https://static.wikia.nocookie.net/ben10/images/c/c6/TEN_%281302%29.png/', description:"Diamondhead, another alien from Ben 10, boasts a crystalline body composed of durable, diamond-like material. Its appearance features sharp, angular facets and a predominantly blue color scheme. Diamondhead possesses superhuman strength, allowing it to overpower opponents with ease. Its crystalline form grants it enhanced durability, making it highly resistant to physical attacks. The alien's primary ability is the generation and manipulation of crystalline structures, which it can form into various shapes for offense and defense. Diamondhead can launch razor-sharp crystal projectiles at high speeds, making it a formidable ranged combatant. Its crystalline body also grants it the ability to regenerate lost limbs and reform its body, enhancing its longevity in battle. Diamondhead's design reflects its affinity for crystal manipulation, with its appearance resembling a living gemstone. The alien's abilities are a result of its species' evolutionary traits, adapted for survival in harsh environments. Diamondhead's versatility in combat stems from its ability to create intricate crystalline structures for a multitude of purposes. Its formidable strength and durability make it a formidable opponent in battles against both alien threats and human adversaries."},
 				{name: "Upchuck",image: "https://static.wikia.nocookie.net/ben10/images/c/c1/TT_%2826%29.png/",description: "Upchuck, a small alien with a voracious appetite, has a round, green body with three stubby legs. Its wide mouth can devour almost anything and its stomach can store objects for later use. Despite its small size, Upchuck packs a powerful punch with its ability to eat and then expel energy balls. Its abilities make it a formidable opponent in combat, capable of surprising foes with its agility and unexpected attacks. Upchuck's appearance may seem harmless, but its insatiable hunger and powerful projectile abilities make it a force to be reckoned with."},
 				{name: "Upgrade",image: "https://static.wikia.nocookie.net/ben10/images/2/20/Tour_%28569%29.png/",description: "Upgrade, an Omnitrix DNA sample of a Galvanic Mechamorph from Galvan Prime's moon, Galvan B, possesses a black exterior adorned with green circuit-like stripes. His body comprises billions of nanites, granting him a fluid-like form. Upgrade's primary ability lies in technological possession, allowing him to merge with and control any technology, upgrading it to ultra-tech and effortlessly repairing damaged machinery. Additionally, he can generate solid constructs, emit powerful green plasma blasts, manipulate electricity, and stretch his body extensively. Despite his formidable abilities, Upgrade has vulnerabilities, including limitations in technological possession, susceptibility to electromagnetic pulses, and being powered down by specific devices. Overall, Upgrade is a versatile alien adept at manipulating technology to his advantage in various situations."},
+				{
+name: "Jetray",
+image: "https://static.wikia.nocookie.net/ben10/images/a/a7/EotB_%28183%29.png/",
+description: "Jetray, a sleek and swift alien from the Omnitrix, is a formidable addition to Ben Tennyson's arsenal. With his aerodynamic physique and powerful wings, Jetray epitomizes agility and speed. When Ben transforms into Jetray, he gains the ability to soar through the skies with unparalleled grace, effortlessly navigating even the most treacherous aerial environments. Jetray's physiology grants him remarkable maneuverability, allowing him to execute intricate aerial maneuvers and evade enemy attacks with ease. Additionally, Jetray possesses bioelectric blasts that he can unleash from his tail, serving as both offensive projectiles and defensive measures against adversaries. Whether engaged in high-speed chases or aerial combat, Jetray's presence in battle is always a game-changer, as he swiftly outmaneuvers foes and delivers stunning attacks from above."
+},
+{
+  "name": "Goop",
+  "image": "https://static.wikia.nocookie.net/ben10/images/d/db/TG_%2873%29.png/",
+  "description": "Goop is a versatile and formidable alien possessing a multitude of powers and abilities. His entire body is comprised of slime, granting him exceptional elasticity, which allows him to stretch his limbs extensively, absorb impacts, and deform himself into various shapes. Additionally, Goop can shapeshift at will, enabling him to dodge attacks, increase mobility, and mimic objects or individuals. He can generate and expel slime for offensive attacks, including acidic or adhesive varieties, and even regenerate himself with additional slime. Despite his gelatinous form, Goop possesses considerable strength, allowing him to wrestle opponents and increase the impact of his attacks. Due to his elasticity and distributed brain, Goop is highly resilient, feeling minimal pain from physical attacks and surviving lethal falls without injury. His slime is hydrophobic, enabling him to survive underwater and in intense heat environments. Equipped with an Anti-Gravity Projector, Goop can control gravity around him, enabling flight, levitation, and high-speed mobility. However, Goop's dependence on his Anti-Gravity Projector makes him vulnerable, as opponents can target or deactivate it, causing his body to collapse into a puddle until reactivated."
+},
+{
+  "name": "Humungousaur",
+  "image": "https://static.wikia.nocookie.net/ben10/images/2/27/HT_%28292%29.png/",
+  "description": "Humungousaur possesses incredible strength, effortlessly lifting and throwing heavy objects to high altitudes, even into near-earth orbit. His strength surpasses that of Methanosians and Crystalsapiens but falls short of Tetramands, some Highbreed, and Evolved Vaxasaurians. He can create shock waves and generate earthquakes by clapping his hands together. Utilizing dimensional displacement, Humungousaur can alter his body size, growing up to nearly 60 feet, enhancing his strength proportionally. His thick, armored hide provides exceptional durability against various attacks and environments. Despite his size, Humungousaur displays agility, jumping high, performing acrobatic maneuvers, and running on all fours. He can survive in the vacuum of space for short durations. However, his large size makes him an easy target and limits his ability to navigate confined spaces. Humungousaur is land-based and cannot breathe underwater, though he can hold his breath for extended periods. He is vulnerable to specific attacks such as neuroshock blasts, acid, and electricity. Additionally, he can be imprisoned by mana-generated crystals and is susceptible to cold viruses, which severely reduce his strength and stamina."
+},
+{
+  "name": "Big Chill",
+  "image": "https://static.wikia.nocookie.net/ben10/images/2/24/StLD_%2827%29.png/",
+  "description": "Big Chill is a powerful and versatile alien possessing the extraordinary ability of cryokinesis. With precise control over ice, he can create intricate constructs that bend and weave through the air before solidifying, showcasing remarkable creativity and skill. His freezing breath can encase targets in ice or reduce the surrounding temperature to near absolute zero, demonstrating his mastery over cold. Big Chill's freeze rays and ability to freeze objects upon touch further enhance his offensive capabilities. Additionally, he can become intangible, allowing him to phase through solid matter effortlessly and evade attacks with ease. His high-speed flight and agility make him a formidable aerial combatant, while his strength and durability ensure his effectiveness in close-quarters combat. Big Chill's resistance to extreme temperatures, radiation, and ability to survive in harsh environments like space and underwater make him a reliable ally in any situation. Despite his vulnerabilities, his numerous strengths and abilities make him a valuable asset in battles against formidable foes."
+},
+{
+  "name": "Echo Echo",
+  "image": "https://static.wikia.nocookie.net/ben10/images/9/92/B10R2_%2851%29.png/",
+  "description": "Echo Echo possesses the extraordinary ability of sonic screams, capable of emitting audible to ultrasonic frequencies that can shatter steel, redirect projectiles, and damage even Taydenite at the right frequency. He can transmit sound waves through speakers, turning cellphones into weapons. Additionally, Echo Echo can create an unknown number of exact duplicates of himself, with each clone harmoniously coordinated and capable of independent action. Utilizing self-duplication, he can create copies of objects he is holding. By combining his sonic screams and self-duplication, Echo Echo can create force fields, sonic waves, and even a wall of sound capable of dealing massive damage. He can levitate in the air and appears to possess more strength and durability than his size suggests, able to carry heavy objects and withstand impacts. Agile and capable of jumping exceptionally high, Echo Echo can also use his sonic screams for echolocation. However, his sonic screams can harm teammates' ears, and there is a limit to the number of duplicates he can create, depending on his energy reserves. Vulnerable to fire, electricity, and certain attacks, Echo Echo can be rendered unconscious or immobilized in specific situations. Despite his weaknesses, Echo Echo's versatility and power make him a valuable asset in battles against adversaries."
+},
+{
+  "name": "Wildmutt",
+  "image": "https://static.wikia.nocookie.net/ben10/images/4/4a/TEN_%28992%29.png/",
+  "description": "Wildmutt's primary ability lies in his extraordinary sense of smell, which compensates for his lack of vision. His senses form a radar-like mapping of his environment, allowing him to perceive his surroundings with remarkable clarity, making invisibility ineffective against him. With his heightened olfactory senses, Wildmutt can track almost anything or anyone by their scent, making him an exceptional tracker. Possessing razor-sharp teeth and claws, he can climb vertical surfaces and tear through obstacles effortlessly. Additionally, Wildmutt exhibits enhanced strength, durability, and speed, enabling him to engage formidable adversaries and survive in hazardous environments like Vulpin's sub-zero temperatures. Agile and acrobatic, he can run, jump, and dig at extraordinary speeds, further enhancing his combat prowess. His porcupine-like quills supplement his sensory abilities and can serve as projectiles when he reaches adulthood. However, Wildmutt's communication is limited to barking and snarling, making it challenging for others to understand him. He is vulnerable to high-frequency noises that can overwhelm his senses and render him temporarily stunned. Despite his vulnerabilities, Wildmutt's exceptional sensory abilities and physical prowess make him a formidable and invaluable ally in battles and tracking missions.",
+},
+{
+ "name" : "TerraSpin",
+ "image" : "https://static.wikia.nocookie.net/ben10/images/e/ee/VMC_%28328%29.png/",
+ "description" : "Terraspin possesses remarkable aerokinetic abilities, allowing him to generate devastating wind blasts and tornadoes. His fins transform into sharp, triangular shapes, while his rotating limbs propel powerful gusts of wind. His shell, although static, releases potent winds and vacuums, enabling him to absorb toxins from the air. Terraspin's wind blasts are forceful enough to extinguish fires and redirect objects, and he can utilize his aerokinetic powers to fly and hover effortlessly. Despite his flipper-like appendages, Terraspin exhibits enhanced dexterity and strength, capable of holding objects and confronting foes with ease. He is immune to poisonous gases and possesses resistance to mana attacks. Additionally, Terraspin can extend his flippers into finger-like claws and wield magical abilities. However, he faces vulnerabilities, including jammed air vents that impede his spinning and susceptibility to ice immobilization and electrical attacks. Despite these weaknesses, Terraspin's powers and resilience make him a formidable ally in battles."
+},
+{
+name: "XLR8",
+image: "https://static.wikia.nocookie.net/ben10/images/f/fe/Levin_%28347%29.png",
+description: "XLR8 possesses incredible speed and agility, capable of reaching running speeds of 500 miles per hour and accelerating so rapidly that time appears to stop. He can run up walls and on water, withstanding strong winds due to his aerodynamic body. With superhuman reflexes, XLR8 can dodge attacks effortlessly and react swiftly in combat. He can create vortexes, deliver rapid attacks, and exhibit remarkable strength and durability. Additionally, his prehensile tail aids in holding objects, and he has a retractable visor for protection. However, XLR8 is vulnerable to magnets, charged pulses, and electricity. Certain surfaces can impede his speed, and opponents with good reflexes can counter his attacks. Despite his impressive abilities, XLR8 was once defeated by a young Vilgax."
+
+},
+{
+name: "NRG",
+image:"https://static.wikia.nocookie.net/ben10/images/1/1e/SLaTfAtS_%28344%29.png",
+description:"NRG possesses the ability to emit highly radioactive energy blasts from the vent in his containment suit, capable of melting metallic objects and ice. He can also channel heat underground to create massive lava geysers. Additionally, NRG exhibits great strength and is immune to radiation and extreme cold environments. In his true form outside the suit, his powers are enhanced, granting flight, intangibility, and energy absorption. He can breathe underwater and grow in size by consuming energy. However, he must stay in his suit to prevent harm to others due to his dangerous radiation levels. Inside the suit, some abilities are weakened, and he can be immobilized by ice. Certain species can resist his radiation, and he is vulnerable to carbon dampening rods."
+
+},
+{
+name: "Armodrillo",
+image:"https://static.wikia.nocookie.net/ben10/images/8/84/TToE_%28171%29.png/",
+description:"Armodrillo possesses incredible digging capabilities with his jackhammer arms, transforming them into drills to burrow underground effortlessly. He can collapse buildings with powerful vibrations and create destructive earthquakes by pounding the ground. His enhanced strength allows him to lift heavy objects and withstand attacks, and he can launch shock waves to blast away enemies. Additionally, his armor provides enhanced durability, and he is immune to neuroshock blasts. However, out-of-control vibrations can render him unable to stop, and he is vulnerable to electricity. Despite his formidable abilities, he can be overpowered by certain opponents, such as Slammoids, and suffocated if covered with enough matter. Armodrillo's history includes various battles against foes like Slamworm and Crabdozer, showcasing his prowess in combat."
+
+},
+{
+name: "SwampFire",
+image:"https://static.wikia.nocookie.net/ben10/images/3/37/HEWTL_%28248%29.png/",
+description:"Swampfire possesses potent chlorokinesis, enabling him to control and manipulate plant life telepathically, including alien plants. He can generate highly flammable methane gas, which he ignites to unleash fire-based attacks, including fireballs and streams of fire. Swampfire's abilities also include flight through jet propulsion, seed generation for creating vine tentacles, regeneration of lost body parts, and the capability to grow vines with flame tips for offensive maneuvers. Additionally, he exhibits enhanced strength, durability, and the ability to heal others' wounds. However, he is vulnerable to fire extinguishers and water, electricity, ice, and certain chemicals. His methane stench can make stealth difficult, and his body heat can attract heat-seeking opponents. Despite his formidable powers, he initially struggled to control sentient plants but overcame this weakness after 'blossoming'."
+
+},
+
+
+
+
+
 				// Add more aliens here...
 				
 
@@ -482,6 +584,53 @@ name: "Savior of Petropia",
 image: "https://static.wikia.nocookie.net/ben10/images/e/e9/TSoC_%28563%29.png/",
 description: "In the episode, Ben, Kevin, and Gwen encounter Tetrax, who demands Ben transform into Chromastone to help resurrect his home planet, Petropia. Tetrax uses a sonic device to reveal Chromastone within Diamondhead and gives him a crucial crystal. Vilgax arrives, demanding the crystal, prompting a chase. The Crystalsapien flies to Petropia's ruins, aligning with the suns to restore the planet. As Vilgax attacks, Ben and the team intervene. Vilgax steals the crystal, but it is drained of power. The dying Crystalsapien grows another crystal for Ben. Ben transforms into Diamondhead, uses the crystal to restore Petropia and its inhabitants, and revives the Crystalsapien, Sugilite. The episode ends with Tetrax planning to confront Vilgax, while Vilgax catches Ben's cold."
 },
+{
+  "name": "Ben 10: Secret of the Omnitrix",
+  "image": "https://static.wikia.nocookie.net/ben10/images/5/52/3SOTO_%281378%29.png/",
+  "description": "The film follows Ben Tennyson, accompanied by his cousin Gwen and grandfather Max, as they face off against Dr. Animo's nefarious plan to de-evolutionize the world using a DNA bomb. Ben, with the help of his Omnitrix, transforms into various alien heroes to combat Animo's mutant creations and save the day. However, a twist of fate triggers the Omnitrix's self-destruct mode, setting off a race against time to find Azmuth, the Omnitrix's creator, and prevent the universe's destruction. Along the way, Ben confronts his own recklessness and learns the true meaning of heroism and sacrifice. With the fate of the universe hanging in the balance, Ben and his allies must overcome formidable challenges, including encounters with old foes like Vilgax and SixSix. Ultimately, through Gwen's courageous sacrifice and Ben's determination, they succeed in saving the universe and repairing the Omnitrix. The film concludes with the team back on Earth, ready to face new challenges and threats, embodying the enduring spirit of heroism and camaraderie."
+},
+{
+"name": "Benwolf",
+"image": "https://static.wikia.nocookie.net/ben10/images/5/56/Benwoof_%28331%29.png/",
+"description": "In Arizona, Max visits a Navajo Chief and encounters a sudden storm, unleashing a Navajo werewolf. Ben engages in a battle with the creature and appears to be bitten during the confrontation, leading to a transformation into Benwolf. As the plot unfolds, Ben, Max, and Gwen delve deeper into the mystery surrounding the werewolf's appearance and its connection to the storm. They embark on a journey to uncover the werewolf's true intentions and stop its rampage. Along the way, Ben struggles with his newfound werewolf form and grapples with the consequences of his transformation. The group faces numerous challenges and obstacles, including the revelation that the werewolf is not merely a mythical creature but an alien entity. As they confront the werewolf, Benwolf utilizes his newfound abilities and the unique features of the Omnitrix to battle the creature and protect his friends. Ultimately, they discover the werewolf's ultimate goal and confront it in a climactic showdown. Through courage, determination, and teamwork, they defeat the werewolf and save the day, ensuring the safety of the village and restoring peace to the land."
+},
+{
+  "name": "Zs'Skayr's Return",
+  "image": "https://static.wikia.nocookie.net/ben10/images/d/d8/TheReturn.png",
+  "description": "Zs'Skayr returns with a sinister plan, accompanied by a mummy, a werewolf, and a Frankenstein-like alien. At the Digby Dairy factory, the Werewolf unearths the Mummy, and the aliens teleport away when confronted. Meanwhile, the Tennysons attempt to thwart their plans. Ben tries to transform into Four Arms but ends up as Stinkfly, engaging in a chaotic battle with a prison bus. Later, at Kennedy Space Center, Ben is attacked by the Werewolf and mistakenly transforms into Benmummy. Max and Gwen witness Dr. Viktor's control of purple lightning and Ben's disappearance. The Tennysons confront the aliens in a junkyard, where Ben, as Cannonbolt, battles the Mummy and Viktor's monstrous form. As Max and Gwen enter Viktor's ship, Ben, as XLR8, fights Viktor but is overpowered. Viktor activates a portal, sucking Ben in while launching the shuttle with Max and Gwen aboard. The shuttle arrives in space with the Mummy, and Zs'Skayr reveals his presence, setting the stage for a climactic showdown."
+},
+{
+  "name": "Hunted",
+  "image": "https://static.wikia.nocookie.net/ben10/images/3/3a/Hunted_%281080%29.png/",
+  "description": "Three alien bounty hunters - SixSix, Kraab, and Tetrax - are hired by Vilgax to retrieve the Omnitrix. As the Tennysons navigate an obstacle course in the desert, the hunters track them down. Kraab ambushes Ben and Gwen, leading to a confrontation where Ben, as Ghostfreak, temporarily immobilizes Kraab. The Tennysons are then pursued by SixSix, resulting in a fierce battle in a mine. Eventually, Tetrax, a secret agent, intervenes, incapacitates the other hunters, and reveals himself to be of the same species as Diamondhead. Tetrax advises Ben on strategy before departing, leaving behind a grateful Ben and a frustrated Vilgax, who remains determined to acquire the Omnitrix."
+},
+{
+  "name": "Ultimate Sacrifice",
+  "image": "https://static.wikia.nocookie.net/ben10/images/7/7b/TUS_%28443%29.png/",
+  "description": "Ben faces a crisis when his Ultimatrix becomes sentient, with the alien forms demanding their freedom. As Sentient Ultimate Humungousaur takes control of Ben's body, Gwen and Kevin struggle to help him regain control. Ultimately, Ben sacrifices himself to save both his friends and the sentient Ultimate forms trapped within the Ultimatrix. Through his heroic act, the Ultimates are freed, and Ben's life is spared. Azmuth removes the glitch causing sentience in the Ultimatrix, ensuring that future transformations will reflect Ben's true intentions. The Ultimate forms depart to live peacefully on another planet, and Ben, Gwen, Kevin, and Azmuth reflect on the ordeal, with Kevin extending a gesture of friendship to Ben and Gwen."
+},
+{
+  "name": "Mutant Mayhem",
+  "image": "https://static.wikia.nocookie.net/ben10/images/8/8c/Mutant_%28558%29.png/",
+  "description": "Dr. Animo escapes from jail and seeks revenge on Ben, coinciding with Ben's accidental alteration of the Omnitrix, resulting in bizarre alien combinations. As Ben struggles with the malfunctioning Omnitrix, Animo's mutant creatures terrorize the swamp during Gator-fest. Animo's plan to mutate the world using the Omnitrix's DNA is thwarted by Ben, Gwen, and Max, with Gwen ultimately reversing the mutations and restoring the Omnitrix. Despite the chaos, Ben remains lighthearted, joking about exploiting the Omnitrix's glitches for fun."
+},
+{
+  "name": "Unlikely Allies",
+  "image": "https://static.wikia.nocookie.net/ben10/images/f/f0/AT_%28419%29.png/",
+  "description": "Ben is accidentally transported to the desert planet Turrawuste with a Highbreed Commander. Despite their mutual animosity, they must cooperate to survive the planet's dangers. Throughout their journey, Ben learns about the Highbreed's beliefs and struggles to form a connection with the Commander, named Reinrassig III. After several perilous encounters, they reach a teleporter pod, but Reiny chooses to stay behind, deeming himself impure. Ben returns home, saddened by Reiny's decision to self-exile."
+},
+{
+  "name": "Back to School",
+  "image": "https://static.wikia.nocookie.net/ben10/images/8/89/Riddance_%281797%29.png/",
+  "description": "As summer ends and school begins, Ben struggles to keep his heroic alter ego a secret. However, when Vilgax launches an attack on the school to retrieve the Omnitrix, Ben is forced to reveal his abilities to protect his classmates and family. With the help of his father, Carl, and sister, Gwen, Ben defeats Vilgax and saves the town. Despite initially feeling like a 'zero', Ben earns the respect of his peers and discovers that Gwen has transferred to his school. As they settle in, a new threat emerges as Dr. Animo unleashes mutated animals on the school, prompting Ben to activate the Omnitrix once again.\n\nBesides, This is the last episode of the classic series. It also reminds the kids that the summer holidays are over, and it's time to get back to school as a HERO."
+},
+
+
+
+
+
+
+
     // Add more events here...
 ];
 
@@ -545,14 +694,59 @@ Overall, the final episode encapsulates the essence of the classic Ben 10 series
     },
 	{name: "Vilgax's Vicious Vendetta: Albedo's Last Stand",description: "In The Final Battle: Part 1 of Ben 10: Alien Force, the confrontation between Ben and his adversary, Albedo, intensifies dramatically. Albedo's theft of the Ultimatrix and his abduction of Gwen and Kevin propel Ben into a desperate race against time to rescue them. With Vilgax as his ally, Albedo's menace escalates, pushing Ben to his limits. Albedo's mastery of the Ultimatrix grants him unprecedented power, unveiling formidable new transformations like Ultimate Humungousaur. Despite Ben's bravery, he faces overwhelming odds against Albedo's cunning tactics and Vilgax's menacing presence. The episode unfolds with intense action, emotional turmoil, and a pivotal decision as Ben weighs the safety of his friends against the fate of the world.",image: "https://static.wikia.nocookie.net/ben10/images/b/b4/TFB2_%28104%29.png/"},
     {name: "Nemesis Unleashed - Vilgax and Kevin's Vengeance",description: "Back With a Vengeance, the thirteenth and final episode of Ben 10's second season, sees Ben unlocking the Omnitrix's Master Control, granting instant transformations. Vilgax and Kevin join forces to capture Ben and seize the Omnitrix. A confrontation occurs at Niagara Falls, leading to a dramatic showdown. Ben sacrifices the Omnitrix to save Gwen, but Kevin betrays them by forcibly removing it. In the Null Void, Vilgax and Kevin are trapped, while Ben ultimately reclaims the Omnitrix. The episode explores Ben's arrogance and the consequences of power abuse, with Gwen's resourcefulness ultimately saving the day.",image: "https://static.wikia.nocookie.net/ben10/images/9/94/MER_%28377%29.png/"},
-	
+	{
+"name": "Ghostfreak Battle",
+"image": "https://static.wikia.nocookie.net/ben10/images/9/94/Afraid_%281221%29.png/",
+"description": "Ben ventures into space to confront Zs'Skayr and Dr. Viktor, who are plotting a catastrophic scheme. As Ben grapples with his adversaries, the Omnitrix unexpectedly transforms him into Grey Matter, forcing him to outwit his foes using his intellect and agility. Meanwhile, Max and Gwen face perilous challenges aboard the shuttle, including a harrowing encounter with the Mummy. As the tension escalates, Ben devises a daring plan to thwart Zs'Skayr's nefarious plot, leading to a series of intense battles and confrontations. With the fate of Earth hanging in the balance, Ben must tap into the full potential of the Omnitrix to overcome formidable adversaries, including the Mummy, Werewolf, and Frankenstein. Through courage, ingenuity, and teamwork, Ben and his allies strive to save humanity from annihilation and restore peace to the galaxy."
+},
+
 	// Add more final battles here...
 ];
 
+$scope.files = [
+	{ name: 'Classic theme', src: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/Classic.mp3', image: "https://static.wikia.nocookie.net/ben10/images/3/3a/Ben_and_the_aliens_from_the_original_serious.png/", description:  "Ten-year-old Ben Tennyson, his ten-year-old first cousin Gwen, and their paternal Grandpa Max embark on a summer camping trip across the United States. Ben discovers an alien device called the Omnitrix, which permanently attaches to his wrist and grants him the ability to transform into ten unique alien life-forms. Throughout their journey, the trio encounter and combat various villains, while Ben learns to harness the powers of the Omnitrix with the support of Gwen and Max. The show explores themes of heroism, family bonds, and the responsibilities of wielding extraordinary powers."},
+	{ name: 'Alien-Force Theme', src: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforce.mp3', image: 'https://static.wikia.nocookie.net/ben10/images/7/7d/2KGE8kguLfE.png/', description: "the storyline follows 15-year-old Ben Tennyson, who reclaims his role as a leader after donning the Omnitrix once again. His quest to find his missing Grandpa Max leads him to join forces with his cousin Gwen and former adversary Kevin. Together, they confront the looming threat of the Highbreed while navigating the complexities of the Plumbers' legacy. As Vilgax resurfaces as a formidable antagonist, the stakes heighten, pushing Ben to confront greater challenges. Ultimately, in the series finale, Ben destroys the Omnitrix, only to emerge with a powerful new tool, the Ultimatrix, marking a new chapter in his adventures." },
+];
+				
+				
+				
+$scope.toggleFile = function (index) {
+    // Stop any playing audio except the one being toggled
+    var audios = document.querySelectorAll('audio');
+    audios.forEach(function (audio, i) {
+        if (i !== index) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
 
-                $scope.showSection = function (section) {
+    // Toggle playback of the selected audio
+    var selectedAudio = document.getElementById('audio-' + index);
+    if ($scope.activeFile === index) {
+        selectedAudio.pause();
+		selectedAudio.currentTime = 0; // Pause if already active
+    } else {
+        selectedAudio.play(); // Play if not active
+    }
+
+    $scope.activeFile = $scope.activeFile === index ? -1 : index;
+	                    if ($scope.activeCharacter === index) {
+                        $scope.activeCharacter = -1; // Collapse if already expanded
+                    } else {
+                        $scope.activeCharacter = index; // Expand if collapsed
+                    }	
+};
+
+$scope.showSection = function (section) {
+    // Pause all audio elements
+ /*   document.querySelectorAll('audio').forEach(function (audio) {
+        audio.pause();
+		audio.currentTime = 0;
+    });
+*/ //uncomment this to pause audio when switching between the sections..
     // Reset the activeCharacter index to collapse all subsections
     $scope.activeCharacter = -1;
+	$scope.activeFile = -1;
 
     // Hide all sections
     document.querySelectorAll('.section').forEach(function (el) {
@@ -567,36 +761,6 @@ Overall, the final episode encapsulates the essence of the classic Ben 10 series
 };
 
 
-$scope.toggleSection = function (section) {
-    // Get the expanded section
-    var activeSection = document.getElementById(section + 'Section');
-    
-    // Check if the section is already expanded
-    var isActive = activeSection.classList.contains('active');
-
-    // Collapse all sections
-    document.querySelectorAll('.section').forEach(function (el) {
-        el.classList.remove('active');
-    });
-
-    // If the section is not already expanded, expand it
-    if (!isActive) {
-        // Calculate the offset of the expanded section relative to the top of the viewport
-        var offsetTop = activeSection.getBoundingClientRect().top;
-        
-        // Expand the section
-        activeSection.classList.add('active');
-        
-        // Scroll the page to the top of the expanded section
-        window.scrollTo({
-            top: window.pageYOffset + offsetTop,
-            behavior: 'smooth'
-        });
-    }
-};
-
-
-
 
  $scope.toggleSubSection = function (index) {
                     if ($scope.activeCharacter === index) {
@@ -605,9 +769,8 @@ $scope.toggleSection = function (section) {
                         $scope.activeCharacter = index; // Expand if collapsed
                     }
                 };
-
-                // Initially show characters section
-                $scope.showSection('characters');
+// Initially show characters section
+$scope.showSection('characters');
 				
 				
 				
@@ -630,11 +793,14 @@ $scope.toggleSection = function (section) {
                     // Switch to places section
                     $scope.showSection('places');
 					event.preventDefault();
-                } else if (event.key.toLowerCase() === 'f' && event.ctrlKey) {
+                } else if (event.key.toLowerCase() === 'b' && event.ctrlKey) {
                     // Switch to final battles section
                     $scope.showSection('finalBattles');
 					event.preventDefault();
-                }
+                } else if (event.key.toLowerCase() ==="m" && event.ctrlKey){
+				   $scope.showSection("files");
+				   event.preventDefault();
+				}
                 // Add more else if blocks for other sections if needed
             };
             });
@@ -665,6 +831,8 @@ $scope.toggleSection = function (section) {
         window.onload = function () {
             showMessageForTime();
         };
+		document.body.style.overflowX = 'hidden';
+
 		
     </script>
 </body>
