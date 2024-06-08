@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Country Information</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-attachment:fixed;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#countryInfo {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+strong {
+  font-weight: bold;
+}
+#search{
+	text-align: center;
+ }
+</style>
+
+</head>
+<body>
+<div id="search">
+<h1>Country Information</h1>
+
+<label for="Input">Enter a country name:</label>
+<input type="text" id="Input" placeholder="ctrl+q and then Enter">
+<button onclick="getCountryInfo()" id="b1">Get Information</button>
+</div>
+<div id="countryInfo"></div>
+
+<script>
+function getCountryInfo() {
+  var countryInput = document.getElementById('Input').value;
+  var apiUrl = 'https://restcountries.com/v3.1/name/' + encodeURIComponent(countryInput);
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        var country = data[0];
+        var countryInfo = `
+          <h2>${country.name.common}</h2>
+		  <p><strong>Flag:</strong></p>
+          <img src="${country.flags.png}" alt="Flag">
+          <p><strong>Official Name:</strong> ${country.name.official}</p>
+          <p><strong>Native Names:</strong></p>
+          <ul>
+            ${getNativeNames(country)}
+          </ul>
+          <p><strong>Top Level Domain:</strong> ${country.tld ? country.tld[0] : 'Not available'}</p>
+          <p><strong>Country Codes:</strong> ${country.cca2 ? country.cca2 : 'Not available'}, ${country.ccn3 ? country.ccn3 : 'Not available'}, ${country.cca3 ? country.cca3 : 'Not available'}</p>
+          <p><strong>International Olympic Committee Code:</strong> ${country.cioc ? country.cioc : 'Not available'}</p>
+          <p><strong>Independent:</strong> ${country.independent ? country.independent : 'Not available'}</p>
+          <p><strong>Status:</strong> ${country.status ? country.status : 'Not available'}</p>
+          <p><strong>United Nations Member:</strong> ${country.unMember ? country.unMember : 'Not available'}</p>
+          <p><strong>Currencies:</strong></p>
+          <ul>
+            ${getCurrencies(country)}
+          </ul>
+          <p><strong>Capital:</strong> ${country.capital ? country.capital[0] : 'Not available'}</p>
+          <p><strong>Alternative Spellings:</strong> ${country.altSpellings ? country.altSpellings.join(', ') : 'Not available'}</p>
+          <p><strong>Region:</strong> ${country.region ? country.region : 'Not available'}</p>
+          <p><strong>Subregion:</strong> ${country.subregion ? country.subregion : 'Not available'}</p>
+          <p><strong>Languages:</strong> ${country.languages ? Object.values(country.languages).join(', ') : 'Not available'}</p>
+          <p><strong>Translations:</strong></p>
+          <ul>
+            ${getTranslations(country)}
+          </ul>
+          <p><strong>Latitude and Longitude:</strong> ${country.latlng ? country.latlng.join(', ') : 'Not available'}</p>
+          <p><strong>Landlocked:</strong> ${country.landlocked ? country.landlocked : 'Not available'}</p>
+          <p><strong>Borders:</strong> ${country.borders ? country.borders.join(', ') : 'Not available'}</p>
+          <p><strong>Area:</strong> ${country.area ? country.area + ' square kilometers' : 'Not available'}</p>
+          <p><strong>Demonyms:</strong></p>
+          <ul>
+            ${getDemonyms(country)}
+          </ul>
+          <p><strong>Maps:</strong></p>
+          <ul>
+            <li><strong>Google Maps:</strong> ${country.maps ? '<a href="' + country.maps.googleMaps + '" target="_blank">Link</a>' : 'Not available'}</li>
+            <li><strong>OpenStreetMaps:</strong> ${country.maps ? '<a href="' + country.maps.openStreetMaps + '" target="_blank">Link</a>' : 'Not available'}</li>
+          </ul>
+          <p><strong>Population:</strong> ${country.population ? country.population : 'Not available'}</p>
+          <p><strong>Gini Coefficient (2011):</strong> ${country.gini ? country.gini['2011'] : 'Not available'}</p>
+          <p><strong>FIFA Code:</strong> ${country.fifa ? country.fifa : 'Not available'}</p>
+          <p><strong>Car Signs:</strong> ${country.car && country.car.signs ? country.car.signs.join(', ') : 'Not available'}</p>
+          <p><strong>Driving Side:</strong> ${country.car && country.car.side ? country.car.side : 'Not available'}</p>
+          <p><strong>Timezones:</strong> ${country.timezones ? country.timezones.join(', ') : 'Not available'}</p>
+          <p><strong>Continents:</strong> ${country.continents ? country.continents.join(', ') : 'Not available'}</p>
+          <!-- Add more information here as needed -->
+        `;
+        document.getElementById('countryInfo').innerHTML = countryInfo;
+      } else {
+        document.getElementById('countryInfo').innerHTML = '<p>No information found for the provided country name.</p>';
+      }
+    })
+    .catch(error => console.error('Error fetching country information:', error));
+}
+
+
+function getNativeNames(country) {
+  var nativeNamesList = '';
+  var nativeNames = country.name.nativeName;
+
+  for (var lang in nativeNames) {
+    if (nativeNames.hasOwnProperty(lang)) {
+      nativeNamesList += `<li><strong>${lang}:</strong> ${nativeNames[lang].official}</li>`;
+    }
+  }
+
+  return nativeNamesList;
+}
+
+function getCurrencies(country) {
+  var currenciesList = '';
+  var currencies = country.currencies;
+
+  for (var currency in currencies) {
+    if (currencies.hasOwnProperty(currency)) {
+      currenciesList += `<li><strong>Name:</strong> ${currencies[currency].name}</li>`;
+      currenciesList += `<li><strong>Symbol:</strong> ${currencies[currency].symbol}</li>`;
+    }
+  }
+
+  return currenciesList;
+}
+
+function getTranslations(country) {
+  var translationsList = '';
+  var translations = country.translations;
+
+  for (var lang in translations) {
+    if (translations.hasOwnProperty(lang)) {
+      translationsList += `<li><strong>${lang}:</strong> ${translations[lang].common}</li>`;
+    }
+  }
+
+  return translationsList;
+}
+
+function getDemonyms(country) {
+  var demonymsList = '';
+  var demonyms = country.demonyms;
+
+  for (var lang in demonyms) {
+    if (demonyms.hasOwnProperty(lang)) {
+      demonymsList += `<li><strong>${lang}:</strong> ${demonyms[lang].f}</li>`;
+    }
+  }
+
+  return demonymsList;
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.ctrlKey && event.key === 'q') {
+    document.getElementById('Input').focus();
+    event.preventDefault();
+  }
+});
+
+document.getElementById('Input').addEventListener('keyup', function(event) {
+  if (event.key === 'Enter') {
+    document.getElementById('b1').click();
+  }
+});
+</script>
+
+</body>
+</html>

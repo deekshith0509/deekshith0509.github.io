@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizable Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.widget {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+    transition: transform 0.3s ease;
+}
+
+.widget:hover {
+    transform: translateY(-5px);
+}
+
+.widget-header {
+    padding: 15px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    cursor: move;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.widget-content {
+    padding: 20px;
+}
+
+/* Typography */
+.widget-content h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.widget-content p {
+    margin: 0 0 15px 0;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Buttons */
+.widget-content button {
+    padding: 12px 24px;
+    border: none;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.widget-content button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Inputs */
+.widget-content input[type="text"],
+.widget-content input[type="number"],
+.widget-content select {
+    width: calc(100% - 22px);
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.widget-content input[type="text"]:focus,
+.widget-content input[type="number"]:focus,
+.widget-content select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* Tables */
+.widget-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.widget-content table th, .widget-content table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.widget-content table th {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.widget-content table td {
+    background-color: #f9f9f9;
+}
+
+/* Calculator and Converter */
+.widget-content .calculator-output,
+.widget-content .conversion-output {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #555;
+}
+
+.widget-content .calculator-output span,
+.widget-content .conversion-output span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Iframe */
+.widget-content iframe {
+    max-width: 100%;
+    height: 300px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+}
+
+
+/* Hover Effect */
+.widget:hover .widget-header {
+    background-color: #45a049;
+    transform: translateY(-5px);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+ <div class="dashboard">
+    <div class="widget" draggable="true">
+            <div class="widget-header">Calendar</div>
+            <div class="widget-content" id="cal">
+                <iframe scrolling="no" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FKolkata&bgcolor=%237CB342&title=Deekshith's%20Calendar&src=ZGVla3NoaXRoLmJoMDUwOUBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4uY2hyaXN0aWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4uaGluZHVpc20jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4uaW5kaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4uaXNsYW1pYyNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%237CB342&color=%2333B679&color=%230B8043&color=%230B8043&color=%230B8043&color=%230B8043"></iframe>
+            </div>
+        </div>
+		       <div class="widget" draggable="true">
+            <div class="widget-header">Random Quote</div>
+            <div class="widget-content">
+               <blockquote id="quote"></blockquote>
+                <button onclick="getRandomQuote()">Generate Quote</button>
+            </div>
+        </div>
+		  <div class="widget" draggable="true">
+            <div class="widget-header">Date and Time</div>
+            <div class="widget-content" id="datetime">
+                // Holidays will be dynamically fetched here 
+            </div>
+        </div>  
+        <div class="widget" >
+            <div class="widget-header">Calculator</div>
+            <div class="widget-content">
+                <input type="text" id="calculator-input" placeholder="Enter expression">
+                <br>
+                <button onclick="calculate()">Calculate</button>
+                <div class="calculator-output" id="calculator-output"></div>
+            </div>
+        </div>
+        <div class="widget" draggable="true">
+            <div class="widget-header">Unit Converter</div>
+            <div class="widget-content">
+                <input type="number" id="converter-input" placeholder="Enter value">
+                <select class="converter-select" id="converter-type">
+                    <option value="m">Meter</option>
+                    <option value="kg">Kilogram</option>
+                    <option value="l">Liter</option>
+                </select>
+                <br>
+                <button onclick="convert()">Convert</button>
+                <div class="conversion-output" id="conversion-output"></div>
+            </div>
+        </div>
+        <div class="widget" draggable="true">
+            <div class="widget-header">To-Do List</div>
+            <div class="widget-content">
+                <input type="text" id="todo-input" placeholder="Add a new task">
+                <button onclick="addTodo()">Add Task</button>
+                <ul id="todo-list"></ul>
+            </div>
+        </div>
+ 
+    </div>
+    <script>
+        function calculate() {
+            var input = document.getElementById("calculator-input").value;
+            try {
+                var result = eval(input);
+                document.getElementById("calculator-output").innerHTML = "<span>Result: </span>" + result;
+            } catch (error) {
+                document.getElementById("calculator-output").innerHTML = "<span>Error: </span>" + error.message;
+            }
+        }
+
+        function convert() {
+            var input = parseFloat(document.getElementById("converter-input").value);
+            var type = document.getElementById("converter-type").value;
+            var output;
+
+            switch (type) {
+                case "m":
+                    output = input * 3.28084 + " ft";
+                    break;
+                case "kg":
+                    output = input * 2.20462 + " lb";
+                    break;
+                case "l":
+                    output = input * 0.264172 + " gal";
+                    break;
+            }
+
+            document.getElementById("conversion-output").innerHTML = "<span>Conversion: </span>" + output;
+        }
+
+        function addTodo() {
+            var input = document.getElementById("todo-input").value;
+            if (input.trim() !== "") {
+                var listItem = document.createElement("li");
+                listItem.textContent = input;
+                document.getElementById("todo-list").appendChild(listItem);
+                document.getElementById("todo-input").value = "";
+            }
+        }
+
+        function getRandomQuote() {
+            fetch("https://api.quotable.io/random")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("quote").textContent = `"${data.content}" - ${data.author}`;
+                })
+                .catch(error => console.error("Error fetching quote:", error));
+        }
+
+        function updateDateTime() {
+            var now = new Date();
+            var datetime = now.toLocaleString();
+            document.getElementById("datetime").innerHTML = datetime;
+
+            // Fetch holidays for New York
+            fetch("https://kayaposoft.com/enrico/json/v2.0/?action=getPublicHolidaysForYear&year=2024&country=usa&region=ny")
+                .then(response => response.json())
+                .then(data => {
+                    var holidays = data;
+                    var holidayList = "<h3>Upcoming Holidays in New York</h3><ul>";
+                    holidays.forEach(holiday => {
+                        holidayList += `<li>${holiday.date}: ${holiday.localName}</li>`;
+                    });
+                    holidayList += "</ul>";
+                    document.getElementById("datetime").innerHTML += holidayList;
+                })
+                .catch(error => console.error("Error fetching holidays:", error));
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+		getRandomQuote();
+    </script>
+</body>
+</html>
+
