@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <title>Code Snippet Manager</title>
+  <style>
+/* Added CSS to restrict text selection to code sections */
+
+body {
+  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  background-color: #f0f0f0;
+
+  padding: 0;
+  margin: 10px 60px 0px 25px;
+}
+
+.container {
+  width: 100%; 
+  padding: 20px;
+  background-color: #ffffff;
+  font-family: "Ubuntu Sans", sans-serif !important;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+  width: calc(100% - 24px);
+  padding: 12px;
+  margin: 0 auto 16px 10px; /* Updated margin for center alignment */
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-family: "Ubuntu Sans", sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 14px;
+  color: #333333;
+}
+input[type="text"]::placeholder { 
+  text-align: center;
+  font-family: "Poetsen One", sans-serif;  /* Change the font family */
+  font-size: 14px; /* Optional: Change the font size */
+  font-style: italic; /* Optional: Change the font style */
+  color: #999999; /* Optional: Change the color */
+}
+
+
+
+input[type="text"]:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
+  outline: none;
+}
+
+input[type="text"]::placeholder {
+  color: #999999;
+}
+
+input[type="text"]:hover {
+  border-color: #999999;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #fafafa;
+  font-variant: small-caps;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+li:hover {
+  transform: translateY(-4px);
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #333333;
+}
+
+code {
+  font-family: "Ubuntu Sans", sans-serif;
+  font-variant: none;
+  font-weight: 500;
+  white-space: pre-wrap;
+  display: block;
+  padding: 8px;
+  overflow-x: auto;
+  background-color: #f5f5f5;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333333;
+}
+
+/* Restrict text selection to code sections */
+code {
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+}
+
+#heading {
+  text-align: center;
+  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur'), auto;
+  font-size: 36px;
+  color: #333333;
+  margin-top: 50px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 1px;
+  line-height: 1;
+  font-family: "Dancing Script", cursive;
+  user-select: none;
+  text-decoration: underline; /* Added underline decoration */
+}
+
+
+#heading:hover {
+  color: #ff4500;
+  transition: color 0.3s ease;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+	body {
+		margin: 10px 50px 0px 10px;
+	}
+	
+  #heading {
+    font-size: 29px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+	margin-left:50px;
+	align: center ;
+  }
+input[type="text"] {
+margin: 11px;
+
+}
+
+
+
+
+
+
+
+  </style>
+</head>
+<h1 id="heading" align="center" onclick="refreshPage()">👨‍💻Code Snippet🪶</h1>
+<body>
+  <div class="container">
+    <input type="text" id="search" placeholder="🔎Ctrl+f -->Search...">
+    <ul id="snippet-list"></ul>
+  </div>
+
+  <script>
+    class SnippetManager {
+      constructor() {
+    this.languageEmojis = {
+      html: '🌐',
+      css: '🎨',
+      javascript: '📝',
+      python: '🐍',
+      java: '☕',
+      sql: '🗄️'
+		};
+        this.snippets = [
+          { id: 1, name: 'HTML Snippet', language: 'html', code: '<!DOCTYPE html>\n<html>\n<head>\n  <title></title>\n</head>\n<body>\n  <h1>Hello, World!</h1>\n</body>\n</html>' },
+          { id: 2, name: 'CSS Snippet', language: 'css', code: 'body {\n  font-family: Arial, sans-serif;\n}' },
+          { id: 3, name: 'JavaScript Snippet', language: 'javascript', code: 'console.log("Hello, World!");' },
+          { id: 4, name: 'Python Snippet', language: 'python', code: 'print("Hello, World!")' },
+          { id: 5, name: 'Java Snippet', language: 'java', code: 'public class HelloWorld {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}' },
+		  { id: 6, name: 'React Component', language: 'javascript', code: 'import React from "react";\n\nfunction MyComponent() {\n  return <div>Hello, World!</div>;\n}\n\nexport default MyComponent;' },
+{ id: 7, name: 'Node.js Server', language: 'javascript', code: 'const http = require("http");\n\nhttp.createServer((req, res) => {\n  res.writeHead(200, { "Content-Type": "text/plain" });\n  res.end("Hello, World!");\n}).listen(3000);' },
+{ id: 8, name: 'Express.js Route', language: 'javascript', code: 'const express = require("express");\nconst app = express();\n\napp.get("/", (req, res) => {\n  res.send("Hello, World!");\n});\n\napp.listen(3000, () => {\n  console.log("Server is running on port 3000");\n});' },
+{ id: 9, name: 'Python Flask Route', language: 'python', code: 'from flask import Flask\napp = Flask(__name__)\n\n@app.route("/")\ndef hello():\n    return "Hello, World!"\n\nif __name__ == "__main__":\n    app.run()' },
+{ id: 10, name: 'Python Django View', language: 'python', code: 'from django.http import HttpResponse\n\ndef hello(request):\n    return HttpResponse("Hello, World!")' },
+{ id: 11, name: 'SQL Select Query', language: 'sql', code: 'SELECT * FROM table_name;' },
+{ id: 12, name: 'SQL Insert Query', language: 'sql', code: 'INSERT INTO table_name (column1, column2, ...) VALUES (value1, value2, ...);' },
+{ id: 13, name: 'SQL Update Query', language: 'sql', code: 'UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;' },
+{ id: 14, name: 'SQL Delete Query', language: 'sql', code: 'DELETE FROM table_name WHERE condition;' },
+{ id: 15, name: 'Java Spring Boot Controller', language: 'java', code: 'import org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\npublic class HelloController {\n\n    @GetMapping("/")\n    public String hello() {\n        return "Hello, World!";\n    }\n}' },
+{ id: 16, name: 'Java Spring Boot Entity', language: 'java', code: 'import javax.persistence.Entity;\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.GenerationType;\nimport javax.persistence.Id;\n\n@Entity\npublic class Item {\n\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    private String name;\n    private double price;\n\n    // Getters and Setters\n}' },
+{ id: 17, name: 'Vue.js Component', language: 'javascript', code: 'export default {\n  name: "HelloWorld",\n  data() {\n    return {\n      msg: "Hello, World!"\n    };\n  }\n}' },
+{ id: 18, name: 'Angular Component', language: 'javascript', code: 'import { Component } from "@angular/core";\n\n@Component({\n  selector: "app-hello",\n  template: "<p>Hello, World!</p>"\n})\nexport class HelloComponent {}' },
+{ id: 19, name: 'React Native Component', language: 'javascript', code: 'import React from "react";\nimport { Text, View } from "react-native";\n\nexport default function App() {\n  return (\n    <View>\n      <Text>Hello, World!</Text>\n    </View>\n  );\n}' },
+{ id: 20, name: 'Node.js File System Module', language: 'javascript', code: 'const fs = require("fs");\n\nfs.writeFile("hello.txt", "Hello, World!", (err) => {\n  if (err) throw err;\n  console.log("File has been saved.");\n});' },
+{ id: 21, name: 'Python File Handling', language: 'python', code: 'with open("hello.txt", "w") as file:\n    file.write("Hello, World!")' },
+{ id: 22, name: 'Python Flask API', language: 'python', code: 'from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route("/")\ndef hello():\n    return jsonify(message="Hello, World!")\n\nif __name__ == "__main__":\n    app.run()' },
+{ id: 23, name: 'Django Model', language: 'python', code: 'from django.db import models\n\nclass Item(models.Model):\n    name = models.CharField(max_length=100)\n    price = models.DecimalField(max_digits=10, decimal_places=2)' },
+{ id: 24, name: 'CSS Flexbox Layout', language: 'css', code: '.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.item {\n  flex: 1;\n}' },
+{ id: 25, name: 'CSS Grid Layout', language: 'css', code: '.container {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  grid-gap: 10px;\n}\n\n.item {\n  background-color: #f0f0f0;\n  padding: 20px;\n  text-align: center;\n}' },
+
+{ id: 27, name: 'Java Swing GUI', language: 'java', code: 'import javax.swing.*;\n\npublic class HelloWorldSwing {\n    public static void main(String[] args) {\n        JFrame frame = new JFrame("HelloWorldSwing");\n        JLabel label = new JLabel("Hello, World!");\n        frame.add(label);\n        frame.setSize(300, 100);\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.setVisible(true);\n    }\n}' },
+{ id: 28, name: 'JavaFX Application', language: 'java', code: 'import javafx.application.Application;\nimport javafx.scene.Scene;\nimport javafx.scene.control.Label;\nimport javafx.scene.layout.StackPane;\nimport javafx.stage.Stage;\n\npublic class HelloWorld extends Application {\n    @Override\n    public void start(Stage primaryStage) {\n        Label label = new Label("Hello, World!");\n        StackPane root = new StackPane();\n        root.getChildren().add(label);\n        primaryStage.setScene(new Scene(root, 300, 100));\n        primaryStage.setTitle("HelloWorld");\n        primaryStage.show();\n    }\n\n    public static void main(String[] args) {\n        launch(args);\n    }\n}' },
+{ id: 29, name: 'JavaScript Fetch API', language: 'javascript', code: 'fetch("https://api.example.com/data")\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error("Error:", error));' },
+{ id: 30, name: 'Python Requests Library', language: 'python', code: 'import requests\n\nresponse = requests.get("https://api.example.com/data")\nprint(response.json())' },
+{ id: 31, name: 'CSS Animation', language: 'css', code: '@keyframes move {\n  0% { transform: translateX(0); }\n  100% { transform: translateX(100px); }\n}\n\n.element {\n  animation: move 1s infinite alternate;\n}' },
+{ id: 32, name: 'HTML Video Element', language: 'html', code: '<video width="320" height="240" controls>\n  <source src="movie.mp4" type="video/mp4">\n  Your browser does not support the video tag.\n</video>' },
+{ id: 33, name: 'Java Socket Programming', language: 'java', code: 'import java.io.*;\nimport java.net.*;\n\npublic class Server {\n    public static void main(String[] args) throws IOException {\n        ServerSocket serverSocket = new ServerSocket(12345);\n        Socket socket = serverSocket.accept();\n        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);\n        out.println("Hello, World!");\n        socket.close();\n        serverSocket.close();\n    }\n}' },
+{ id: 34, name: 'Java Thread', language: 'java', code: 'public class MyThread extends Thread {\n    public void run() {\n        System.out.println("Hello, World from Thread!");\n    }\n\n    public static void main(String[] args) {\n        (new MyThread()).start();\n    }\n}' },
+{ id: 35, name: 'JavaScript Promise', language: 'javascript', code: 'new Promise((resolve, reject) => {\n  setTimeout(() => resolve("Hello, World!"), 1000);\n}).then(result => console.log(result));' },
+{ id: 36, name: 'JavaScript Async/Await', language: 'javascript', code: 'async function greet() {\n  let response = await fetch("https://api.example.com/data");\n  let data = await response.json();\n  console.log(data);\n}\n\ngreet();' },
+{ id: 37, name: 'Python Asynchronous Programming', language: 'python', code: 'import asyncio\n\nasync def greet():\n    async with aiohttp.ClientSession() as session:\n        async with session.get("https://api.example.com/data") as response:\n            data = await response.json()\n            print(data)\n\nasyncio.run(greet())' },
+{ id: 38, name: 'Java Lambda Expression', language: 'java', code: 'interface MyInterface {\n    void myMethod();\n}\n\nclass Main {\n    public static void main(String[] args) {\n        MyInterface obj = () -> System.out.println("Hello, World!");\n        obj.myMethod();\n    }\n}' },
+{ id: 39, name: 'Java Generics', language: 'java', code: 'class MyGeneric<T> {\n    private T value;\n\n    public MyGeneric(T value) {\n        this.value = value;\n    }\n\n    public T getValue() {\n        return value;\n    }\n\n    public void setValue(T value) {\n        this.value = value;\n    }\n}' },
+{ id: 40, name: 'JavaScript Map', language: 'javascript', code: 'let myMap = new Map();\nmyMap.set("key", "value");\nconsole.log(myMap.get("key"));' },
+{ id: 41, name: 'Python Dictionary', language: 'python', code: 'my_dict = {"key": "value"}\nprint(my_dict["key"])' },
+{ id: 42, name: 'HTML Form', language: 'html', code: '<form action="/submit" method="post">\n  <input type="text" name="username" />\n  <input type="submit" value="Submit" />\n</form>' },
+{ id: 43, name: 'CSS Box Model', language: 'css', code: '.box {\n  width: 200px;\n  height: 200px;\n  padding: 20px;\n  border: 1px solid #000;\n  margin: 10px;\n}' },
+{ id: 44, name: 'SQL Join Query', language: 'sql', code: 'SELECT * FROM table1\nINNER JOIN table2 ON table1.id = table2.table1_id;' },
+{ id: 45, name: 'Java JDBC Connection', language: 'java', code: 'import java.sql.*;\n\npublic class Main {\n    public static void main(String[] args) throws SQLException {\n        String url = "jdbc:mysql://localhost:3306/mydatabase";\n        String user = "root";\n        String password = "password";\n        Connection connection = DriverManager.getConnection(url, user, password);\n        System.out.println("Connected to the database.");\n        connection.close();\n    }\n}' },
+{ id: 46, name: 'Java Hibernate Entity Mapping', language: 'java', code: '@Entity\n@Table(name = "items")\npublic class Item {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n\n    private String name;\n\n    private double price;\n\n    // Getters and Setters\n}' },
+{ id: 47, name: 'JavaScript Set', language: 'javascript', code: 'let mySet = new Set();\nmySet.add("value1");\nmySet.add("value2");\nconsole.log(mySet);' },
+{ id: 48, name: 'Python Set', language: 'python', code: 'my_set = {"value1", "value2"}\nprint(my_set)' },
+{ id: 49, name: 'HTML5 Audio Element', language: 'html', code: '<audio controls>\n  <source src="audio.mp3" type="audio/mpeg">\n  Your browser does not support the audio element.\n</audio>' },
+{ id: 50, name: 'Java Exception Handling', language: 'java', code: 'public class Main {\n    public static void main(String[] args) {\n        try {\n            int result = 10 / 0;\n        } catch (ArithmeticException e) {\n            System.out.println(e.getMessage());\n        }\n    }\n}' },
+{id: 51, name: 'Page Refresh',language: 'javascript', code: 'function refreshPage(){\n    window.scrollTo(0,0);\n    location.reload();\n}'},
+        ];
+      }
+
+      filterSnippets(searchTerm) {
+        return this.snippets.filter(snippet =>
+          snippet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          snippet.language.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          snippet.code.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+displaySnippets() {
+  const snippetList = document.getElementById('snippet-list');
+  const searchInput = document.getElementById('search');
+  const searchTerm = searchInput.value.trim();
+  const filteredSnippets = this.filterSnippets(searchTerm);
+
+  snippetList.innerHTML = '';
+
+  filteredSnippets.forEach(snippet => {
+    const li = document.createElement('li');
+    const languageHeading = document.createElement('h3'); // Create a heading element for language
+    const codeElement = document.createElement('code');
+    const emoji = this.languageEmojis[snippet.language.toLowerCase()] || '';
+    languageHeading.textContent = `${emoji} ${snippet.language}`; // Set the text content of the heading to the language
+    codeElement.textContent = snippet.code; // Set the text content of the code element to the code
+
+    li.appendChild(languageHeading); // Append the language heading to the list item
+    li.appendChild(codeElement); // Append the code element to the list item
+    snippetList.appendChild(li); // Append the list item to the snippet list
+  });
+}
+
+
+
+
+
+      addSnippet(name, language, code) {
+        const id = this.snippets.length + 1;
+        this.snippets.push({ id, name, language, code });
+        this.displaySnippets();
+      }
+
+      deleteSnippet(id) {
+        this.snippets = this.snippets.filter(snippet => snippet.id !== id);
+        this.displaySnippets();
+      }
+
+      editSnippet(id, name, language, code) {
+        const index = this.snippets.findIndex(snippet => snippet.id === id);
+        if (index !== -1) {
+          this.snippets[index] = { id, name, language, code };
+          this.displaySnippets();
+        }
+      }
+    }
+	document.addEventListener("keydown", function(event) {
+  if (event.ctrlKey && event.key === "f") {
+    event.preventDefault(); // Prevent default behavior of Ctrl+F (browser find)
+    var searchElement = document.getElementById("search");
+    if (searchElement) {
+      searchElement.focus(); // Focus on the element with id "search"
+    }
+  }
+});
+function refreshPage(){
+    window.scrollTo(0,0);
+    location.reload();
+}
+
+    const snippetManager = new SnippetManager();
+
+    document.getElementById('search').addEventListener('input', () => snippetManager.displaySnippets());
+
+    // Initial display of snippets
+    snippetManager.displaySnippets();
+  </script>
+</body>
+</html>
