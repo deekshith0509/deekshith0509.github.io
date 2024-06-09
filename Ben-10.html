@@ -204,9 +204,15 @@ nav ul li.active {
 #placesSection .sub-section img,
 #eventsSection .sub-section img,
 #finalBattlesSection .sub-section img ,
-#filesSection .sub-section img{
+#filesSection .sub-section img,
+{
     width: 100%;
     height: auto;
+}
+#videosSection .sub-section .video1 {
+	margin-top: -20px !important;		
+}
+#videosSection .sub-section .video1 .video-player {
 }
 
 #banner{
@@ -345,7 +351,7 @@ audio::-webkit-media-controls-panel {
 
 .video-player {
     max-width: 800px; /* Optionally, set a maximum width for the video player */
-	width: 90vw;
+	width: 85vw;
 	display: block;
 	
 	border-radius:14px;
@@ -798,12 +804,12 @@ $scope.videos = [
     {
         name: "CLassic themeMusic",
         src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/classicv.mp4",
-        description: "The theme song for Ben 10 is a dynamic introduction to the series, combining visuals and music to set the tone. It starts with a journey through a solar system, leading to a silhouette of Ben illuminated by light. The song's verses feature pivotal moments from the series, including Ben receiving the Omnitrix and his first transformations. Detailed models of the first ten aliens fly at the screen, followed by a Flash-animated sequence showcasing Ben transforming into each alien. The order of transformations is highlighted, leading to a climactic scene where all the aliens are sucked into the center of the screen, forming the title logo.\n\nIn later seasons, the theme song was updated to reflect changes in Ben's lineup of aliens, such as the replacement of Ghostfreak with Cannonbolt. The song's visuals evolve to incorporate new renders and sequences while maintaining the energetic spirit of the original.\n\nThe theme song appears in every episode of the series and is also used in related media, including the opening credits of Ben 10: Race Against Time and the title screen of Ben 10: Protector of Earth video game. Despite some errors in animation and closed captions, the theme song remains an iconic and memorable aspect of the Ben 10 franchise."
-    },
+        description: "The Ben 10 theme song sets an energetic and dynamic tone for the series, highlighting Ben's transformations with evolving visuals and music that maintains its spirited essence. This iconic music is featured in every episode and related media, solidifying its memorable status in the franchise."
+		},
     {
 	name: "AlienForce ThemeMusic",
 	src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforcev.mp4",
-	description: "The intro begins with the silhouette of Ben's pose with his Omnitrix, featuring clips from Ben 10 Returns: Part 1, Ben 10 Returns: Part 2, Everybody Talks About the Weather, and Kevin's Big Score. Then, Alien Force is featured, showcasing the Omnitrix aliens, including Goop, Swampfire, Chromastone, Big Chill, Humungousaur, Brainstorm, Jetray, Spidermonkey, Echo Echo, and Alien X. Unlike in the Original Series, the aliens aren't counted up to ten. The order follows:\n\n1 - Goop\n2 - Swampfire\n3 - Chromastone\n4 - Big Chill\n5 - Humungousaur\n6 - Brainstorm\n7 - Jetray\n8 - Spidermonkey\n9 - Echo Echo\n10 - Alien X (Season 1, Ben 10 Returns: Part 1 - X = Ben + 2; black covered silhouette)/(Season 1, Alone Together - Season 2; full silhouette)\n\nVariations:\nIn the first half of Season 1, the theme song only displayed a silhouette of Alien X, because he was meant to be a surprise alien. After X = Ben + 2, the theme song began showing Alien X's full image.\n\nAppearances:\nBen 10: Alien Force:\n- The theme song appears in every episode.\n- A sped-up version of the theme is played during the credits of every episode as well.\nBen 10: Alien Force (Video Game):\n- The song is used for the main menu of the game.\nBen 10 Alien Force: Vilgax Attacks:\n- The song is used for the title screen of the game, and is played on loop.\n\nTrivia:\n- This theme song remixes the melody from the two verses of the Original Series' theme, in half-time.\n- The ending of the song subtly references Ben's leitmotif from the Original Series.\n- The DS Version of the Alien Force video game plays a remix of the theme song that replaces the melody borrowed from the Original Series theme with Ben's leitmotif, used as a melody."
+	description: "The Ben 10: Alien Force theme song begins with Ben's silhouette and clips from key episodes, introducing Omnitrix aliens like Goop and Alien X. It remixes the original series' melody, evolving to reveal Alien X fully later, and appears in every episode and related media, including video games, maintaining its iconic status."
 	},
 	
 ];
@@ -838,11 +844,11 @@ $scope.toggleVideo = function(index) {
 
 $scope.showSection = function (section) {
     // Pause all audio elements
- /*   document.querySelectorAll('audio').forEach(function (audio) {
+    document.querySelectorAll('audio').forEach(function (audio) {
         audio.pause();
 		audio.currentTime = 0;
     });
-		*/ document.querySelectorAll('video').forEach(function (video) {
+	 document.querySelectorAll('video').forEach(function (video) {
         video.pause();
 		video.currentTime = 0;
     });
