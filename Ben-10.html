@@ -161,9 +161,11 @@ nav ul li.active {
 }
 
 .character {
-	
+	display:block;
+	align: center;
+	justify-content: center;
+	align-items: center;
 	border-radius:10px;
-    display: flex;
     width: 100%;
     margin-bottom: 20px;
     background-color: rgb(255, 255, 122);
@@ -229,6 +231,7 @@ height:100px;
     text-align: center;
     font-size: 30px;
 	margin-bottom: 18px !important;
+	
 }
 
     .audio-container {
@@ -332,6 +335,32 @@ audio::-webkit-media-controls-panel {
         justify-content: center; /* Centers the audio element within its container */
         width: 100%;
     }
+.video1 {
+    display: flex; /* Set display to flex */
+    justify-content: center; /* Center the video horizontally */
+    align-items: center; /* Center the video vertically */
+	margin:10px;
+}
+
+
+.video-player {
+    max-width: 800px; /* Optionally, set a maximum width for the video player */
+	width: 90vw;
+	display: block;
+	
+	border-radius:14px;
+	
+	
+}
+
+.sub-section.active {
+    display: block;
+    align-items: center;
+	padding-top: 20px;
+    justify-content: center;
+	padding-right:10px;
+}
+
 
     </style>
 </head>
@@ -348,6 +377,7 @@ audio::-webkit-media-controls-panel {
             <li ng-click="showSection('events')" ng-class="{ 'active': currentSection === 'events' }">Events</li>
             <li ng-click="showSection('finalBattles')" ng-class="{ 'active': currentSection === 'finalBattles' }">Battles (Final)</li>
 			<li ng-click="showSection('files')" ng-class="{ 'active': currentSection === 'files' }">Music</li>
+			<li ng-click="showSection('videos')" ng-class="{ 'active': currentSection === 'videos' }">Videos (clips)</li>     
         </ul>
     </nav>
     <div class="section" id="charactersSection">
@@ -439,6 +469,27 @@ audio::-webkit-media-controls-panel {
             </div>
         </div>
     </div>
+<div class="section" id="videosSection">
+    <h2>Videos</h2>
+    <div class="character-list">
+        <div class="character" ng-repeat="video in videos" ng-click="toggleVideo($index)">
+         
+                <h3 ng-class="{ 'larger-font': activeVideo === $index }">{{ video.name }}</h3>
+                <div  class="sub-section" ng-class="{ 'active': activeVideo === $index }">
+				<div class="video1">
+                    <video controls id="video-{{ $index }}" class="video-player">
+                        <source ng-src="{{ video.src }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                   
+                </div>
+			 <p>{{ video.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+	
 <p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
     <script>
         angular.module('ben10FanWiki', [])
@@ -737,16 +788,70 @@ $scope.toggleFile = function (index) {
                     }	
 };
 
+
+
+
+
+
+
+$scope.videos = [
+    {
+        name: "CLassic themeMusic",
+        src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/classicv.mp4",
+        description: "The theme song for Ben 10 is a dynamic introduction to the series, combining visuals and music to set the tone. It starts with a journey through a solar system, leading to a silhouette of Ben illuminated by light. The song's verses feature pivotal moments from the series, including Ben receiving the Omnitrix and his first transformations. Detailed models of the first ten aliens fly at the screen, followed by a Flash-animated sequence showcasing Ben transforming into each alien. The order of transformations is highlighted, leading to a climactic scene where all the aliens are sucked into the center of the screen, forming the title logo.\n\nIn later seasons, the theme song was updated to reflect changes in Ben's lineup of aliens, such as the replacement of Ghostfreak with Cannonbolt. The song's visuals evolve to incorporate new renders and sequences while maintaining the energetic spirit of the original.\n\nThe theme song appears in every episode of the series and is also used in related media, including the opening credits of Ben 10: Race Against Time and the title screen of Ben 10: Protector of Earth video game. Despite some errors in animation and closed captions, the theme song remains an iconic and memorable aspect of the Ben 10 franchise."
+    },
+    {
+	name: "AlienForce ThemeMusic",
+	src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforcev.mp4",
+	description: "The intro begins with the silhouette of Ben's pose with his Omnitrix, featuring clips from Ben 10 Returns: Part 1, Ben 10 Returns: Part 2, Everybody Talks About the Weather, and Kevin's Big Score. Then, Alien Force is featured, showcasing the Omnitrix aliens, including Goop, Swampfire, Chromastone, Big Chill, Humungousaur, Brainstorm, Jetray, Spidermonkey, Echo Echo, and Alien X. Unlike in the Original Series, the aliens aren't counted up to ten. The order follows:\n\n1 - Goop\n2 - Swampfire\n3 - Chromastone\n4 - Big Chill\n5 - Humungousaur\n6 - Brainstorm\n7 - Jetray\n8 - Spidermonkey\n9 - Echo Echo\n10 - Alien X (Season 1, Ben 10 Returns: Part 1 - X = Ben + 2; black covered silhouette)/(Season 1, Alone Together - Season 2; full silhouette)\n\nVariations:\nIn the first half of Season 1, the theme song only displayed a silhouette of Alien X, because he was meant to be a surprise alien. After X = Ben + 2, the theme song began showing Alien X's full image.\n\nAppearances:\nBen 10: Alien Force:\n- The theme song appears in every episode.\n- A sped-up version of the theme is played during the credits of every episode as well.\nBen 10: Alien Force (Video Game):\n- The song is used for the main menu of the game.\nBen 10 Alien Force: Vilgax Attacks:\n- The song is used for the title screen of the game, and is played on loop.\n\nTrivia:\n- This theme song remixes the melody from the two verses of the Original Series' theme, in half-time.\n- The ending of the song subtly references Ben's leitmotif from the Original Series.\n- The DS Version of the Alien Force video game plays a remix of the theme song that replaces the melody borrowed from the Original Series theme with Ben's leitmotif, used as a melody."
+	},
+	
+];
+
+
+$scope.toggleVideo = function(index) {
+    // Stop any playing videos except the one being toggled
+    var videos = document.querySelectorAll('video');
+    videos.forEach(function(video, i) {
+        if (i !== index) {
+            video.pause();
+            video.currentTime = 0;
+        }
+    });
+
+    // Toggle playback of the selected video
+    var selectedVideo = document.getElementById('video-' + index);
+    if ($scope.activeVideo === index) {
+        selectedVideo.pause();
+        selectedVideo.currentTime = 0; // Pause if already active
+    } else {
+        selectedVideo.play(); // Play if not active
+    }
+
+    $scope.activeVideo = $scope.activeVideo === index ? -1 : index;
+};
+
+
+
+
+
+
 $scope.showSection = function (section) {
     // Pause all audio elements
  /*   document.querySelectorAll('audio').forEach(function (audio) {
         audio.pause();
 		audio.currentTime = 0;
     });
-*/ //uncomment this to pause audio when switching between the sections..
+		*/ document.querySelectorAll('video').forEach(function (video) {
+        video.pause();
+		video.currentTime = 0;
+    });
+ //uncomment this to pause audio when switching between the sections..
     // Reset the activeCharacter index to collapse all subsections
     $scope.activeCharacter = -1;
 	$scope.activeFile = -1;
+	$scope.activeVideo=-1;
+
 
     // Hide all sections
     document.querySelectorAll('.section').forEach(function (el) {
@@ -800,7 +905,10 @@ $scope.showSection('characters');
                 } else if (event.key.toLowerCase() ==="m" && event.ctrlKey){
 				   $scope.showSection("files");
 				   event.preventDefault();
-				}
+				} else if (event.key.toLowerCase() === "v" && event.ctrlKey){
+					$scope.showSection("videos");
+					event.preventDefault();				
+				} 
                 // Add more else if blocks for other sections if needed
             };
             });
