@@ -254,6 +254,14 @@ height:100px;
         box-sizing: border-box;
     }
  
+ .iframe-player {
+	width: 80vw !important;
+  height: 30vh !important; /* Adjust height as needed */
+  border: 2px solid green; /* Border for iframe */
+  border-radius: 10px; /* Rounded corners */=
+}
+ 
+ 
  
 }
 
@@ -366,6 +374,15 @@ audio::-webkit-media-controls-panel {
     justify-content: center;
 	padding-right:10px;
 }
+/* Style for iframe */
+.iframe-player {
+	width: 800px;
+  height: 450px; /* Adjust height as needed */
+  border: 2px solid green; /* Border for iframe */
+  border-radius: 10px; /* Rounded corners */=
+}
+
+
 
 
     </style>
@@ -479,27 +496,26 @@ audio::-webkit-media-controls-panel {
     <h2>Videos</h2>
     <div class="character-list">
         <div class="character" ng-repeat="video in videos" ng-click="toggleVideo($index)">
-         
-                <h3 ng-class="{ 'larger-font': activeVideo === $index }">{{ video.name }}</h3>
-                <div  class="sub-section" ng-class="{ 'active': activeVideo === $index }">
-				<div class="video1">
-                    <video controls id="video-{{ $index }}" class="video-player">
-                        <source ng-src="{{ video.src }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                   
+            <h3 ng-class="{ 'larger-font': activeVideo === $index }">{{ video.name }}</h3>
+            <div class="sub-section" ng-class="{ 'active': activeVideo === $index }">
+                <div class="video1">
+				<div ng-if="video.type === 'github'">
+                    <video controls ng-src="{{ video.src }}" class="video-player" id="video-{{$index}}"></video>
                 </div>
-			 <p>{{ video.description }}</p>
+				</div>
+                <div ng-if="video.type === 'iframe' && activeVideo === $index">
+                    <iframe ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="iframe-{{$index}}"></iframe>
+                </div>
+                <p>{{ video.description }}</p>
             </div>
         </div>
     </div>
 </div>
 
-	
 <p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
     <script>
         angular.module('ben10FanWiki', [])
-            .controller('MainController', function ($scope) {
+            .controller('MainController',['$scope', '$sce', function ($scope, $sce) {
                 $scope.characters = [
 					
                     { name: 'Ben Tennyson', image: "https://static.wikia.nocookie.net/ben10/images/f/fe/TEN_%28461%29.png", bio: "Ben Tennyson is the main protagonist in the Ben 10 franchise, which spans across various animated television series, movies, comic books, and video games. He is a young boy who discovers a powerful alien device called the Omnitrix during a summer vacation with his cousin Gwen and their Grandpa Max. The Omnitrix allows him to transform into various alien species, each with its own unique abilities and characteristics." },
@@ -804,38 +820,359 @@ $scope.videos = [
     {
         name: "CLassic themeMusic",
         src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/classicv.mp4",
-        description: "The Ben 10 theme song sets an energetic and dynamic tone for the series, highlighting Ben's transformations with evolving visuals and music that maintains its spirited essence. This iconic music is featured in every episode and related media, solidifying its memorable status in the franchise."
+        type: "github",
+		description: "The Ben 10 theme song sets an energetic and dynamic tone for the series, highlighting Ben's transformations with evolving visuals and music that maintains its spirited essence. This iconic music is featured in every episode and related media, solidifying its memorable status in the franchise."
 		},
     {
 	name: "AlienForce ThemeMusic",
-	src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforcev.mp4",
+	 type: "github",
+	 src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforcev.mp4",
 	description: "The Ben 10: Alien Force theme song begins with Ben's silhouette and clips from key episodes, introducing Omnitrix aliens like Goop and Alien X. It remixes the original series' melody, evolving to reveal Alien X fully later, and appears in every episode and related media, including video games, maintaining its iconic status."
 	},
-	
+  { 
+    "name": "Ben 10 S01 E01", 
+    "src": "https://drive.google.com/file/d/1qG7VImzuOcZKCf7b1Pv7QKq_Z1KGoTuD/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 1"
+  },
+  { 
+    "name": "Ben 10 S01 E02", 
+    "src": "https://drive.google.com/file/d/1l8VdmEzA8xiY7BkksHdYNqKd9xNrOwpd/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 2"
+  },
+  { 
+    "name": "Ben 10 S01 E03", 
+    "src": "https://drive.google.com/file/d/1uTAA2e3o4dkEuJVv2hLX4Yvk86KSPKor/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 3"
+  },
+  { 
+    "name": "Ben 10 S01 E04", 
+    "src": "https://drive.google.com/file/d/16gE58R40jeEjlfoZNJFTUQ34LoVn9jiE/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 4"
+  },
+  { 
+    "name": "Ben 10 S01 E05", 
+    "src": "https://drive.google.com/file/d/1ldAJc_i8wVmZgrxqMVuBZdGQkvTy5vQx/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 5"
+  },
+  { 
+    "name": "Ben 10 S01 E06", 
+    "src": "https://drive.google.com/file/d/1i2V7y56xqISr3SkxfHnXK-cEZElaM_RV/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 6"
+  },
+  { 
+    "name": "Ben 10 S01 E07", 
+    "src": "https://drive.google.com/file/d/1Z64VEPtk0b_eaLDquTGG1-wLR2T_TIoB/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 7"
+  },
+  { 
+    "name": "Ben 10 S01 E08", 
+    "src": "https://drive.google.com/file/d/1zciZaSsVhlAEkpypqGknZZd553n9WBvd/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 8"
+  },
+  { 
+    "name": "Ben 10 S01 E09", 
+    "src": "https://drive.google.com/file/d/1b3JQStftctFf_vNAICEAZhbF7NoeoSko/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 9"
+  },
+  { 
+    "name": "Ben 10 S01 E10", 
+    "src": "https://drive.google.com/file/d/1DTMd39_IsLNysGX4BrCxLPeaESASE8mF/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 10"
+  },
+  { 
+    "name": "Ben 10 S01 E11", 
+    "src": "https://drive.google.com/file/d/1naBqXbMnDlD8bf82zfs01N3iM_lwyJ_R/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 11"
+  },
+  { 
+    "name": "Ben 10 S01 E12", 
+    "src": "https://drive.google.com/file/d/1bsugNuTkLNpEiyjyGtaCU_8Croyx3Qdi/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 12"
+  },
+  { 
+    "name": "Ben 10 S01 E013", 
+    "src": "https://drive.google.com/file/d/1MozTuQsTq5CwaTq2Or9Wdrlv9gdNCYWF/preview", 
+    "type": "iframe",
+    "description": "Season 1 - Episode 13"
+  },
+  { 
+    "name": "Ben S02 E01", 
+    "src": "https://drive.google.com/file/d/1nT_6nAKtYtd6THR6O4SOPJIvLNixx66x/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 1"
+  },
+  { 
+    "name": "Ben S02 E02", 
+    "src": "https://drive.google.com/file/d/17B8Gff49jyGzgaRqKUKXiVu_Q4r8H_uo/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 2"
+  },
+  { 
+    "name": "Ben S02 E03", 
+    "src": "https://drive.google.com/file/d/1SSOGMG0kvqf1_IRkYtOVqoq1DC7F_nb-/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 3"
+  },
+  { 
+    "name": "Ben S02 E04", 
+    "src": "https://drive.google.com/file/d/1ylJZiPOQKoEVUz83WJvISMIpCjXVeMwa/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 4"
+  },
+  { 
+    "name": "Ben S02 E05", 
+    "src": "https://drive.google.com/file/d/1ug4W0TV9mEXXExINEoMtUjfIQsS_4qW4/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 5"
+  },
+  { 
+    "name": "Ben S02 E06", 
+    "src": "https://drive.google.com/file/d/1xRzbsjgWJpfdk0accv4zuUfZNcTPsdbg/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 6"
+  },
+  { 
+    "name": "Ben S02 E07", 
+    "src": "https://drive.google.com/file/d/1KBzh_WNrTHCIdSIIqShWt27D9yDR3NC6/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 7"
+  },
+  { 
+    "name": "Ben S02 E08", 
+    "src": "https://drive.google.com/file/d/1WYkLgWHTS6gfAM1aHJhq0TXMurtXbZFI/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 8"
+  },
+  { 
+    "name": "Ben S02 E09", 
+    "src": "https://drive.google.com/file/d/1hu0QkKF160pQNbAUSWaw12l9fCCZkq09/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 9"
+  },
+  { 
+    "name": "Ben S02 E10", 
+    "src": "https://drive.google.com/file/d/1bmtyrhComKuO-EN40EwaROIhtP7L5H2K/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 10"
+  },
+  { 
+    "name": "Ben S02 E11", 
+    "src": "https://drive.google.com/file/d/1nRoD667cjACRgH9wOxBzDyEsqc8JRw6m/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 11"
+  },
+  { 
+    "name": "Ben S02 E12", 
+    "src": "https://drive.google.com/file/d/11QgQoIx2NqS0Gv81pxC215MYkRBkog5C/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 12"
+  },
+  { 
+    "name": "Ben S02 E13", 
+    "src": "https://drive.google.com/file/d/1n5NGeDwLPVLeMU7hrqvsKbxz5w_kTfT8/preview", 
+    "type": "iframe",
+    "description": "Season 2 - Episode 13"
+  },
+  { 
+    "name": "Ben S03 E01", 
+    "src": "https://drive.google.com/file/d/1DzsV4cgzhwiVUrbrHwPxhOsPncHawe7I/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 1"
+  },
+  { 
+    "name": "Ben S03 E02", 
+    "src": "https://drive.google.com/file/d/1HIbrmxgHEKodeZPwsbf1XVkJmLo8sYcR/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 2"
+  },
+  { 
+    "name": "Ben S03 E03", 
+    "src": "https://drive.google.com/file/d/1YWZCN4wZIaID3YuML0N1WJqMwY_tINJ2/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 3"
+  },
+  { 
+    "name": "Ben S03 E04", 
+    "src": "https://drive.google.com/file/d/1nF3mRfMHNw3wBTMvwG7H95lpN-qTMHEL/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 4"
+  },
+  { 
+    "name": "Ben S03 E05", 
+    "src": "https://drive.google.com/file/d/1PBNNyrPi6gwiip2hA9O3X-sh4dgcjRM2/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 5"
+  },
+  { 
+    "name": "Ben S03 E06", 
+    "src": "https://drive.google.com/file/d/1_YuMIM6nxjlTjgzgwDswbUq6VzGqW0Ja/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 6"
+  },
+  { 
+    "name": "Ben S03 E07", 
+    "src": "https://drive.google.com/file/d/1Hay8DshcDrOhB5Lax91sG-wnxr3DLMPA/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 7"
+  },
+  { 
+    "name": "Ben S03 E08", 
+    "src": "https://drive.google.com/file/d/14rwttpLjm_22KUJpszycaNfrwsm6DAw4/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 8"
+  },
+  { 
+    "name": "Ben S03 E09", 
+    "src": "https://drive.google.com/file/d/1O-LO2qo89CCS6ZrwzjUKvyzk3eR6R87A/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 9"
+  },
+  { 
+    "name": "Ben S03 E10", 
+    "src": "https://drive.google.com/file/d/1_AEuSIuYJuyg3YtI9htODqEfin2T2aPI/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 10"
+  },
+  { 
+    "name": "Ben S03 E11", 
+    "src": "https://drive.google.com/file/d/1hqhiWAOtCdR8F9C1lxP_uo_W0AuXvAfq/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 11"
+  },
+  { 
+    "name": "Ben S03 E12", 
+    "src": "https://drive.google.com/file/d/1jqtX3e_SCkgrFYSC4XhgW1lgExeBs35Y/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 12"
+  },
+  { 
+    "name": "Ben S03 E13", 
+    "src": "https://drive.google.com/file/d/1HyIcLITq-r1O5vbN32Z4idtyaCs0v8qL/preview", 
+    "type": "iframe",
+    "description": "Season 3 - Episode 13"
+  },
+  { 
+    "name": "Ben S04 E01", 
+    "src": "https://drive.google.com/file/d/19M-SI1HEWN6EbbKOI0Z34ZVQuk3BMfNB/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 1"
+  },
+  { 
+    "name": "Ben S04 E02", 
+    "src": "https://drive.google.com/file/d/1iQXtQEwxQrYYptrZYjK8wa7BbYClK8P5/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 2"
+  },
+  { 
+    "name": "Ben S04 E03", 
+    "src": "https://drive.google.com/file/d/1C01I0mz2LJsab28W9i2-CwgQTLkN55f-/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 3"
+  },
+  { 
+    "name": "Ben S04 E04", 
+    "src": "https://drive.google.com/file/d/1OGinV66786qjAxOPwR7ZZ3zkgU2uMBqM/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 4"
+  },
+  { 
+    "name": "Ben S04 E05, 06, 07", 
+    "src": "https://drive.google.com/file/d/1vXRbsJ_ywIJlkuqncgc-CWm47tIXPFAN/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 5, 6, 7"
+  },
+  { 
+    "name": "Ben S04 E08", 
+    "src": "https://drive.google.com/file/d/1f4Q64oIs61HHqhe0w_FjAV4YGyRxNdzp/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 8"
+  },
+  { 
+    "name": "Ben S04 E09", 
+    "src": "https://drive.google.com/file/d/1nRoD667cjACRgH9wOxBzDyEsqc8JRw6m/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 9"
+  },
+  { 
+    "name": "Ben S04 E10", 
+    "src": "https://drive.google.com/file/d/1a1PpjMQJUYdzpy_M5XR0AaATSHdTT6DL/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 10"
+  },
+  { 
+    "name": "Ben S04 E11", 
+    "src": "https://drive.google.com/file/d/1iZC6odrtA7Dchbod9wwC867mLk6LPIQ0/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 11"
+  },
+  { 
+    "name": "Ben S04 E12", 
+    "src": "https://drive.google.com/file/d/1Dcf1PTpatwhZy_SBPvLILcEX_e6V9586/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 12"
+  },
+  { 
+    "name": "Ben S04 E13", 
+    "src": "https://drive.google.com/file/d/196so430zh1r7E3SFjldCX5LHiMXxZV6b/preview", 
+    "type": "iframe",
+    "description": "Season 4 - Episode 13"
+  }
+
+  
+
 ];
 
 
 $scope.toggleVideo = function(index) {
-    // Stop any playing videos except the one being toggled
+    // Pause all videos and reset them
     var videos = document.querySelectorAll('video');
-    videos.forEach(function(video, i) {
+    videos.forEach(function(video) {
+        video.pause();
+        video.currentTime = 0;
+    });
+
+    // Pause all iframes except the one that is being expanded
+    var iframes = document.querySelectorAll('iframe');
+    iframes.forEach(function(iframe, i) {
         if (i !== index) {
-            video.pause();
-            video.currentTime = 0;
+            // Set src to an empty string to pause or abort the iframe content
+            iframe.setAttribute('src', '');
         }
     });
 
-    // Toggle playback of the selected video
-    var selectedVideo = document.getElementById('video-' + index);
-    if ($scope.activeVideo === index) {
-        selectedVideo.pause();
-        selectedVideo.currentTime = 0; // Pause if already active
-    } else {
-        selectedVideo.play(); // Play if not active
+    // Handle the selected video or iframe
+    if ($scope.videos[index].type === 'github') {
+        var selectedVideo = document.getElementById('video-' + index);
+        if ($scope.activeVideo !== index) {
+            selectedVideo.play(); // Play if not already active
+        }
+    } else if ($scope.videos[index].type === 'iframe') {
+        var selectedIframe = document.getElementById('iframe-' + index);
+        if ($scope.activeVideo === index) {
+            var iframeSrc = selectedIframe.getAttribute('src');
+            selectedIframe.setAttribute('src', iframeSrc); // Reload iframe content to pause
+        }
     }
 
     $scope.activeVideo = $scope.activeVideo === index ? -1 : index;
 };
+
+$scope.trustSrc = function(src) {
+    return $sce.trustAsResourceUrl(src);
+};
+
 
 
 
@@ -917,7 +1254,7 @@ $scope.showSection('characters');
 				} 
                 // Add more else if blocks for other sections if needed
             };
-            });
+            }]);
 			angular.element(document).ready(function () {
         angular.element(document).on('keydown', function (event) {
             angular.element(document.body).scope().keyDownHandler(event);
