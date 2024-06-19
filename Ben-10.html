@@ -19,7 +19,7 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-	overflow-x: hidden;
+	overflow-x: hidden !important;
 
 }
 
@@ -54,7 +54,25 @@ body::before {
     nav ul li {
         font-size: 14px; /* Reduce font size for smaller screens */
     }
+ .iframe-player {
+	width: 80vw !important;
+  height: 27vh !important; /* Adjust height as needed */
+  border: 2px solid green; /* Border for iframe */
+  border-radius: 10px; /* Rounded corners */=
 }
+
+
+
+}
+
+/* Style for iframe */
+.iframe-player {
+	width: 800px;
+  height: 450px; /* Adjust height as needed */
+  border: 2px solid green; /* Border for iframe */
+  border-radius: 10px; /* Rounded corners */=
+}
+
 
 nav ul {
     list-style-type: none;
@@ -254,14 +272,6 @@ height:100px;
         box-sizing: border-box;
     }
  
- .iframe-player {
-	width: 80vw !important;
-  height: 30vh !important; /* Adjust height as needed */
-  border: 2px solid green; /* Border for iframe */
-  border-radius: 10px; /* Rounded corners */=
-}
- 
- 
  
 }
 
@@ -321,7 +331,7 @@ height:100px;
 
 .larger-font {
     font-size: 30px;
-	margin-bottom:-10px;
+	margin: 20px 10px -10px 0;
 	font-style: italic;
 	font-weight: bold;
 	font-variant: small-caps;
@@ -359,7 +369,7 @@ audio::-webkit-media-controls-panel {
 
 .video-player {
     max-width: 800px; /* Optionally, set a maximum width for the video player */
-	width: 85vw;
+	width: 80vw;
 	display: block;
 	
 	border-radius:14px;
@@ -375,15 +385,102 @@ audio::-webkit-media-controls-panel {
 	padding-right:10px;
 }
 /* Style for iframe */
-.iframe-player {
-	width: 800px;
-  height: 450px; /* Adjust height as needed */
-  border: 2px solid green; /* Border for iframe */
-  border-radius: 10px; /* Rounded corners */=
+
+
+
+
+
+.subnav {
+    background-color: #444 !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100vw !important;
+    margin-left: -20px !important; /* Adjust as needed */
+	margin-top: 40px;
 }
 
 
+.subnav ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
 
+.subnav ul li {
+    padding: 10px 20px;
+    color: white;
+    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/cartoonhand.cur'), auto;
+    
+}
+
+.subnav ul li.active {
+    background-color: #666 !important;
+}
+
+@keyframes glitch {
+    0%, 50% {
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(0, 0, 0);
+        opacity: 1;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.8);
+    }
+    5%, 55% {
+        transform: perspective(1000px) rotateX(5deg) rotateY(5deg) rotateZ(5deg) translate3d(2px, -2px, 0);
+        opacity: 0.9;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.8);
+    }
+    10%, 60% {
+        transform: perspective(1000px) rotateX(10deg) rotateY(10deg) rotateZ(10deg) translate3d(-2px, 2px, 0);
+        opacity: 0.8;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.8);
+    }
+    /* Continue defining keyframes as needed */
+    100% {
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(0, 0, 0);
+        opacity: 1;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.8);
+    }
+}
+
+@keyframes glitch-pause {
+    0% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+#subheading {
+    background-color: rgba(0,0,0,0); /* A dark green background color */
+	width: 100vw;
+		left: -40px;
+	rigth: -30px;
+	height: 20px;
+    color: #00ff00; /* Green text color */
+    padding: 40px; /* Adjust padding as needed */
+	position: relative;
+	top : -20px;
+	left: -20px;
+    text-align: center; /* Center the text horizontally */
+}
+
+#s1 h2 {
+    margin: -20px; /* Remove default margin */
+	position: relative;
+	top: 20px;
+	font-size: 30px;
+    animation: glitch 4s; /* Apply the glowing animation */
+	margin-left: -20px !important;
+}
+
+.overlay-block {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0); /* Invisible block to cover the button */
+    z-index: 1;
+}
 
     </style>
 </head>
@@ -492,31 +589,862 @@ audio::-webkit-media-controls-panel {
             </div>
         </div>
     </div>
-<div class="section" id="videosSection">
-    <h2>Videos</h2>
+<div class="section" id="videosSection"><div id="s1">
+    <h2>Episodes</h2></div>
+    <nav class= "subnav">
+        <ul>
+            <li ng-click="showSeason('classic')" ng-class="{ 'active': currentSeason === 'classic' }">Classic</li>
+            <li ng-click="showSeason('alienforce')" ng-class="{ 'active': currentSeason === 'alienforce' }">Alien Force</li>
+            <li ng-click="showSeason('ultimatealien')" ng-class="{ 'active': currentSeason === 'ultimatealien' }">Ultimate Alien</li>
+        </ul>
+    </nav>
+<div class="season" id="classicSection" ng-show="currentSeason === 'classic'">
+    <h2>Classic Videos</h2>
     <div class="character-list">
         <div class="character" ng-repeat="video in videos" ng-click="toggleVideo($index)">
-            <h3 ng-class="{ 'larger-font': activeVideo === $index }">{{ video.name }}</h3>
-            <div class="sub-section" ng-class="{ 'active': activeVideo === $index }">
+            <h3 ng-class="{ 'larger-font': activeClassicVideo === $index }">{{ video.name }}</h3>
+            <div class="sub-section" ng-class="{ 'active': activeClassicVideo === $index }">
                 <div class="video1">
-				<div ng-if="video.type === 'github'">
-                    <video controls ng-src="{{ video.src }}" class="video-player" id="video-{{$index}}"></video>
+                    <div ng-if="video.type === 'github'">
+                        <video controls ng-src="{{ video.src }}" class="video-player" id="classicVideo-{{$index}}"></video>
+                    </div>
                 </div>
+                <div ng-if="video.type === 'iframe' && activeClassicVideo === $index">
+                    <iframe sandbox="allow-scripts allow-same-origin" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="classicIframe-{{$index}}"></iframe>
+                            <div class="overlay-block"></div>
 				</div>
-                <div ng-if="video.type === 'iframe' && activeVideo === $index">
-                    <iframe ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="iframe-{{$index}}"></iframe>
-                </div>
                 <p>{{ video.description }}</p>
             </div>
         </div>
     </div>
 </div>
 
+<div class="season" id="alienforceSection" ng-show="currentSeason === 'alienforce'">
+    <h2>Alien Force Videos</h2>
+    <div class="character-list">
+        <div class="character" ng-repeat="video in alienforceVideos" ng-click="toggleVideo($index)">
+            <h3 ng-class="{ 'larger-font': activeAlienForceVideo === $index }">{{ video.name }}</h3>
+            <div class="sub-section" ng-class="{ 'active': activeAlienForceVideo === $index }">
+                <div class="video1">
+                    <div ng-if="video.type === 'github'">
+                        <video controls ng-src="{{ video.src }}" class="video-player" id="alienforceVideo-{{$index}}"></video>
+                    </div>
+                </div>
+                <div ng-if="video.type === 'iframe' && activeAlienForceVideo === $index">
+                    <iframe sandbox="allow-scripts allow-same-origin" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="alienforceIframe-{{$index}}"></iframe>
+                            <div class="overlay-block"></div>
+				</div>
+                <p>{{ video.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="season" id="ultimatealienSection" ng-show="currentSeason === 'ultimatealien'">
+    <h2>Ultimate Alien Videos</h2>
+    <div class="character-list">
+        <div class="character" ng-repeat="video in ultimatealienVideos" ng-click="toggleVideo($index)">
+            <h3 ng-class="{ 'larger-font': activeUltimateAlienVideo === $index }">{{ video.name }}</h3>
+            <div class="sub-section" ng-class="{ 'active': activeUltimateAlienVideo === $index }">
+                <div class="video1">
+                    <div ng-if="video.type === 'github'">
+                        <video controls ng-src="{{ video.src }}" class="video-player" id="ultimatealienVideo-{{$index}}"></video>
+                    </div>
+                </div>
+                <div ng-if="video.type === 'iframe' && activeUltimateAlienVideo === $index">
+                    
+					<iframe sandbox="allow-scripts allow-same-origin" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="ultimatealienIframe-{{$index}}"></iframe>
+                            <div class="overlay-block"></div>
+				</div>
+                <p>{{ video.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+
 <p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
     <script>
         angular.module('ben10FanWiki', [])
             .controller('MainController',['$scope', '$sce', function ($scope, $sce) {
-                $scope.characters = [
+
+
+
+
+
+
+$scope.toggleVideo = function(index) {
+    // Pause all videos and reset currentTime
+    var videos = document.querySelectorAll('video');
+    videos.forEach(function(video) {
+        video.pause();
+        video.currentTime = 0;
+    });
+
+    // Pause all iframes except the one that is being expanded
+    var iframes = document.querySelectorAll('iframe');
+    iframes.forEach(function(iframe, i) {
+        if (i !== index) {
+            iframe.setAttribute('src', '');
+        }
+    });
+
+    // Determine the current section
+    var currentSection = '';
+    switch ($scope.currentSeason) {
+        case 'classic':
+            currentSection = 'classic';
+            break;
+        case 'alienforce':
+            currentSection = 'alienforce';
+            break;
+        case 'ultimatealien':
+            currentSection = 'ultimatealien';
+            break;
+    }
+
+    console.log("Current Section:", currentSection);
+    console.log("Index:", index);
+
+    // Handle the selected video
+    var videosArray;
+    var activeVideoKey;
+    switch (currentSection) {
+        case 'classic':
+            videosArray = $scope.videos;
+            activeVideoKey = 'activeClassicVideo';
+            break;
+        case 'alienforce':
+            videosArray = $scope.alienforceVideos;
+            activeVideoKey = 'activeAlienForceVideo';
+            break;
+        case 'ultimatealien':
+            videosArray = $scope.ultimatealienVideos;
+            activeVideoKey = 'activeUltimateAlienVideo';
+            break;
+        default:
+            videosArray = [];
+            activeVideoKey = '';
+    }
+
+    // Expand the div when a video is clicked
+    var selectedDiv = document.getElementById('videosSection');
+    selectedDiv.classList.add('expanded'); // Add a CSS class to expand the div
+
+    // Check if the clicked video is already active, if so, deactivate it
+    if ($scope[activeVideoKey] === index) {
+        $scope[activeVideoKey] = -1;
+        selectedDiv.classList.remove('expanded'); // Remove the expanded class to collapse the div
+        return;
+    }
+
+    // Activate the clicked video
+    $scope[activeVideoKey] = index;
+
+    // Play the video if it's a GitHub video
+    var selectedVideo = document.getElementById(currentSection + 'Video-' + index);
+    if (selectedVideo) {
+        selectedVideo.play();
+    }
+
+    // Hide the pop-out button in iframe
+    hideIframeButton(index);
+};
+
+// Function to hide the pop-out button in iframe
+function hideIframeButton(index) {
+    setTimeout(function() {
+        var iframe = document.getElementById('ultimatealienIframe-' + index);
+        if (iframe) {
+            try {
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var button = iframeDoc.querySelector('.drive-viewer-popout-button');
+                if (button) {
+                    button.style.display = 'none';
+                }
+            } catch (e) {
+                console.error('Error accessing iframe content:', e);
+            }
+        }
+    }, 1000); // Delay to ensure iframe content is loaded
+}
+
+
+
+
+
+
+$scope.showSeason = function (season) {
+    // Pause all audio elements
+    document.querySelectorAll('audio').forEach(function(audio) {
+        audio.pause();
+    });
+
+    // Pause all video elements
+    document.querySelectorAll('video').forEach(function(video) {
+        video.pause();
+    });
+
+    // Reset the activeVideo index to collapse all video subsections
+    $scope.activeClassicVideo = -1;
+    $scope.activeAlienForceVideo = -1;
+    $scope.activeUltimateAlienVideo = -1;
+
+    // Hide all video contents of all seasons
+    document.querySelectorAll('.video-content').forEach(function (el) {
+        el.style.display = 'none';
+    });
+
+    // Show selected season content
+    document.getElementById(season + 'Section').style.display = 'block';
+
+    // Set current season for highlighting in the menu
+    $scope.currentSeason = season;
+};
+
+$scope.showSeason("classic");
+
+               $scope.alienforceVideos = [
+    {
+	name: "AlienForce ThemeMusic",
+	 type: "github",
+	 src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforcev.mp4",
+	description: "The Ben 10: Alien Force theme song begins with Ben's silhouette and clips from key episodes, introducing Omnitrix aliens like Goop and Alien X. It remixes the original series' melody, evolving to reveal Alien X fully later, and appears in every episode and related media, including video games, maintaining its iconic status."
+	},
+ {
+        "name": "Ben 10 Alien 	Force Season 1 - Episode 1",
+        "src": "https://drive.google.com/file/d/1a7hInKhGxZJUQE17ZNIJHt_Ggf75EGew/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 1: \"Ben 10 Returns: Part 1\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 2",
+        "src": "https://drive.google.com/file/d/1w6_FlD24HqcHXaAKjksqEFtvQsTUC-gS/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 2: \"Ben 10 Returns: Part 2\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 3",
+        "src": "https://drive.google.com/file/d/1ZiZtSAO3IOO-y0gu2IFfG_X1N9fj6_Qh/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 3: \"Everybody Talks About the Weather\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 4",
+        "src": "https://drive.google.com/file/d/1yYFb05kkrUchFxTxOGeqTHfFz1GhI1l1/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 4: \"Kevin's Big Score\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 5",
+        "src": "https://drive.google.com/file/d/1odx-UINHYeZfNSvwS9p2lT8x_dXEz4db/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 5: \"All That Glitters\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 6",
+        "src": "https://drive.google.com/file/d/1edTb2xLjQy3jYIb8PzXKNo4RrIEV88Vt/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 6: \"Max Out\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 7",
+        "src": "https://drive.google.com/file/d/1jpLs9ohDGcADrLvhhWF4rmHTnJoOQd1p/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 7: \"Pier Pressure\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 8",
+        "src": "https://drive.google.com/file/d/1o9jMEWnL86k35yX122kKcqgdBjnrueRt/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 8: \"What Are Little Girls Made Of?\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 9",
+        "src": "https://drive.google.com/file/d/1Wo4tytwnAw3CY7wD9gDIEF1Hc_17lQQD/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 9: \"The Gauntlet\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 10",
+        "src": "https://drive.google.com/file/d/1rDz0KNYz4xj4kDZxL_Dos2NoOUR3rEO2/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 10: \"Paradox\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 11",
+        "src": "https://drive.google.com/file/d/1ULDIDGlcwUYiV8lWjrdT_VLcbo8kWKQ5/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 11: \"Be-Knighted\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 12",
+        "src": "https://drive.google.com/file/d/1oH5PmgGSkff19JA3jbw2JqHEuREXM-Ff/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 12: \"Plumbers' Helpers\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 1 - Episode 13",
+        "src": "https://drive.google.com/file/d/1BMsBaZfXFcJXDQm_fnCm4o581ryAiqG9/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 1 Episode 13: \"X = Ben + 2\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 1",
+        "src": "https://drive.google.com/file/d/1hsAmkWV-tE6NnjiVUMJNbHxUCSGQbhor/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 1: \"Darkstar Rising\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 2",
+        "src": "https://drive.google.com/file/d/1jObUQM6JvQv53dyCl6q642i0fSHoLkNN/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 2: \"Alone Together\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 3",
+        "src": "https://drive.google.com/file/d/1FHXpJCpyHVkQ3XlW_lsrUDyvitasgVsd/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 3: \"Good Copy, Bad Copy\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 4",
+        "src": "https://drive.google.com/file/d/1mqUEBmPTq32C9XufOUiuXLp8klAuTlpV/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 4: \"Save the Last Dance\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 5",
+        "src": "https://drive.google.com/file/d/1szJqn6_lWABpRoRcHFu142hwuixSr0J3/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 5: \"Undercover\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 6",
+        "src": "https://drive.google.com/file/d/1EllIJ0W8CxH-oS-BMqGVMCdYfhrs3LnQ/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 6: \"Pet Project\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 7",
+        "src": "https://drive.google.com/file/d/1kuf69_XjGd3TESeR3cewe9Eoi6yW5tvJ/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 7: \"Grounded\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 8",
+        "src": "https://drive.google.com/file/d/1MIaS2qCNUAGZGz2gRKxT9DxjcUuq9b7r/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 8: \"Voided\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 9",
+        "src": "https://drive.google.com/file/d/1YB6C3NcfNj8E52f3wFGxlK3xQZ-nxBLs/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 9: \"Inside Man\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 10",
+        "src": "https://drive.google.com/file/d/11K3vxMBoXkhs-UoFoeeVwT0rAWCBRjKW/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 10: \"Birds of a Feather\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 11",
+        "src": "https://drive.google.com/file/d/1MzX0dPYhHWUtuHGPJ2kImkq4flWF3Z3T/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 11: \"Unearthed\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 12",
+        "src": "https://drive.google.com/file/d/1OAtgUQ4RgVL1fTlW7TY7GfNSbjX0dxby/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 12: \"War of the Worlds: Part 1\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 2 - Episode 13",
+        "src": "https://drive.google.com/file/d/1gSNxQ3qbMp1z7Uvj6M9RtHmCbjx340tS/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 2 Episode 13: \"War of the Worlds: Part 2\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 1",
+        "src": "https://drive.google.com/file/d/1We-L4FSUxh835hNoB7yCTMiYbYyk9YYo/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 1: \"Vengeance of Vilgax: Part 1\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 2",
+        "src": "https://drive.google.com/file/d/1D4tDwCYIkQRrmDfg8HB9b8MoNtZbEYrX/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 2: \"Vengeance of Vilgax: Part 2\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 3",
+        "src": "https://drive.google.com/file/d/1FWcYVOuoaZnrjiC37EPT5spqO1BzBh2v/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 3: \"Inferno\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 4",
+        "src": "https://drive.google.com/file/d/1hTI9lKVu2LMkwETN0TXYrCE_j-U9DQdn/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 4: \"Fool's Gold\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 5",
+        "src": "https://drive.google.com/file/d/16FJv26x6ADJ9QO3fSZWwZgOg5NOWZZok/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 5: \"Simple\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 6",
+        "src": "https://drive.google.com/file/d/1BltRBIABELCsHy4n1Ep_az2GXNRpyOub/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 6: \"Vreedle, Vreedle\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 7",
+        "src": "https://drive.google.com/file/d/1pAqZdxd4S6kbivAlfnNormzVSMiURZiL/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 7: \"Singlehanded\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 8",
+        "src": "https://drive.google.com/file/d/1v89Qcv0XzansPPHMy_Aju9IIxB5g9y2P/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 8: \"If All Else Fails\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 9",
+        "src": "https://drive.google.com/file/d/1sNgRKROW9JDgFOkX5SIvSfnY7B94LJMe/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 9: \"In Charm's Way\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 10",
+        "src": "https://drive.google.com/file/d/1r0ikiaf0nN1a5Oql2UBdJTOi6VQs02bY/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 10: \"Ghost Town\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 11",
+        "src": "https://drive.google.com/file/d/1wB1vFy3C5CW9uDiJao-M51-dK1wzwYOh/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 11: \"Trade-Off\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 12",
+        "src": "https://drive.google.com/file/d/10o21a70sKA7jZDGVhdnILv4Gkh1S1FO1/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 12: \"Busy Box\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 13",
+        "src": "https://drive.google.com/file/d/1_BSiVDBMk79oNgqXH41Ch-iHjPeY4sVl/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 13: \"Con of Rath\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 14",
+        "src": "https://drive.google.com/file/d/1cpf0yEIKBXQZPhE6oqlIJTUewFcsDyfc/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 14: \"Primus\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 15",
+        "src": "https://drive.google.com/file/d/14nMM1qTWLFAWktDxIXQe11J1n4DQE9fe/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 15: \"Greetings from Techadon\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 16",
+        "src": "https://drive.google.com/file/d/11hfbfcWK0M9gYLhOXTmdaJfonX_-lRfU/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 16: \"The Flame Keeper's Circle\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 17",
+        "src": "https://drive.google.com/file/d/1WvBxekF8ifJjhP2JjJCSQ_34qtEQla6u/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 17: \"Double or Nothing\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 18",
+        "src": "https://drive.google.com/file/d/1AVIE1b8xUmMKz14gFxjHa2mlJ1nPonWG/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 18: \"The Perfect Girlfriend\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 19",
+        "src": "https://drive.google.com/file/d/1TpJJ1SNMbJ7E-WpC8yxmHhMef1QlBr3Q/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 19: \"The Ultimate Sacrifice\""
+    },
+    {
+        "name": "Ben 10 Alien Force Season 3 - Episode 20",
+        "src": "https://drive.google.com/file/d/1dIhBEQD7TZs0oWdbg7PiVmzx4-FSsEIN/preview",
+        "type": "iframe",
+        "description": "Ben 10 Alien Force Season 3 Episode 20: \"The Widening Gyre\""
+    }
+
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$scope.ultimatealienVideos = [
+
+
+
+{
+    "name": "Ben 10 Ultimate Alien S1 E1",
+    "src": "https://drive.google.com/file/d/1bVnRf8IJsRIUMgARJNMiNx5YTpmxW9Ar/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 1: \"Fame\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E2",
+    "src": "https://drive.google.com/file/d/1NlYDBmpqPa0nQoBJbiAQYN4dJDuBI7XT/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 2: \"Duped\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E3",
+    "src": "https://drive.google.com/file/d/1HiPDXL8pYjCNtc6vcxAvkmT5SjTHjmmu/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 3: \"Hit 'Em Where They Live\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E4",
+    "src": "https://drive.google.com/file/d/1lvX7IfuS_i-ZuQZjsKyHqVmstN19FGuP/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 4: \"Video Games\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E5",
+    "src": "https://drive.google.com/file/d/1SXPgVRhX7BkpPmHw36ux2ptdB9ZHlD7m/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 5: \"Escape from Aggregor\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E6",
+    "src": "https://drive.google.com/file/d/10ltnrbaRuA7cMSc4DS98VuGISv8_-G7y/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 6: \"Too Hot to Handle\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E7",
+    "src": "https://drive.google.com/file/d/1TH2EJSWJ1uSsSSxCg_mQWJC7BumLdSJT/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 7: \"Andreas' Fault\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E8",
+    "src": "https://drive.google.com/file/d/1UuV-lfqNZPe_JEKQwY6ElC3qbtLOXECK/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 8: \"Fused\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E9",
+    "src": "https://drive.google.com/file/d/1wfdT1pv72CUb889yDRs0tFhxpkLJWdOS/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 9: \"Hero Time\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E10",
+    "src": "https://drive.google.com/file/d/1t-FMG442oENUFAlUva2RutLLF5XjtebS/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 10: \"Ultimate Aggregor\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E11",
+    "src": "https://drive.google.com/file/d/1gySppm-S3PIgU4xX65aQ5ctVnuIxrFKr/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 11: \"Map of Infinity\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E12",
+    "src": "https://drive.google.com/file/d/1bOrkdfiXzAbMeUgoqCnvR-uEM6q4iGZ6/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 12: \"Reflected Glory\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E13",
+    "src": "https://drive.google.com/file/d/1cG0c9Vqm6CDRxFWFFpDrXLwV18vX_bpd/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 13: \"Deep\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E14",
+    "src": "https://drive.google.com/file/d/1k7H4Jg9538w7ITDnCUb0Hd7GGJ8KNFzM/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 14: \"Where the Magic Happens\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E15",
+    "src": "https://drive.google.com/file/d/1dZth3hqMP6QUDb5ZSEQ9-aV1YF4ExeUD/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 15: \"Gang War\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E16",
+    "src": "https://drive.google.com/file/d/1tpuFLvT0lI1aAQqXbsxXCRQoVgY9gt6v/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 16: \"Too Hot to Handle\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E17",
+    "src": "https://drive.google.com/file/d/1ZxXCdC7TUcmCJlSZi9Q54Hswf9ThvZ1_/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 17: \"Andreas' Fault\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E18",
+    "src": "https://drive.google.com/file/d/13AiPtx50uRtUQtRDDaks1RcxinUG3CvG/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 18: \"The Forge of Creation\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E19",
+    "src": "https://drive.google.com/file/d/10z85kNcXU000KAJ9ej4sjNhecX_VpRLF/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 19: \"...Nor Iron Bars a Cage\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S1 E20",
+    "src": "https://drive.google.com/file/d/1m3kt2tyL-LvtlvblsiqXvjnBkPlXc9Os/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 1 Episode 20: \"The Widening Gyre\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E1",
+    "src": "https://drive.google.com/file/d/1-7D518ojIe3cjU3hM9qPmPNMC-lDvXLo/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 1: \"The Transmogrification of Eunice\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E2",
+    "src": "https://drive.google.com/file/d/1TUm5laZPkmhDZJx40HWMmC-l-QVLtYJ0/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 2: \"Eye of the Beholder\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E3",
+    "src": "https://drive.google.com/file/d/1FaoHXn8Qsy9puHJ-OkXNUaI01a7AUSDh/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 3: \"The Big Story\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E4",
+    "src": "https://drive.google.com/file/d/1rGIHG7x-MEZ-IuYF9rcy8E9xFFIpyg1v/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 4: \"Save the Last Dance\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E5",
+    "src": "https://drive.google.com/file/d/1PFVS2KgENlR-gPTSRIEbgMpDDJySlSzO/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 5: \"The Creature from Beyond\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E6",
+    "src": "https://drive.google.com/file/d/171i5fjOK0Cap5uzj51CjDjqjzKhPxhUQ/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 6: \"The Enemy of My Enemy\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E7",
+    "src": "https://drive.google.com/file/d/1XqYbAl_1DfAk3091IGh0xq0Aowx7ji0c/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 7: \"Absolute Power: Part 1\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E8",
+    "src": "https://drive.google.com/file/d/1KdFi-JjZaWLZiCcsoPRyGXxxWUiA0qsz/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 8: \"Absolute Power: Part 2\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E9",
+    "src": "https://drive.google.com/file/d/1KFEtjgpd8D1SFJPvFIyST5H7y6IQEA1a/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 9: \"The Mother of All Vreedles\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E10",
+    "src": "https://drive.google.com/file/d/1v09mF1-goeT9NcRFWTSiD-K8FLTqHq0t/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 10: \"It's Not Easy Being Gwen\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E11",
+    "src": "https://drive.google.com/file/d/1ivxGP-k9BrRYkW8IQG-6UoEKyYf1K7oX/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 11: \"Ben 10,000 Returns\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S2 E12",
+    "src": "https://drive.google.com/file/d/1s1msMYEk6312QLTpM_8W6BI824v4A7gb/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 2 Episode 12: \"Moonstruck\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E1",
+    "src": "https://drive.google.com/file/d/1jNS4ZFAq7RYMjd3tOJfeO0AQDHJw9w1H/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 1: \"The Purge\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E2",
+    "src": "https://drive.google.com/file/d/1eUS8sAOUkxPveCnGGL2VUoURndSQotwv/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 2: \"Simian Says\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E3",
+    "src": "https://drive.google.com/file/d/1stZccuwcsNgnNL7UysWQ364De6mo1ibt/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 3: \"Greetings from Techadon\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E4",
+    "src": "https://drive.google.com/file/d/1N4pWlR6fmhA0A9C38tv9dtthY0v5FUCW/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 4: \"The Flame Keepers' Circle\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E5",
+    "src": "https://drive.google.com/file/d/1mb-5WZehYKh6F8XOkOBOvLFaTJWnNW-1/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 5: \"Double or Nothing\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E6",
+    "src": "https://drive.google.com/file/d/1NKnfxEIvBuXDn-ID3xo5_ECNMG0cLDqs/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 6: \"The Perfect Girlfriend\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E7",
+    "src": "https://drive.google.com/file/d/1NWS7JrOTvMHjKVfYWs9_RxnJHESBwrQe/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 7: \"The Ultimate Sacrifice\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E8",
+    "src": "https://drive.google.com/file/d/1_EL2koiQQvw4jCgiBbwYzgeZ76pLIMFY/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 8: \"The Widening Gyre\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E9",
+    "src": "https://drive.google.com/file/d/1bejAtNb1c6CO46af-jW7kfqE9mdDrhON/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 9: \"The Mother of All Vreedles\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E10",
+    "src": "https://drive.google.com/file/d/1sADqfHJ43Kxt8fMGM9rPRLW8OI5arxqx/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 10: \"The Enemy of My Frenemy\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E11",
+    "src": "https://drive.google.com/file/d/1j0dEJeR5fpCkttldDHKmr0Y59qqOqo2_/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 11: \"The Ultimate Enemy: Part 1\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E12",
+    "src": "https://drive.google.com/file/d/1aFNrlmr96VSrrth-bHXP0FIYgrc89qvf/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 12: \"The Ultimate Enemy: Part 2\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E13",
+    "src": "https://drive.google.com/file/d/19fIaBJpaz05q4-SLhDnVus6eFQ5o64Cn/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 13: \"The Ultimate Enemy: Part 3\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E14",
+    "src": "https://drive.google.com/file/d/15d6oiy5nFODxgtLdvrLeCZ4rWxqByNj8/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 14: \"The Ultimate Enemy: Part 4\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E15",
+    "src": "https://drive.google.com/file/d/13z7AOHJeXoTkYq7jqo9biJttF26QPbPD/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 15: \"Perplexahedron\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E16",
+    "src": "https://drive.google.com/file/d/1uap0bGHUUW1dcJwq48FNvtKwXmpasz2T/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 16: \"The Forge of Creation\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E17",
+    "src": "https://drive.google.com/file/d/1vSzoaxK4hHvJDC5Wynk-L5Zrw2UO-6Q-/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 17: \"...Nor Iron Bars a Cage\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E18",
+    "src": "https://drive.google.com/file/d/1JGCojDkVUkSCYpnt7sSmnjRvtGE5W9GK/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 18: \"The Return of Psyphon\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E19",
+    "src": "https://drive.google.com/file/d/1Yei9ndNuZtI-ZVYlKW-6441gQE76ITAE/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 19: \"The Secret of Chromastone\""
+},
+{
+    "name": "Ben 10 Ultimate Alien S3 E20",
+    "src": "https://drive.google.com/file/d/1Vu5CJchMhdeEX1nKV-6Fn5OLk5G7jfla/preview",
+    "type": "iframe",
+    "description": "Ben 10 Ultimate Alien Season 3 Episode 20: \"Absolute Power: Part 1\""
+}
+
+
+];
+
+			   $scope.characters = [
 					
                     { name: 'Ben Tennyson', image: "https://static.wikia.nocookie.net/ben10/images/f/fe/TEN_%28461%29.png", bio: "Ben Tennyson is the main protagonist in the Ben 10 franchise, which spans across various animated television series, movies, comic books, and video games. He is a young boy who discovers a powerful alien device called the Omnitrix during a summer vacation with his cousin Gwen and their Grandpa Max. The Omnitrix allows him to transform into various alien species, each with its own unique abilities and characteristics." },
 					{name: "Azmuth",image: "https://static.wikia.nocookie.net/ben10/images/c/cf/TToE_%28661%29.png/",bio: "Azmuth is a highly intelligent and enigmatic Galvan scientist in the Ben 10 series, revered as one of the most brilliant minds in the galaxy. As the creator of the Omnitrix, a powerful device capable of transforming its wearer into various alien forms, Azmuth plays a pivotal role in Ben Tennyson's adventures. Despite his small stature, Azmuth possesses immense wisdom and knowledge, often guiding Ben and his allies with his profound insights and strategic thinking. However, Azmuth is also known for his stubbornness and reluctance to intervene directly, preferring to observe and manipulate events from behind the scenes. Throughout the series, Azmuth's motives and allegiances remain shrouded in mystery, adding to his mystique and intrigue as a central figure in the Ben 10 universe."},
@@ -823,12 +1751,6 @@ $scope.videos = [
         type: "github",
 		description: "The Ben 10 theme song sets an energetic and dynamic tone for the series, highlighting Ben's transformations with evolving visuals and music that maintains its spirited essence. This iconic music is featured in every episode and related media, solidifying its memorable status in the franchise."
 		},
-    {
-	name: "AlienForce ThemeMusic",
-	 type: "github",
-	 src: "https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/ben10/alienforcev.mp4",
-	description: "The Ben 10: Alien Force theme song begins with Ben's silhouette and clips from key episodes, introducing Omnitrix aliens like Goop and Alien X. It remixes the original series' melody, evolving to reveal Alien X fully later, and appears in every episode and related media, including video games, maintaining its iconic status."
-	},
   { 
     "name": "Ben 10 S01 E01", 
     "src": "https://drive.google.com/file/d/1qG7VImzuOcZKCf7b1Pv7QKq_Z1KGoTuD/preview", 
@@ -1134,41 +2056,6 @@ $scope.videos = [
 
 ];
 
-
-$scope.toggleVideo = function(index) {
-    // Pause all videos and reset them
-    var videos = document.querySelectorAll('video');
-    videos.forEach(function(video) {
-        video.pause();
-        video.currentTime = 0;
-    });
-
-    // Pause all iframes except the one that is being expanded
-    var iframes = document.querySelectorAll('iframe');
-    iframes.forEach(function(iframe, i) {
-        if (i !== index) {
-            // Set src to an empty string to pause or abort the iframe content
-            iframe.setAttribute('src', '');
-        }
-    });
-
-    // Handle the selected video or iframe
-    if ($scope.videos[index].type === 'github') {
-        var selectedVideo = document.getElementById('video-' + index);
-        if ($scope.activeVideo !== index) {
-            selectedVideo.play(); // Play if not already active
-        }
-    } else if ($scope.videos[index].type === 'iframe') {
-        var selectedIframe = document.getElementById('iframe-' + index);
-        if ($scope.activeVideo === index) {
-            var iframeSrc = selectedIframe.getAttribute('src');
-            selectedIframe.setAttribute('src', iframeSrc); // Reload iframe content to pause
-        }
-    }
-
-    $scope.activeVideo = $scope.activeVideo === index ? -1 : index;
-};
-
 $scope.trustSrc = function(src) {
     return $sce.trustAsResourceUrl(src);
 };
@@ -1222,38 +2109,64 @@ $scope.showSection('characters');
 				
 				
 				
-				
-				 $scope.keyDownHandler = function(event) {
-                // Check for specific key combinations
-                if (event.key === 'a' && event.ctrlKey) {
-                    // Switch to aliens section
-                    $scope.showSection('aliens');
-					event.preventDefault();
-                } else if (event.key === 'e' && event.ctrlKey) {
-                    // Switch to events section
-                    $scope.showSection('events');
-					event.preventDefault();
-                } else if (event.key.toLowerCase() === 'c' && event.ctrlKey) {
-                    // Switch to characters section
-                    $scope.showSection('characters');
-					event.preventDefault();
-                } else if (event.key.toLowerCase() === 'p' && event.ctrlKey) {
-                    // Switch to places section
-                    $scope.showSection('places');
-					event.preventDefault();
-                } else if (event.key.toLowerCase() === 'b' && event.ctrlKey) {
-                    // Switch to final battles section
-                    $scope.showSection('finalBattles');
-					event.preventDefault();
-                } else if (event.key.toLowerCase() ==="m" && event.ctrlKey){
-				   $scope.showSection("files");
-				   event.preventDefault();
-				} else if (event.key.toLowerCase() === "v" && event.ctrlKey){
-					$scope.showSection("videos");
-					event.preventDefault();				
-				} 
-                // Add more else if blocks for other sections if needed
-            };
+$scope.keyDownHandler = function(event) {
+    // Check for specific key combinations
+    if (event.key === 'a' && event.ctrlKey) {
+        // Switch to aliens section
+        $scope.showSection('aliens');
+        event.preventDefault();
+    } else if (event.key === 'e' && event.ctrlKey) {
+        // Switch to events section
+        $scope.showSection('events');
+        event.preventDefault();
+    } else if (event.key.toLowerCase() === 'c' && event.ctrlKey) {
+        // Switch to characters section
+        $scope.showSection('characters');
+        event.preventDefault();
+    } else if (event.key.toLowerCase() === 'p' && event.ctrlKey) {
+        // Switch to places section
+        $scope.showSection('places');
+        event.preventDefault();
+    } else if (event.key.toLowerCase() === 'b' && event.ctrlKey) {
+        // Switch to final battles section
+        $scope.showSection('finalBattles');
+        event.preventDefault();
+    } else if (event.key.toLowerCase() ==="m" && event.ctrlKey){
+        $scope.showSection("files");
+        event.preventDefault();
+    } else if (event.key.toLowerCase() === "v" && event.ctrlKey){
+        // Switch to videos section
+        $scope.showSection("videos");
+        event.preventDefault();                
+    }
+    // Check if the pressed key is 1 and Ctrl key is pressed
+    else if (event.key === '1' && event.ctrlKey) {
+        // First, switch to videos section
+        $scope.showSection("videos");
+        // Then, switch to classic sub-section within videos section
+        $scope.showSeason('classic');
+        event.preventDefault();
+    }
+    // Check if the pressed key is 2 and Ctrl key is pressed
+    else if (event.key === '2' && event.ctrlKey) {
+		// First, switch to videos section
+        $scope.showSection("videos");
+        // Switch to alienforce section
+        $scope.showSeason('alienforce');
+        event.preventDefault();
+    }
+    // Check if the pressed key is 3 and Ctrl key is pressed
+    else if (event.key === '3' && event.ctrlKey) {
+		// First, switch to videos section
+        $scope.showSection("videos");
+        // Switch to ultimatealien section
+        $scope.showSeason('ultimatealien');
+        event.preventDefault();
+    }
+};
+
+
+
             }]);
 			angular.element(document).ready(function () {
         angular.element(document).on('keydown', function (event) {
