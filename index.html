@@ -13,28 +13,42 @@
 .custom-cursor{
     cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neon.cur'), auto;
  }
-
 #repository-contents-container {
   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
   font-family: 'Google Sans', sans-serif;
   font-style: italic;
   color: #fff;
-  margin: 20px auto; /* Adjust margin for center alignment */
+  margin: 20px auto; /* Center alignment */
   overflow: auto;
-  background: linear-gradient(169deg,rgba(0, 199, 0, 1.0), rgba(0, 0, 255, 0.5), rgba( 255, 0, 0, 1.0));
-  background-size: 600% 600%;
-  animation: gradientAnimation 5s infinite;
-  max-width: 100%; /* Adjust max-width for responsiveness */
-  width: 90%; /* Adjust width for responsiveness */
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.8), rgba(255, 215, 0, 0.8), rgba(127, 255, 0, 0.8), rgba(0, 255, 127, 0.8), rgba(0, 191, 255, 0.8), rgba(138, 43, 226, 0.8)); /* Colorful gradient background with increased opacity */
+  background-size: 600% 600%; /* Background size */
+  animation: gradient-animation 20s ease infinite; /* Gradient animation */
+  max-width: 100%; /* Responsivenes*/
+  width: 90%; /* Responsiveness */
   height: 300px; /* Fixed height */
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 6px solid #ccc;
   border-radius: 20px;
-  background-color: #544585;
   overflow-y: auto;
-  color: #ffffff;
   font-size: 16px;
+  position: relative;
 }
+
+
+body * {
+  color: black !important;
+    box-shadow: none !important;
+  text-shadow: none !important;
+
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
 
 /* Additional adjustments for smaller screens */
 @media (max-width: 768px) {
@@ -45,7 +59,7 @@
 	right: 19px;
     width:98%;
     font-size: 16px; /* Adjust font size for smaller screens */
-    height: 240px !important; /* Fixed height for smaller screens */
+    height: 210px !important; /* Fixed height for smaller screens */
     overflow-y: scroll; /* Add a scrollbar when content exceeds the height */
  }
  
@@ -70,16 +84,70 @@ input:hover {
 }
 
 body {
+  user-select: none !important;
+  margin: 30px !important;
+  overflow: auto !important;
+ background-attachment:fixed !important;
+}
+
+body {
   user-select: none;
   font-family: 'Arial', sans-serif;
   color: #fff;
   margin: 30px;
-  overflow: auto;
-  background: linear-gradient(45deg, rgba(0,155, 0, 1.0),rgba(200, 0, 0, 1.0), rgba(0, 145, 0, 1.0));
-  background-size: 400% 400%;
-  animation: gradientAnimation 15s infinite;
- background-attachment:fixed;
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #fad0c4, #ff9a9e);
+  background-size: 200% 200%;
+    animation: gradientAnimation 10s ease infinite;
+  background-attachment: fixed;
+  position: relative;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh; /* Covers entire viewport height */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.3));
+  opacity: 0.3;
+  overflow-x: hidden;
+  animation: radialAnimation 10s linear infinite;
+  pointer-events: none; /* Allows clicks through the pseudo-element */
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes radialAnimation {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+
 
 /* Customize scrollbar (for WebKit browsers like Chrome and Safari) */
 body::-webkit-scrollbar {
@@ -144,21 +212,11 @@ a.external-link {
 }
 
 a.external-link:hover {
-  color: #ffcc00;
+  color: FireBrick    !important;
   transform: scale(1.1);
 }
 
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+
 
 @keyframes fadeInUp {
   from {
@@ -214,7 +272,7 @@ a.external-link:hover {
 #voice-search-button {
   padding: 10px 20px;
   background-color: #0366d6;
-  color: #fff;
+    color: white !important;
   border: none;
   margin: 10px;
   border-radius: 8px;
@@ -260,7 +318,7 @@ a.external-link:hover {
 #search-engine {
   padding: 10px;
   font-size: 16px;
-  color: black;
+    color: white !important;
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 200px;
@@ -286,29 +344,28 @@ a.external-link:hover {
 
 
 
-
 #developer-link {
   position: relative;
   color: green;
-text-decoration: underline overline #556B2F;
-font-family: "Exo 2", sans-serif;
-  transition: transform 0.3s ease, color 0.3s ease;
+  text-decoration: underline overline #556B2F;
+  font-family: "Exo 2", sans-serif;
+  transition: transform 0.3s ease, color 0.3s ease; /* Include color transition here */
 }
 
 #developer-link:hover {
-  position: relative;
-  color: white !important; /* Change to your desired hover color .*/
-  animation: glow 1.4s ease infinite alternate; /* Apply glow animation on hover */
+  color: red !important; /* Change to your desired hover color */
+  animation: glow 1.4s ease infinite alternate !important; /* Apply color glow animation on hover */
 }
 
 @keyframes glow {
   0% {
-    text-shadow: 0 0 5px rgb(87, 208, 47), 0 0 10px rgb(87, 208, 47), 0 0 15px rgb(87, 208, 47), 0 0 20px rgb(87, 208, 47); /* Initial shadow */
+    color: rgb(87, 208, 47); /* Initial color */
   }
   100% {
-    text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 15px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0); /* Final shadow */
+    color: rgb(255, 0, 0); /* Final color */
   }
 }
+
 
 /* For larger screens, display the joke normally */
 #joke{
