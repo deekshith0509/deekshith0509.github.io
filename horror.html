@@ -538,8 +538,7 @@ h1 {
 	
 <img ng-src="{{ randomHorrorImage }}" alt="Random Scary Image" class="movie-image" ng-mouseenter="playRandomAudio()" ng-mouseleave="stopRandomAudio()">
 
-<audio id="randomAudio" src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3" autoplay>
-  <source src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3" type="audio/mp3">
+<audio id="randomAudio" src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3">
 </audio>
 
       <div class="overlay" ng-show="showOverlay">
@@ -558,7 +557,7 @@ h1 {
 
 <img ng-src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-image" ng-mouseenter="playAudio($event.target.nextElementSibling)" ng-mouseleave="stopAudio($event.target.nextElementSibling)">
 
-<audio src="{{ movie.audio }}" autoplay></audio>
+<audio src="{{ movie.audio }}"></audio>
 
 
 
@@ -649,10 +648,9 @@ h1 {
 	  $scope.randomHorrorAudio = 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3'; 
 
 $scope.playRandomAudio = function() {
-  $timeout(function() {
+    console.log("Mouse entered, playing audio...");
     var audio = document.getElementById('randomAudio');
     audio.play();
-  });
 };
 
 

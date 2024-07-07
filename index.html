@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <title>My GitHub Page</title>
   <style>
 
@@ -39,6 +39,7 @@ body * {
   color: black !important;
     box-shadow: none !important;
   text-shadow: none !important;
+  
 
 }
 
@@ -92,7 +93,7 @@ body {
 
 body {
   user-select: none;
-  font-family: 'Arial', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   color: #fff;
   margin: 30px;
   background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #fad0c4, #ff9a9e);
@@ -446,8 +447,8 @@ border: none !important;
 	}
   #weather {
     Position: absolute;
-    top: 95px !important; /* Adjust the position for smaller screens */
-    right: 10px; /* Adjust the position for smaller screens */
+    top: 75px !important; /* Adjust the position for smaller screens */
+    right: -10px !important; /* Adjust the position for smaller screens */
   }
 
 .quotes-text {
@@ -859,70 +860,88 @@ performSearch();
 	
 	
 });
-
-     // Array of jokes with corresponding dates
-       var jokes = {
-    "2024-05-10": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25.",
-    "2024-05-11": "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
-    "2024-05-12": "Why do programmers prefer iOS? Because they can't handle too many windows!",
-    "2024-05-13": "Why was the function a bad communicator? It had too many arguments.",
-    "2024-05-14": "Why do Java developers wear glasses? Because they can't C#.",
-    "2024-05-15": "What's a programmer's favorite hangout place? The Foo Bar.",
-    "2024-05-16": "Why did the programmer quit his job? He didn't get arrays.",
-    "2024-05-17": "How do you comfort a JavaScript bug? You console it.",
-    "2024-05-18": "Why was the JavaScript developer sad? Because he didn't Node how to Express himself.",
-    "2024-05-19": "Why did the developer go broke? Because he used up all his cache.",
-    "2024-05-20": "Why don't programmers like nature? It has too many bugs.",
-    "2024-05-21": "Why did the programmer sit on the roof all day? Because they wanted a higher level of programming.",
-    "2024-05-22": "Why do programmers prefer dark mode? Because light attracts bugs!",
-    "2024-05-23": "Why did the developer go to therapy? Because they had too many unresolved issues.",
-    "2024-05-24": "Why don't programmers like the outdoors? It's too much exposure.",
-    "2024-05-25": "Why did the programmer go broke buying Bitcoins? Because they kept spending bits and bytes!",
-    "2024-05-26": "Why did the programmer get in trouble with their boss? They couldn't control their arrays.",
-    "2024-05-27": "Why did the computer go to therapy? Because it had too many bytes of emotional baggage.",
-    "2024-05-28": "Why did the SQL query go to the beach? To find some joins!",
-    "2024-05-29": "Why was the JavaScript developer always happy? Because they kept making callbacks!",
-    "2024-05-30": "Why did the programmer always carry a ladder? Because they always wanted to reach the next level!",
-    "2024-06-01": "Why did the teacher wear sunglasses? Because their students were so bright!",
-    "2024-06-02": "Why was the math book sad? Because it had too many problems!",
-    "2024-06-03": "Why was the English teacher always cold? Because their students could never put on the right story jacket!",
-    "2024-06-04": "Why did the geography teacher go to jail? Because they took their students on a field trip without permission!",
-    "2024-06-05": "Why did the history teacher go to the beach? To teach the waves a lesson!",
-    "2024-06-06": "Why was the music teacher always so happy? Because they could always find the right key!",
-    "2024-06-07": "Why did the biology teacher always carry a pencil? In case they needed to draw blood!",
-    "2024-06-08": "Why did the doctor carry a red pen? In case they needed to draw some blood!",
-    "2024-06-09": "Why did the doctor always carry a stethoscope? To keep in tune with their patients!",
-    "2024-06-10": "Why was the surgeon always calm? Because they knew how to stay sutured!",
-    "2024-06-11": "Why did the dentist always make jokes? To keep their patients in stitches!",
-    "2024-06-12": "Why was the optometrist always so focused? Because they had an eye for detail!",
-    "2024-06-13": "Why did the psychiatrist become a doctor? Because they wanted to cure the mind!",
-    "2024-06-14": "Why did the chef always carry pepper? In case they needed to spice things up!",
-    "2024-06-15": "Why did the architect become a musician? Because they wanted to build harmonious structures!",
-    "2024-06-16": "Why did the engineer always carry a ruler? In case they needed to draw a straight line!",
-    "2024-06-17": "Why did the accountant become a comedian? Because they wanted to balance the books with laughter!",
-    "2024-06-18": "Why did the lawyer always carry a briefcase? In case they needed to make a strong case!",
-    "2024-06-19": "Why did the pilot become a sailor? Because they wanted to navigate the high seas of the sky!",
-    "2024-06-20": "Why was the font always confident? Because it had bold ambitions!",
-    "2024-06-21": "Why did the CSS file always feel left out? Because it couldn't join the HTML party!",
-    "2024-06-22": "Why was the computer so good at singing? Because it had perfect pitch!",
-    "2024-06-23": "Why did the keyboard break up with the mouse? It wanted a more tactile relationship!",
-    "2024-06-24": "Why did the algorithm break up with the data? It found a better match in the cloud!",
-    "2024-06-25": "Why did the internet go to therapy? It had too many connection issues!",
-    "2024-06-26": "Why was the cloud always so positive? Because it always looked up!",
-    "2024-06-27": "Why did the programmer become a gardener? They wanted to debug their plants!",
-    "2024-06-28": "Why was the computer cold? It left its Windows open!",
-    "2024-06-29": "Why was the database always forgetful? It had too many tables to remember!"
+var jokes = {
+    "2024-07-07": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "2024-07-08": "Parallel lines have so much in common. It’s a shame they’ll never meet.",
+    "2024-07-09": "What do you call fake spaghetti? An impasta.",
+    "2024-07-10": "I told my wife she should embrace her mistakes. She gave me a hug.",
+    "2024-07-11": "Why don't skeletons fight each other? They don't have the guts!",
+    "2024-07-12": "How do you organize a space party? You planet!",
+    "2024-07-13": "I'm reading a book on anti-gravity. It's impossible to put down.",
+    "2024-07-14": "Why did the scarecrow become a successful neurosurgeon? Because he was outstanding in his field!",
+    "2024-07-15": "How does a penguin build its house? Igloos it together.",
+    "2024-07-16": "Why was the math book sad? Because it had too many problems.",
+    "2024-07-17": "I used to play piano by ear, but now I use my hands.",
+    "2024-07-18": "What do you call a fish wearing a bowtie? SoFISHticated.",
+    "2024-07-19": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "2024-07-20": "Why did the bicycle fall over? Because it was two-tired!",
+    "2024-07-21": "What did one ocean say to the other ocean? Nothing, they just waved.",
+    "2024-07-22": "Why don't scientists trust atoms? Because they make up everything!",
+    "2024-07-23": "I used to be a baker, but I couldn't make enough dough.",
+    "2024-07-24": "How many tickles does it take to make an octopus laugh? Ten-tickles.",
+    "2024-07-25": "Why don’t some couples go to the gym? Because some relationships don’t work out.",
+    "2024-07-26": "Why don’t you ever see elephants hiding in trees? Because they’re so good at it.",
+    "2024-07-27": "I told my wife she should embrace her mistakes. She gave me a hug.",
+    "2024-07-28": "What do you call an alligator in a vest? An investigator.",
+    "2024-07-29": "What’s orange and sounds like a parrot? A carrot.",
+    "2024-07-30": "Why don’t skeletons fight each other? They don’t have the guts.",
+    "2024-07-31": "I’m on a whiskey diet. I’ve lost three days already.",
+    "2024-08-01": "How do you catch a squirrel? Climb a tree and act like a nut.",
+    "2024-08-02": "What do you call fake spaghetti? An impasta.",
+    "2024-08-03": "I used to play piano by ear, but now I use my hands.",
+    "2024-08-04": "Why did the scarecrow become a successful neurosurgeon? Because he was outstanding in his field!",
+    "2024-08-05": "How does a penguin build its house? Igloos it together.",
+    "2024-08-06": "Why was the math book sad? Because it had too many problems.",
+    "2024-08-07": "I'm reading a book on anti-gravity. It's impossible to put down.",
+    "2024-08-08": "What do you call a fish wearing a bowtie? SoFISHticated.",
+    "2024-08-09": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "2024-08-10": "Why did the bicycle fall over? Because it was two-tired!",
+    "2024-08-11": "What did one ocean say to the other ocean? Nothing, they just waved.",
+    "2024-08-12": "Why don't scientists trust atoms? Because they make up everything!",
+    "2024-08-13": "I used to be a baker, but I couldn't make enough dough."
+    // Add more jokes as needed
 };
 
-        function fetchQuote() {
-            var resultDiv = document.getElementById('quote');
-            fetch('https://api.quotable.io/random')
-                .then(response => response.json())
-                .then(data => {
-                    resultDiv.innerHTML = `<blockquote>${data.content}</blockquote><p>- ${data.author}</p>`;
-                });
-        }
-		fetchQuote()
+
+
+var quotes = [
+    { content: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+    { content: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi" },
+    { content: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" },
+    { content: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
+    { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { content: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+    { content: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+    { content: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi" },
+    { content: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+    { content: "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time.", author: "Thomas A. Edison" },
+    { content: "The best way to predict the future is to invent it.", author: "Alan Kay" },
+    { content: "Do not go where the path may lead, go instead where there is no path and leave a trail.", author: "Ralph Waldo Emerson" },
+    { content: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+    { content: "It is never too late to be what you might have been.", author: "George Eliot" },
+    { content: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas A. Edison" },
+    { content: "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.", author: "Ralph Waldo Emerson" },
+    { content: "Strive not for success, but rather to be of value.", author: "Albert Einstein" },
+    { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { content: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+    { content: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" }
+];
+
+
+function fetchQuote() {
+    var resultDiv = document.getElementById('quote');
+    
+    // Generate a random index to select a quote from the array
+    var randomIndex = Math.floor(Math.random() * quotes.length);
+    var randomQuote = quotes[randomIndex];
+    
+    // Display the random quote
+    resultDiv.innerHTML = `<blockquote>${randomQuote.content}</blockquote><p>- ${randomQuote.author}</p>`;
+}
+
+// Call fetchQuote when the page loads
+window.onload = fetchQuote;
+
         // Get current date
         var currentDate = new Date().toISOString().split('T')[0];
 
