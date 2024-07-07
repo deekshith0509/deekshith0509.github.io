@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="horrorApp">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horror Fan Page</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background: url('https://c4.wallpaperflare.com/wallpaper/44/888/946/abandoned-house-haunted-moonlight-night-wallpaper-preview.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+	  user-select: none;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 4rem;
+      color: #e60000;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      font-family: 'Creepster', cursive;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: rgba(51, 51, 51, 0.8);
+	  
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      border-bottom: 3px solid #e60000; /* Horror-themed border */
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li {
+      margin: 0;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      display: block;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      font-family: 'Nosifer', cursive;
+      border-radius: 10px; /* Rounded corners */
+      border: 2px solid #e60000; /* Border color */
+      text-align: center;
+    }
+    nav ul li a.active, nav ul li a:hover {
+      background-color: #e60000;
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(230, 0, 0, 0.8); /* Hover effect */
+    }
+    .content {
+      display: none;
+      margin: 6px;
+	  padding: 4px;
+      background-color: rgba(17, 17, 17, 0.7);
+      animation: fadeIn 1s ease-in-out;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      border: 2px solid #e60000; /* Horror-themed border */
+      border-radius: 10px; /* Rounded corners */
+      margin-top: 20px;
+    }
+    .content.active {
+      display: block;
+	  
+      background-color: rgba(17, 17, 17, 0.7);
+    }
+    .section {
+      padding: 20px;
+      border: 1px solid #444;
+      margin-bottom: 20px;
+      background-color: rgba(34, 34, 34, 0.2);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      border-radius: 10px; /* Rounded corners */
+    }
+    .section h2 {
+      margin-top: 0;
+      color: #e60000;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      font-family: 'Nosifer', cursive;
+    }
+    .section p {
+      color: #fff;
+    }
+    .section img {
+      max-width: 800px;
+      height: auto;
+      border: 2px solid #e60000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 10px; /* Rounded corners */
+    }
+    <!-- .section img:hover { -->
+      <!-- transform: scale(1.05); -->
+      <!-- box-shadow: 0 0 20px rgba(230, 0, 0, 0.8); -->
+    <!-- } -->
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .scary-text {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+      font-family: 'Nosifer', cursive;
+    }
+    .audio-button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+    .audio-button:hover {
+      transform: scale(1.2);
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      text-align: center;
+      font-size: 2rem;
+      font-family: 'Nosifer', cursive;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+	
+	
+	
+
+
+
+
+#home img:hover {
+	transform: scale(1.05); -->
+	box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
+
+}
+
+
+.section {
+  margin: 20px 0;
+}
+
+.demon-card {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.demon-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.demon-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.demon-image:hover {
+  transform: scale(1.04);
+}
+
+.demon-details {
+  margin-top: 20px;
+}
+
+.demon-details h4 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.competitors {
+  margin-top: 10px;
+}
+
+.competitor {
+  display: flex;
+  align-items: center;
+  background-color: #333333;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.competitor-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+.competitor-info {
+  flex: 1;
+}
+
+.competitor h5 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+.section {
+  padding: 40px;
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  text-align: center;
+  color: #ff6666; /* Reddish scary color */
+}
+
+.movie-container {
+  margin-bottom: 30px;
+}
+
+.movie-details {
+  text-align: left;
+}
+
+.movie-details img {
+  max-width: 100%;
+  height: auto;
+  border: 5px solid #e60000; /* Reddish border */
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); /* Reddish shadow */
+  transition: transform 0.3s ease;
+}
+
+.movie-details img:hover {
+  transform: scale(1.05);
+}
+
+.movie-details h3 {
+  color: #e60000; /* Reddish title color */
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+.movie-details p {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.characters {
+  margin-top: 20px;
+}
+
+.characters h4 {
+  color: #e60000; /* Reddish title color */
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.characters ul {
+  list-style: none;
+  padding: 0;
+}
+
+.characters ul li {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.movie-item {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.movie-image {
+  max-width: 800px;
+  max-height: 500px;
+  height: auto;
+  border: 2px solid #e60000; /* Horror-themed border */
+  border-radius: 10px; /* Rounded corners */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
+}
+
+.movie-details {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgba(34, 34, 34, 0.9);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  border-radius: 10px; /* Rounded corners */
+}
+
+.movie-details h4 {
+  color: #e60000; /* Horror-themed text color */
+  font-family: 'Nosifer', cursive;
+}
+
+.characters, .description {
+  margin-bottom: 20px;
+}
+
+.characters strong {
+  color: #e60000; /* Horror-themed text color */
+}
+
+
+
+
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+  header {
+    padding: 10px;
+  }
+
+  header h1 {
+    font-size: 3rem;
+    margin: 0; /* Reset margin to avoid spacing issues */
+  }
+
+nav {
+	width: 100vw !important;
+	
+	}
+
+  nav ul {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: nowrap; /* Prevent items from wrapping */
+    gap: 10px; /* Gap between items */
+    padding: 20px 10px; /* Padding on both sides */
+    margin: 0; /* Remove default margin */
+    justify-content: flex-start; /* Align items to the start */
+    overflow-x: auto; /* Enable horizontal scrolling */
+  }
+
+    nav ul li {
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+
+  nav ul li a {
+    display: block;
+    padding: 7px 5px;
+
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .section {
+    padding: 10px;
+  }
+
+  .section h2 {
+    font-size: 1.8rem;
+  }
+
+  .section p {
+    font-size: 1rem;
+  }
+
+  .section img {
+    max-width: 100%;
+  }
+
+  .scary-text {
+    font-size: 1rem;
+  }
+
+  .audio-button {
+    font-size: 1.2rem;
+  }
+
+  .overlay {
+    font-size: 1.5rem;
+  }
+}
+
+
+
+
+    .audio-container {
+      margin: 20px 0;
+      position: relative;
+    }
+
+
+    .audio-container audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .audio-container audio::-webkit-media-controls-panel {
+      background-color:red;
+      color: black;
+    }
+
+    .audio-container audio::-webkit-media-controls-play-button,
+    .audio-container audio::-webkit-media-controls-current-time-display,
+    .audio-container audio::-webkit-media-controls-time-remaining-display {
+      color: black;
+    }
+
+    .audio-container audio::-moz-range-track,
+    .audio-container audio::-ms-track {
+      background-color: red;
+      color: black;
+    }
+
+    .section {
+      animation: fadeIn 2s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+
+img:hover {
+box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
+}
+
+
+
+header {
+  position: relative;
+  color: white; /* White text for contrast */
+  text-align: center; /* Center-align text */
+}
+
+.header-content {
+  position: relative;
+  z-index: 2; /* Ensure content is above the canvas */
+}
+
+h1 {
+  margin: 0; /* Remove default margin */
+}
+
+.audio-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+
+#h1 {
+   <!-- color: black; -->
+   cursor: pointer;
+
+}
+
+
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="MainController">
+
+<header>
+  <div class="header-content">
+    <h1 id="h1" onclick="refreshpage()">Horror Fan Page</h1>
+    <button class="audio-button" ng-click="toggleSound()">&#128264;</button>
+  </div>
+</header>
+
+
+
+  <nav>
+    <ul>
+      <li><a href="" ng-class="{active: currentSection === 'home'}" ng-click="navigate('home')">Home</a></li>
+      <li><a href="" ng-class="{active: currentSection === 'movies'}" ng-click="navigate('movies')">Movies</a></li>
+      <li><a href="" ng-class="{active: currentSection === 'wiki'}" ng-click="navigate('wiki')">Wiki</a></li>
+      <li><a href="" ng-class="{active: currentSection === 'sounds'}" ng-click="navigate('sounds')">Sounds</a></li> <!-- New section -->
+    </ul>
+  </nav>
+
+<div ng-show="currentSection === 'home'" class="content active">
+  <div class="section" id="home">
+    <h2>Welcome to the Horror Fan Page</h2>
+    <p class="scary-text">Enter if you dare! Discover the most terrifying characters and stories that will haunt your nightmares.</p>
+    <div class="image-container" ng-click="showOverlay = true">
+	
+<img ng-src="{{ randomHorrorImage }}" alt="Random Scary Image" class="movie-image" ng-mouseenter="playRandomAudio()" ng-mouseleave="stopRandomAudio()">
+
+<audio id="randomAudio" src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3" autoplay>
+  <source src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3" type="audio/mp3">
+</audio>
+
+      <div class="overlay" ng-show="showOverlay">
+        <p>Click to reveal more...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div ng-show="currentSection === 'movies'" class="content active">
+  <div class="section">
+    <h2>Horror Movies</h2>
+    <div ng-repeat="movie in movies" class="movie-item">
+      <h3>{{ movie.title }}</h3>
+
+<img ng-src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-image" ng-mouseenter="playAudio($event.target.nextElementSibling)" ng-mouseleave="stopAudio($event.target.nextElementSibling)">
+
+<audio src="{{ movie.audio }}" autoplay></audio>
+
+
+
+
+		<div class="movie-details">
+        <div class="characters">
+          <h4>Characters:</h4>
+          <ul>
+            <li ng-repeat="character in movie.characters">
+              <strong>{{ character.name }}</strong>: {{ character.description }}
+            </li>
+          </ul>
+        </div>
+        <div class="description">
+          <h4>Description:</h4>
+          <p>{{ movie.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div ng-show="currentSection === 'wiki'" class="content active">
+  <div class="section">
+    <h2>Wiki: Demon Characters</h2>
+    <div ng-repeat="demon in wikiStories">
+      <div class="demon-card">
+        <h3>{{ demon.title }}</h3>
+        <img ng-src="{{ demon.image }}" alt="{{ demon.title }}" class="demon-image">
+        <div class="demon-details">
+          <p>{{ demon.description }}</p>
+          <h4>Background Story</h4>
+          <p>{{ demon.backgroundStory }}</p>
+          <h4>Foreground Story</h4>
+          <p>{{ demon.foregroundStory }}</p>
+          <h4>Competitors</h4>
+          <div class="competitors">
+            <div ng-repeat="competitor in demon.competitors" class="competitor">
+              <img ng-src="{{ competitor.image }}" alt="{{ competitor.name }}" class="competitor-image">
+              <div class="competitor-info">
+                <h5>{{ competitor.name }}</h5>
+                <p>{{ competitor.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div ng-show="currentSection === 'sounds'" class="content active">
+  <div class="section">
+    <h2>Horror Movie Sounds</h2>
+    <div ng-repeat="sound in sounds" class="audio-container">
+      <h3>{{ sound.title }}</h3>
+      <audio id="audio-{{ $index }}" controls>
+        <source ng-src="{{ sound.source }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <div class="overlay" ng-class="{active: showOverlay}">
+    <p>BOO! Are you scared yet?</p>
+  </div>
+
+  <audio id="background-audio" loop>
+    <source src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    var app = angular.module('horrorApp', []);
+    app.controller('MainController', function($scope, $timeout){
+      $scope.currentSection = 'home'; // Default section
+	  $scope.randomHorrorImage = 'https://wallpaperaccess.com/download/the-nun-1727297';
+	  $scope.randomHorrorAudio = 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3'; 
+
+$scope.playRandomAudio = function() {
+  $timeout(function() {
+    var audio = document.getElementById('randomAudio');
+    audio.play();
+  });
+};
+
+
+$scope.stopRandomAudio = function() {
+  var audio = document.getElementById('randomAudio');
+  audio.pause();
+  audio.currentTime = 0;
+}
+
+
+$scope.playAudio = function(audioElement) {
+  audioElement.play();
+}
+
+$scope.stopAudio = function(audioElement) {
+  audioElement.pause();
+  audioElement.currentTime = 0;
+}
+
+
+
+
+angular.element(document).on('keydown', function(event) {
+    $scope.$apply(function() {
+      $scope.handleKeyDown(event);
+    });
+  });
+
+
+
+  // Keyboard shortcuts handler
+$scope.handleKeyDown = function(event) {
+  if (event.ctrlKey) {
+    switch(event.key.toLowerCase()) {
+      case 'h': // Ctrl + H for Home
+        $scope.navigate('home');
+        break;
+      case 'm': // Ctrl + M for Movies
+        $scope.navigate('movies');
+        break;
+      case 'q': // Ctrl + W for Wiki
+        $scope.navigate('wiki');
+        event.preventDefault(); // Prevent default only for Ctrl + W
+        break;
+      case 's': // Ctrl + S for Sounds
+        $scope.navigate('sounds');
+        break;
+      default:
+        return; // Exit if no match
+    }
+    event.preventDefault(); // Prevent default for all shortcuts
+  }
+};
+
+
+
+
+
+$scope.movies = [
+  {
+    title: 'The Nun',
+    description: 'A terrifying entity takes the form of a nun to haunt a convent in Romania.',
+    image: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/78e3b466891157.5b26a37ceebf0.jpg',
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3',
+
+	characters: [
+      {
+        name: 'Valak',
+        description: 'A demonic entity that manifests as a nun to terrorize the living.'
+      },
+      {
+        name: 'Father Burke',
+        description: 'A priest with a haunted past who investigates the mysterious death of a nun.'
+      },
+      {
+        name: 'Sister Irene',
+        description: 'A novitiate preparing to take her final vows, who is drawn into the supernatural events.'
+      }
+    ]
+  },
+  {
+    title: 'The Nun 2',
+    description: 'A sequel to The Nun where the demonic entity continues to wreak havoc.',
+    image: 'https://sportshub.cbsistatic.com/i/2023/07/06/928234b4-1059-4965-8dfd-adfdbdae0864/the-nun-ii-2-poster.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun2.mp3',
+	characters: [
+      {
+        name: 'Valak',
+        description: 'The demonic entity returns, spreading terror in a new setting.'
+      },
+      {
+        name: 'New Character',
+        description: 'Introduce a new character involved in confronting the supernatural threat.'
+      },
+      {
+        name: 'Another New Character',
+        description: 'Another new character who plays a crucial role in the battle against evil.'
+      }
+    ]
+  },
+  {
+    title: 'Annabelle',
+    description: 'A possessed doll terrorizes a young couple, drawing them into a supernatural nightmare.',
+    image: 'https://miro.medium.com/v2/resize:fit:1100/format:webp/1*VsFF0Z7yD3GFyE8z98zXjg.jpeg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabelle.mp3',
+	characters: [
+      {
+        name: 'Annabelle',
+        description: 'A malevolent spirit trapped inside a doll that brings terror wherever it goes.'
+      },
+      {
+        name: 'John Form',
+        description: 'A husband and expectant father who faces the horrors unleashed by Annabelle.'
+      },
+      {
+        name: 'Mia Form',
+        description: 'John’s wife who becomes a target of the doll’s supernatural influence.'
+      }
+    ]
+  },
+  {
+    title: 'Annabelle: Creation',
+    description: 'The origin story of the possessed doll Annabelle, revealing how it became a conduit for evil.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/0e64bca6c68220f986a8e665a2d8f5f8ff60d6b7aed36c033a08cc6798a548c3.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellec.mp3',
+	characters: [
+      {
+        name: 'Sister Charlotte',
+        description: 'A nun who cares for orphaned girls, unwittingly inviting supernatural forces into their lives.'
+      },
+      {
+        name: 'Janice',
+        description: 'An orphaned girl who becomes a target of the malevolent spirit inhabiting Annabelle.'
+      },
+      {
+        name: 'Samuel Mullins',
+        description: 'A dollmaker who unknowingly sets in motion a series of terrifying events involving Annabelle.'
+      }
+    ]
+  },
+  {
+    title: 'Annabelle Comes Home',
+    description: 'The haunted doll Annabelle awakens other malevolent spirits in the Warrens’ artifact room.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/b9751219c625ca6b7d44e3dd3f3d33194099119893c2d5f147c350cd20291bd6.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellech.mp3',
+	characters: [
+      {
+        name: 'Judy Warren',
+        description: 'The daughter of Ed and Lorraine Warren, who faces supernatural dangers at home.'
+      },
+      {
+        name: 'Daniela Rios',
+        description: 'A curious friend who inadvertently releases Annabelle and other spirits from their containment.'
+      },
+      {
+        name: 'Ed and Lorraine Warren',
+        description: 'Paranormal investigators who try to contain the escalating supernatural threat.'
+      }
+    ]
+  },
+  {
+    title: 'The Conjuring',
+    description: 'Paranormal investigators face a powerful demonic entity in a secluded farmhouse.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/6e4eace67c7c6ba205215fb4d2caed81361b6f2df1633bb8c5c43890f7ac0a3a.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring1.mp3',
+	characters: [
+      {
+        name: 'Ed Warren',
+        description: 'A demonologist who investigates paranormal phenomena with his wife, Lorraine.'
+      },
+      {
+        name: 'Lorraine Warren',
+        description: 'A clairvoyant and Ed Warren’s wife, who helps in the investigations.'
+      },
+      {
+        name: 'Roger and Carolyn Perron',
+        description: 'The parents who experience terrifying supernatural occurrences in their farmhouse.'
+      }
+    ]
+  },
+  {
+    title: 'The Conjuring 2',
+    description: 'Ed and Lorraine Warren travel to London to help a single mother and her four children plagued by malicious spirits.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/d7a3c768321316542647d80f38c0b20533c1805e2305bd8845fbd7df111bf708.jpg',
+    
+	
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring2.mp3',characters: [
+      {
+        name: 'Peggy Hodgson',
+        description: 'A single mother whose family is tormented by poltergeist activity in their council house.'
+      },
+      {
+        name: 'Janet Hodgson',
+        description: 'Peggy’s daughter who becomes the focal point of supernatural occurrences, including possession.'
+      },
+      {
+        name: 'The Crooked Man',
+        description: 'A malevolent spirit that terrorizes Janet and her family, manipulated by darker forces.'
+      }
+    ]
+  },
+  {
+    title: 'The Conjuring: The Devil Made Me Do It',
+    description: 'Ed and Lorraine Warren investigate a murder that may be linked to demonic possession.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/4688b49cc1010b00ec054272cff4701df75d9a09e1588464afdac7531ea47f65.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring3.mp3',
+	characters: [
+      {
+        name: 'Arne Johnson',
+        description: 'A young man who claims demonic possession as a defense in a murder trial.'
+      },
+      {
+        name: 'David Glatzel',
+        description: 'A young boy who becomes the initial target of a malevolent entity.'
+      },
+      {
+        name: 'Ed and Lorraine Warren',
+        description: 'Paranormal investigators who face one of their most challenging cases yet.'
+      }
+    ]
+  },
+  {
+    title: 'IT',
+    description: 'A shape-shifting entity terrorizes a small town, primarily appearing as Pennywise the Clown.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/f9e319d6154f5eeb6ce422c5baae349b69b31e47e6cb756e2ce19187036b6894.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it1.mp3',
+	characters: [
+      {
+        name: 'Pennywise',
+        description: 'An ancient, malevolent entity that preys upon the children of Derry, Maine.'
+      },
+      {
+        name: 'The Losers Club',
+        description: 'A group of friends who unite to battle Pennywise and face their deepest fears.'
+      },
+      {
+        name: 'Henry Bowers',
+        description: 'A troubled youth manipulated by Pennywise into doing its bidding.'
+      }
+    ]
+  },
+  {
+    title: 'IT Chapter Two',
+    description: 'The Losers Club returns to Derry years later to confront Pennywise, who has resurfaced.',
+    image: 'https://m.media-amazon.com/images/S/pv-target-images/120d3a94fb6fe29794942cf51b635ec3be89161a3fd578feae8c8a292863cca7._UR1920,1080_SX720_FMjpg_.jpg',
+    
+    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it2.mp3',
+	characters: [
+      {
+        name: 'Adult Losers Club',
+        description: 'The grown-up versions of the Losers Club who reunite to fulfill their oath and defeat Pennywise.'
+      },
+      {
+        name: 'Mike Hanlon',
+        description: 'The only member of the Losers Club who remained in Derry and remembers their past battle with Pennywise.'
+      },
+      {
+        name: 'Stanley Uris',
+        description: 'A member of the Losers Club who took drastic action to avoid facing Pennywise again.'
+      }
+    ]
+  }
+  // Add more movies from The Conjuring Universe and IT as needed
+];
+
+
+
+
+
+$scope.wikiStories = [
+  {
+    title: 'Valak',
+    description: 'Valak, also known as the Demon Nun, is a malevolent entity that takes the form of a demonic nun. It is a powerful demon with the ability to possess and manipulate those around it, causing terror and death wherever it appears.',
+    image: 'https://www.denofgeek.com/wp-content/uploads/2021/02/Valak-as-the-Nun-in-The-Conjuring-Movies.png',
+    backgroundStory: 'Valak first appeared in "The Conjuring 2" as the primary antagonist, haunting the Hodgson family in Enfield, London. It later appeared in "The Nun," revealing more of its sinister origins.',
+    foregroundStory: 'In "The Nun," Valak manifests as a nun to terrorize characters like Father Burke and Sister Irene, drawing on their fears and weaknesses to manifest physical harm and psychological torment.',
+    competitors: [
+      {
+        name: 'The Crooked Man',
+        description: 'A demonic entity with a tall, twisted appearance, known for its eerie singing and unnatural movements. It challenges Valak with its own brand of terror and manipulation.',
+        image: 'https://static.wikia.nocookie.net/the-demonic-paradise/images/f/fd/Tthe-conjuring25.jpg'
+      },
+      {
+        name: 'Bathsheba Sherman',
+        description: 'An evil spirit that possessed a mother who later sacrificed her child to Satan. Bathsheba torments the Perron family in "The Conjuring," showing her powerful demonic presence.',
+        image: 'https://static.wikia.nocookie.net/villains/images/4/48/HtorpUnIfKw.jpg'
+      }
+    ]
+  },
+  {
+    title: 'Annabelle',
+    description: 'Annabelle is a possessed doll with a dark history of causing death and chaos. It serves as a conduit for demonic entities seeking to wreak havoc on the living.',
+    image: 'https://www.the-sun.com/wp-content/uploads/sites/6/2021/10/MP-ANNABELLE-DOLL-REG-UPDATE-OFF-PLTFRM-COMP.jpg',
+    backgroundStory: 'The real Annabelle doll was reportedly possessed by a deceased girl named Annabelle Higgins. It was later found to be a conduit for a demonic entity pretending to be the spirit of Annabelle.',
+    foregroundStory: 'In the "Annabelle" film series, the doll terrorizes its owners, manipulating their fears and weaknesses to escalate violence and horror in their lives.',
+    competitors: [
+      {
+        name: 'The Conjuring Dolls',
+        description: 'A collection of haunted and possessed dolls kept under the care of Ed and Lorraine Warren. These dolls, including Annabelle, pose a threat to anyone who comes into contact with them.',
+        image: 'https://hips.hearstapps.com/digitalspyuk.cdnds.net/17/25/1497945126-annabelle-2.jpg'
+      },
+      {
+        name: 'The Ferryman',
+        description: 'A demonic entity that collects souls and condemns them to eternal suffering. It challenges Annabelle with its ability to manipulate souls and bend the fabric of reality.',
+        image: 'https://static.wikia.nocookie.net/theconjuring/images/4/41/Luca-nemolato-ferryman-v5.jpg'
+      }
+    ]
+  },
+  {
+    title: 'Pennywise',
+    description: 'Pennywise, also known as IT, is an ancient cosmic entity that preys on the fears of children in the form of a malevolent clown. It manifests every 27 years to feed on the fear of its victims.',
+    image: 'https://cdn.britannica.com/98/196498-050-51868DCD/Pennywise-Bill-Skarsgard-film-adaptation-novel-Stephen.jpg',
+    backgroundStory: 'IT originates from the Macroverse, a dimension beyond the physical universe. It arrives in the town of Derry, Maine, to sow fear and consume the souls of children, returning every few decades to continue its cycle of terror.',
+    foregroundStory: 'In "IT" and its sequel, Pennywise uses its shape-shifting abilities to take on various forms that reflect the deepest fears of its victims, tormenting the Losers Club and other inhabitants of Derry.',
+    competitors: [
+      {
+        name: 'The Losers Club',
+        description: 'A group of misfit children who confront Pennywise in the town of Derry. They challenge IT with their courage and unity, forming a bond that transcends fear and empowers them to face the cosmic entity head-on.',
+        image: 'https://ew.com/thmb/BScxEqh5ZKatBX2_F9sKpWedrUg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/it-16887r1-2000-69eacd1b53554fffb64235fede23e28d.jpg'
+      },
+      {
+        name: 'Maturin the Turtle',
+        description: 'An ancient guardian and cosmic force of good that opposes Pennywise in the Macroverse. Maturin aids the Losers Club by providing insights into IT\'s origins and weaknesses, guiding them in their battle against the malevolent entity.',
+        image: 'https://img-v3.deepdreamgenerator.com/155435/vm8nym_32cbcce8c6ead2d4b96ef14e3fd45f84057ca118.jpg'
+      }
+    ]
+  }
+  // Add more demon characters and stories as needed
+];
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	        $scope.sounds = [
+        { title: 'Nun-1', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3' },
+		{ title: 'Nun-2', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun2.mp3' },
+        { title: 'IT-1', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it1.mp3' },
+        { title: 'IT chapter-2', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it2.mp3' },       
+        { title: 'The Conjuring - 1', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring1.mp3' },
+        { title: 'The Conjuring - 2', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring2.mp3' },	   
+        { title: 'The Conjuring - 3', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring3.mp3' },	  
+        { title: 'Annabelle', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabelle.mp3' },
+		        { title: 'Annabelle - Creation', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellec.mp3' },
+	        { title: 'Annabelle - comes home', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellech.mp3' },
+	
+	  // Add more sounds
+      ];
+
+      $scope.navigate = function(section) {
+        $scope.currentSection = section;
+      };
+
+
+$scope.toggleOverlay = function() {
+  $scope.showOverlay = true;
+  $timeout(function() {
+    $scope.showOverlay = false;
+  }, 2000); // 2000 milliseconds = 2 seconds
+};
+
+$scope.$watch('showOverlay', function(newVal, oldVal) {
+  if (newVal !== oldVal && newVal === true) {
+    $timeout(function() {
+      $scope.showOverlay = false;
+    }, 2000); // 2000 milliseconds = 2 seconds
+  }
+});
+
+
+
+
+
+    $scope.showOverlay = false;
+
+    $scope.currentAudio = null;
+
+    $scope.navigate = function(section) {
+      $scope.currentSection = section;
+    };
+
+    $scope.toggleSound = function() {
+      var audioElement = document.getElementById('background-audio');
+      if (audioElement.paused) {
+        audioElement.play();
+      } else {
+        audioElement.pause();
+      }
+    };
+
+    document.addEventListener('play', function(event) {
+      var audios = document.getElementsByTagName('audio');
+      for (var i = 0; i < audios.length; i++) {
+        if (audios[i] !== event.target) {
+          audios[i].pause();
+        }
+      }
+    }, true);
+
+
+
+
+
+    });
+	
+	
+	
+			   function refreshpage() {
+		window.scrollTo(0,0);
+            location.reload(); // Reload the entire page
+        }
+  </script>
+</body>
+</html>
