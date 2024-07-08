@@ -473,7 +473,7 @@ section#home.section {
 }
 
 .featured-video, .about-creators, .did-you-know, .character-spotlight, .episodes-gallery, .fan-art-showcase, .quote-of-the-day {
-    background-color: #fff;
+    background-color: AliceBlue ;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -552,6 +552,98 @@ quote {
 
 }
 
+
+@media (max-width: 600px) {
+    .section {
+        padding: 2.5vw !important; /* Dynamic padding based on viewport width */
+        font-size: 4vw; /* Dynamic font size based on viewport width */
+    }
+
+    .featured-video {
+        overflow: hidden; /* Hide any overflow */
+        height: 270px; /* Set a fixed height for testing purposes */
+		
+    }
+
+    .featured-video iframe {
+        width: 100% !important;
+        height: 77%; /* Set iframe height to 90% of parent container */
+        box-sizing: border-box; /* Include padding and border in the total height */
+    }
+	.featured-video, .about-creators, .did-you-know, .character-spotlight, .episodes-gallery, .fan-art-showcase, .quote-of-the-day {
+padding: 10px;
+}
+    .about-creators p,
+    .did-you-know p,
+    .character-card p,
+    .episodes-gallery p,
+    .fan-art-showcase p,
+    .quote-of-the-day quote {
+        font-size: 3.5vw; /* Dynamic font size based on viewport width */
+    }
+
+    .did-you-know accordion,
+    .did-you-know accordion-item,
+    .did-you-know accordion-header,
+    .did-you-know accordion-content {
+        width: 90vw; /* Dynamic width based on viewport width */
+    }
+
+    .character-card {
+        width: 90vw; /* Dynamic width based on viewport width */
+        margin-bottom: 5vh; /* Dynamic margin based on viewport height */
+    }
+
+    .character-card img {
+        width: 100%; /* Make images responsive */
+    }
+
+    .episodes-gallery ul {
+        padding-left: 5vw; /* Dynamic padding based on viewport width */
+    }
+
+    .episodes-gallery li {
+        margin-bottom: 2vh; /* Dynamic margin based on viewport height */
+    }
+
+    .fan-art-gallery img {
+        width: 90vw; /* Dynamic width based on viewport width */
+        margin-bottom: 2vh; /* Dynamic margin based on viewport height */
+    }
+
+    .quote-of-the-day {
+        padding: 5vw; /* Dynamic padding based on viewport width */
+    }
+
+    .quote-of-the-day quote {
+        font-size: 3.5vw; /* Dynamic font size based on viewport width */
+    }
+
+    h2, h3, h4 {
+        font-size: 5vw; /* Dynamic font size based on viewport width */
+    }
+
+    .character-card ul {
+        padding-left: 5vw; /* Dynamic padding based on viewport width */
+    }
+
+    .character-card li {
+        margin-bottom: 1vh; /* Dynamic margin based on viewport height */
+    }
+
+    .character-card h4 {
+        font-size: 4.5vw; /* Dynamic font size based on viewport width */
+    }
+
+    .did-you-know accordion-item,
+    .did-you-know accordion-header,
+    .did-you-know accordion-content {
+        font-size: 3.5vw; /* Dynamic font size based on viewport width */
+    }
+}
+
+
+
     </style>
 </head>
 
@@ -580,6 +672,16 @@ quote {
 
 
 
+<section id="image-gallery" class="section" ng-show="currentSection === 'image-gallery'">
+  <h2>Tom and Jerry Image Gallery</h2>
+  <p>Welcome to the Tom and Jerry Image Gallery, where you can explore various images featuring our beloved characters!</p>
+  <div class="image-gallery">
+    <div class="image" ng-repeat="image in images">
+      <img ng-src="{{ image.url }}" alt="{{ image.name }}">
+      <p>{{ image.name }}</p>
+    </div>
+  </div>
+</section>
 
 
 
@@ -638,7 +740,7 @@ quote {
             </ul>
         </div>
         <div class="character-card">
-            <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/f/f5/Jerryrealposter.png" alt="Jerry">
+            <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/9/98/Stardetective.png" alt="Jerry">
             <h4>Jerry</h4>
             <p>Jerry is a brown mouse who often outsmarts Tom.</p>
             <ul>
@@ -653,9 +755,9 @@ quote {
         <h3>Episodes Gallery</h3>
         <p>Check out some of the classic episodes of Tom and Jerry below:</p>
         <ul>
-            <li><a href="https://www.youtube.com/watch?v=9cBnmaUyj6Q" target="_blank">Puss Gets the Boot</a></li>
-            <li><a href="https://www.youtube.com/watch?v=ab7qF7hCh6o" target="_blank">The Midnight Snack</a></li>
-            <li><a href="https://www.youtube.com/watch?v=vP3mA0O9Q6g" target="_blank">The Night Before Christmas</a></li>
+            <li><a href="https://drive.google.com/file/d/1gh_COSapxo0WpIbQfpJtTlHr4BSe_5Wv/preview" target="_blank">Puss Gets the Boot</a></li>
+            <li><a href="https://drive.google.com/file/d/1lpy0TivPxZ_7M0mFSd3HhwAJuNydmwxz/preview" target="_blank">The Midnight Snack</a></li>
+            <li><a href="https://drive.google.com/file/d/1vb4WWdgFIZxkeF1QKCA1dP3bppOtusDl/preview" target="_blank">The Night Before Christmas</a></li>
             <!-- Add more episodes as needed -->
         </ul>
     </div>
@@ -665,9 +767,9 @@ quote {
         <h3>Fan Art Showcase</h3>
         <p>Here are some amazing fan arts created by Tom and Jerry fans:</p>
         <div class="fan-art-gallery">
-            <img src="https://example.com/fanart1.jpg" alt="Fan Art 1">
-            <img src="https://example.com/fanart2.jpg" alt="Fan Art 2">
-            <img src="https://example.com/fanart3.jpg" alt="Fan Art 3">
+            <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/1.jpg" alt="Fan Art 1">
+            <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/2.jpg" alt="Fan Art 2">
+            <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/3.jpg" alt="Fan Art 3">
             <!-- Add more fan art as needed -->
         </div>
     </div>
@@ -769,7 +871,7 @@ quote {
     <script>
         var app = angular.module('TomAndJerryApp', []);
 
-        app.controller('MainController', ['$scope', '$sce', '$document', function ($scope, $sce, $document) {
+        app.controller('MainController', ['$scope', '$sce', '$document', '$timeout', function ($scope, $sce, $document, $timeout) {
 				    $scope.currentSection = 'home'; // Default to home section
     $scope.activeSection = 'home'; // Initially set active section
     if ($scope.currentSection === 'home') {
@@ -908,42 +1010,13 @@ $scope.stopPlayingIframe = function(movie) {
     }
 };
 
-$scope.showSection = function(section) {
 
-  var videoUrl = '';
-  // Validate and sanitize videoUrl here
-  $scope.featuredVideoUrl = $sce.trustAsResourceUrl(videoUrl);
 
-  if ($scope.currentSection !== section) {
-    // Pause all active iframes on section switch
-    var iframes = document.querySelectorAll('iframe');
-    iframes.forEach(function(iframe) {
-      iframe.src = ''; // Set src to empty string to stop loading content
-    });
 
-    // Pause all active movies
-    $scope.movies.forEach(function(movie) {
-      if (movie.expanded) {
-        movie.expanded = false;
-        $scope.stopPlayingIframe(movie);
-      }
-    });
 
-    // Check if episode iframe is active and stop it
-    if ($scope.selectedEpisodeEmbedUrl) {
-      $scope.selectedEpisodeEmbedUrl = '';
-    }
 
-    // Update current section and active section
-    $scope.currentSection = section;
-    $scope.activeSection = section;
 
-var iframe = document.getElementById('episodePlayer');
-if (!iframe.src || iframe.src === '') {
-  iframe.innerHTML = 'Loading... Please select a season to view episodes.';
-}
-  }
-};
+
 
 
 
@@ -1452,6 +1525,100 @@ $document.on('keydown', function (event) {
                 break;
         }
     });
+
+
+
+
+
+
+
+
+
+    // Function to set the featured video URL for the 'home' section
+    $scope.setHomeFeaturedVideo = function() {
+        // Replace with your desired YouTube video ID
+        var videoId = "yvdPsHLbQRg";
+        var embedUrl = "https://www.youtube.com/embed/" + videoId;
+        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(embedUrl);
+    };
+
+
+
+
+
+
+
+
+    // Function to set the featured video URL for the 'home' section
+    $scope.setHomeFeaturedVideo = function() {
+        // Replace with your desired YouTube video ID
+        var videoId = "yvdPsHLbQRg";
+        var embedUrl = "https://www.youtube.com/embed/" + videoId;
+        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(embedUrl);
+    };
+
+    // Function to show a section and select the Puss episode
+    $scope.showSection = function(section) {
+        var videoUrl = '';
+        // Validate and sanitize videoUrl here
+        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(videoUrl);
+
+        // Use $timeout to delay execution until the next digest cycle
+        $timeout(function() {
+            if ($scope.currentSection !== section) {
+                // Pause all active iframes on section switch
+                var iframes = document.querySelectorAll('iframe');
+                iframes.forEach(function(iframe) {
+                    iframe.src = ''; // Set src to empty string to stop loading content
+                });
+
+                // Pause all active movies
+                if ($scope.movies) {
+                    $scope.movies.forEach(function(movie) {
+                        if (movie.expanded) {
+                            movie.expanded = false;
+                            $scope.stopPlayingIframe(movie);
+                        }
+                    });
+                }
+
+                // Check if episode iframe is active and stop it
+                if ($scope.selectedEpisodeEmbedUrl) {
+                    $scope.selectedEpisodeEmbedUrl = '';
+                }
+
+                // Update current section and active section
+                $scope.currentSection = section;
+                $scope.activeSection = section;
+
+                var iframe = document.getElementById('episodePlayer');
+                if (iframe) {
+                    iframe.innerHTML = ''; // Clear innerHTML if needed
+                }
+            }
+
+  if (section === 'episodes') {
+    var pussEpisode = $scope.seasonGroups.Classic.find(function(episode) {
+      return episode.name === 'Puss Gets the Boot [1940]';
+    });
+    if (pussEpisode) {
+      $timeout(function() {
+        $scope.selectEpisode(pussEpisode);
+      }, 0);
+    }
+  }
+ else if (section === 'home') {
+                // Set featured video for 'home' section
+                $scope.setHomeFeaturedVideo();
+            }
+        }, 0);
+    };
+
+
+
+
+
+
 	
     // Clean up on scope destruction
     $scope.$on('$destroy', function () {
