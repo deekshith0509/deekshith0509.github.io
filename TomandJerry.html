@@ -532,18 +532,22 @@ section#home.section {
   flex-wrap: nowrap;
   justify-content: space-between;
   overflow-x: auto;
-  padding: 22px 22px;
+  padding: 22px 12px;
 }
 
 .fan-art-gallery img {
-  max-width: 500px;
-  height: auto;
-  object-fit: cover;
-  margin: 10px  10px;
-  border-radius: 10px;
+  max-width: none; /* Remove fixed maximum width */
+  height: 260px; /* Set a specific height */
+  width: auto; /* Allow width to adjust dynamically */
+  object-fit: cover; /* Ensure image covers the specified dimensions */
+  margin: 10px; /* Simplified margin for all sides */
+  border-radius: 10px; /* Rounded corners */
 }
 
 
+<!-- .fan-art-gallery img:first-child { -->
+  <!-- margin-left: 10px; /* Adjust margin for the first image */ -->
+<!-- } -->
 .fan-art-gallery img:hover {
     transform: scale(1.1); /* Enlarge on hover */
 }
@@ -635,6 +639,10 @@ padding: 10px;
 .fan-art-gallery img {
   object-fit: cover; /* Maintain aspect ratio */
   margin: 10px 10px; /* Add margin between images */
+  border-radius: 10px;
+  
+}
+.fan-art-gallery img:first-child {
 }
 
     .quote-of-the-day {
@@ -975,50 +983,57 @@ padding: 10px;
 
 
 
-    // Function to center the focused image in the fan-art gallery
-    $scope.centerFocusedImage = function() {
-        var gallery = $document[0].querySelector('.fan-art-gallery');
-        var images = gallery.querySelectorAll('img');
+// Function to center the focused image in the fan-art gallery
+$scope.centerFocusedImage = function() {
+  // Check if screen width is less than or equal to 768px (mobile breakpoint)
+  if (window.innerWidth <= 768) {
+    var gallery = $document[0].querySelector('.fan-art-gallery');
+    var images = gallery.querySelectorAll('img');
+    var galleryRect = gallery.getBoundingClientRect();
+    var closestImage = null;
+    var closestDistance = Infinity;
 
-        var galleryRect = gallery.getBoundingClientRect();
-        var closestImage = null;
-        var closestDistance = Infinity;
-
-        angular.forEach(images, function(img) {
-            img.classList.remove('centered'); // Remove centered class from all images
-            var imgRect = img.getBoundingClientRect();
-            var imgCenter = imgRect.left + imgRect.width / 2;
-            var galleryCenter = galleryRect.left + galleryRect.width / 2;
-            var distance = Math.abs(imgCenter - galleryCenter);
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestImage = img;
-            }
-        });
-
-        if (closestImage) {
-            closestImage.classList.add('centered'); // Add centered class to the closest image
-            var scrollOffset = closestImage.offsetLeft - galleryRect.width / 2 + closestImage.width / 2;
-            gallery.scrollTo({
-                left: scrollOffset,
-                behavior: 'smooth'
-            });
-        }
-    };
-
-    // Initial centering when the page loads
-    $timeout(function() {
-        $scope.centerFocusedImage();
-    }, 0);
-
-    // Listen for scroll events on the fan-art gallery and center images
-    $document[0].querySelector('.fan-art-gallery').addEventListener('scroll', function() {
-        if ($scope.scrollTimeout) {
-            $timeout.cancel($scope.scrollTimeout);
-        }
-        $scope.scrollTimeout = $timeout($scope.centerFocusedImage, 100);
+    angular.forEach(images, function(img) {
+      img.classList.remove('centered'); // Remove centered class from all images
+      var imgRect = img.getBoundingClientRect();
+      var imgCenter = imgRect.left + imgRect.width / 2;
+      var galleryCenter = galleryRect.left + galleryRect.width / 2;
+      var distance = Math.abs(imgCenter - galleryCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestImage = img;
+      }
     });
+
+  if (closestImage) {
+    closestImage.classList.add('centered'); // Add centered class to the closest image
+    var scrollOffset = closestImage.offsetLeft - galleryRect.width / 2 + closestImage.width / 2;
+    gallery.scrollTo({ left: scrollOffset, behavior: 'smooth' });
+
+    // Simulate click event on Android
+    if (/Android/i.test(navigator.userAgent)) {
+      var clickEvent = new MouseEvent('click', {
+        view: window,
+        bubbles: true
+      });
+      closestImage.dispatchEvent(clickEvent);
+    }
+  }}
+
+};
+// Initial centering when the page loads
+$timeout(function() {
+  $scope.centerFocusedImage();
+}, 0);
+
+// Listen for scroll events on the fan-art gallery and center images
+$document[0].querySelector('.fan-art-gallery').addEventListener('scroll', function() {
+  if ($scope.scrollTimeout) {
+    $timeout.cancel($scope.scrollTimeout);
+  }
+  $scope.scrollTimeout = $timeout($scope.centerFocusedImage, 100);
+});
+
 
 
 
