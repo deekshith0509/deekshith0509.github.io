@@ -336,6 +336,15 @@ section#home.section {
     display: block; /* Ensure block-level display */
 }
 
+.movie-details img {
+    max-width: 500px; /* Limit maximum width to 500px */
+    height: auto; /* Automatically adjust height */
+    display: block; /* Ensure the image behaves as a block element */
+    margin: 10px auto; /* Center the image horizontally with top and bottom margin */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
 
 
 
@@ -360,18 +369,17 @@ section#home.section {
 }
 
 .character-card {
-    width: 250px; /* Adjust width as needed */
-    margin: 5px;
-    padding: 5px;
+    width: 200px; /* Adjust width as needed */
     border: 1px solid wheat;
     border-radius: 5px;
     text-align: center;
+	max-width: 400px;
 }
 
 .character-card img {
     width: 100%; /* Ensure the image fills the container */
     height: auto; /* Maintain aspect ratio */
-    height: 400px; /* Max height for images */
+    height: 500px; /* Max height for images */
     border-radius: 5px; /* Slight border radius */
     object-fit: cover; /* Cover the container without distortion */
 }
@@ -396,7 +404,7 @@ section#home.section {
     }
 
     .character-card img {
-        height: 300px !important; /* Reduce image height for smaller screens */
+        height: 400px !important; /* Reduce image height for smaller screens */
       }
 	  .search-bar input[type="text"] {
 		width: 90vw;
@@ -520,17 +528,27 @@ section#home.section {
 }
 
 .fan-art-gallery {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  overflow-x: auto;
+  padding: 22px 22px;
 }
 
 .fan-art-gallery img {
-    max-width: 30%;
-    margin: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  height: auto;
+  object-fit: cover;
+  margin: 10px  10px;
+  border-radius: 10px;
 }
+
+
+.fan-art-gallery img:hover {
+    transform: scale(1.1); /* Enlarge on hover */
+}
+
+
 
 .quote-of-the-day {
     text-align: left;
@@ -561,13 +579,14 @@ quote {
 
     .featured-video {
         overflow: hidden; /* Hide any overflow */
-        height: 270px; /* Set a fixed height for testing purposes */
+        height: 370px; /* Set a fixed height for testing purposes */
 		
     }
 
     .featured-video iframe {
         width: 100% !important;
-        height: 77%; /* Set iframe height to 90% of parent container */
+        height: 63%; /* Set iframe height to 90% of parent container */
+
         box-sizing: border-box; /* Include padding and border in the total height */
     }
 	.featured-video, .about-creators, .did-you-know, .character-spotlight, .episodes-gallery, .fan-art-showcase, .quote-of-the-day {
@@ -605,11 +624,18 @@ padding: 10px;
     .episodes-gallery li {
         margin-bottom: 2vh; /* Dynamic margin based on viewport height */
     }
+.fan-art-gallery {
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on WebKit browsers */
+  white-space: nowrap;
+  font-size: 0; /* Remove gap between inline-block elements */
+  padding: 0px 30px; /* Padding to ensure scrollbar is visible */
+}
 
-    .fan-art-gallery img {
-        width: 90vw; /* Dynamic width based on viewport width */
-        margin-bottom: 2vh; /* Dynamic margin based on viewport height */
-    }
+.fan-art-gallery img {
+  object-fit: cover; /* Maintain aspect ratio */
+  margin: 10px 10px; /* Add margin between images */
+}
 
     .quote-of-the-day {
         padding: 5vw; /* Dynamic padding based on viewport width */
@@ -696,15 +722,15 @@ padding: 10px;
 
 
 <section id="home" class="section" ng-show="currentSection === 'home'">
-    <h2>Welcome to the Tom and Jerry Fan Page</h2>
-    <p>Tom and Jerry is a classic animated series created by William Hanna and Joseph Barbera. The series centers on the rivalry between the characters Tom, a cat, and Jerry, a mouse. Known for its slapstick humor and enduring appeal, Tom and Jerry has entertained audiences of all ages for decades.</p>
+<h2>Welcome to the Tom and Jerry Fan Page</h2>
+<p>Step into the timeless world of Tom and Jerry, a beloved animated series created by William Hanna and Joseph Barbera. This classic series revolves around the timeless rivalry between Tom, the cunning cat, and Jerry, the clever mouse. Renowned for its uproarious slapstick humor and enduring charm, Tom and Jerry has captivated audiences of all generations for decades.</p>
 
-    <!-- Featured video section -->
-    <div class="featured-video">
-        <h3>Featured Video</h3>
-        
-<iframe ng-src="{{ featuredVideoUrl }}" frameborder="1" allowfullscreen></iframe>
- </div>
+<div class="featured-video">
+    <h3>Featured Video: Tales Series Intro</h3>
+    <p>Explore the captivating world of the Tales series with this introductory video. Immerse yourself in the rich storytelling and vibrant characters that define this beloved franchise.</p>
+    <iframe ng-src="{{ featuredVideoUrl }}" frameborder="1" allowfullscreen></iframe>
+</div>
+
 
     <!-- About the creators section -->
     <div class="about-creators">
@@ -712,43 +738,97 @@ padding: 10px;
         <p>William Hanna and Joseph Barbera were American animation directors, producers, and animators. They co-founded the animation studio Hanna-Barbera, which produced iconic shows like The Flintstones, The Jetsons, and of course, Tom and Jerry.</p>
     </div>
 
-    <!-- Did you know section -->
-    <div class="did-you-know">
-        <h3>Did you know?</h3>
-        <accordion>
-            <accordion-item>
-                <accordion-header>Tom and Jerry were created in 1940</accordion-header>
-                <accordion-content>Tom and Jerry were created by William Hanna and Joseph Barbera in 1940. The first episode, "Puss Gets the Boot," was released on February 10, 1940.</accordion-content>
-            </accordion-item>
-            <accordion-item>
-                <accordion-header>Tom and Jerry have won numerous awards</accordion-header>
-                <accordion-content>Tom and Jerry have won numerous awards, including seven Academy Awards for Best Short Subject (Cartoon). They were also inducted into the Cartoon Hall of Fame in 1991.</accordion-content>
-            </accordion-item>
-        </accordion>
+<!-- Did you know section -->
+<div class="did-you-know">
+    <h3>Did you know?</h3>
+    <accordion>
+        <accordion-item>
+            <accordion-header>Tom and Jerry were created in 1940</accordion-header>
+            <accordion-content>
+                <p>Tom and Jerry were created by William Hanna and Joseph Barbera in 1940. The first episode, "Puss Gets the Boot," was released on February 10, 1940.</p>
+                <p>This iconic duo quickly became one of the most beloved and enduring animated pairings in history.</p>
+            </accordion-content>
+        </accordion-item>
+        <accordion-item>
+            <accordion-header>Tom and Jerry have won numerous awards</accordion-header>
+            <accordion-content>
+                <p>Tom and Jerry have won numerous awards, including seven Academy Awards for Best Short Subject (Cartoon). They were also inducted into the Cartoon Hall of Fame in 1991.</p>
+                <p>Throughout their illustrious career, they have continued to captivate audiences worldwide with their timeless humor and slapstick antics.</p>
+            </accordion-content>
+        </accordion-item>
+        <accordion-item>
+            <accordion-header>Their rivalry is legendary</accordion-header>
+            <accordion-content>
+                <p>The enduring rivalry between Tom and Jerry is one of the longest-running and most beloved in animation history.</p>
+                <p>Despite their constant chases and skirmishes, deep down, they share a unique bond that has resonated with generations of viewers.</p>
+            </accordion-content>
+        </accordion-item>
+    </accordion>
+</div>
+
+
+<!-- Character spotlight section -->
+<div class="character-spotlight">
+    <h3>Character Spotlight</h3>
+	
+	    <!-- Jerry's Character Card -->
+    <div class="character-card">
+        <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/9/98/Stardetective.png" alt="Jerry">
+        <h4>Jerry</h4>
+        <p>Jerry is a brown mouse who often outsmarts Tom.</p>
+        <ul>
+            <li>First appearance: "Puss Gets the Boot" (1940)</li>
+            <li>Creator: William Hanna and Joseph Barbera</li>
+        </ul>
     </div>
 
-    <!-- Character spotlight section -->
-    <div class="character-spotlight">
-        <h3>Character Spotlight</h3>
-        <div class="character-card">
-            <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/8/8c/Tomrealposter.png" alt="Tom">
-            <h4>Tom</h4>
-            <p>Tom is a grey and white domestic shorthair cat who often chases Jerry.</p>
-            <ul>
-                <li>First appearance: "Puss Gets the Boot" (1940)</li>
-                <li>Creator: William Hanna and Joseph Barbera</li>
-            </ul>
-        </div>
-        <div class="character-card">
-            <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/9/98/Stardetective.png" alt="Jerry">
-            <h4>Jerry</h4>
-            <p>Jerry is a brown mouse who often outsmarts Tom.</p>
-            <ul>
-                <li>First appearance: "Puss Gets the Boot" (1940)</li>
-                <li>Creator: William Hanna and Joseph Barbera</li>
-            </ul>
-        </div>
+    <!-- Tom's Character Card -->
+    <div class="character-card">
+        <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/8/8c/Tomrealposter.png" alt="Tom">
+        <h4>Tom</h4>
+        <p>Tom is a grey and white domestic shorthair cat who often chases Jerry.</p>
+        <ul>
+            <li>First appearance: "Puss Gets the Boot" (1940)</li>
+            <li>Creator: William Hanna and Joseph Barbera</li>
+        </ul>
     </div>
+
+
+
+    <!-- Spike's Character Card -->
+    <div class="character-card">
+        <img src="https://static.wikia.nocookie.net/tomandjerry/images/0/0e/Spike_Bulldog_(2006-2008).jpeg" alt="Spike">
+        <h4>Spike</h4>
+        <p>Spike is a muscular bulldog who sometimes befriends Jerry and antagonizes Tom.</p>
+        <ul>
+            <li>First appearance: "Dog Trouble" (1942)</li>
+            <li>Creator: William Hanna and Joseph Barbera</li>
+        </ul>
+    </div>
+
+    <!-- Butch's Character Card -->
+    <div class="character-card">
+        <img src="https://static.wikia.nocookie.net/tomandjerry/images/4/44/Butch_in_Tom_and_Jerry_Tales_Ep2-3.png" alt="Butch">
+        <h4>Butch</h4>
+        <p>Butch is a black alley cat who often competes with Tom over Jerry or other pursuits.</p>
+        <ul>
+            <li>First appearance: "Baby Puss" (1943)</li>
+            <li>Creator: William Hanna and Joseph Barbera</li>
+        </ul>
+    </div>
+
+    <!-- Tuffy's Character Card -->
+    <div class="character-card">
+        <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/7/78/Tuffyrealposter.png" alt="Tuffy">
+        <h4>Tuffy</h4>
+        <p>Tuffy, also known as Nibbles, is Jerry's young nephew who sometimes assists in his schemes.</p>
+        <ul>
+            <li>First appearance: "The Milky Waif" (1946)</li>
+            <li>Creator: William Hanna and Joseph Barbera</li>
+        </ul>
+    </div>
+</div>
+
 
     <!-- Episodes gallery section -->
     <div class="episodes-gallery">
@@ -764,13 +844,23 @@ padding: 10px;
 
     <!-- Fan art showcase section -->
     <div class="fan-art-showcase">
-        <h3>Fan Art Showcase</h3>
+        <h1>Fan Art Showcase</h1>
         <p>Here are some amazing fan arts created by Tom and Jerry fans:</p>
         <div class="fan-art-gallery">
             <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/1.jpg" alt="Fan Art 1">
-            <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/2.jpg" alt="Fan Art 2">
-            <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/3.jpg" alt="Fan Art 3">
-            <!-- Add more fan art as needed -->
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/2.jpg" alt="Fan Art 2">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/3.jpg" alt="Fan Art 3">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/4.jpg" alt="Fan Art 4">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/5.jpg" alt="Fan Art 5">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/6.jpg" alt="Fan Art 6">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/7.jpg" alt="Fan Art 7">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/8.jpg" alt="Fan Art 8">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/9.jpg" alt="Fan Art 9">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/10.jpg" alt="Fan Art 10">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/11.jpg" alt="Fan Art 11">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/12.jpg" alt="Fan Art 12">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/13.jpg" alt="Fan Art 13">
+
         </div>
     </div>
 
@@ -882,6 +972,59 @@ padding: 10px;
     }		  
 
 
+
+
+
+    // Function to center the focused image in the fan-art gallery
+    $scope.centerFocusedImage = function() {
+        var gallery = $document[0].querySelector('.fan-art-gallery');
+        var images = gallery.querySelectorAll('img');
+
+        var galleryRect = gallery.getBoundingClientRect();
+        var closestImage = null;
+        var closestDistance = Infinity;
+
+        angular.forEach(images, function(img) {
+            img.classList.remove('centered'); // Remove centered class from all images
+            var imgRect = img.getBoundingClientRect();
+            var imgCenter = imgRect.left + imgRect.width / 2;
+            var galleryCenter = galleryRect.left + galleryRect.width / 2;
+            var distance = Math.abs(imgCenter - galleryCenter);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestImage = img;
+            }
+        });
+
+        if (closestImage) {
+            closestImage.classList.add('centered'); // Add centered class to the closest image
+            var scrollOffset = closestImage.offsetLeft - galleryRect.width / 2 + closestImage.width / 2;
+            gallery.scrollTo({
+                left: scrollOffset,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    // Initial centering when the page loads
+    $timeout(function() {
+        $scope.centerFocusedImage();
+    }, 0);
+
+    // Listen for scroll events on the fan-art gallery and center images
+    $document[0].querySelector('.fan-art-gallery').addEventListener('scroll', function() {
+        if ($scope.scrollTimeout) {
+            $timeout.cancel($scope.scrollTimeout);
+        }
+        $scope.scrollTimeout = $timeout($scope.centerFocusedImage, 100);
+    });
+
+
+
+
+
+
 		  $scope.selectedEpisodeEmbedUrl = ''; // Initially empty, will be set when an episode is clicked
 
 
@@ -940,33 +1083,90 @@ $scope.episodeListFilter = function(episode) {
 
 
             // Array of movies with detailed information
-            $scope.movies = [
-                {
-                    name: 'Tom and Jerry: The Movie',
-                    description: 'Tom and Jerry are left homeless after their owners move out. As they search for a new home, they cross paths with a girl who has run away from home and her evil aunt.',
-                    image: 'https://i.ytimg.com/vi/E7uzPr0jkcU/movieposter.jpg',
-                    embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1Z2562adnymdyreYy2c9s8axxIs1m8oAL/preview'),
-                    expanded: false,
-                    details: {
-                        year: '1992',
-                        director: 'Phil Roman',
-                        stars: 'Richard Kind, Dana Hill, Anndi McAfee'
-                    }
-                },
-                {
-                    name: 'Tom and Jerry: Willy Wonka and the Chocolate Factory',
-                    description: 'Tom and Jerry help Charlie Bucket achieve his lifelong dream of finding a golden ticket and visiting Willy Wonka\'s chocolate factory.',
-                    image: 'willy_wonka_movie.jpg',
-                    embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/another-file-id/preview'),
-                    expanded: false,
-                    details: {
-                        year: '2017',
-                        director: 'Spike Brandt, Tony Cervone',
-                        stars: 'JP Karliak, Jess Harnell, Lincoln Melcher'
-                    }
-                },
-                // Add more movies with detailed information
-            ];
+$scope.movies = [
+    {
+        name: 'Tom and Jerry: The Movie',
+        description: 'Tom and Jerry are left homeless after their owners move out. As they search for a new home, they cross paths with a girl who has run away from home and her evil aunt.',
+        image: 'https://i.ytimg.com/vi/E7uzPr0jkcU/movieposter.jpg',
+        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/134oac27LfjgGdj0zIMVmRGBzeIUiLnkK/preview'),
+        expanded: false,
+        details: {
+            year: '1992',
+            director: 'Phil Roman',
+            stars: 'Richard Kind, Dana Hill, Anndi McAfee'
+        }
+    },
+    {
+        name: 'Tom and Jerry: The Lost Dragon',
+        description: 'Tom and Jerry discover a mysterious egg that hatches into a baby dragon. They must return the dragon to its rightful parents while avoiding a powerful witch.',
+        image: 'https://upload.wikimedia.org/wikipedia/en/c/ce/Tom_and_Jerry_The_Lost_Dragon.jpg',
+        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1g7okgPkPAOmlIGUnetDHRUWcvkQP7F4S/preview'),
+        expanded: false,
+        details: {
+            year: '2014',
+            director: 'Spike Brandt, Tony Cervone',
+            stars: 'Kelly Stables, Vicki Lewis, Jim Cummings'
+        }
+    },
+    {
+        name: 'Tom and Jerry: The Magic Ring',
+        description: 'Jerry finds a magical ring that grants him extraordinary powers. Tom and Jerry must join forces to protect the ring from falling into the wrong hands.',
+        image: 'https://upload.wikimedia.org/wikipedia/en/0/0f/Tom_and_Jerry_The_Magic_Ring_DVD_cover.jpg',
+        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1IcFhi1dee6aySvteALAx1XAdgo7t1yWC/preview'),
+        expanded: false,
+        details: {
+            year: '2002',
+            director: 'James T. Walker',
+            stars: 'Jeff Bennett, Frank Welker, Charlie Schlatter'
+        }
+    },
+    {
+        name: 'Tom and Jerry: Spy Quest',
+        description: 'Tom and Jerry join forces with Jonny Quest and his team to stop an evil conspiracy. They must recover the secret device before it falls into the wrong hands.',
+        image: 'https://upload.wikimedia.org/wikipedia/en/e/e4/Tom%2Band%2Bjerry%2Bspy%2Bquest%2Bbox.jpg',
+        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/14sGOhn3wqd6ajIxsd-JDkeJuGKbcw5Q0/preview'),
+        expanded: false,
+        details: {
+            year: '2015',
+            director: 'Spike Brandt, Tony Cervone',
+            stars: 'Reese Hartwig, Arnie Pantoja, James Hong'
+        }
+    },
+    {
+        name: 'Tom and Jerry: The Fast and the Furry',
+        description: 'Tom and Jerry enter an extreme car race around the world. They face off against colorful competitors while evading a villainous plot.',
+        image: 'https://upload.wikimedia.org/wikipedia/en/3/30/Tom_and_Jerry_The_Fast_and_the_Furry_cover.jpg',
+        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1PdcvDmu1SbcdRK8tcVXeEtP352W9LwRk/preview'),
+        expanded: false,
+        details: {
+            year: '2005',
+            director: 'Bill Kopp',
+            stars: 'Charles Adler, Jeff Bennett, John DiMaggio'
+        }
+    },
+    {
+        name: 'Tom and Jerry Meet Sherlock Holmes',
+        description: 'Tom and Jerry work together with Sherlock Holmes to solve the mystery of a diamond theft in London.',
+        image: 'https://static.wikia.nocookie.net/tomandjerry/images/7/70/Tom_and_Jerry_Meet_Sherlock_Holmes-1-.jpg/',
+        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1sldfSQejLk1N2bXA0TUfzd55kZJRio6N/preview'),
+        expanded: false,
+        details: {
+            year: '2010',
+            director: 'Spike Brandt, Jeff Siergey',
+            stars: 'Michael York, Malcolm McDowell, John Rhys-Davies'
+        }
+    }
+];
+
+
+
+
+
+
+
+
+
+
 
 
 $scope.toggleDetails = function(movie) {
@@ -1628,42 +1828,52 @@ $document.on('keydown', function (event) {
 
         }]);
 
-app.directive('hammerSwipe', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            var hammer = new Hammer(document.body, {
-                swipeVelocityX: 0.6, // Adjust swipe velocity sensitivity
-                swipeVelocityY: 0.5,
-                swipe: {
-                    direction: Hammer.DIRECTION_HORIZONTAL // Only horizontal swipes
-                }
-            });
 
-            hammer.on('swipeleft', function () {
-                var nextSection = {
-                    'home': 'episodes',
-                    'episodes': 'movies',
-                    'movies': 'home'
-                }[scope.currentSection];
-                scope.$apply(function () {
-                    scope.showSection(nextSection);
-                });
-            });
-
-            hammer.on('swiperight', function () {
-                var previousSection = {
-                    'home': 'movies',
-                    'episodes': 'home',
-                    'movies': 'episodes'
-                }[scope.currentSection];
-                scope.$apply(function () {
-                    scope.showSection(previousSection);
-                });
-            });
+app.directive('hammerSwipe', function() {
+  return {
+    restrict: 'A',
+    link: function(scope, element) {
+      var hammer = new Hammer(document.body, {
+        swipeVelocityX: 0.6,
+        swipeVelocityY: 0.5,
+        swipe: {
+          direction: Hammer.DIRECTION_HORIZONTAL
         }
-    };
+      });
+
+      hammer.on('swipeleft', function(event) {
+        if (isSwipeWithinFanArtGallery(event)) {
+          // Exclude Hammer.js gestures when swiping within fan art gallery
+          return;
+        }
+        // Handle swipe left gesture
+        var nextSection = {'home': 'episodes', 'episodes': 'movies', 'movies': 'home'}[scope.currentSection];
+        scope.$apply(function() {
+          scope.showSection(nextSection);
+        });
+      });
+
+      hammer.on('swiperight', function(event) {
+        if (isSwipeWithinFanArtGallery(event)) {
+          // Exclude Hammer.js gestures when swiping within fan art gallery
+          return;
+        }
+        // Handle swipe right gesture
+		 var previousSection = {'home': 'movies', 'episodes': 'home', 'movies': 'episodes'}[scope.currentSection];
+        scope.$apply(function() {
+          scope.showSection(previousSection);
+        });
+      });
+    }
+  };
+
+  function isSwipeWithinFanArtGallery(event) {
+    var target = event.target;
+    return target.closest('.fan-art-gallery') !== null;
+  }
 });
+
+
 
 			   function refreshpage() {
 		window.scrollTo(0,0);
