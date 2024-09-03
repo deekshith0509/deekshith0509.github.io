@@ -1,510 +1,599 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="portfolioApp">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deekshith Bommarthi | Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Deekshith Bommarthi - Professional Portfolio</title>
     <style>
-        /* Base styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
-            scroll-behavior: smooth;
-        }
 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f2f5;
+    color: #333;
+    scroll-behavior: smooth;
+    line-height: 1.6;
+}
 
-        /* Header */
-        header {
-            background: linear-gradient(to right, #007bff, #3b7eff);
-            color: #fff;
-            padding: 100px 0;
-            text-align: center;
-            position: relative;
-        }
+/* Header Styling */
+header {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    padding: 1rem 2rem;
+    text-align: center;
+    
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideInDown 0.5s ease-in-out;
+}
 
-        header h1 {
-            font-size: 50px;
-            margin: 0 0 20px;
-        }
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
 
-        header p {
-            font-size: 20px;
-            margin-bottom: 40px;
-        }
+/* Navigation Styling */
+nav {
+    margin: 1rem 0;
+}
 
-        header nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-        }
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    animation: fadeIn 1s ease-in-out;
+}
 
-        header nav ul li {
-            margin: 0 20px;
-        }
+nav ul li {
+    margin: 0 1rem;
+}
 
-        header nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            transition: background 0.3s;
-        }
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.3s;
+    font-weight: 500;
+}
 
-        header nav ul li a:hover {
-            background: #0056b3;
-            border-radius: 5px;
-        }
+nav a.active, nav a:hover {
+    background: #fff;
+    color: #1e3c72;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-        /* About Section */
-        #about {
-            padding: 80px 0;
-            text-align: center;
-            background-color: #f8f9fa;
-        }
+/* Section Styling */
+section {
+    padding: 3rem 2rem;
+    margin: 1rem auto;
+    max-width: 1200px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    opacity: 1; /* Ensure sections are visible */
+    animation: fadeInUp 0.8s ease forwards;
+}
 
-        #about h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-        }
+/* Specific Section Styling */
+#about {
+    padding: 3rem 2rem;
+    background: #f9f9f9;
+}
 
-        #about p {
-            font-size: 20px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+#skills, #education {
+    padding: 2rem 1.5rem;
+    background-color: #f4f4f4;
+}
 
-        /* Skills Section */
-        #skills {
-            padding: 80px 0;
-            background-color: #fff;
-        }
+/* Section Titles */
+section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #1e3c72;
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+}
 
-        #skills h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
+/* Card and Animation Styles */
+.card, .project-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
+.card:hover, .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .skill {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
+.card img, .project-card img {
+    max-width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
 
-        .skill:hover {
-            transform: translateY(-5px);
-            background-color: #0056b3;
-        }
+.card img:hover, .project-card img:hover {
+    transform: scale(1.05);
+}
 
-        .skill h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+/* Skills and Projects Lists Styling */
+.skills-list, .projects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
 
-        .skill p {
-            font-size: 16px;
-            margin: 0;
-        }
+.skills-list div, .projects-list div {
+    flex: 1 1 calc(50% - 1rem);
+    background: #fafafa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
 
-        /* Projects Section */
-        #projects {
-            padding: 80px 0;
-            background-color: #f8f9fa;
-        }
+.skills-list div:hover, .projects-list div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        #projects h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
+.skills-list div {
+    flex: 1 1 calc(33% - 1rem);
+}
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
+.skills-list div h3, .projects-list div h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    color: #1e3c72;
+}
 
-        .project {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+.skills-list div p, .projects-list div p {
+    font-size: 1rem;
+    color: #666;
+}
 
-        .project:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+/* Footer Styling */
+footer {
+    background: #1e3c72;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.8s ease forwards;
+}
 
-        .project h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+footer p {
+    margin: 0;
+    font-size: 1rem;
+}
 
-        .project ul {
-            list-style: disc inside;
-            font-size: 16px;
-            margin: 0;
-            padding: 0;
-        }
+/* Contact Form Styling */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 1rem;
+}
 
-        .project ul li {
-            margin-bottom: 10px;
-        }
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: fadeInUp 0.8s ease forwards;
+}
 
-        .project .languages-used {
-            margin-top: 15px;
-            font-style: italic;
-            color: #666;
-        }
+input, textarea, button {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        /* Education Section */
-        #education {
-            padding: 80px 0;
-            background-color: #fff;
-        }
+input:focus, textarea:focus {
+    border-color: #1e3c72;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2);
+}
 
-        #education h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
+button {
+    background: #1e3c72;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.3s, transform 0.3s;
+}
 
-        .education-item {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
+button:hover {
+    background: #2a5298;
+    transform: scale(1.05);
+}
 
-        .education-item:hover {
-            transform: translateY(-5px);
-            background-color: #0056b3;
-        }
+.message {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
 
-        .education-item h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
 
-        .education-item p {
-            font-size: 16px;
-            margin: 0;
-        }
 
-        /* Work Experience Section */
-        #experience {
-            padding: 80px 0;
-            background-color: #f8f9fa;
-        }
+/* Project Cards Styling */
+.project-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        #experience h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .experience-item {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
+.project-card h3 {
+    font-size: 1.75rem;
+    margin-top: 0;
+    color: #1e3c72;
+    animation: fadeIn 1s ease-in-out;
+}
 
-        .experience-item:hover {
-            transform: translateY(-5px);
-            background-color: #0056b3;
-        }
+.project-card ul {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+    color: #666;
+}
 
-        .experience-item h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+.project-card ul li {
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 0.8s ease forwards;
+}
 
-        .experience-item p {
-            font-size: 16px;
-            margin: 0;
-        }
+.project-card p {
+    font-size: 1rem;
+    color: #666;
+}
 
-        /* Contact Section */
-        #contact {
-            padding: 80px 0;
-            text-align: center;
-            background-color: #fff;
-        }
+.project-card strong {
+    color: #1e3c72;
+}
 
-        #contact h2 {
-            font-size: 40px;
-            margin-bottom: 40px;
-        }
+/* Skills Section Styling */
+#skills {
+    padding: 2rem 1.5rem;
+    background-color: #f4f4f4;
+    animation: fadeIn 1s ease-in-out;
+}
 
-        #contact p {
-            font-size: 20px;
-            margin-bottom: 40px;
-        }
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
 
-        #contact form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+.skill-category {
+    flex: 1 1 calc(50% - 2rem);
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
 
-        #contact input[type="text"],
-        #contact input[type="email"],
-        #contact textarea {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+.skill-category h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    color: #1e3c72;
+}
 
-        #contact button {
-            padding: 15px 30px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
-        }
+.skill-category ul {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+    color: #666;
+}
 
-        #contact button:hover {
-            background-color: #0056b3;
-        }
+.skill-category ul li {
+    margin-bottom: 0.5rem;
+}
 
-        /* Footer */
-        footer {
-            background-color: #007bff;
-            color: #fff;
-            padding: 30px 0;
-            text-align: center;
-        }
+#education {
+    padding: 2rem 1.5rem;
+    background-color: #f4f4f4;
+    animation: fadeIn 1s ease-in-out;
+}
 
-        .social-icons {
-            margin-top: 20px;
-        }
+.education-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
 
-        .social-icons a {
-            color: #fff;
-            font-size: 24px;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
+.education-item {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
 
-        .social-icons a:hover {
-            color: #ccc;
-        }
+.education-item h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    color: #1e3c72;
+}
+
+.education-item p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 480px) {
+    nav {
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem; /* Adjusted gap for smaller screens */
+    }
+
+    nav ul li {
+        margin: 0;
+    }
+
+    nav a {
+        display: inline-block;
+        padding: 0.5rem; /* Reduced padding */
+        font-size: 0.9rem; /* Smaller font size */
+    }
+
+    .skills-list div, .projects-list div {
+        flex: 1 1 100%;
+        padding: 1rem; /* Reduced padding */
+        border-radius: 5px; /* Reduced border-radius */
+    }
+
+    .skill-category, .education-item {
+        flex: 1 1 100%;
+        padding: 1rem; /* Reduced padding */
+        border-radius: 5px; /* Reduced border-radius */
+		margin: -10px;
+    }
+
+    section {
+        padding: 2rem 1rem; /* Reduced padding */
+        margin: 0.5rem auto; /* Reduced margin */
+        border-radius: 5px; /* Reduced border-radius */
+    }
+	.education-item {
+		margin: -10px;
+		
+	
+	}
+}
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
-<body>
-    <!-- Header -->
+<body ng-controller="mainCtrl">
+
     <header>
-        <div class="container">
-            <h1>Deekshith Bommarthi</h1>
-            <p>B.Tech Computer Science Student | Linux Enthusiast | Python Developer | Cybersecurity Researcher</p>
-            <nav>
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h1>Deekshith Bommarthi</h1>
+        <nav>
+            <ul>
+                <li><a href="#about" ng-click="setActive('about')">About</a></li>
+                <li><a href="#skills" ng-click="setActive('skills')">Skills</a></li>
+                <li><a href="#projects" ng-click="setActive('projects')">Projects</a></li>
+                <li><a href="#education" ng-click="setActive('education')">Education</a></li>
+                <li><a href="#contact" ng-click="setActive('contact')">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- About Section -->
     <section id="about">
-        <div class="container">
-            <h2>About Me</h2>
-            <p>
-                Hello! I'm Deekshith Bommarthi, a passionate Computer Science student with a strong interest in Linux, Python development, and cybersecurity. My journey began with a curiosity for how things work, leading me to explore various aspects of technology, from programming to ethical hacking. I thrive on challenges and constantly seek opportunities to learn and grow in this ever-evolving field.
-            </p>
-        </div>
+        <h2>About Me</h2>
+        <p>Hello! I'm Deekshith Bommarthi, a passionate Computer Science student with a strong interest in Linux, Python development, and cybersecurity. My journey began with a curiosity for how things work, leading me to explore various aspects of technology, from programming to ethical hacking. I thrive on challenges and constantly seek opportunities to learn and grow in this ever-evolving field.</p>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="container">
-            <h2>Skills</h2>
-            <div class="skills-grid">
-                <div class="skill">
-                    <h3>Linux</h3>
-                    <p>Expertise in Linux system administration and shell scripting.</p>
-                </div>
-                <div class="skill">
-                    <h3>Python</h3>
-                    <p>Proficient in Python for automation, web development, and data analysis.</p>
-                </div>
-                <div class="skill">
-                    <h3>Cybersecurity</h3>
-                    <p>Knowledgeable in ethical hacking, penetration testing, and security protocols.</p>
-                </div>
-                <div class="skill">
-                    <h3>Web Development</h3>
-                    <p>Experience in building responsive websites using HTML, CSS, and JavaScript.</p>
-                </div>
-                <div class="skill">
-                    <h3>Machine Learning</h3>
-                    <p>Basic understanding of machine learning algorithms and data processing.</p>
-                </div>
-                <div class="skill">
-                    <h3>Git & GitHub</h3>
-                    <p>Version control and collaboration using Git and GitHub.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <h2>Projects</h2>
-            <div class="project-grid">
-                <div class="project">
-                    <h3>Portfolio and Misc</h3>
-                    <ul>
-                        <li>Designed and developed a sophisticated personal portfolio featuring a Ben 10 FanPage.</li>
-                        <li>Interactive Web Development: Used HTML5 and CSS3 with Flexbox and Grid, leading to a 30% increase in engagement.</li>
-                        <li>Client-Side Scripting: Interactive features using JavaScript and jQuery, which reduced page load times by 25%.</li>
-                        <li>Framework Integration: Applied Bootstrap and AngularJS for responsive and single-page application experiences, enhancing mobile usability by 90%.</li>
-                        <li>Performance Optimization: Applied minification and compression, decreasing load times by 50%.</li>
-                        <li>Version Control: Managed updates with Git and GitHub Pages, ensuring 100% deployment success.</li>
-                    </ul>
-                    <p class="languages-used">Languages Used: HTML5, CSS3, JavaScript, jQuery, Bootstrap, AngularJS, Git</p>
-                </div>
-                <div class="project">
-                    <h3>Telegram Bot Mini App and Quiz Features</h3>
-                    <ul>
-                        <li>Developed a Telegram bot with various features including weather updates, quizzes, and to-do lists.</li>
-                        <li>User Experience: Focused on creating an intuitive interface for seamless user interactions.</li>
-                        <li>Efficient Information: Ensured prompt and accurate responses to enhance user satisfaction and engagement.</li>
-                        <li>Adaptability: Integrated versatile features that adjust to various user needs and evolving requirements effectively.</li>
-                        <li>Real-Time Data: Integrated dynamic data handling to deliver relevant and timely information.</li>
-                        <li>Security: Implemented robust security measures to protect user data and maintain privacy and confidentiality.</li>
-                    </ul>
-                    <p class="languages-used">Languages Used: JavaScript, Node.js, Telegram Bot API, Axios, dotenv</p>
-                </div>
-                <div class="project">
-                    <h3>Flower Detection using CNN</h3>
-                    <ul>
-                        <li>Developed a CNN-based model for classifying flower species with key features.</li>
-                        <li>Model Training: Achieved 90% accuracy with a CNN trained on a diverse Kaggle dataset, using data augmentation.</li>
-                        <li>Interactive Chatbot: Integrated FlowerBot, increasing user interaction by 50%.</li>
-                        <li>Real-Time Deployment: Deployed using Streamlit, reducing image recognition time to under 2 seconds.</li>
-                        <li>Performance Metrics: Evaluated using accuracy, precision, and recall, improving model reliability by 15%.</li>
-                    </ul>
-                    <p class="languages-used">Languages Used: Python, TensorFlow, Keras, Streamlit</p>
-                </div>
-                <div class="project">
-                    <h3>Advanced Bash Scripts for Unix Systems</h3>
-                    <ul>
-                        <li>Developed advanced Bash scripts for Unix systems focusing on system automation and efficiency.</li>
-                        <li>System Automation: Automated updates and backups, reducing manual intervention by 60%.</li>
-                        <li>Efficiency Optimization: Enhanced script performance through efficient coding, achieving a 40% increase in speed.</li>
-                        <li>Custom Utilities: Created tools for weather checks, URL shortening, and encryption, with 100% user satisfaction.</li>
-                        <li>Error Handling: Implemented robust error handling and logging, reducing script failure rates by 70%.</li>
-                        <li>Deployment Instructions: Provided clear setup instructions, including PATH configuration in Termux.</li>
-                    </ul>
-                    <p class="languages-used">Languages Used: Bash, Termux Coding Profiles</p>
-                </div>
-            </div>
+<section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-container">
+        <!-- Core Skills -->
+        <div class="skill-category">
+            <h3>Core Skills</h3>
+            <ul>
+                <li><strong>Languages:</strong> Python, JavaScript, Bash, HTML5, CSS3</li>
+                <li><strong>Technologies:</strong> TensorFlow, Keras, Streamlit, Bootstrap, AngularJS, Git, GitHub Pages, Axios</li>
+                <li><strong>Core Competencies:</strong> Interactive Web Development, Machine Learning Model Development, System Automation, Performance Optimization, API Integration</li>
+                <li><strong>Soft Skills:</strong> Problem-Solving, Attention to Detail, Communication, Adaptability, Creativity</li>
+            </ul>
         </div>
-    </section>
 
-    <!-- Education Section -->
-    <section id="education">
-        <div class="container">
-            <h2>Education</h2>
-            <div class="education-item">
-                <h3>B.Tech in Computer Science</h3>
-                <p>Gokaraju Rangaraju Institute of Engineering and Technology | 2021 - 2025</p>
-                <p>Coursework: Data Structures, Algorithms, Operating Systems, Networks, Cybersecurity.</p>
-            </div>
-            <div class="education-item">
-                <h3>Intermediate</h3>
-                <p>Vishwa Chaitanya Junior College | 2019 - 2021</p>
-                <p>Specialized in Mathematics, Physics, and Chemistry.</p>
-            </div>
+        <!-- Coding Profiles -->
+        <div class="skill-category">
+            <h3>Coding Profiles</h3>
+            <ul>
+                <li><strong>Hackerrank:</strong> 21241A05Z4 (6 Star Rating)</li>
+                <li><strong>Leetcode:</strong> user5777yx (Rating: 1805, 400+ problems)</li>
+                <li><strong>Codechef:</strong> deekshith2124 (Rating: 1565)</li>
+                <li><strong>Interviewbit:</strong> deekshith-b_240 (Score: 24897+)</li>
+            </ul>
         </div>
-    </section>
 
-    <!-- Work Experience Section -->
-    <section id="experience">
-        <div class="container">
-            <h2>Work Experience</h2>
-            <div class="experience-item">
-                <h3>Cybersecurity Intern</h3>
-                <p>DEF Security Firm | Summer 2023</p>
-                <p>Assisted in penetration testing, vulnerability assessments, and security audits for various clients.</p>
-            </div>
-            <div class="experience-item">
-                <h3>Freelance Web Developer</h3>
-                <p>2022 - Present</p>
-                <p>Developed and maintained websites for small businesses and personal projects using modern web technologies.</p>
-            </div>
+        <!-- Certifications -->
+        <div class="skill-category">
+            <h3>Certifications</h3>
+            <ul>
+                <li>CyberSecurity - Specialization (Coursera)</li>
+                <li>Juniper Virtual Cloud Networking (Learning Portal)</li>
+                <li>Full Stack Web Development (Infosys SpringBoard)</li>
+                <li>Google Android Developer (AICTE)</li>
+                <li>Data Analytics with Python (NPTEL)</li>
+                <li>Data Science for Engineers (NPTEL)</li>
+                <li>AWS Data Engineering (AWS)</li>
+                <li>Full Stack Web Development (Infosys)</li>
+                <li>JNCIA Cloud (Juniper)</li>
+                <li>Blender Course Certificate (Spoken Tutorials)</li>
+                <li>DevNet</li>
+            </ul>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Contact Section -->
+
+
+
+
+<section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-list">
+        <!-- Portfolio and Misc -->
+        <div class="project-card">
+            <h3>Portfolio and Misc</h3>
+            <p><strong>Overview:</strong> Designed and developed a sophisticated personal portfolio featuring a Ben 10 FanPage. Key achievements include:</p>
+            <ul>
+                <li><strong>Interactive Web Development:</strong> Used HTML5 and CSS3 with Flexbox and Grid, leading to a 30% increase in engagement.</li>
+                <li><strong>Client-Side Scripting:</strong> Implemented interactive features using JavaScript and jQuery, reducing page load times by 25%.</li>
+                <li><strong>Framework Integration:</strong> Applied Bootstrap and AngularJS for responsive and single-page application experiences, enhancing mobile usability by 90%.</li>
+                <li><strong>Performance Optimization:</strong> Applied minification and compression techniques, decreasing load times by 50%.</li>
+                <li><strong>Version Control:</strong> Managed updates with Git and GitHub Pages, ensuring 100% deployment success.</li>
+            </ul>
+            <p><strong>Languages Used:</strong> HTML5, CSS3, JavaScript, jQuery, Bootstrap, AngularJS, Git</p>
+        </div>
+
+        <!-- Telegram Bot -->
+        <div class="project-card">
+            <h3>Telegram Bot (Secured Broadcasting Bot, Web Application Bot, Advanced File Forwarding Bot)</h3>
+            <p><strong>Overview:</strong> Developed a sophisticated Telegram bot with a focus on anonymous secret submissions, user interactions, and data security. Key functionalities include:</p>
+            <ul>
+                <li><strong>Anonymous Secrets:</strong> Allows users to submit secrets anonymously, which are encrypted and securely stored.</li>
+                <li><strong>Commenting and Liking:</strong> Users can dynamically comment on and like secrets, boosting participation.</li>
+                <li><strong>Secure Data Handling:</strong> Encrypts user data with Fernet to ensure privacy and confidentiality.</li>
+                <li><strong>Database Management:</strong> Manages secrets, comments, likes, and subscriptions with SQLite.</li>
+                <li><strong>Interactive Features:</strong> Provides commands to view, manage, and delete secrets from all devices.</li>
+            </ul>
+            <p><strong>Languages Used:</strong> Python, SQLite, Telegram Bot API, Cryptography</p>
+        </div>
+
+        <!-- Flower Detection using CNN -->
+        <div class="project-card">
+            <h3>Flower Detection using CNN</h3>
+            <p><strong>Overview:</strong> Developed a CNN-based model for classifying flower species with key features:</p>
+            <ul>
+                <li><strong>Model Training:</strong> Achieved 90% accuracy with a CNN trained on a diverse Kaggle dataset, using data augmentation.</li>
+                <li><strong>Interactive Chatbot:</strong> Integrated FlowerBot, increasing user interaction by 50%.</li>
+                <li><strong>Real-Time Deployment:</strong> Deployed using Streamlit, reducing image recognition time to under 2 seconds.</li>
+                <li><strong>Performance Metrics:</strong> Evaluated using accuracy, precision, and recall, improving model reliability by 15%.</li>
+            </ul>
+            <p><strong>Languages Used:</strong> Python, TensorFlow, Keras, Streamlit</p>
+        </div>
+
+        <!-- Advanced Bash Scripts for Unix Systems -->
+        <div class="project-card">
+            <h3>Advanced Bash Scripts for Unix Systems</h3>
+            <p><strong>Overview:</strong> Developed advanced Bash scripts for Unix systems focusing on system automation and efficiency:</p>
+            <ul>
+                <li><strong>System Automation:</strong> Automated updates and backups, reducing manual intervention by 60%.</li>
+                <li><strong>Efficiency Optimization:</strong> Enhanced script performance through efficient coding, achieving a 40% increase in speed.</li>
+                <li><strong>Custom Utilities:</strong> Created tools for weather checks, URL shortening, and encryption, with 100% user satisfaction.</li>
+                <li><strong>Error Handling:</strong> Implemented robust error handling and logging, reducing script failure rates by 70%.</li>
+                <li><strong>Deployment Instructions:</strong> Provided clear setup instructions, including PATH configuration in Termux.</li>
+            </ul>
+            <p><strong>Languages Used:</strong> Bash, Termux</p>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+<section id="education">
+    <h2>Education</h2>
+    <div class="education-container">
+        <div class="education-item">
+            <h3>Gokaraju Rangaraju Institute of Engineering and Technology, Hyderabad</h3>
+            <p><strong>B.Tech in Computer Science and Engineering</strong></p>
+            <p><strong>Duration:</strong> October 2021 - June 2025</p>
+            <p><strong>GPA:</strong> 7.8/10</p>
+        </div>
+        <div class="education-item">
+            <h3>Vishwa Chaitanya Junior College, Hyderabad</h3>
+            <p><strong>Intermediate Education - MPC</strong></p>
+            <p><strong>Duration:</strong> June 2019 - June 2021</p>
+            <p><strong>GPA:</strong> 9.78/10</p>
+        </div>
+    </div>
+</section>
+
+
     <section id="contact">
         <div class="container">
-            <h2>Contact Me</h2>
-            <p>If you have any questions or would like to collaborate on a project, feel free to reach out!</p>
-            <form id="contact-form">
+            <h2>Feedback Form</h2>
+            <form id="feedback-form">
                 <input type="text" name="name" placeholder="Your Name" required>
                 <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
+                <textarea name="feedback" placeholder="Your Feedback" rows="4" required></textarea>
+                <button type="submit">Submit Feedback</button>
             </form>
+            <div class="message" id="response-message"></div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Deekshith Bommarthi. All rights reserved.</p>
-        <div class="social-icons">
-            <a href="https://github.com/deekshith0509" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/deekshith-bommarthi/" target="_blank"><i class="fab fa-linkedin"></i></a>
-			
-        </div>
     </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Smooth scroll for navigation links
-            const navLinks = document.querySelectorAll('nav ul li a');
+            const navLinks = document.querySelectorAll('nav a');
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -513,31 +602,75 @@
                     const targetSection = document.getElementById(targetId);
 
                     window.scrollTo({
-                        top: targetSection.offsetTop - 60,
+                        top: targetSection.offsetTop - 0,
                         behavior: 'smooth'
                     });
+
+                    // Highlight active section
+                    navLinks.forEach(navLink => navLink.classList.remove('active'));
+                    this.classList.add('active');
                 });
             });
 
-            // Contact form validation
-            const contactForm = document.getElementById('contact-form');
+            // Feedback form validation and submission
+            const feedbackForm = document.getElementById('feedback-form');
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    validateAndSubmitFeedbackForm();
+                });
+            } else {
+                console.error('Feedback form not found.');
+            }
 
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = contactForm.name.value.trim();
-                const email = contactForm.email.value.trim();
-                const message = contactForm.message.value.trim();
+            // Function to validate and submit feedback form
+            function validateAndSubmitFeedbackForm() {
+                const name = feedbackForm.name.value.trim();
+                const email = feedbackForm.email.value.trim();
+                const feedback = feedbackForm.feedback.value.trim();
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                if (name === '' || email === '' || message === '') {
+                // Check if all fields are filled
+                if (name === '' || email === '' || feedback === '') {
                     alert('Please fill out all fields.');
                     return;
                 }
 
-                // Simulate form submission
-                alert('Thank you for your message!');
-                contactForm.reset();
-            });
+                // Check if the email format is correct
+                if (!emailPattern.test(email)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+
+                // If validation passes, submit the form
+                submitFeedbackForm();
+            }
+
+            // Function to submit feedback form
+            function submitFeedbackForm() {
+                const form = document.getElementById('feedback-form');
+                if (!form) {
+                    console.error('Feedback form element not found.');
+                    return;
+                }
+                const formData = new FormData(form);
+
+                fetch('https://script.google.com/macros/s/AKfycbzKwZy1cvVrkJ2EnYI9hmze3WxC8uDt1Zr3MaoPmpHNt0yJI_cRlgj6yumWC29wX40P/exec', { // Replace with your Google Apps Script web app URL
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    document.getElementById('response-message').textContent = 'Thank you for your feedback!';
+                    form.reset(); // Reset form fields
+                })
+                .catch(error => {
+                    document.getElementById('response-message').textContent = 'Oops! Something went wrong. Please try again.';
+                    console.error('Form submission error:', error);
+                });
+            }
         });
     </script>
+
 </body>
 </html>
