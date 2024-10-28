@@ -204,10 +204,9 @@ Prepare to be amazed as we unveil the extraordinary features awaiting you:
  You can clone my repo for personal use.These files are made by [me](https://github.com/deekshith0509/)
 
 ```bash
-    
-    pkg update && pkg upgrade -y
-    pkg install git
-    git clone https://github.com/deekshith0509/deekshith0509.github.io
+pkg update && pkg upgrade -y
+pkg install git
+git clone https://github.com/deekshith0509/deekshith0509.github.io
 ```
 
 
