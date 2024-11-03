@@ -56,7 +56,7 @@ font-family: 'Trirong', sans-serif;
 
 </h1>
 
-I'm a full stack developer...
+I'm an Application Developer...
 
 </h2>
 
