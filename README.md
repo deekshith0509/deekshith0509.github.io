@@ -167,7 +167,7 @@ Prepare to be amazed as we unveil the extraordinary features awaiting you:
  - ~~Initially,It uses direct instance of the html files to view the web-rendered HTML code.Refreshing the opened webpage will automatically redirects the user to the homepage.~~
 
  - ~~Harmonizing with Browser Policies: Navigate the intricacies of browser security policies as we optimize the music player for local enjoyment.~~
- - Due to the android browser's limitations since kitkat,its not possible to access entire directly using files applications which is the base case for web-kit-directory.
+ - Due to the android browser's limitations since kitkat,its not possible to access entire directory using files applications which is the base case for web-kit-directory.
  - Navigating Browser Boundaries: Journey through the labyrinth of browser limitations, overcoming obstacles to deliver seamless device info retrieval.
 </div>
 
