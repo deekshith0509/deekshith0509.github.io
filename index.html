@@ -616,6 +616,7 @@ div {
     setInterval(updateClock, 1000);
 	
 	
+
 const githubUsername = 'deekshith0509';
 const repositoryName = 'deekshith0509.github.io';
 
@@ -624,51 +625,63 @@ const nameElement = document.getElementById('name');
 fetch(`https://api.github.com/repos/${githubUsername}/${repositoryName}/contents`)
   .then(response => response.json())
   .then(contents => {
-    // Exclude README.md and index.html, then sort files alphabetically
-    const filteredContents = contents
-      .filter(item => item.type === 'file' && item.name.toLowerCase() !== 'readme.md' && item.name.toLowerCase() !== 'index.html')
-      .sort((a, b) => a.name.localeCompare(b.name));
+    // Exclude README.md and index.html
+    const filteredContents = contents.filter(item =>
+      item.type === 'file' &&
+      item.name.toLowerCase() !== 'readme.md' &&
+      item.name.toLowerCase() !== 'index.html'
+    );
 
-    const contentsList = document.getElementById('repository-contents');
-    filteredContents.forEach(item => {
-      const listItem = document.createElement('li');
+    // Wait for 4 seconds before sorting and displaying the files
+    setTimeout(() => {
+      // Sort files alphabetically after the delay
+      const sortedContents = filteredContents.sort((a, b) => a.name.localeCompare(b.name));
 
-      if (item.type === 'file') {
-        const fileLink = document.createElement('a');
-        fileLink.textContent = item.name.split('.').slice(0, -1).join('.');
+      const contentsList = document.getElementById('repository-contents');
+      
+      // Clear the existing contents to re-render them in sorted order
+      contentsList.innerHTML = '';
 
-        if (item.name.endsWith('.html')) {
-          // Fetch the file content to count lines
-          fetch(item.download_url)
-            .then(response => response.text())
-            .then(htmlContent => {
-              const lineCount = htmlContent.split('\n').length;
+      sortedContents.forEach(item => {
+        const listItem = document.createElement('li');
 
-              if (lineCount > 1500) {
-                // Use Blob if line count exceeds 1500
-                fileLink.onclick = () => openHtmlFileFromBlob(htmlContent);
-              } else {
-                // Use GitHub Pages URL if line count is 1500 or less
-                const githubPagesUrl = `https://${githubUsername}.github.io/${item.name}`;
-                fileLink.href = githubPagesUrl;
-                fileLink.target = '_blank';
-              }
+        if (item.type === 'file') {
+          const fileLink = document.createElement('a');
+          fileLink.textContent = item.name.split('.').slice(0, -1).join('.');
 
-              fileLink.classList.add('external-link');
-              listItem.appendChild(fileLink);
-              contentsList.appendChild(listItem);
-            })
-            .catch(error => console.error('Error fetching HTML file:', error));
-        } else {
-          // For other file types, provide a direct download link
-          fileLink.href = item.download_url;
-          fileLink.setAttribute('download', item.name);
-          fileLink.classList.add('external-link');
-          listItem.appendChild(fileLink);
-          contentsList.appendChild(listItem);
+          if (item.name.endsWith('.html')) {
+            // Fetch the file content to count lines
+            fetch(item.download_url)
+              .then(response => response.text())
+              .then(htmlContent => {
+                const lineCount = htmlContent.split('\n').length;
+
+                if (lineCount > 1500) {
+                  // Use Blob if line count exceeds 1500
+                  fileLink.onclick = () => openHtmlFileFromBlob(htmlContent);
+                } else {
+                  // Use GitHub Pages URL if line count is 1500 or less
+                  const githubPagesUrl = `https://${githubUsername}.github.io/${item.name}`;
+                  fileLink.href = githubPagesUrl;
+                  fileLink.target = '_blank';
+                }
+
+                fileLink.classList.add('external-link');
+                listItem.appendChild(fileLink);
+                contentsList.appendChild(listItem);
+              })
+              .catch(error => console.error('Error fetching HTML file:', error));
+          } else {
+            // For other file types, provide a direct download link
+            fileLink.href = item.download_url;
+            fileLink.setAttribute('download', item.name);
+            fileLink.classList.add('external-link');
+            listItem.appendChild(fileLink);
+            contentsList.appendChild(listItem);
+          }
         }
-      }
-    });
+      });
+    }, 2000); // Wait for 4 seconds before sorting and displaying the list
   })
   .catch(error => console.error('Error fetching repository contents:', error));
 
@@ -677,7 +690,6 @@ function openHtmlFileFromBlob(htmlContent) {
   const url = URL.createObjectURL(blob);
   window.open(url, '_blank');
 }
-
 
 
 
