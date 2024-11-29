@@ -505,14 +505,14 @@ audio::-webkit-media-controls-panel {
 			<li ng-click="showSection('videos')" ng-class="{ 'active': currentSection === 'videos' }">Videos (clips)</li>     
         </ul>
     </nav>
-    <div class="section" id="charactersSection">
+  <div class="section" id="charactersSection">
         <h2>Characters</h2>
         <div class="character-list">
             <div class="character" ng-repeat="character in characters" ng-click="toggleSubSection($index)">
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ character.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ character.image }}" alt="{{ character.name }}">
+                    <img data-src="{{ character.image }}" class="lazyload"  alt="{{ character.name }}">
                     <p>{{ character.bio }}</p>
                 </div></div>
             </div>
@@ -526,7 +526,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ alien.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ alien.image }}" alt="{{ alien.name }}">
+                   <img data-src="{{ alien.image }}" class="lazyload" alt="{{ alien.name }}">
                     <p>{{ alien.description }}</p>
                 </div></div>
             </div>
@@ -540,7 +540,7 @@ audio::-webkit-media-controls-panel {
             <div class="section1">
 			<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ place.name }}</h3>
             <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ place.image }}" alt="{{ place.name }}">
+                    <img data-src="{{ place.image }}" class="lazyload"  alt="{{ place.name }}">
                     <p>{{ place.description }}</p>
                 </div>
         </div></div>
@@ -554,7 +554,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ event.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }"><br>
-                    <img ng-src="{{ event.image }}" alt="{{ event.name }}">
+                    <img data-src="{{ event.image }}" class="lazyload"  alt="{{ event.name }}">
                     <p>{{ event.description }}</p>
                 </div>
             </div></div>
@@ -568,7 +568,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ battle.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ battle.image }}" alt="{{ battle.name }}">
+                    <img data-src="{{ battle.image }}" class="lazyload"  alt="{{ battle.name }}">
                     <p>{{ battle.description }}</p>
                 </div>
             </div></div>
@@ -581,7 +581,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
                     <h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ file.name }}</h3>
                     <div  class="sub-section" ng-class="{ 'active': activeFile === $index }">
-                        <img ng-src="{{ file.image }}" alt="{{ file.name }}">
+                        <img data-src="{{ file.image }}" class="lazyload"  alt="{{ file.name }}">
 						<div class="audio-container">
 						<audio controls id="audio-{{ $index }}">
                             <source ng-src="{{ file.src }}" type="audio/mpeg">
@@ -667,11 +667,72 @@ audio::-webkit-media-controls-panel {
     </div>
 </div>
 
-
-
 </div>
 
 <p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
+
+
+	<script>
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var images = document.querySelectorAll('img.lazyload');
+
+    var observer = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                var image = entry.target;
+                image.src = image.dataset.src; // Set the image source
+                image.classList.remove('lazyload'); // Remove lazyload class
+                observer.unobserve(image); // Stop observing the image
+            }
+        });
+    }, { rootMargin: '0px 0px 50px 0px' }); // Load image when it's within 50px of viewport
+
+    images.forEach(function(image) {
+        observer.observe(image);
+    });
+});
+
+// Intercepting and blocking all network requests using Fetch API
+
+(function() {
+    const originalFetch = window.fetch;
+    window.fetch = function() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Delay the actual fetch call by 3 seconds
+                originalFetch.apply(this, arguments)
+                    .then(resolve)
+                    .catch(reject);
+            }, 3000); // 3000 milliseconds = 3 seconds
+        });
+    };
+
+    const originalXHR = window.XMLHttpRequest;
+    window.XMLHttpRequest = function() {
+        const xhr = new originalXHR();
+        const originalOpen = xhr.open;
+
+        xhr.open = function(method, url) {
+            const originalOnReadyStateChange = xhr.onreadystatechange;
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 1) { // OPENED state
+                    setTimeout(() => {
+                        originalOnReadyStateChange && originalOnReadyStateChange.apply(xhr);
+                    }, 3000); // Delay the request for 3 seconds
+                }
+            };
+            originalOpen.apply(xhr, arguments);
+        };
+        
+        return xhr;
+    };
+})();
+
+
+</script>
     <script defer>
         angular.module('ben10FanWiki', [])
             .controller('MainController',['$scope', '$sce', function ($scope, $sce) {
