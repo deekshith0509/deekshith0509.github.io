@@ -505,30 +505,42 @@ audio::-webkit-media-controls-panel {
         }
     }
 </style>
+
 	<script>
+function processImagesWithThrottling(images, interval = 200) {
+   let index = 0;
+   
+   function loadNextImage() {
+       if (index >= images.length) return;
+       
+       const img = images[index];
+       let originalSrc = img.getAttribute('ng-src') || img.src;
+       
+       // Remove scale parameters
+       originalSrc = originalSrc.replace(/\/revision\/.*scale-to-width-down\/\d+/, '')
+                                .replace(/\/revision\/[^/]+\//, '/revision/latest/');
+       
+       const tempImg = new Image();
+       tempImg.onload = function() {
+           img.src = originalSrc;
+           index++;
+           setTimeout(loadNextImage, interval);
+       };
+       
+       tempImg.onerror = function() {
+           index++;
+           setTimeout(loadNextImage, interval);
+       };
+       
+       tempImg.src = originalSrc;
+   }
+   
+   loadNextImage();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    function fixWikiaImageUrls() {
-        const imageElements = document.querySelectorAll('img[ng-src]');
-        imageElements.forEach(img => {
-            let originalSrc = img.getAttribute('ng-src');
-            
-            // Remove scale-down parameters
-            originalSrc = originalSrc.replace(/\/revision\/.*scale-to-width-down\/\d+/, '');
-            
-            // Add full resolution parameters
-            if (originalSrc.includes('wikia.nocookie.net')) {
-                // Try to force original resolution
-                originalSrc = originalSrc.replace(/\/revision\/[^/]+\//, '/revision/latest/');
-            }
-            
-            img.setAttribute('src', originalSrc);
-            img.removeAttribute('ng-src');
-        });
-    }
-    
-    // Run immediately and after Angular potentially modifies DOM
-    fixWikiaImageUrls();
-    setTimeout(fixWikiaImageUrls, 1000);
+   const images = document.querySelectorAll('img[ng-src]');
+   processImagesWithThrottling(Array.from(images));
 });
 </script>
 </head>
