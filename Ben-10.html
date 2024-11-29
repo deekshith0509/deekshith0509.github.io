@@ -505,6 +505,32 @@ audio::-webkit-media-controls-panel {
         }
     }
 </style>
+	<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function fixWikiaImageUrls() {
+        const imageElements = document.querySelectorAll('img[ng-src]');
+        imageElements.forEach(img => {
+            let originalSrc = img.getAttribute('ng-src');
+            
+            // Remove scale-down parameters
+            originalSrc = originalSrc.replace(/\/revision\/.*scale-to-width-down\/\d+/, '');
+            
+            // Add full resolution parameters
+            if (originalSrc.includes('wikia.nocookie.net')) {
+                // Try to force original resolution
+                originalSrc = originalSrc.replace(/\/revision\/[^/]+\//, '/revision/latest/');
+            }
+            
+            img.setAttribute('src', originalSrc);
+            img.removeAttribute('ng-src');
+        });
+    }
+    
+    // Run immediately and after Angular potentially modifies DOM
+    fixWikiaImageUrls();
+    setTimeout(fixWikiaImageUrls, 1000);
+});
+</script>
 </head>
 <div id="banner">
     <img src="https://static.wikia.nocookie.net/ben10/images/7/7c/Ben10-background-static.png/revision/latest/scale-to-width-down/1000?cb=20180607174817" alt="Ben 10 Banner">
