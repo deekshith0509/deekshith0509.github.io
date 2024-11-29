@@ -473,8 +473,8 @@ audio::-webkit-media-controls-panel {
 	position: relative;
 	top: 20px;
 	font-size: 30px;
-    animation: glitch 4s; /* Apply the glowing animation */
-	margin-left: -20px !important;
+    <!-- animation: glitch 4s; /* Apply the glowing animation */ -->
+	<!-- margin-left: -20px !important; -->
 }
 
 .overlay-block {
@@ -488,6 +488,23 @@ audio::-webkit-media-controls-panel {
 }
 
     </style>
+	<style>
+    .placeholder {
+        background-color: #f0f0f0;
+        background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading-shimmer 1.5s infinite;
+    }
+
+    @keyframes loading-shimmer {
+        0% {
+            background-position: -200% 0;
+        }
+        100% {
+            background-position: 200% 0;
+        }
+    }
+</style>
 </head>
 <div id="banner">
     <img src="https://static.wikia.nocookie.net/ben10/images/7/7c/Ben10-background-static.png/revision/latest/scale-to-width-down/1000?cb=20180607174817" alt="Ben 10 Banner">
@@ -505,14 +522,19 @@ audio::-webkit-media-controls-panel {
 			<li ng-click="showSection('videos')" ng-class="{ 'active': currentSection === 'videos' }">Videos (clips)</li>     
         </ul>
     </nav>
-  <div class="section" id="charactersSection">
+    <div class="section" id="charactersSection">
         <h2>Characters</h2>
         <div class="character-list">
             <div class="character" ng-repeat="character in characters" ng-click="toggleSubSection($index)">
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ character.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img data-src="{{ character.image }}" class="lazyload"  alt="{{ character.name }}">
+                    <img ng-src="{{ character.image }}" 
+     loading="lazy" 
+     alt="{{ character.name }}"
+     ng-class="{'placeholder': !imageLoaded}"
+     ng-init="imageLoaded = false"
+     ng-load="imageLoaded = true">
                     <p>{{ character.bio }}</p>
                 </div></div>
             </div>
@@ -526,7 +548,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ alien.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                   <img data-src="{{ alien.image }}" class="lazyload" alt="{{ alien.name }}">
+                    <img ng-src="{{ alien.image }}" alt="{{ alien.name }}">
                     <p>{{ alien.description }}</p>
                 </div></div>
             </div>
@@ -540,7 +562,7 @@ audio::-webkit-media-controls-panel {
             <div class="section1">
 			<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ place.name }}</h3>
             <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img data-src="{{ place.image }}" class="lazyload"  alt="{{ place.name }}">
+                    <img ng-src="{{ place.image }}" alt="{{ place.name }}">
                     <p>{{ place.description }}</p>
                 </div>
         </div></div>
@@ -554,7 +576,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ event.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }"><br>
-                    <img data-src="{{ event.image }}" class="lazyload"  alt="{{ event.name }}">
+                    <img ng-src="{{ event.image }}" alt="{{ event.name }}">
                     <p>{{ event.description }}</p>
                 </div>
             </div></div>
@@ -568,7 +590,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ battle.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img data-src="{{ battle.image }}" class="lazyload"  alt="{{ battle.name }}">
+                    <img ng-src="{{ battle.image }}" alt="{{ battle.name }}">
                     <p>{{ battle.description }}</p>
                 </div>
             </div></div>
@@ -581,7 +603,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
                     <h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ file.name }}</h3>
                     <div  class="sub-section" ng-class="{ 'active': activeFile === $index }">
-                        <img data-src="{{ file.image }}" class="lazyload"  alt="{{ file.name }}">
+                        <img ng-src="{{ file.image }}" alt="{{ file.name }}">
 						<div class="audio-container">
 						<audio controls id="audio-{{ $index }}">
                             <source ng-src="{{ file.src }}" type="audio/mpeg">
@@ -667,72 +689,131 @@ audio::-webkit-media-controls-panel {
     </div>
 </div>
 
+
+
 </div>
+<script>
 
-<p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
+// Complete Angular Module Configuration
+angular.module('ben10FanWiki', [])
+    .config(['$sceDelegateProvider', function($sceDelegateProvider) {
+        // Whitelist iframe and video sources
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            'https://*.googlevideo.com/**',
+            'https://docs.google.com/**',
+            'https://drive.google.com/**'
+        ]);
+    }])
+    .controller('MainController', ['$scope', '$sce', '$timeout', function($scope, $sce, $timeout) {
+        // Trusted Source Function
+        $scope.trustSrc = function(src) {
+            return $sce.trustAsResourceUrl(src);
+        };
 
+        // Preload & Lazy Loading Strategy
+        $scope.loadImage = function(imageUrl) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(imageUrl);
+                img.onerror = reject;
+                img.src = imageUrl;
+            });
+        };
 
-	<script>
+        // Optimize Initial Loading
+        $scope.initializeData = function() {
+            // Preload critical images and content
+            const criticalImages = [
+                ...($scope.characters || []).map(c => c.image),
+                ...($scope.aliens || []).map(a => a.image)
+            ].filter(Boolean);
 
+            Promise.all(criticalImages.map($scope.loadImage))
+                .then(() => {
+                    // Mark initial content as ready
+                    $scope.$apply(() => {
+                        $scope.contentLoaded = true;
+                    });
+                });
+        };
 
-document.addEventListener("DOMContentLoaded", function() {
-    var images = document.querySelectorAll('img.lazyload');
-
-    var observer = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                var image = entry.target;
-                image.src = image.dataset.src; // Set the image source
-                image.classList.remove('lazyload'); // Remove lazyload class
-                observer.unobserve(image); // Stop observing the image
+        // Modify video and audio handling
+        $scope.safePlayMedia = function(mediaElement) {
+            if (mediaElement && mediaElement.play) {
+                mediaElement.play().catch(error => {
+                    console.warn('Autoplay prevented:', error);
+                });
             }
-        });
-    }, { rootMargin: '0px 0px 50px 0px' }); // Load image when it's within 50px of viewport
+        };
 
-    images.forEach(function(image) {
-        observer.observe(image);
-    });
+        // Enhanced Section Toggle
+        $scope.toggleSubSection = function(index) {
+            // Reset all other sections
+            $scope.activeCharacter = ($scope.activeCharacter === index) ? -1 : index;
+        };
+
+        // Initialize on controller load
+        $timeout($scope.initializeData, 0);
+    }]);
+
+// Critical CSS for Performance
+document.write(`
+<style>
+    body { 
+        visibility: hidden; 
+        opacity: 0; 
+        transition: opacity 0.3s ease-in-out; 
+    }
+    body.loaded { 
+        visibility: visible; 
+        opacity: 1; 
+    }
+    .placeholder {
+        background: #f0f0f0;
+        min-height: 200px;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+</style>
+`);
+
+// Performance & Loading Enhancement
+window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
 });
 
-// Intercepting and blocking all network requests using Fetch API
 
-(function() {
-    const originalFetch = window.fetch;
-    window.fetch = function() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                // Delay the actual fetch call by 3 seconds
-                originalFetch.apply(this, arguments)
-                    .then(resolve)
-                    .catch(reject);
-            }, 3000); // 3000 milliseconds = 3 seconds
-        });
+
+<script>
+// High-Quality Image Enhancement
+function enhanceImageQuality(imgElement) {
+    // Remove scale-down parameters from URL
+    let originalSrc = imgElement.src.replace(/\/revision\/.*scale-to-width-down\/\d+/, '');
+    
+    // Fallback mechanism
+    imgElement.onerror = function() {
+        this.src = originalSrc;
     };
 
-    const originalXHR = window.XMLHttpRequest;
-    window.XMLHttpRequest = function() {
-        const xhr = new originalXHR();
-        const originalOpen = xhr.open;
+    // Set image attributes
+    imgElement.setAttribute('loading', 'lazy');
+    imgElement.style.objectFit = 'contain';
+    imgElement.style.maxWidth = '100%';
+    imgElement.style.height = 'auto';
+}
 
-        xhr.open = function(method, url) {
-            const originalOnReadyStateChange = xhr.onreadystatechange;
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 1) { // OPENED state
-                    setTimeout(() => {
-                        originalOnReadyStateChange && originalOnReadyStateChange.apply(xhr);
-                    }, 3000); // Delay the request for 3 seconds
-                }
-            };
-            originalOpen.apply(xhr, arguments);
-        };
-        
-        return xhr;
-    };
-})();
-
-
+// Apply to all images after page load
+window.addEventListener('load', function() {
+    document.querySelectorAll('img').forEach(enhanceImageQuality);
+});
 </script>
+</script>
+<p id="message">Use ctrl+(first letter of the section) to switch between sections..</p>
     <script defer>
         angular.module('ben10FanWiki', [])
             .controller('MainController',['$scope', '$sce', function ($scope, $sce) {
