@@ -1,4 +1,3 @@
-    <script defer>
         angular.module('ben10FanWiki', [])
             .controller('MainController',['$scope', '$sce', function ($scope, $sce) {
 
@@ -1531,4 +1530,3 @@ $scope.keyDownHandler = function(event) {
 		document.body.style.overflowX = 'hidden';
 
 		
-    </script>
