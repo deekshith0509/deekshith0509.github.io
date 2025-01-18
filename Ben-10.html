@@ -668,7 +668,7 @@ audio::-webkit-media-controls-panel {
             <div class="sub-section" ng-class="{ 'active': activeClassicVideo === $index }">
                 <div class="video1">
                     <div ng-if="video.type === 'github'">
-                        <video controls ng-src="{{ video.src }}" class="video-player" id="classicVideo-{{$index}}"></video>
+                        <video ng-src="{{ video.src }}" class="video-player" id="classicVideo-{{$index}}"></video>
                     </div>
                 </div>
                 <div ng-if="video.type === 'iframe' && activeClassicVideo === $index">
@@ -689,7 +689,7 @@ audio::-webkit-media-controls-panel {
             <div class="sub-section" ng-class="{ 'active': activeAlienForceVideo === $index }">
                 <div class="video1">
                     <div ng-if="video.type === 'github'">
-                        <video controls ng-src="{{ video.src }}" class="video-player" id="alienforceVideo-{{$index}}"></video>
+                        <video ng-src="{{ video.src }}" class="video-player" id="alienforceVideo-{{$index}}"></video>
                     </div>
                 </div>
                 <div ng-if="video.type === 'iframe' && activeAlienForceVideo === $index">
@@ -711,7 +711,7 @@ audio::-webkit-media-controls-panel {
             <div class="sub-section" ng-class="{ 'active': activeUltimateAlienVideo === $index }">
                 <div class="video1">
                     <div ng-if="video.type === 'github'">
-                        <video controls ng-src="{{ video.src }}" class="video-player" id="ultimatealienVideo-{{$index}}"></video>
+                        <video ng-src="{{ video.src }}" class="video-player" id="ultimatealienVideo-{{$index}}"></video>
                     </div>
                 </div>
                 <div ng-if="video.type === 'iframe' && activeUltimateAlienVideo === $index">
