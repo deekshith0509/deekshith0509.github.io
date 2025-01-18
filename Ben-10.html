@@ -11,7 +11,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben 10 Fan Wiki BY Deekshith</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+
+
+<!-- <script defer> -->
+    <!-- document.addEventListener("DOMContentLoaded", function () { -->
+        <!-- const lazyImages = document.querySelectorAll('img.lazy'); -->
+        <!-- let currentIndex = 0; -->
+
+        <!-- // Function to load an image with a delay -->
+        <!-- function loadImageWithDelay() { -->
+            <!-- if (currentIndex < lazyImages.length) { -->
+                <!-- const img = lazyImages[currentIndex]; -->
+
+                <!-- // Load the image (assuming the actual image URL is stored in data-ng-src) -->
+                <!-- img.src = img.dataset.ng-src; -->
+                <!-- img.classList.remove('lazy'); // Mark the image as loaded by removing 'lazy' -->
+
+                <!-- // Increment the index to load the next image -->
+                <!-- currentIndex++; -->
+
+                <!-- // Schedule the next image load after a delay of 100ms -->
+                <!-- setTimeout(loadImageWithDelay, 100); // Set a delay of 100ms -->
+            <!-- } -->
+        <!-- } -->
+
+        <!-- // Start loading images progressively with delay -->
+        <!-- loadImageWithDelay(); -->
+    <!-- }); -->
+<!-- </script> -->
+
+
+
 <style>
+
+
+
 body {
     user-select: none;
     cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
@@ -511,7 +546,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ character.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ character.image }}" alt="{{ character.name }}">
+                    <img loading="lazy"ng-src="{{ character.image }}" alt="{{ character.name }}" loading = "lazy" >
                     <p>{{ character.bio }}</p>
                 </div></div>
             </div>
@@ -525,7 +560,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ alien.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ alien.image }}" alt="{{ alien.name }}">
+                    <img  loading="lazy" ng-src="{{ alien.image }}" alt="{{ alien.name }}">
                     <p>{{ alien.description }}</p>
                 </div></div>
             </div>
@@ -539,7 +574,7 @@ audio::-webkit-media-controls-panel {
             <div class="section1">
 			<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ place.name }}</h3>
             <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ place.image }}" alt="{{ place.name }}">
+                    <img loading="lazy"  ng-src="{{ place.image }}" alt="{{ place.name }}">
                     <p>{{ place.description }}</p>
                 </div>
         </div></div>
@@ -553,7 +588,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ event.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }"><br>
-                    <img ng-src="{{ event.image }}" alt="{{ event.name }}">
+                    <img  loading="lazy" ng-src="{{ event.image }}" alt="{{ event.name }}">
                     <p>{{ event.description }}</p>
                 </div>
             </div></div>
@@ -567,7 +602,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
 				<h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ battle.name }}</h3>
                 <div class="sub-section" ng-class="{ 'active': activeCharacter === $index }">
-                    <img ng-src="{{ battle.image }}" alt="{{ battle.name }}">
+                    <img  loading="lazy" ng-src="{{ battle.image }}" alt="{{ battle.name }}">
                     <p>{{ battle.description }}</p>
                 </div>
             </div></div>
@@ -580,7 +615,7 @@ audio::-webkit-media-controls-panel {
                 <div class="section1">
                     <h3 ng-class="{ 'larger-font': activeCharacter === $index }">{{ file.name }}</h3>
                     <div  class="sub-section" ng-class="{ 'active': activeFile === $index }">
-                        <img ng-src="{{ file.image }}" alt="{{ file.name }}">
+                        <img  loading="lazy" ng-src="{{ file.image }}" alt="{{ file.name }}">
 						<div class="audio-container">
 						<audio controls id="audio-{{ $index }}">
                             <source ng-src="{{ file.src }}" type="audio/mpeg">
@@ -614,7 +649,7 @@ audio::-webkit-media-controls-panel {
                     </div>
                 </div>
                 <div ng-if="video.type === 'iframe' && activeClassicVideo === $index">
-                    <iframe sandbox="allow-scripts allow-same-origin" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="classicIframe-{{$index}}"></iframe>
+					<iframe allow="autoplay; fullscreen; encrypted-media" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-presentation allow-forms"  referrerpolicy="no-referrer" loading="lazy" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="classicIframe-{{$index}}"></iframe>
                             <div class="overlay-block"></div>
 				</div>
                 <p>{{ video.description }}</p>
@@ -635,7 +670,7 @@ audio::-webkit-media-controls-panel {
                     </div>
                 </div>
                 <div ng-if="video.type === 'iframe' && activeAlienForceVideo === $index">
-                    <iframe sandbox="allow-scripts allow-same-origin" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="alienforceIframe-{{$index}}"></iframe>
+					<iframe allow="autoplay; fullscreen; encrypted-media" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-presentation allow-forms"  referrerpolicy="no-referrer" loading="lazy" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="alienforceIframe-{{$index}}"></iframe>
                             <div class="overlay-block"></div>
 				</div>
                 <p>{{ video.description }}</p>
@@ -656,8 +691,7 @@ audio::-webkit-media-controls-panel {
                     </div>
                 </div>
                 <div ng-if="video.type === 'iframe' && activeUltimateAlienVideo === $index">
-                    
-					<iframe sandbox="allow-scripts allow-same-origin" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="ultimatealienIframe-{{$index}}"></iframe>
+					<iframe allow="autoplay; fullscreen; encrypted-media" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-presentation allow-forms"  referrerpolicy="no-referrer" loading="lazy" ng-src="{{ trustSrc(video.src) }}" class="iframe-player" allowfullscreen id="ultimatealienIframe-{{$index}}"></iframe>
                             <div class="overlay-block"></div>
 				</div>
                 <p>{{ video.description }}</p>
@@ -2208,3 +2242,5 @@ $scope.keyDownHandler = function(event) {
 </body>
 
 </html>
+
+
