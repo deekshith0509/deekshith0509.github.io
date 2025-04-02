@@ -3,100 +3,362 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tic Tac Toe Game</title>
+<title>Tic Tac Toe Challenge</title>
 <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --primary-color: #ff4757;
+    --secondary-color: #5352ed;
+    --background-dark: #12181B;
+    --text-light: #ffffff;
+    --cell-hover: rgba(255, 255, 255, 0.2);
+    --win-highlight: #2ed573;
+  }
+
   body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #12181B;
-    color: white;
+    background: linear-gradient(135deg, var(--background-dark), #2c3e50);
+    color: var(--text-light);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
-    padding-top: 1px;
+    padding: 20px;
+    overflow-x: hidden;
+    transition: background 0.5s ease;
+  }
+
+  .game-container {
+    max-width: 500px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
   }
 
   .title {
-    font-family: 'Lobster', cursive;
+    font-family: 'Monoton', cursive;
     font-size: 40px;
-    margin-top: 10px;
+    margin-top: 0;
+    margin-bottom: 20px;
     text-align: center;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(255, 71, 87, 0.7);
+    animation: glow 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+    }
+    to {
+      text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+    }
   }
 
   .board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 4px;
-    margin-top: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    margin: 0 auto;
+    max-width: 350px;
+    aspect-ratio: 1/1;
     background-color: #333;
     border: 4px solid #fff;
-    border-radius: 8px;
-    padding: 4px;
-    position: relative; /* Relative position for absolute fireworks */
-    overflow: hidden; /* Hide overflowing fireworks */
+    border-radius: 10px;
+    padding: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 
   .cell {
-    width: 100px;
-    height: 100px;
-    border: 2px solid #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 48px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     position: relative;
+    overflow: hidden;
   }
 
   .cell:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--cell-hover);
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+
+  .cell.x-mark {
+    color: var(--primary-color);
+  }
+
+  .cell.o-mark {
+    color: var(--secondary-color);
+  }
+
+  .cell.winning {
+    background-color: var(--win-highlight);
+    color: #000 !important;
+    animation: pulse 0.6s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
   }
 
   .message {
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: bold;
     margin-top: 20px;
-    display: none;
+    min-height: 40px;
+    color: #feca57;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.5s ease;
+  }
+
+  .message.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .scoreboard {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 25px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .score-box {
     text-align: center;
-    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+
+  .player-score {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.3), rgba(255, 71, 87, 0.1));
+  }
+
+  .computer-score {
+    background: linear-gradient(135deg, rgba(83, 82, 237, 0.3), rgba(83, 82, 237, 0.1));
+  }
+
+  .score-box.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+
+  .score-label {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .score-value {
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .human-score {
+    color: var(--primary-color);
+  }
+
+  .computer-score {
+    color: var(--secondary-color);
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
     margin-top: 20px;
   }
-  
-  /* Firework Animation Keyframes */
+
+  .control-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(to right, #5c6bc0, #3f51b5);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .control-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .reset-button {
+    background: linear-gradient(to right, #ff9f43, #ff7f50);
+  }
+
+  .difficulty-selector {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .difficulty-option {
+    padding: 8px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .difficulty-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .difficulty-option.selected {
+    background: var(--secondary-color);
+    border-color: white;
+  }
+
+  /* Firework Animation */
   @keyframes fireworks {
-    0%, 50% {
-      transform: translateY(0) rotate(0);
+    0% {
+      transform: translate(0, 0);
+      width: 5px;
+      height: 5px;
+      opacity: 1;
     }
-    25% {
-      transform: translateY(-100px) rotate(45deg);
-    }
-    75% {
-      transform: translateY(-100px) rotate(-45deg);
+    100% {
+      transform: translate(var(--tx), var(--ty));
+      width: 0;
+      height: 0;
+      opacity: 0;
     }
   }
 
-  /* Firework Particle Styles */
   .firework {
     position: absolute;
-    width: 6px;
-    height: 6px;
-    background-color: #f39c12;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    animation: fireworks 0.6s linear infinite;
+    pointer-events: none;
+    animation: fireworks 0.8s ease-out forwards;
+  }
+
+  /* Move indicators */
+  .move-indicator {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: all 0.5s;
+  }
+
+  .move-indicator.active {
+    top: 10px;
+  }
+
+  .move-indicator .player-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    margin-left: 8px;
+  }
+
+  .move-indicator .x-icon {
+    background-color: var(--primary-color);
+  }
+
+  .move-indicator .o-icon {
+    background-color: var(--secondary-color);
+  }
+
+  /* Game statistics panel */
+  .game-stats {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  /* Responsive design */
+  @media (max-width: 600px) {
+    .game-container {
+      padding: 15px;
+    }
+
+    .title {
+      font-size: 32px;
+    }
+
+    .cell {
+      font-size: 36px;
+    }
+
+    .controls {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-button {
+      width: 100%;
+    }
   }
 </style>
 </head>
 <body>
 
-<div class="background">
-  <div class="title">Tic Tac Toe</div>
+<div class="game-container">
+  <h1 class="title"> Tic Tac Toe</h1>
+
+  <div class="move-indicator" id="moveIndicator">
+    Your move <span class="player-icon x-icon">X</span>
+  </div>
 
   <div id="board" class="board">
     <div id="0" class="cell"></div>
@@ -113,183 +375,450 @@
   <div id="message" class="message"></div>
 
   <div class="scoreboard">
-    <p>Human Score: <span id="humanScore">0</span></p>
-    <p>Computer Score: <span id="computerScore">0</span></p>
+    <div class="score-box player-score" id="playerScoreBox">
+      <div class="score-label">YOU</div>
+      <div class="score-value human-score" id="humanScore">0</div>
+    </div>
+    <div class="score-box computer-score" id="computerScoreBox">
+      <div class="score-label">CPU</div>
+      <div class="score-value computer-score" id="computerScore">0</div>
+    </div>
+  </div>
+
+  <div class="difficulty-selector">
+    <div class="difficulty-option" id="easyMode">Easy</div>
+    <div class="difficulty-option selected" id="mediumMode">Medium</div>
+    <div class="difficulty-option" id="hardMode">Impossible</div>
+  </div>
+
+  <div class="controls">
+    <button id="resetButton" class="control-button reset-button">Reset Game</button>
+    <button id="newGameButton" class="control-button">New Game</button>
+  </div>
+
+  <div class="game-stats">
+    <div class="stat-item">
+      <div class="stat-label">Games Played</div>
+      <div class="stat-value" id="gamesPlayed">0</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value" id="winRate">0%</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Streak</div>
+      <div class="stat-value" id="currentStreak">0</div>
+    </div>
   </div>
 </div>
 
 <script>
-const humanPlayer = 'X';
-const computerPlayer = 'O';
-let currentPlayer = humanPlayer;
-let humanScore = 0;
-let computerScore = 0;
+// Game Constants
+const PLAYER_HUMAN = 'X';
+const PLAYER_COMPUTER = 'O';
+const DIFFICULTY = {
+  EASY: 'easy',
+  MEDIUM: 'medium',
+  HARD: 'hard'
+};
 
+// Game State
+let gameState = {
+  currentPlayer: PLAYER_HUMAN,
+  difficulty: DIFFICULTY.MEDIUM,
+  board: Array(9).fill(''),
+  isGameActive: true,
+  humanScore: 0,
+  computerScore: 0,
+  gamesPlayed: 0,
+  gamesWon: 0,
+  currentStreak: 0,
+  winningCombination: null
+};
+
+// Winning Combinations
 const winningCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+  [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+  [0, 4, 8], [2, 4, 6]             // Diagonals
 ];
 
+// DOM Elements
 const cells = document.querySelectorAll('.cell');
-cells.forEach(cell => cell.addEventListener('click', handleClick));
+const messageElement = document.getElementById('message');
+const humanScoreElement = document.getElementById('humanScore');
+const computerScoreElement = document.getElementById('computerScore');
+const playerScoreBox = document.getElementById('playerScoreBox');
+const computerScoreBox = document.getElementById('computerScoreBox');
+const resetButton = document.getElementById('resetButton');
+const newGameButton = document.getElementById('newGameButton');
+const easyModeButton = document.getElementById('easyMode');
+const mediumModeButton = document.getElementById('mediumMode');
+const hardModeButton = document.getElementById('hardMode');
+const moveIndicator = document.getElementById('moveIndicator');
+const gamesPlayedElement = document.getElementById('gamesPlayed');
+const winRateElement = document.getElementById('winRate');
+const currentStreakElement = document.getElementById('currentStreak');
 
-function handleClick(event) {
-  const cell = event.target;
-  if (cell.textContent === '') {
-    cell.textContent = humanPlayer;
-    if (checkWin(humanPlayer)) {
-      showMessage('You win!');
-      humanScore++;
-      updateScoreboard();
-      celebrateWinner();
-      setTimeout(resetGame, 3000); // Reset after 3 seconds
-      return;
-    }
-    if (checkDraw()) {
-      showMessage('It\'s a draw!');
-      setTimeout(resetGame, 3000); // Reset after 3 seconds
-      return;
-    }
-    currentPlayer = computerPlayer;
-    const bestMove = getBestMove();
-    document.getElementById(bestMove).textContent = computerPlayer;
-    if (checkWin(computerPlayer)) {
-      showMessage('Computer wins!');
-      computerScore++;
-      updateScoreboard();
-      setTimeout(resetGame, 3000); // Reset after 3 seconds
-      return;
-    }
-    if (checkDraw()) {
-      showMessage('It\'s a draw!');
-      setTimeout(resetGame, 3000); // Reset after 3 seconds
-      return;
-    }
-    currentPlayer = humanPlayer;
-  }
-}
-
-function showMessage(message) {
-  const messageDiv = document.getElementById('message');
-  messageDiv.textContent = message;
-  messageDiv.style.display = 'block';
-}
-
-function checkWin(player) {
-  return winningCombinations.some(combination => {
-    return combination.every(index => {
-      return cells[index].textContent === player;
-    });
-  });
-}
-
-function checkDraw() {
-  return [...cells].every(cell => cell.textContent !== '');
-}
-
-function celebrateWinner() {
-  const board = document.getElementById('board');
-  const fireworksContainer = document.createElement('div');
-  fireworksContainer.style.position = 'absolute';
-  fireworksContainer.style.width = '100%';
-  fireworksContainer.style.height = '100%';
-  fireworksContainer.style.top = '0';
-  fireworksContainer.style.left = '0';
-  fireworksContainer.style.display = 'flex';
-  fireworksContainer.style.justifyContent = 'center';
-  fireworksContainer.style.alignItems = 'center';
-
-  for (let i = 0; i < 50; i++) {
-    const firework = document.createElement('div');
-    firework.classList.add('firework');
-    firework.style.top = `${Math.random() * 100}%`;
-    firework.style.left = `${Math.random() * 100}%`;
-    fireworksContainer.appendChild(firework);
-  }
-
-  board.appendChild(fireworksContainer);
-
-  setTimeout(() => {
-    fireworksContainer.remove();
-  }, 2000);
-}
-
-function resetGame() {
-  // Clear all cell contents
+// Initialize Game
+function initializeGame() {
   cells.forEach(cell => {
     cell.textContent = '';
+    cell.classList.remove('x-mark', 'o-mark', 'winning');
+    cell.addEventListener('click', handleCellClick);
   });
 
-  // Hide the message
-  const messageDiv = document.getElementById('message');
-  messageDiv.textContent = '';
-  messageDiv.style.display = 'none';
+  gameState.board = Array(9).fill('');
+  gameState.currentPlayer = PLAYER_HUMAN;
+  gameState.isGameActive = true;
+  gameState.winningCombination = null;
 
-  // Reset current player to humanPlayer
-  currentPlayer = humanPlayer;
+  updateMoveIndicator();
+  hideMessage();
+  updateScoreboard();
 }
 
-function minimax(board, depth, isMaximizingPlayer) {
-  if (checkWin(humanPlayer)) {
-    return -10 + depth;
-  } else if (checkWin(computerPlayer)) {
-    return 10 - depth;
-  } else if (checkDraw()) {
-    return 0;
+// Event Handlers
+function handleCellClick(event) {
+  const cell = event.target;
+  const cellIndex = parseInt(cell.id);
+
+  if (gameState.board[cellIndex] !== '' || !gameState.isGameActive) {
+    return;
   }
 
-  if (isMaximizingPlayer) {
-    let maxScore = -Infinity;
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i].textContent === '') {
-        cells[i].textContent = computerPlayer;
-        const score = minimax(board, depth + 1, false);
-        cells[i].textContent = '';
-        maxScore = Math.max(maxScore, score);
-      }
-    }
-    return maxScore;
-  } else {
-    let minScore = Infinity;
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i].textContent === '') {
-        cells[i].textContent = humanPlayer;
-        const score = minimax(board, depth + 1, true);
-        cells[i].textContent = '';
-        minScore = Math.min(minScore, score);
-      }
-    }
-    return minScore;
+  makeMove(cellIndex, PLAYER_HUMAN);
+
+  if (gameState.isGameActive) {
+    setTimeout(() => computerMove(), 500);
+  }
+}
+
+// Game Logic Functions
+function makeMove(cellIndex, player) {
+  gameState.board[cellIndex] = player;
+  updateCell(cellIndex, player);
+
+  if (checkWin(player)) {
+    endGame(player === PLAYER_HUMAN ? 'You win!' : 'Computer wins!', player);
+    return;
+  }
+
+  if (checkDraw()) {
+    endGame("It's a draw!");
+    return;
+  }
+
+  gameState.currentPlayer = player === PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+  updateMoveIndicator();
+}
+
+function computerMove() {
+  const cellIndex = getBestMove();
+  if (cellIndex !== -1) {
+    makeMove(cellIndex, PLAYER_COMPUTER);
   }
 }
 
 function getBestMove() {
+  switch (gameState.difficulty) {
+    case DIFFICULTY.EASY:
+      return getRandomMove();
+    case DIFFICULTY.MEDIUM:
+      return Math.random() < 0.5 ? getRandomMove() : getBestMoveMinMax();
+    case DIFFICULTY.HARD:
+      return getBestMoveMinMax();
+    default:
+      return getRandomMove();
+  }
+}
+
+function getRandomMove() {
+  const availableMoves = [];
+  for (let i = 0; i < gameState.board.length; i++) {
+    if (gameState.board[i] === '') {
+      availableMoves.push(i);
+    }
+  }
+
+  if (availableMoves.length === 0) {
+    return -1;
+  }
+
+  return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+}
+
+function getBestMoveMinMax() {
   let bestScore = -Infinity;
-  let bestMove;
-  for (let i = 0; i < cells.length; i++) {
-    if (cells[i].textContent === '') {
-      cells[i].textContent = computerPlayer;
-      const score = minimax(cells, 0, false);
-      cells[i].textContent = '';
+  let bestMove = -1;
+
+  for (let i = 0; i < gameState.board.length; i++) {
+    if (gameState.board[i] === '') {
+      gameState.board[i] = PLAYER_COMPUTER;
+      const score = minimax(gameState.board, 0, false);
+      gameState.board[i] = '';
+
       if (score > bestScore) {
         bestScore = score;
         bestMove = i;
       }
     }
   }
+
   return bestMove;
 }
 
-function updateScoreboard() {
-  document.getElementById('humanScore').textContent = humanScore;
-  document.getElementById('computerScore').textContent = computerScore;
+function minimax(board, depth, isMaximizing) {
+  // Check terminal states
+  if (checkWinningCondition(PLAYER_COMPUTER)) {
+    return 10 - depth;
+  }
+
+  if (checkWinningCondition(PLAYER_HUMAN)) {
+    return depth - 10;
+  }
+
+  if (isBoardFull()) {
+    return 0;
+  }
+
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === '') {
+        board[i] = PLAYER_COMPUTER;
+        const score = minimax(board, depth + 1, false);
+        board[i] = '';
+        bestScore = Math.max(bestScore, score);
+      }
+    }
+
+    return bestScore;
+  } else {
+    let bestScore = Infinity;
+
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === '') {
+        board[i] = PLAYER_HUMAN;
+        const score = minimax(board, depth + 1, true);
+        board[i] = '';
+        bestScore = Math.min(bestScore, score);
+      }
+    }
+
+    return bestScore;
+  }
 }
+
+// Game State Check Functions
+function checkWin(player) {
+  for (const combination of winningCombinations) {
+    if (
+      gameState.board[combination[0]] === player &&
+      gameState.board[combination[1]] === player &&
+      gameState.board[combination[2]] === player
+    ) {
+      gameState.winningCombination = combination;
+      highlightWinningCombination(combination);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function checkWinningCondition(player) {
+  for (const combination of winningCombinations) {
+    if (
+      gameState.board[combination[0]] === player &&
+      gameState.board[combination[1]] === player &&
+      gameState.board[combination[2]] === player
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function checkDraw() {
+  return isBoardFull();
+}
+
+function isBoardFull() {
+  return gameState.board.every(cell => cell !== '');
+}
+
+// UI Update Functions
+function updateCell(cellIndex, player) {
+  const cell = document.getElementById(cellIndex.toString());
+  cell.textContent = player;
+  cell.classList.add(player === PLAYER_HUMAN ? 'x-mark' : 'o-mark');
+
+  // Add a subtle scale animation
+  cell.animate([
+    { transform: 'scale(0.8)', opacity: 0.5 },
+    { transform: 'scale(1.1)', opacity: 1 },
+    { transform: 'scale(1)', opacity: 1 }
+  ], {
+    duration: 300,
+    easing: 'ease-out'
+  });
+}
+
+function highlightWinningCombination(combination) {
+  combination.forEach(index => {
+    document.getElementById(index.toString()).classList.add('winning');
+  });
+}
+
+function showMessage(msg) {
+  messageElement.textContent = msg;
+  messageElement.classList.add('show');
+}
+
+function hideMessage() {
+  messageElement.textContent = '';
+  messageElement.classList.remove('show');
+}
+
+function updateScoreboard() {
+  humanScoreElement.textContent = gameState.humanScore;
+  computerScoreElement.textContent = gameState.computerScore;
+  gamesPlayedElement.textContent = gameState.gamesPlayed;
+
+  const winRate = gameState.gamesPlayed > 0
+    ? Math.round((gameState.gamesWon / gameState.gamesPlayed) * 100)
+    : 0;
+  winRateElement.textContent = `${winRate}%`;
+
+  currentStreakElement.textContent = gameState.currentStreak;
+
+  // Active player indication
+  if (gameState.currentPlayer === PLAYER_HUMAN) {
+    playerScoreBox.classList.add('active');
+    computerScoreBox.classList.remove('active');
+  } else {
+    playerScoreBox.classList.remove('active');
+    computerScoreBox.classList.add('active');
+  }
+}
+
+function updateMoveIndicator() {
+  if (gameState.currentPlayer === PLAYER_HUMAN) {
+    moveIndicator.innerHTML = 'Your move <span class="player-icon x-icon">X</span>';
+  } else {
+    moveIndicator.innerHTML = 'Computer\'s move <span class="player-icon o-icon">O</span>';
+  }
+
+  moveIndicator.classList.add('active');
+}
+
+function endGame(message, winner = null) {
+  gameState.isGameActive = false;
+  showMessage(message);
+
+  if (winner === PLAYER_HUMAN) {
+    gameState.humanScore++;
+    gameState.gamesWon++;
+    gameState.currentStreak++;
+    createFireworks();
+  } else if (winner === PLAYER_COMPUTER) {
+    gameState.computerScore++;
+    gameState.currentStreak = 0;
+  } else {
+    // It's a draw
+  }
+
+  gameState.gamesPlayed++;
+  updateScoreboard();
+
+  // Hide move indicator
+  moveIndicator.classList.remove('active');
+}
+
+// Visual Effects
+function createFireworks() {
+  const board = document.getElementById('board');
+  const colors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#7bed9f', '#70a1ff'];
+
+  for (let i = 0; i < 50; i++) {
+    const firework = document.createElement('div');
+    firework.classList.add('firework');
+
+    // Random direction
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 50 + Math.random() * 150;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+
+    // Random color
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    firework.style.setProperty('--tx', `${tx}px`);
+    firework.style.setProperty('--ty', `${ty}px`);
+    firework.style.backgroundColor = color;
+
+    board.appendChild(firework);
+
+    // Remove after animation completes
+    setTimeout(() => {
+      firework.remove();
+    }, 800);
+  }
+}
+
+// Setup Difficulty Controls
+easyModeButton.addEventListener('click', () => {
+  setDifficulty(DIFFICULTY.EASY);
+});
+
+mediumModeButton.addEventListener('click', () => {
+  setDifficulty(DIFFICULTY.MEDIUM);
+});
+
+hardModeButton.addEventListener('click', () => {
+  setDifficulty(DIFFICULTY.HARD);
+});
+
+function setDifficulty(difficulty) {
+  gameState.difficulty = difficulty;
+
+  // Update UI
+  [easyModeButton, mediumModeButton, hardModeButton].forEach(button => {
+    button.classList.remove('selected');
+  });
+
+  switch (difficulty) {
+    case DIFFICULTY.EASY:
+      easyModeButton.classList.add('selected');
+      break;
+    case DIFFICULTY.MEDIUM:
+      mediumModeButton.classList.add('selected');
+      break;
+    case DIFFICULTY.HARD:
+      hardModeButton.classList.add('selected');
+      break;
+  }
+}
+
+// Setup Button Controls
+resetButton.addEventListener('click', () => {
+  initializeGame();
+});
+
+newGameButton.addEventListener('click', () => {
+  gameState.humanScore = 0;
+  gameState.computerScore = 0;
+  gameState.gamesPlayed = 0;
+  gameState.gamesWon = 0;
+  gameState.currentStreak = 0;
+  initializeGame();
+});
+
+// Initialize the game
+initializeGame();
 </script>
 
 </body>
