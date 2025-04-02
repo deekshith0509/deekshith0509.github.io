@@ -99,6 +99,18 @@
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
   }
 
+  /* Disabled state for cells */
+  .board.disabled .cell {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+
+  .board.disabled .cell:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: none;
+    box-shadow: none;
+  }
+
   .cell.x-mark {
     color: var(--primary-color);
   }
@@ -239,6 +251,40 @@
     border-color: white;
   }
 
+  /* Thinking indicator */
+  .thinking-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: none;
+    z-index: 10;
+  }
+
+  .thinking-indicator.active {
+    display: block;
+  }
+
+  .thinking-dots {
+    display: inline-block;
+  }
+
+  .thinking-dots::after {
+    content: '...';
+    animation: dots 1.5s steps(4, end) infinite;
+  }
+
+  @keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60% { content: '...'; }
+    80%, 100% { content: ''; }
+  }
+
   /* Firework Animation */
   @keyframes fireworks {
     0% {
@@ -354,7 +400,7 @@
 <body>
 
 <div class="game-container">
-  <h1 class="title"> Tic Tac Toe</h1>
+  <h1 class="title">Tic Tac Toe</h1>
 
   <div class="move-indicator" id="moveIndicator">
     Your move <span class="player-icon x-icon">X</span>
@@ -370,6 +416,9 @@
     <div id="6" class="cell"></div>
     <div id="7" class="cell"></div>
     <div id="8" class="cell"></div>
+    <div id="thinkingIndicator" class="thinking-indicator">
+      Computer thinking<span class="thinking-dots"></span>
+    </div>
   </div>
 
   <div id="message" class="message"></div>
@@ -433,7 +482,9 @@ let gameState = {
   gamesPlayed: 0,
   gamesWon: 0,
   currentStreak: 0,
-  winningCombination: null
+  winningCombination: null,
+  waitingForComputer: false,  // New flag to prevent multiple clicks
+  boardLocked: false          // Additional lockout for the whole board
 };
 
 // Winning Combinations
@@ -444,6 +495,7 @@ const winningCombinations = [
 ];
 
 // DOM Elements
+const boardElement = document.getElementById('board');
 const cells = document.querySelectorAll('.cell');
 const messageElement = document.getElementById('message');
 const humanScoreElement = document.getElementById('humanScore');
@@ -456,6 +508,7 @@ const easyModeButton = document.getElementById('easyMode');
 const mediumModeButton = document.getElementById('mediumMode');
 const hardModeButton = document.getElementById('hardMode');
 const moveIndicator = document.getElementById('moveIndicator');
+const thinkingIndicator = document.getElementById('thinkingIndicator');
 const gamesPlayedElement = document.getElementById('gamesPlayed');
 const winRateElement = document.getElementById('winRate');
 const currentStreakElement = document.getElementById('currentStreak');
@@ -472,6 +525,14 @@ function initializeGame() {
   gameState.currentPlayer = PLAYER_HUMAN;
   gameState.isGameActive = true;
   gameState.winningCombination = null;
+  gameState.waitingForComputer = false;
+  gameState.boardLocked = false;
+
+  // Make sure the board is enabled
+  boardElement.classList.remove('disabled');
+
+  // Hide the thinking indicator
+  thinkingIndicator.classList.remove('active');
 
   updateMoveIndicator();
   hideMessage();
@@ -483,15 +544,57 @@ function handleCellClick(event) {
   const cell = event.target;
   const cellIndex = parseInt(cell.id);
 
-  if (gameState.board[cellIndex] !== '' || !gameState.isGameActive) {
+  // Prevent moves if:
+  // 1. The cell is already filled
+  // 2. The game is over
+  // 3. We're waiting for the computer's move
+  // 4. The board is locked (computer's turn)
+  if (gameState.board[cellIndex] !== '' ||
+      !gameState.isGameActive ||
+      gameState.waitingForComputer ||
+      gameState.boardLocked) {
     return;
   }
 
   makeMove(cellIndex, PLAYER_HUMAN);
 
   if (gameState.isGameActive) {
-    setTimeout(() => computerMove(), 500);
+    // Lock the board immediately after player's move
+    lockBoard();
+
+    // Show the thinking indicator
+    thinkingIndicator.classList.add('active');
+
+    // Set the waiting flag
+    gameState.waitingForComputer = true;
+
+    // Schedule computer's move with a slight delay
+    setTimeout(() => {
+      computerMove();
+
+      // Hide the thinking indicator
+      thinkingIndicator.classList.remove('active');
+
+      // Reset the waiting flag
+      gameState.waitingForComputer = false;
+
+      // Unlock the board if the game is still active
+      if (gameState.isGameActive) {
+        unlockBoard();
+      }
+    }, 600);
   }
+}
+
+// Board locking functions
+function lockBoard() {
+  gameState.boardLocked = true;
+  boardElement.classList.add('disabled');
+}
+
+function unlockBoard() {
+  gameState.boardLocked = false;
+  boardElement.classList.remove('disabled');
 }
 
 // Game Logic Functions
@@ -717,6 +820,10 @@ function updateMoveIndicator() {
 
 function endGame(message, winner = null) {
   gameState.isGameActive = false;
+
+  // Lock the board permanently until reset
+  lockBoard();
+
   showMessage(message);
 
   if (winner === PLAYER_HUMAN) {
@@ -736,6 +843,9 @@ function endGame(message, winner = null) {
 
   // Hide move indicator
   moveIndicator.classList.remove('active');
+
+  // Hide thinking indicator if visible
+  thinkingIndicator.classList.remove('active');
 }
 
 // Visual Effects
