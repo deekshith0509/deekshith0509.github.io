@@ -1,61 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Intelligent Markdown Cross-Focus</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-        .input-container,
-        .output-container {
-            flex: 1;
-            padding: 10px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 200px;
-            font-size: 16px;
-            padding: 10px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-        }
-
-        #markdown-output {
-            border: 1px solid #ccc;
-            padding: 10px;
-            min-height: 200px;
-            overflow-y: auto;
-        }
-    </style>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  background: #f8fafc;
+}
+.header {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.container { display: flex; flex: 1; overflow: hidden; }
+#editor, #preview {
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  border: none;
+  outline: none;
+  padding: 20px;
+  resize: none;
+}
+#editor {
+  font-family: 'Menlo', monospace;
+  background: #fff;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #222;
+}
+#preview {
+  background: #fff;
+  border-left: 1px solid #ddd;
+  scroll-behavior: smooth;
+}
+#preview * {
+  transition: background 0.25s ease, transform 0.2s ease;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#preview h1,#preview h2,#preview h3,#preview h4,#preview h5,#preview h6,
+#preview p,#preview li,#preview blockquote,#preview pre,#preview table,#preview td,#preview th {
+  padding: 3px 6px;
+}
+.highlight {
+  background: #fef3c7 !important;
+  box-shadow: 0 0 0 2px #facc15;
+  transform: scale(1.02);
+}
+.status {
+  position: fixed;
+  bottom: 8px;
+  right: 12px;
+  background: rgba(102,126,234,0.9);
+  color: white;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  opacity: 0.9;
+}
+</style>
 </head>
-<body>
-    <div class="input-container">
-        <textarea id="markdown-input" placeholder="Enter Markdown..." oninput="renderMarkdown()"></textarea>
-    </div>
-    <div class="output-container">
-        <div id="markdown-output"></div>
-    </div>
 
-    <!-- Include marked.js before calling renderMarkdown() -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.1.3/marked.min.js"></script>
-    <script>
-        function renderMarkdown() {
-            var markdownInput = document.getElementById('markdown-input').value;
-            var markdownOutput = document.getElementById('markdown-output');
-            // Check if marked is loaded and available
-            if (typeof marked === 'function') {
-                markdownOutput.innerHTML = marked(markdownInput);
-            } else {
-                console.error('marked.js is not available or not loaded properly.');
-            }
-        }
-    </script>
+<body>
+<div class="header">🧭 Intelligent Markdown Cross-Focus Viewer</div>
+<div class="container">
+  <textarea id="editor"></textarea>
+  <div id="preview"></div>
+</div>
+<div id="status" class="status">Ready</div>
+
+<script>
+const editor = document.getElementById('editor');
+const preview = document.getElementById('preview');
+const status = document.getElementById('status');
+
+let blockMap = []; // [{start,end,element}]
+let isRendering = false;
+
+/** ---------- Rendering & Mapping Logic ---------- **/
+function renderMarkdown() {
+  isRendering = true;
+  const content = editor.value;
+  preview.innerHTML = marked.parse(content);
+  const lines = content.split('\n');
+  blockMap = [];
+
+  const elements = preview.querySelectorAll(
+    "h1,h2,h3,h4,h5,h6,p,li,pre,blockquote,table,tr,th,td,ul,ol"
+  );
+
+  // Determine markdown line-blocks
+  let blockIndex = 0;
+  for (const el of elements) {
+    const raw = el.textContent.trim();
+    if (!raw) continue;
+    let bestLine = findBestMatchingLine(lines, raw, blockIndex);
+    if (bestLine !== -1) {
+      blockMap.push({
+        start: bestLine,
+        end: findBlockEnd(lines, bestLine),
+        element: el
+      });
+      blockIndex = bestLine + 1;
+    }
+  }
+  attachInteractions();
+  isRendering = false;
+  showStatus(`Rendered ${blockMap.length} mapped elements`);
+}
+
+// Find the line index that best matches an element’s text
+function findBestMatchingLine(lines, text, startIndex = 0) {
+  const norm = normalize(text).slice(0, 25);
+  for (let i = startIndex; i < lines.length; i++) {
+    if (normalize(lines[i]).includes(norm)) return i;
+  }
+  return -1;
+}
+
+// For multi-line markdown blocks (like code/list/blockquote)
+function findBlockEnd(lines, start) {
+  let end = start;
+  const fences = lines[start].startsWith("```");
+  if (fences) {
+    for (let i = start + 1; i < lines.length; i++) {
+      if (lines[i].startsWith("```")) { end = i; break; }
+    }
+  } else if (/^(\s*[-*+]\s+)/.test(lines[start])) {
+    for (let i = start + 1; i < lines.length; i++) {
+      if (!/^(\s*[-*+]\s+)/.test(lines[i])) break;
+      end = i;
+    }
+  }
+  return end;
+}
+
+function normalize(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"");}
+
+/** ---------- Interactions & Scroll Sync ---------- **/
+function attachInteractions() {
+  preview.querySelectorAll("*").forEach(el => {
+    el.onclick = e => {
+      e.stopPropagation();
+      highlightElement(el);
+      const block = blockMap.find(b => b.element === el);
+      if (block) focusEditorBlock(block);
+    };
+  });
+}
+
+function highlightElement(el) {
+  preview.querySelectorAll('.highlight').forEach(x => x.classList.remove('highlight'));
+  el.classList.add('highlight');
+  setTimeout(() => el.classList.remove('highlight'), 1500);
+}
+
+function showStatus(msg){
+  status.textContent = msg;
+  clearTimeout(status._t);
+  status._t=setTimeout(()=>status.textContent="Ready",3000);
+}
+
+/** ---------- Adaptive Scroll Algorithms ---------- **/
+function smoothCenterScroll(container, targetRect, containerRect) {
+  const targetTop = targetRect.top - containerRect.top + container.scrollTop;
+  const offset = targetTop - container.clientHeight/2 + targetRect.height/2;
+  container.scrollTo({ top: offset, behavior: "smooth" });
+}
+
+/** Editor → Preview **/
+editor.addEventListener('click', () => {
+  if (isRendering) return;
+  const cursor = editor.selectionStart;
+  const before = editor.value.substring(0, cursor);
+  const line = before.split('\n').length - 1;
+
+  const block = blockMap.find(b => line >= b.start && line <= b.end);
+  if (block && block.element) {
+    const rect = block.element.getBoundingClientRect();
+    const crect = preview.getBoundingClientRect();
+    smoothCenterScroll(preview, rect, crect);
+    highlightElement(block.element);
+    showStatus(`Focused preview section (lines ${block.start+1}-${block.end+1})`);
+  }
+});
+
+/** Preview → Editor **/
+function focusEditorBlock(block) {
+  const lines = editor.value.split('\n');
+  let offsetStart = 0, offsetEnd = 0;
+  for (let i=0;i<block.start;i++) offsetStart += lines[i].length+1;
+  for (let i=0;i<=block.end;i++) offsetEnd += lines[i].length+1;
+  
+  const lineHeight = parseInt(getComputedStyle(editor).lineHeight) || 20;
+  const targetTop = block.start * lineHeight - (editor.clientHeight/2) + lineHeight;
+  editor.scrollTo({ top: Math.max(targetTop,0), behavior: 'smooth' });
+  editor.focus();
+  editor.setSelectionRange(offsetStart, offsetEnd);
+  showStatus(`Focused editor block (lines ${block.start+1}-${block.end+1})`);
+}
+
+/** ---------- Adaptive Behavior ---------- **/
+editor.addEventListener('input', () => renderMarkdown());
+window.addEventListener('resize', () => {
+  if (!isRendering) renderMarkdown();
+});
+
+/** ---------- Initialize ---------- **/
+editor.value = `---
+## 👨‍💼 About Me
+
+I’m **Deekshith Bommarthi**, a **Software Engineer (DSE)** at **Infosys Ltd.**, currently part of the **SAP NTS BTP Unit** in **Pocharam DC**. I’m passionate about solving real-world problems through automation, backend development, and cloud-native engineering.
+
+My journey started with **Python scripting and backend systems**, evolved through **web development with MERN**, and now expands into **DevOps, CI/CD, and containerization**.
+
+I believe in learning by building — and that mindset led me to create **20+ independent projects** exploring automation, distributed systems, and API design.
+
+I see myself as a **self-driven engineer**, continuously bridging the gap between software development and deployment — aiming to grow into a **Full-Stack + DevOps hybrid** professional.
+
+---
+
+### 🧾 Quick Facts
+
+* 💼 **Software Engineer (DSE)** – Infosys Ltd.
+* 🏢 **SAP NTS BTP Unit**, Pocharam DC
+* 🎓 **B.Tech CSE @ GRIET (2021–2025)** — *CGPA: 8.19 / 10*
+* 💡 Hands-on with **Python, MERN, Django, Docker (Learning), CI/CD Concepts**
+* ⚙️ Developed **20+ complete projects** end-to-end — from backend to UI
+* 🧠 **400+ LeetCode problems solved** (Top 10%)
+* 🚀 Exploring **Cloud-native integration** within SAP BTP context
+`;
+
+renderMarkdown();
+
+</script>
 </body>
 </html>
