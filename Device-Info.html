@@ -1,119 +1,1732 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Machine Information</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — Environment Diagnostics Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-0: #0a0a0b;
+    --bg-1: #111113;
+    --bg-2: #18181b;
+    --bg-3: #1f1f23;
+    --border: #27272a;
+    --border-strong: #3f3f46;
+    --text-0: #fafafa;
+    --text-1: #d4d4d8;
+    --text-2: #a1a1aa;
+    --text-3: #71717a;
+    --accent: #3b82f6;
+    --accent-dim: #1e3a8a;
+    --ok: #10b981;
+    --ok-dim: #064e3b;
+    --warn: #f59e0b;
+    --warn-dim: #78350f;
+    --err: #ef4444;
+    --err-dim: #7f1d1d;
+    --info: #06b6d4;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: var(--sans);
+    background: var(--bg-0);
+    color: var(--text-1);
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: 56px 1fr;
+    grid-template-areas: "topbar topbar" "sidebar main";
+    min-height: 100vh;
+  }
+
+  .topbar {
+    grid-area: topbar;
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 20px; gap: 16px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600;
+           color: var(--text-0); font-size: 14px; letter-spacing: -0.01em; }
+  .brand-mark {
+    width: 24px; height: 24px;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    border-radius: 6px; display: grid; place-items: center;
+    color: white; font-weight: 700; font-size: 12px;
+  }
+  .env-badge {
+    font-family: var(--mono); font-size: 10px; padding: 3px 8px;
+    background: var(--bg-3); border: 1px solid var(--border-strong);
+    color: var(--text-2); border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .topbar-spacer { flex: 1; }
+  .topbar-meta { display: flex; align-items: center; gap: 16px;
+                 font-size: 12px; color: var(--text-3); }
+  .topbar-meta strong { color: var(--text-1); font-weight: 500; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%;
+                background: var(--ok); box-shadow: 0 0 8px var(--ok);
+                animation: pulse 2s infinite; }
+  .status-dot.warn { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .topbar-actions { display: flex; gap: 6px; }
+
+  .sidebar {
+    grid-area: sidebar; background: var(--bg-1);
+    border-right: 1px solid var(--border); padding: 16px 0;
+    overflow-y: auto; position: sticky; top: 56px;
+    height: calc(100vh - 56px);
+  }
+  .nav-section { font-size: 10px; text-transform: uppercase;
+                 letter-spacing: 0.08em; color: var(--text-3);
+                 padding: 12px 20px 6px; font-weight: 600; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 20px; color: var(--text-2);
+    text-decoration: none; font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: all 0.12s; cursor: pointer;
+  }
+  .nav-item:hover { color: var(--text-0); background: var(--bg-2); }
+  .nav-item.active { color: var(--text-0); border-left-color: var(--accent);
+                     background: var(--bg-2); }
+  .nav-item svg { width: 14px; height: 14px; opacity: 0.7; flex-shrink: 0; }
+  .nav-item .count { margin-left: auto; font-family: var(--mono);
+                     font-size: 10px; color: var(--text-3);
+                     background: var(--bg-3); padding: 1px 6px; border-radius: 3px; }
+
+  .main { grid-area: main; padding: 24px 32px 64px; max-width: 1600px; }
+  .page-header { display: flex; align-items: flex-end; justify-content: space-between;
+                 margin-bottom: 24px; padding-bottom: 16px;
+                 border-bottom: 1px solid var(--border); }
+  .page-title { font-size: 20px; font-weight: 600; color: var(--text-0);
+                letter-spacing: -0.02em; }
+  .page-subtitle { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+  .filter-input {
+    background: var(--bg-2); border: 1px solid var(--border);
+    color: var(--text-0); padding: 7px 12px 7px 32px;
+    border-radius: 6px; font-family: var(--sans); font-size: 12px;
+    width: 260px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 10px center;
+    transition: border-color 0.15s;
+  }
+  .filter-input:focus { outline: none; border-color: var(--accent); }
+
+  /* Environment alert banner */
+  .env-alert {
+    background: var(--warn-dim);
+    border: 1px solid var(--warn);
+    color: var(--warn);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .env-alert svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .env-alert strong { color: #fbbf24; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr);
+             gap: 12px; margin-bottom: 24px; }
+  .kpi { background: var(--bg-1); border: 1px solid var(--border);
+         border-radius: 8px; padding: 16px;
+         position: relative; overflow: hidden; }
+  .kpi-label { font-size: 11px; color: var(--text-3);
+               text-transform: uppercase; letter-spacing: 0.05em;
+               font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .kpi-value { font-family: var(--mono); font-size: 24px;
+               font-weight: 600; color: var(--text-0);
+               margin-top: 6px; letter-spacing: -0.02em; }
+  .kpi-sub { font-size: 11px; color: var(--text-3);
+             margin-top: 4px; font-family: var(--mono); }
+  .kpi-trend { position: absolute; right: 16px; top: 16px;
+               font-size: 10px; padding: 2px 6px;
+               border-radius: 3px; font-family: var(--mono);
+               font-weight: 500; }
+  .kpi-trend.ok  { background: var(--ok-dim);   color: var(--ok); }
+  .kpi-trend.warn{ background: var(--warn-dim); color: var(--warn); }
+  .kpi-trend.err { background: var(--err-dim);  color: var(--err); }
+
+  .section { margin-bottom: 28px; scroll-margin-top: 72px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .section-header svg { width: 16px; height: 16px; color: var(--text-2); }
+  .section-title { font-size: 14px; font-weight: 600;
+                   color: var(--text-0); letter-spacing: -0.01em; }
+  .section-meta { margin-left: auto; font-family: var(--mono);
+                  font-size: 11px; color: var(--text-3); }
+
+  .panel { background: var(--bg-1); border: 1px solid var(--border);
+           border-radius: 8px; overflow: hidden; }
+  .panel-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-3);
+    font-size: 12px;
+    font-style: italic;
+  }
+  .data-grid { display: grid;
+               grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .data-row { padding: 12px 16px;
+              border-bottom: 1px solid var(--border);
+              border-right: 1px solid var(--border);
+              transition: background 0.1s; }
+  .data-row:hover { background: var(--bg-2); }
+  .data-row.hidden { display: none; }
+  .data-label { font-size: 11px; color: var(--text-3);
+                text-transform: uppercase; letter-spacing: 0.04em;
+                font-weight: 500; margin-bottom: 4px; }
+  .data-value { font-family: var(--mono); font-size: 13px;
+                color: var(--text-0); word-break: break-word; font-weight: 500; }
+  .data-value.muted   { color: var(--text-3); font-weight: 400; }
+  .data-value.ok      { color: var(--ok); }
+  .data-value.warn    { color: var(--warn); }
+  .data-value.err     { color: var(--err); }
+  .data-value.pending { color: var(--text-3); font-style: italic; }
+  .data-value.unavail { color: var(--text-3); font-size: 11px; font-style: italic; }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px;
+          padding: 2px 8px; border-radius: 10px;
+          font-size: 11px; font-family: var(--mono); font-weight: 500; }
+  .pill.ok      { background: var(--ok-dim);   color: var(--ok); }
+  .pill.warn    { background: var(--warn-dim); color: var(--warn); }
+  .pill.err     { background: var(--err-dim);  color: var(--err); }
+  .pill.neutral { background: var(--bg-3);     color: var(--text-2); }
+  .pill::before { content: ''; width: 6px; height: 6px;
+                  border-radius: 50%; background: currentColor; }
+
+  .btn { background: var(--bg-2); border: 1px solid var(--border-strong);
+         color: var(--text-0); padding: 6px 12px;
+         border-radius: 6px; font-family: var(--sans);
+         font-size: 12px; font-weight: 500; cursor: pointer;
+         display: inline-flex; align-items: center; gap: 6px;
+         transition: all 0.12s; }
+  .btn:hover { background: var(--bg-3); border-color: var(--text-3); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn.primary:hover { background: #2563eb; }
+  .btn svg { width: 13px; height: 13px; }
+
+  .chart-row { display: grid; grid-template-columns: 2fr 1fr;
+               gap: 12px; margin-top: 12px; }
+  .chart-panel { background: var(--bg-1); border: 1px solid var(--border);
+                 border-radius: 8px; padding: 16px; }
+  .chart-panel-title { font-size: 11px; color: var(--text-3);
+                       text-transform: uppercase; letter-spacing: 0.05em;
+                       font-weight: 500; margin-bottom: 12px; }
+  canvas.mini { max-height: 180px; }
+
+  /* Pure-CSS donut fallback for capability chart */
+  .donut-wrap {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    height: 180px;
+  }
+  .donut {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: conic-gradient(var(--accent) calc(var(--pct) * 1%),
+                               var(--bg-3) calc(var(--pct) * 1%));
+    position: relative;
+    display: grid; place-items: center;
+  }
+  .donut::after {
+    content: ''; position: absolute; inset: 16px;
+    background: var(--bg-1); border-radius: 50%;
+  }
+  .donut-center {
+    position: relative; z-index: 1;
+    font-family: var(--mono); font-weight: 600;
+    color: var(--text-0); font-size: 18px;
+  }
+  .donut-legend { font-size: 11px; color: var(--text-2);
+                  display: flex; flex-direction: column; gap: 6px; }
+  .donut-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .donut-legend span::before { content: ''; width: 10px; height: 10px;
+                               border-radius: 2px; background: var(--bg-3); }
+  .donut-legend span.ok::before { background: var(--accent); }
+
+  /* CSS sparkline fallback */
+  .sparkline-fallback {
+    color: var(--text-3); font-size: 12px;
+    padding: 40px 16px; text-align: center;
+  }
+  .sparkline-fallback strong { color: var(--text-1); }
+
+  .meter { background: var(--bg-3); height: 6px;
+           border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .meter > div { height: 100%; background: var(--accent); transition: width 0.4s; }
+
+  details { background: var(--bg-1); border: 1px solid var(--border);
+            border-radius: 8px; padding: 12px 16px; margin-top: 16px; }
+  details summary { cursor: pointer; color: var(--text-1);
+                    font-weight: 500; font-size: 13px; user-select: none; }
+  details summary::marker { color: var(--text-3); }
+  pre { margin-top: 12px; background: var(--bg-0);
+        padding: 16px; border-radius: 6px; overflow: auto;
+        font-family: var(--mono); font-size: 11px;
+        color: var(--text-1); max-height: 500px; line-height: 1.6; }
+
+  .row-flex { display: flex; align-items: center; gap: 8px; }
+  .text-mono { font-family: var(--mono); }
+
+  @media (max-width: 980px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "topbar" "main"; }
+    .sidebar { display: none; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .main { padding: 16px; }
+  }
+</style>
 </head>
 <body>
-    <h1>Machine Information</h1>
 
-    <div id="machineInfo">
-        <p><strong>User Agent:</strong> <span id="userAgent"></span></p>
-        <p><strong>Browser Language:</strong> <span id="browserLanguage"></span></p>
-        <p><strong>Screen Resolution:</strong> <span id="screenResolution"></span></p>
-        <p><strong>Cookies Enabled:</strong> <span id="cookiesEnabled"></span></p>
-        <p><strong>Local Storage:</strong> <span id="localStorageInfo"></span></p>
-        <p><strong>Operating System:</strong> <span id="operatingSystem"></span></p>
-        <p><strong>Platform:</strong> <span id="platform"></span></p>
-        <p><strong>Memory (RAM):</strong> <span id="memory"></span></p>
-        <p><strong>Processor:</strong> <span id="processor"></span></p>
-        <p><strong>Network Information:</strong></p>
-        <ul>
-            <li><strong>Connection Type:</strong> <span id="connectionType"></span></li>
-            <li><strong>Effective Network Type:</strong> <span id="effectiveNetworkType"></span></li>
-            <li><strong>Online Status:</strong> <span id="onlineStatus"></span></li>
-            <li><strong>IP Address:</strong> <span id="ipAddress"></span></li>
-            <li><strong>Location:</strong> <span id="location"></span></li>
-        </ul>
+<div class="app">
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">S</div>
+    Sentinel
+    <span style="color: var(--text-3); font-weight: 400;">/ Environment Diagnostics</span>
+  </div>
+  <span class="env-badge">v2.4.1 · client-side</span>
+
+  <div class="topbar-spacer"></div>
+
+  <div class="topbar-meta">
+    <span class="row-flex"><span class="status-dot" id="statusDot"></span><span id="statusLabel">All systems nominal</span></span>
+    <span>Scan: <strong id="scanTs">—</strong></span>
+    <span>Session: <strong id="sessId" class="text-mono">—</strong></span>
+  </div>
+
+  <div class="topbar-actions">
+    <button class="btn" id="rescan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+      Rescan
+    </button>
+    <button class="btn" id="downloadJson">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar">
+  <div class="nav-section">Overview</div>
+  <a class="nav-item active" href="#summary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Summary
+  </a>
+  <a class="nav-item" href="#identity">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Identity <span class="count" id="cntIdentity">0</span>
+  </a>
+
+  <div class="nav-section">System</div>
+  <a class="nav-item" href="#browser">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    Browser &amp; OS <span class="count" id="cntBrowser">0</span>
+  </a>
+  <a class="nav-item" href="#hardware">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+    Hardware <span class="count" id="cntHardware">0</span>
+  </a>
+  <a class="nav-item" href="#display">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+    Display <span class="count" id="cntDisplay">0</span>
+  </a>
+  <a class="nav-item" href="#gpu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+    Graphics <span class="count" id="cntGpu">0</span>
+  </a>
+  <a class="nav-item" href="#audio">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg>
+    Audio <span class="count" id="cntAudio">0</span>
+  </a>
+
+  <div class="nav-section">Capabilities</div>
+  <a class="nav-item" href="#caps">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    Web Platform <span class="count" id="cntCaps">0</span>
+  </a>
+  <a class="nav-item" href="#hwapi">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/></svg>
+    Hardware APIs <span class="count" id="cntApi">0</span>
+  </a>
+  <a class="nav-item" href="#codecs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+    Codecs <span class="count" id="cntCodec">0</span>
+  </a>
+  <a class="nav-item" href="#fonts">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/></svg>
+    Fonts <span class="count" id="cntFont">0</span>
+  </a>
+
+  <div class="nav-section">Security</div>
+  <a class="nav-item" href="#permissions">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/></svg>
+    Permissions <span class="count" id="cntPerm">0</span>
+  </a>
+  <a class="nav-item" href="#security">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Security <span class="count" id="cntSec">0</span>
+  </a>
+  <a class="nav-item" href="#storage">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/></svg>
+    Storage <span class="count" id="cntStorage">0</span>
+  </a>
+
+  <div class="nav-section">Network</div>
+  <a class="nav-item" href="#network">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+    Network <span class="count" id="cntNet">0</span>
+  </a>
+  <a class="nav-item" href="#media">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/></svg>
+    Media Devices <span class="count" id="cntMedia">0</span>
+  </a>
+
+  <div class="nav-section">Performance</div>
+  <a class="nav-item" href="#perf">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    Metrics <span class="count" id="cntPerf">0</span>
+  </a>
+  <a class="nav-item" href="#sensors">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6"/></svg>
+    Sensors <span class="count" id="cntSensor">0</span>
+  </a>
+  <a class="nav-item" href="#locale">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Locale &amp; Time <span class="count" id="cntLocale">0</span>
+  </a>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Environment Report</h1>
+      <p class="page-subtitle">Comprehensive client-side diagnostic scan. <span id="totalDataPoints" class="text-mono">0</span> data points collected.</p>
+    </div>
+    <input type="search" class="filter-input" id="search" placeholder="Filter metrics…">
+  </div>
+
+  <!-- Environment alerts injected here -->
+  <div id="alerts"></div>
+
+  <section class="section" id="summary">
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-label">Health Score</div>
+        <div class="kpi-value" id="kpiHealth">—</div>
+        <div class="kpi-sub" id="kpiHealthSub">Calculating…</div>
+        <div class="kpi-trend ok" id="kpiHealthBadge">OK</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Visitor ID</div>
+        <div class="kpi-value" id="kpiVisitor" style="font-size: 14px;">Computing…</div>
+        <div class="kpi-sub" id="kpiVisitorSub">Internal fingerprint</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Platform</div>
+        <div class="kpi-value" id="kpiPlatform" style="font-size: 16px;">—</div>
+        <div class="kpi-sub" id="kpiPlatformSub">—</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Capability Index</div>
+        <div class="kpi-value" id="kpiCaps">—</div>
+        <div class="kpi-sub" id="kpiCapsSub">— of — APIs</div>
+      </div>
     </div>
 
-    <script>
-        // Get user agent
-        document.getElementById('userAgent').textContent = navigator.userAgent;
+    <div class="chart-row">
+      <div class="chart-panel">
+        <div class="chart-panel-title">JS Heap Utilization (real-time)</div>
+        <div id="memChartContainer">
+          <canvas id="memChart" class="mini" style="display:none"></canvas>
+          <div id="memChartFallback" class="sparkline-fallback">
+            <strong>performance.memory</strong> is not exposed by this browser<br>
+            <span style="font-size:11px">Heap telemetry is available only in Chromium-based engines.</span>
+          </div>
+        </div>
+      </div>
+      <div class="chart-panel">
+        <div class="chart-panel-title">API Support Distribution</div>
+        <div class="donut-wrap">
+          <div class="donut" id="capDonut" style="--pct: 0">
+            <div class="donut-center" id="capDonutCenter">0%</div>
+          </div>
+          <div class="donut-legend">
+            <span class="ok"><span id="legSup">0</span> Supported</span>
+            <span><span id="legNo">0</span> Unsupported</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Get browser language
-        document.getElementById('browserLanguage').textContent = navigator.language || navigator.userLanguage;
+  <section class="section" id="identity">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="section-title">Visitor Identity</span>
+      <span class="section-meta" id="metaIdentity">—</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="identityGrid"></div></div>
+  </section>
 
-        // Get screen resolution
-        document.getElementById('screenResolution').textContent = `${screen.width}x${screen.height}`;
+  <section class="section" id="browser">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span class="section-title">Browser &amp; Operating System</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="browserGrid"></div></div>
+  </section>
 
-        // Check if cookies are enabled
-        document.getElementById('cookiesEnabled').textContent = navigator.cookieEnabled ? 'Yes' : 'No';
+  <section class="section" id="hardware">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+      <span class="section-title">Hardware &amp; Battery</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="hardwareGrid"></div></div>
+  </section>
 
-        // Check local storage availability
-        try {
-            if (typeof localStorage !== 'undefined') {
-                localStorage.setItem('storageTest', 'test');
-                localStorage.removeItem('storageTest');
-                document.getElementById('localStorageInfo').textContent = 'Supported';
-            } else {
-                document.getElementById('localStorageInfo').textContent = 'Not Supported';
-            }
-        } catch (e) {
-            document.getElementById('localStorageInfo').textContent = 'Error accessing local storage';
-        }
+  <section class="section" id="display">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+      <span class="section-title">Display &amp; Rendering Preferences</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="displayGrid"></div></div>
+  </section>
 
-        // Get operating system information
-        const osInfo = `${navigator.platform} ${navigator.appVersion}`;
-        document.getElementById('operatingSystem').textContent = osInfo;
+  <section class="section" id="gpu">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+      <span class="section-title">Graphics Subsystem</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="gpuGrid"></div></div>
+  </section>
 
-        // Get platform (desktop, mobile, etc.)
-        const platform = navigator.platform.toLowerCase();
-        document.getElementById('platform').textContent = platform;
+  <section class="section" id="audio">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg>
+      <span class="section-title">Audio Stack</span>
+      <button class="btn" id="testMic" style="margin-left:auto">Test Microphone</button>
+    </div>
+    <div class="panel"><div class="data-grid" id="audioGrid"></div></div>
+  </section>
 
-        // Get total memory (RAM) if available
-        const memoryInfo = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown';
-        document.getElementById('memory').textContent = memoryInfo;
+  <section class="section" id="media">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      <span class="section-title">Media Devices</span>
+      <button class="btn" id="enumDevices" style="margin-left:auto">Reveal Device Labels</button>
+    </div>
+    <div class="panel"><div class="data-grid" id="mediaGrid"></div></div>
+  </section>
 
-        // Get processor information if available
-        const processorInfo = navigator.cpuArchitecture || navigator.oscpu || 'Unknown';
-        document.getElementById('processor').textContent = processorInfo;
+  <section class="section" id="codecs">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/></svg>
+      <span class="section-title">Codec Support Matrix</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="codecGrid"></div></div>
+  </section>
 
-        // Check network information
-        const connectionType = navigator.connection ? navigator.connection.type : 'Unknown';
-        document.getElementById('connectionType').textContent = connectionType;
+  <section class="section" id="fonts">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/></svg>
+      <span class="section-title">Installed Fonts (detected via canvas)</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="fontGrid"></div></div>
+  </section>
 
-        const effectiveNetworkType = navigator.connection ? navigator.connection.effectiveType : 'Unknown';
-        document.getElementById('effectiveNetworkType').textContent = effectiveNetworkType;
+  <section class="section" id="caps">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span class="section-title">Web Platform Capabilities</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="capsGrid"></div></div>
+  </section>
 
-        const onlineStatus = navigator.onLine ? 'Online' : 'Offline';
-        document.getElementById('onlineStatus').textContent = onlineStatus;
+  <section class="section" id="hwapi">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/></svg>
+      <span class="section-title">Hardware Integration APIs</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="apiGrid"></div></div>
+  </section>
 
-        // Get public IP address using a third-party service
-        fetch('https://api64.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('ipAddress').textContent = data.ip || 'Not Available';
-            })
-            .catch(error => {
-                console.error('Error fetching IP address:', error);
-                document.getElementById('ipAddress').textContent = 'Not Available';
-            });
+  <section class="section" id="permissions">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/></svg>
+      <span class="section-title">Permission States</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="permGrid"></div></div>
+  </section>
 
-        // Get geolocation (requires user permission)
-        if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
+  <section class="section" id="security">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span class="section-title">Security Context</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="secGrid"></div></div>
+  </section>
 
-                // Fetch location name based on latitude and longitude using OpenCage Data API with your API key
-                fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=9d1c47ac7729497f91cafaeb3c7bc97b`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const location = data.results[0]?.formatted || 'Unknown';
-                        document.getElementById('location').textContent = location;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching location:', error);
-                        document.getElementById('location').textContent = 'Unknown';
-                    });
-            }, error => {
-                console.error('Error getting geolocation:', error);
-                document.getElementById('location').textContent = 'Geolocation not available';
-            });
-        } else {
-            document.getElementById('location').textContent = 'Geolocation not supported';
-        }
-    </script>
+  <section class="section" id="storage">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/></svg>
+      <span class="section-title">Persistent Storage</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="storageGrid"></div></div>
+  </section>
+
+  <section class="section" id="network">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      <span class="section-title">Network</span>
+      <div style="margin-left:auto; display: flex; gap: 6px;">
+        <button class="btn" id="getIp">Look up IP</button>
+        <button class="btn" id="getLocation">Geolocate</button>
+        <button class="btn" id="speedTest">Speed Test</button>
+      </div>
+    </div>
+    <div class="panel"><div class="data-grid" id="networkGrid"></div></div>
+  </section>
+
+  <section class="section" id="sensors">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>
+      <span class="section-title">Motion &amp; Orientation Sensors</span>
+      <button class="btn" id="activateSensors" style="margin-left:auto">Activate Sensors</button>
+    </div>
+    <div class="panel"><div class="data-grid" id="sensorGrid"></div></div>
+  </section>
+
+  <section class="section" id="locale">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="section-title">Locale &amp; Time</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="localeGrid"></div></div>
+  </section>
+
+  <section class="section" id="perf">
+    <div class="section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span class="section-title">Performance Metrics</span>
+    </div>
+    <div class="panel"><div class="data-grid" id="perfGrid"></div></div>
+  </section>
+
+  <details>
+    <summary>Raw JSON Report</summary>
+    <pre id="rawJson">Generating…</pre>
+  </details>
+
+</main>
+</div>
+
+<!-- Libraries: load with explicit fallback chain. defer ensures they finish before DOMContentLoaded handler -->
+<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.37/dist/ua-parser.min.js" defer onerror="window.__uaFailed=true"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer onerror="window.__chartFailed=true"></script>
+
+<script>
+/* Wait for libraries (or their failure) before running diagnostics. */
+window.addEventListener('DOMContentLoaded', () => {
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const report = {};
+const meta = {
+  startedAt: performance.now(),
+  scanTime: new Date(),
+  sessionId: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36)).split('-')[0],
+  capsSupported: 0,
+  capsTotal: 0,
+  isFileProto: window.location.protocol.startsWith('file'),
+  libsFailed: []
+};
+
+const COUNT_MAP = {
+  identityGrid:'cntIdentity', browserGrid:'cntBrowser', hardwareGrid:'cntHardware',
+  displayGrid:'cntDisplay', gpuGrid:'cntGpu', audioGrid:'cntAudio',
+  mediaGrid:'cntMedia', codecGrid:'cntCodec', fontGrid:'cntFont',
+  capsGrid:'cntCaps', apiGrid:'cntApi', permGrid:'cntPerm',
+  secGrid:'cntSec', storageGrid:'cntStorage', sensorGrid:'cntSensor',
+  networkGrid:'cntNet', localeGrid:'cntLocale', perfGrid:'cntPerf'
+};
+
+/* =========================================================
+   ENV ALERTS
+   ========================================================= */
+function pushAlert(msg, severity = 'warn') {
+  const div = document.createElement('div');
+  div.className = 'env-alert';
+  div.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <span>${msg}</span>`;
+  document.getElementById('alerts').appendChild(div);
+  document.getElementById('statusDot').classList.add('warn');
+  document.getElementById('statusLabel').textContent = 'Environment notices present';
+}
+
+if (meta.isFileProto) {
+  pushAlert('Running over <strong>file://</strong> protocol. Performance timings and remote lookups (IP, geolocation) are limited or disabled. Serve over HTTP(S) for full functionality.');
+}
+if (window.__uaFailed) { meta.libsFailed.push('ua-parser-js'); pushAlert('Library <strong>ua-parser-js</strong> failed to load — using native UA detection fallback.'); }
+if (window.__fpFailed) { meta.libsFailed.push('FingerprintJS'); pushAlert('Library <strong>FingerprintJS</strong> failed to load — using internal SHA-based fingerprint.'); }
+if (window.__chartFailed) { meta.libsFailed.push('Chart.js'); pushAlert('Library <strong>Chart.js</strong> failed to load — using CSS donut + sparkline fallbacks.'); }
+
+/* =========================================================
+   ROW RENDERER
+   ========================================================= */
+function row(gridId, label, value, level = null, variant = 'value') {
+  let v = value;
+  if (v === undefined || v === null || v === '') v = '—';
+  const isUnavail = v === 'Not supported' || v === 'Unknown' || v === '—' || v === 'Hidden';
+  const cls = isUnavail && !level ? 'muted' : (level || '');
+  let valueHtml;
+  if (variant === 'pill') {
+    valueHtml = `<span class="pill ${level || 'neutral'}">${v}</span>`;
+  } else {
+    valueHtml = `<div class="data-value ${cls}">${v}</div>`;
+  }
+  document.getElementById(gridId).insertAdjacentHTML('beforeend',
+    `<div class="data-row" data-label="${label.toLowerCase()}">
+       <div class="data-label">${label}</div>
+       ${valueHtml}
+     </div>`);
+  report[label] = v;
+  updateCount(gridId);
+}
+
+function updateCount(gridId) {
+  const el = document.getElementById(COUNT_MAP[gridId]);
+  if (el) el.textContent = document.getElementById(gridId).children.length;
+}
+
+/* =========================================================
+   NATIVE UA FALLBACK
+   ========================================================= */
+function detectNative() {
+  const u = navigator.userAgent;
+  let browser = 'Unknown', version = '', engine = 'Unknown', engineVer = '';
+  if (/Firefox\/([\d.]+)/.test(u)) { browser='Firefox'; version=RegExp.$1; engine='Gecko'; engineVer=(u.match(/rv:([\d.]+)/)||[])[1]||''; }
+  else if (/Edg\/([\d.]+)/.test(u)) { browser='Edge'; version=RegExp.$1; engine='Blink'; }
+  else if (/Chrome\/([\d.]+)/.test(u)) { browser='Chrome'; version=RegExp.$1; engine='Blink'; }
+  else if (/Version\/([\d.]+).*Safari/.test(u)) { browser='Safari'; version=RegExp.$1; engine='WebKit'; }
+
+  let os = 'Unknown', osVer = '';
+  if (/Windows NT 10/.test(u)) os = 'Windows 10/11';
+  else if (/Windows/.test(u)) os = 'Windows';
+  else if (/Mac OS X ([\d_]+)/.test(u)) { os = 'macOS'; osVer = RegExp.$1.replace(/_/g,'.'); }
+  else if (/Android ([\d.]+)/.test(u)) { os = 'Android'; osVer = RegExp.$1; }
+  else if (/iPhone OS ([\d_]+)/.test(u)) { os = 'iOS'; osVer = RegExp.$1.replace(/_/g,'.'); }
+  else if (/Linux/.test(u)) os = 'Linux';
+
+  let arch = 'Unknown';
+  if (/x86_64|x64|Win64|amd64/.test(u)) arch = 'amd64';
+  else if (/arm64|aarch64/.test(u)) arch = 'arm64';
+  else if (/i[3-6]86/.test(u)) arch = 'x86';
+
+  return { browser: { name: browser, version }, engine: { name: engine, version: engineVer },
+           os: { name: os, version: osVer }, cpu: { architecture: arch },
+           device: { type: /Mobi/.test(u) ? 'mobile' : 'desktop', vendor: '', model: '' } };
+}
+
+const ua = (typeof UAParser !== 'undefined') ? new UAParser().getResult() : detectNative();
+
+/* =========================================================
+   BROWSER & OS
+   ========================================================= */
+row('browserGrid', 'Browser', `${ua.browser.name || '?'} ${ua.browser.version || ''}`);
+row('browserGrid', 'Engine', `${ua.engine.name || '?'} ${ua.engine.version || ''}`);
+row('browserGrid', 'Operating System', `${ua.os.name || '?'} ${ua.os.version || ''}`);
+row('browserGrid', 'Device Type', ua.device.type || 'desktop');
+row('browserGrid', 'Device Vendor', ua.device.vendor || 'Not exposed');
+row('browserGrid', 'Device Model', ua.device.model || 'Not exposed');
+row('browserGrid', 'CPU Architecture', ua.cpu.architecture || 'Unknown');
+row('browserGrid', 'Platform', navigator.platform || 'Unknown');
+row('browserGrid', 'Vendor', navigator.vendor || 'Not exposed');
+row('browserGrid', 'Product', navigator.product || 'Unknown');
+row('browserGrid', 'App Version', navigator.appVersion || 'Unknown');
+row('browserGrid', 'User Agent', navigator.userAgent);
+row('browserGrid', 'Languages Count', (navigator.languages || []).length);
+row('browserGrid', 'PDF Viewer', navigator.pdfViewerEnabled ? 'Enabled' : 'Disabled',
+    navigator.pdfViewerEnabled ? 'ok' : null);
+row('browserGrid', 'Java Enabled (legacy)', navigator.javaEnabled?.() ? 'Yes' : 'No');
+
+if (navigator.userAgentData) {
+  navigator.userAgentData.getHighEntropyValues(
+    ['architecture','bitness','model','platformVersion','uaFullVersion','fullVersionList']
+  ).then(v => {
+    row('browserGrid', 'UA-CH Architecture', `${v.architecture} ${v.bitness}-bit`);
+    row('browserGrid', 'UA-CH Platform Ver.', v.platformVersion);
+    row('browserGrid', 'UA-CH Full Version', v.uaFullVersion);
+  }).catch(()=>{});
+} else {
+  row('browserGrid', 'UA Client Hints', 'Not supported (Firefox/Safari)');
+}
+
+/* =========================================================
+   HARDWARE
+   ========================================================= */
+row('hardwareGrid', 'CPU Threads', navigator.hardwareConcurrency || 'Unknown');
+row('hardwareGrid', 'Device Memory',
+  navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Not exposed (Firefox/Safari)');
+row('hardwareGrid', 'Max Touch Points', navigator.maxTouchPoints);
+row('hardwareGrid', 'Touch Events', 'ontouchstart' in window ? 'Yes' : 'No');
+row('hardwareGrid', 'Pointer Events', 'PointerEvent' in window ? 'Yes' : 'No',
+    'PointerEvent' in window ? 'ok' : null);
+row('hardwareGrid', 'OS CPU String', navigator.oscpu || 'Hidden');
+row('hardwareGrid', 'Build ID', navigator.buildID || 'Hidden');
+
+if (navigator.getBattery) {
+  navigator.getBattery().then(b => {
+    const level = Math.round(b.level * 100);
+    const lv = level > 50 ? 'ok' : level > 20 ? 'warn' : 'err';
+    row('hardwareGrid', 'Battery Level', level + '%', lv);
+    row('hardwareGrid', 'Charging', b.charging ? 'Yes' : 'No', b.charging ? 'ok' : null);
+    row('hardwareGrid', 'Charging Time',
+      b.chargingTime === Infinity ? 'N/A' : Math.round(b.chargingTime/60) + ' min');
+    row('hardwareGrid', 'Discharging Time',
+      b.dischargingTime === Infinity ? 'N/A' : Math.round(b.dischargingTime/60) + ' min');
+  }).catch(() => row('hardwareGrid', 'Battery API', 'Blocked by browser'));
+} else {
+  row('hardwareGrid', 'Battery API', 'Removed by Firefox (privacy)');
+}
+
+/* =========================================================
+   DISPLAY
+   ========================================================= */
+row('displayGrid', 'Screen Resolution', `${screen.width} × ${screen.height}`);
+row('displayGrid', 'Available Screen', `${screen.availWidth} × ${screen.availHeight}`);
+row('displayGrid', 'Viewport', `${window.innerWidth} × ${window.innerHeight}`);
+row('displayGrid', 'Document', `${document.documentElement.clientWidth} × ${document.documentElement.clientHeight}`);
+row('displayGrid', 'Color Depth', screen.colorDepth + '-bit');
+row('displayGrid', 'Pixel Depth', screen.pixelDepth + '-bit');
+row('displayGrid', 'Pixel Ratio', window.devicePixelRatio + 'x');
+row('displayGrid', 'Orientation', screen.orientation?.type || 'Unknown');
+row('displayGrid', 'Orientation Angle', (screen.orientation?.angle ?? 0) + '°');
+row('displayGrid', 'Color Scheme',
+  matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light');
+row('displayGrid', 'Contrast Preference',
+  matchMedia('(prefers-contrast: more)').matches ? 'More' :
+  matchMedia('(prefers-contrast: less)').matches ? 'Less' : 'No preference');
+row('displayGrid', 'Reduced Motion',
+  matchMedia('(prefers-reduced-motion: reduce)').matches ? 'Requested' : 'Standard');
+row('displayGrid', 'Reduced Transparency',
+  matchMedia('(prefers-reduced-transparency: reduce)').matches ? 'Requested' : 'Standard');
+row('displayGrid', 'Forced Colors',
+  matchMedia('(forced-colors: active)').matches ? 'Active' : 'None');
+row('displayGrid', 'HDR Range',
+  matchMedia('(dynamic-range: high)').matches ? 'High' : 'Standard');
+row('displayGrid', 'Hover Capable',
+  matchMedia('(hover: hover)').matches ? 'Yes' : 'No');
+row('displayGrid', 'Pointer Precision',
+  matchMedia('(pointer: fine)').matches ? 'Fine' :
+  matchMedia('(pointer: coarse)').matches ? 'Coarse' : 'None');
+row('displayGrid', 'Display Mode',
+  matchMedia('(display-mode: standalone)').matches ? 'Standalone (PWA)' :
+  matchMedia('(display-mode: fullscreen)').matches ? 'Fullscreen' : 'Browser');
+
+/* =========================================================
+   GPU
+   ========================================================= */
+try {
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+  if (gl) {
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    row('gpuGrid', 'GPU Vendor', dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR));
+    row('gpuGrid', 'GPU Renderer', dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+    row('gpuGrid', 'WebGL Version', gl.getParameter(gl.VERSION));
+    row('gpuGrid', 'Shading Language', gl.getParameter(gl.SHADING_LANGUAGE_VERSION));
+    row('gpuGrid', 'Max Texture Size', gl.getParameter(gl.MAX_TEXTURE_SIZE) + 'px');
+    row('gpuGrid', 'Max Viewport', gl.getParameter(gl.MAX_VIEWPORT_DIMS).join(' × '));
+    row('gpuGrid', 'Max Vertex Attribs', gl.getParameter(gl.MAX_VERTEX_ATTRIBS));
+    row('gpuGrid', 'Max Texture Units', gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+    row('gpuGrid', 'Antialiasing',
+        gl.getContextAttributes().antialias ? 'Enabled' : 'Disabled',
+        gl.getContextAttributes().antialias ? 'ok' : null);
+    row('gpuGrid', 'Extensions', gl.getSupportedExtensions().length);
+  } else { row('gpuGrid', 'WebGL', 'Not available', 'err'); }
+} catch (e) { row('gpuGrid', 'WebGL', 'Error: ' + e.message, 'err'); }
+
+if (navigator.gpu) {
+  navigator.gpu.requestAdapter().then(adapter => {
+    if (adapter) {
+      row('gpuGrid', 'WebGPU', 'Available', 'ok');
+      if (adapter.info) {
+        row('gpuGrid', 'WebGPU Vendor', adapter.info.vendor || 'Hidden');
+        row('gpuGrid', 'WebGPU Device', adapter.info.device || 'Hidden');
+      }
+    } else { row('gpuGrid', 'WebGPU', 'No adapter available', 'warn'); }
+  });
+} else { row('gpuGrid', 'WebGPU', 'Not supported in this browser'); }
+
+/* =========================================================
+   AUDIO
+   ========================================================= */
+try {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (AC) {
+    const ctx = new AC();
+    row('audioGrid', 'Audio Context', 'Available', 'ok');
+    row('audioGrid', 'Sample Rate', ctx.sampleRate + ' Hz');
+    row('audioGrid', 'Base Latency',
+      ctx.baseLatency !== undefined ? (ctx.baseLatency * 1000).toFixed(2) + ' ms' : 'Not exposed');
+    row('audioGrid', 'Output Latency',
+      ctx.outputLatency !== undefined ? (ctx.outputLatency * 1000).toFixed(2) + ' ms' : 'Not exposed');
+    row('audioGrid', 'Channels', ctx.destination.maxChannelCount);
+    row('audioGrid', 'State', ctx.state);
+    ctx.close();
+  }
+} catch (e) { row('audioGrid', 'Audio Context', 'Error', 'err'); }
+
+row('audioGrid', 'Text-to-Speech',
+  'speechSynthesis' in window ? 'Available' : 'Not supported',
+  'speechSynthesis' in window ? 'ok' : null);
+row('audioGrid', 'Speech Recognition',
+  ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) ? 'Available' : 'Not supported',
+  ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) ? 'ok' : null);
+row('audioGrid', 'Audio Worklet', window.AudioWorklet ? 'Available' : 'Not supported',
+    window.AudioWorklet ? 'ok' : null);
+
+if ('speechSynthesis' in window) {
+  const setVoices = () => {
+    const v = speechSynthesis.getVoices();
+    const ex = [...document.querySelectorAll('#audioGrid .data-row')]
+               .find(c => c.dataset.label === 'tts voices');
+    if (ex) ex.remove();
+    row('audioGrid', 'TTS Voices', v.length || 'Loading…');
+  };
+  speechSynthesis.onvoiceschanged = setVoices;
+  setVoices();
+}
+
+/* =========================================================
+   MEDIA DEVICES
+   ========================================================= */
+if (navigator.mediaDevices?.enumerateDevices) {
+  navigator.mediaDevices.enumerateDevices().then(devs => {
+    row('mediaGrid', 'Cameras', devs.filter(d=>d.kind==='videoinput').length);
+    row('mediaGrid', 'Microphones', devs.filter(d=>d.kind==='audioinput').length);
+    row('mediaGrid', 'Speakers', devs.filter(d=>d.kind==='audiooutput').length || 'Not exposed (Firefox)');
+  });
+}
+row('mediaGrid', 'getUserMedia',
+  navigator.mediaDevices?.getUserMedia ? 'Available' : 'Not supported',
+  navigator.mediaDevices?.getUserMedia ? 'ok' : null);
+row('mediaGrid', 'getDisplayMedia',
+  navigator.mediaDevices?.getDisplayMedia ? 'Available' : 'Not supported',
+  navigator.mediaDevices?.getDisplayMedia ? 'ok' : null);
+
+// Picture-in-Picture: multiple detection paths
+const pipSupport = document.pictureInPictureEnabled ||
+                   ('webkitSupportsPresentationMode' in HTMLVideoElement.prototype) ||
+                   ('requestPictureInPicture' in HTMLVideoElement.prototype);
+row('mediaGrid', 'Picture-in-Picture',
+  pipSupport ? 'Available' : 'Not enabled / supported',
+  pipSupport ? 'ok' : null);
+
+row('mediaGrid', 'MediaRecorder', 'MediaRecorder' in window ? 'Available' : 'Not supported',
+    'MediaRecorder' in window ? 'ok' : null);
+row('mediaGrid', 'MediaSession', 'mediaSession' in navigator ? 'Available' : 'Not supported',
+    'mediaSession' in navigator ? 'ok' : null);
+row('mediaGrid', 'MediaCapabilities',
+    'mediaCapabilities' in navigator ? 'Available' : 'Not supported',
+    'mediaCapabilities' in navigator ? 'ok' : null);
+
+/* =========================================================
+   CODECS
+   ========================================================= */
+(function scanCodecs() {
+  const video = document.createElement('video');
+  const audio = document.createElement('audio');
+  const videoCodecs = {
+    'H.264 (AVC)':  'video/mp4; codecs="avc1.42E01E"',
+    'H.265 (HEVC)': 'video/mp4; codecs="hev1.1.6.L93.B0"',
+    'VP8':          'video/webm; codecs="vp8"',
+    'VP9':          'video/webm; codecs="vp9"',
+    'AV1':          'video/mp4; codecs="av01.0.04M.08"',
+    'WebM':         'video/webm',
+    'Ogg Theora':   'video/ogg; codecs="theora"'
+  };
+  const audioCodecs = {
+    'AAC':    'audio/mp4; codecs="mp4a.40.2"',
+    'MP3':    'audio/mpeg',
+    'Opus':   'audio/webm; codecs="opus"',
+    'Vorbis': 'audio/webm; codecs="vorbis"',
+    'FLAC':   'audio/flac',
+    'WAV':    'audio/wav; codecs="1"'
+  };
+  Object.entries(videoCodecs).forEach(([k,v]) => {
+    const r = video.canPlayType(v);
+    row('codecGrid', 'Video · ' + k,
+      r === 'probably' ? 'Probably' : r === 'maybe' ? 'Maybe' : 'No',
+      r === 'probably' ? 'ok' : r === 'maybe' ? 'warn' : 'err',
+      'pill');
+  });
+  Object.entries(audioCodecs).forEach(([k,v]) => {
+    const r = audio.canPlayType(v);
+    row('codecGrid', 'Audio · ' + k,
+      r === 'probably' ? 'Probably' : r === 'maybe' ? 'Maybe' : 'No',
+      r === 'probably' ? 'ok' : r === 'maybe' ? 'warn' : 'err',
+      'pill');
+  });
+})();
+
+/* =========================================================
+   FONTS
+   ========================================================= */
+(function scanFonts() {
+  const testFonts = ['Arial','Helvetica','Times New Roman','Courier New','Verdana',
+    'Georgia','Palatino','Garamond','Comic Sans MS','Trebuchet MS','Arial Black',
+    'Impact','Tahoma','Calibri','Cambria','Consolas','Segoe UI','Roboto','Open Sans',
+    'San Francisco','Menlo','Monaco','Lucida Console','SF Pro','Inter','Ubuntu',
+    'Cantarell','DejaVu Sans','Liberation Sans','Noto Sans','Source Sans Pro',
+    'PT Sans','Fira Sans','IBM Plex Sans','Helvetica Neue','Avenir','Optima',
+    'Futura','Gill Sans','Baskerville'];
+  const baseFonts = ['monospace','sans-serif','serif'];
+  const testString = 'mmmmmmmmmmlli';
+  const canvas = document.createElement('canvas');
+  const c = canvas.getContext('2d');
+  const baseWidths = {};
+  baseFonts.forEach(b => { c.font = `72px ${b}`; baseWidths[b] = c.measureText(testString).width; });
+  const installed = [];
+  testFonts.forEach(f => {
+    for (const b of baseFonts) {
+      c.font = `72px "${f}", ${b}`;
+      if (c.measureText(testString).width !== baseWidths[b]) { installed.push(f); break; }
+    }
+  });
+  row('fontGrid', 'Total Detected', `${installed.length} of ${testFonts.length}`, 'ok');
+  installed.forEach(f => row('fontGrid', f, 'Installed', 'ok', 'pill'));
+})();
+
+/* =========================================================
+   CAPABILITIES — semantic labels
+   ========================================================= */
+/* "Setting" group → Enabled/Disabled label */
+const SETTINGS = [
+  ['Cookies', navigator.cookieEnabled, 'Enabled', 'Disabled'],
+  ['Do Not Track', navigator.doNotTrack === '1', 'Enabled', 'Off'],
+  ['Global Privacy Control', !!navigator.globalPrivacyControl, 'Enabled', 'Off']
+];
+SETTINGS.forEach(([k,v,on,off]) => row('capsGrid', k, v ? on : off, v ? 'ok' : 'warn', 'pill'));
+
+/* "API" group → Supported/Not supported */
+const CAPS = [
+  ['Local Storage', typeof localStorage !== 'undefined'],
+  ['Session Storage', typeof sessionStorage !== 'undefined'],
+  ['IndexedDB', 'indexedDB' in window],
+  ['Cache API', 'caches' in window],
+  ['Service Workers', 'serviceWorker' in navigator],
+  ['Web Workers', typeof Worker !== 'undefined'],
+  ['Shared Workers', typeof SharedWorker !== 'undefined'],
+  ['WebAssembly', typeof WebAssembly === 'object'],
+  ['WebSockets', 'WebSocket' in window],
+  ['WebRTC', 'RTCPeerConnection' in window],
+  ['WebTransport', 'WebTransport' in window],
+  ['WebCodecs', 'VideoEncoder' in window],
+  ['WebXR', 'xr' in navigator],
+  ['Web Share', 'share' in navigator],
+  ['WebAuthn', 'credentials' in navigator && 'PublicKeyCredential' in window],
+  ['Payment Request', 'PaymentRequest' in window],
+  ['Push Notifications', 'PushManager' in window],
+  ['Notifications', 'Notification' in window],
+  ['Clipboard API', !!navigator.clipboard],
+  ['BroadcastChannel', 'BroadcastChannel' in window],
+  ['Background Sync', 'serviceWorker' in navigator && 'SyncManager' in window],
+  ['Wake Lock', 'wakeLock' in navigator],
+  ['Intersection Observer', 'IntersectionObserver' in window],
+  ['Resize Observer', 'ResizeObserver' in window],
+  ['Mutation Observer', 'MutationObserver' in window],
+  ['Performance Observer', 'PerformanceObserver' in window],
+  ['View Transitions', 'startViewTransition' in document],
+  ['Popover API', HTMLElement.prototype.hasOwnProperty('popover')],
+  ['Dialog Element', typeof HTMLDialogElement !== 'undefined']
+];
+meta.capsTotal = CAPS.length;
+meta.capsSupported = CAPS.filter(c => c[1]).length;
+CAPS.forEach(([k,v]) => row('capsGrid', k,
+  v ? 'Supported' : 'Not supported', v ? 'ok' : 'err', 'pill'));
+
+/* =========================================================
+   HARDWARE APIs
+   ========================================================= */
+const HW_APIS = [
+  ['Bluetooth', 'bluetooth' in navigator],
+  ['USB', 'usb' in navigator],
+  ['Serial', 'serial' in navigator],
+  ['HID', 'hid' in navigator],
+  ['NFC', 'NDEFReader' in window],
+  ['Gamepad', 'getGamepads' in navigator],
+  ['Vibration', 'vibrate' in navigator],
+  ['Idle Detection', 'IdleDetector' in window],
+  ['Window Controls Overlay', 'windowControlsOverlay' in navigator],
+  ['File System Access', 'showOpenFilePicker' in window],
+  ['EyeDropper', 'EyeDropper' in window],
+  ['Contact Picker', 'contacts' in navigator]
+];
+HW_APIS.forEach(([k,v]) =>
+  row('apiGrid', k, v ? 'Supported' : 'Not supported', v ? 'ok' : 'err', 'pill'));
+
+/* =========================================================
+   PERMISSIONS
+   ========================================================= */
+(async function checkPerms() {
+  if (!navigator.permissions) {
+    row('permGrid', 'Permissions API', 'Not supported', 'err', 'pill'); return;
+  }
+  const names = ['geolocation','notifications','camera','microphone','clipboard-read',
+    'clipboard-write','persistent-storage','accelerometer','gyroscope','magnetometer',
+    'background-sync','midi','push','screen-wake-lock','payment-handler'];
+  for (const n of names) {
+    try {
+      const p = await navigator.permissions.query({ name: n });
+      const lvl = p.state === 'granted' ? 'ok' : p.state === 'denied' ? 'err' : 'warn';
+      row('permGrid', n, p.state, lvl, 'pill');
+    } catch {
+      row('permGrid', n, 'not in this browser', null, 'pill');
+    }
+  }
+})();
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+row('secGrid', 'Secure Context',
+  window.isSecureContext ? 'Yes (HTTPS / file://)' : 'No',
+  window.isSecureContext ? 'ok' : 'err');
+row('secGrid', 'Cross-Origin Isolated',
+  window.crossOriginIsolated ? 'Yes' : 'No',
+  window.crossOriginIsolated ? 'ok' : null);
+row('secGrid', 'Origin',
+  window.location.origin === 'null' ? 'file:// (local)' : window.location.origin);
+row('secGrid', 'Protocol', window.location.protocol);
+row('secGrid', 'Host', window.location.host || '(local file)');
+row('secGrid', 'Pathname', window.location.pathname || '/');
+row('secGrid', 'Referrer', document.referrer || '(none)');
+row('secGrid', 'Referrer Policy', document.referrerPolicy || 'default');
+row('secGrid', 'Top-Level Frame',
+  window.top === window.self ? 'Yes' : 'Embedded',
+  window.top === window.self ? 'ok' : 'warn');
+row('secGrid', 'Cookies Available',
+  navigator.cookieEnabled ? 'Yes' : 'No',
+  navigator.cookieEnabled ? 'ok' : 'err');
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+if (navigator.storage?.estimate) {
+  navigator.storage.estimate().then(e => {
+    const usedMB = (e.usage / 1048576).toFixed(2);
+    const quotaMB = (e.quota / 1048576).toFixed(0);
+    const pct = ((e.usage / e.quota) * 100).toFixed(2);
+    row('storageGrid', 'Storage Used', usedMB + ' MB');
+    row('storageGrid', 'Storage Quota', quotaMB + ' MB');
+    row('storageGrid', 'Usage', pct + '%');
+  });
+} else {
+  row('storageGrid', 'Storage API', 'Not supported', 'err');
+}
+if (navigator.storage?.persisted) {
+  navigator.storage.persisted().then(p =>
+    row('storageGrid', 'Persistent Storage',
+      p ? 'Granted' : 'Not granted',
+      p ? 'ok' : 'warn'));
+}
+// Quick localStorage test
+try {
+  localStorage.setItem('__test__', '1');
+  localStorage.removeItem('__test__');
+  row('storageGrid', 'localStorage Write Test', 'OK', 'ok');
+} catch (e) {
+  row('storageGrid', 'localStorage Write Test', 'Blocked', 'err');
+}
+
+/* =========================================================
+   NETWORK
+   ========================================================= */
+const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+row('networkGrid', 'Online Status',
+  navigator.onLine ? 'Online' : 'Offline',
+  navigator.onLine ? 'ok' : 'err');
+row('networkGrid', 'Connection Type', conn?.type || 'Not exposed');
+row('networkGrid', 'Effective Type', conn?.effectiveType || 'Not exposed');
+row('networkGrid', 'Downlink', conn?.downlink ? conn.downlink + ' Mbps' : 'Not exposed');
+row('networkGrid', 'Round Trip Time', conn?.rtt !== undefined ? conn.rtt + ' ms' : 'Not exposed');
+row('networkGrid', 'Save Data Mode', conn?.saveData ? 'On' : 'Off');
+
+if (meta.isFileProto) {
+  row('networkGrid', 'Public IP', 'Click "Look up IP" — disabled on file://', 'warn');
+  row('networkGrid', 'IP ASN / ISP', 'Available over HTTP(S)', 'muted');
+  row('networkGrid', 'IP Country', 'Available over HTTP(S)', 'muted');
+  row('networkGrid', 'Location', 'Available over HTTP(S)', 'muted');
+  row('networkGrid', 'Speed Test', 'Available over HTTP(S)', 'muted');
+} else {
+  row('networkGrid', 'Public IP', 'Auto-fetching…', 'pending');
+  row('networkGrid', 'IP ASN / ISP', 'Auto-fetching…', 'pending');
+  row('networkGrid', 'IP Country', 'Auto-fetching…', 'pending');
+  row('networkGrid', 'Location', 'Click "Geolocate" button', 'muted');
+  row('networkGrid', 'Speed Test', 'Click "Speed Test" button', 'muted');
+}
+
+/* =========================================================
+   LOCALE
+   ========================================================= */
+const opts = Intl.DateTimeFormat().resolvedOptions();
+row('localeGrid', 'Language', navigator.language);
+row('localeGrid', 'All Languages', (navigator.languages || []).join(', ') || 'Unknown');
+row('localeGrid', 'Timezone', opts.timeZone);
+row('localeGrid', 'UTC Offset', (new Date().getTimezoneOffset() / -60) + ' hours');
+row('localeGrid', 'Calendar', opts.calendar);
+row('localeGrid', 'Numbering System', opts.numberingSystem);
+row('localeGrid', 'Locale Region', opts.locale);
+row('localeGrid', 'Local Time', new Date().toLocaleString());
+row('localeGrid', 'UTC Time', new Date().toUTCString());
+row('localeGrid', 'ISO 8601', new Date().toISOString());
+row('localeGrid', 'Unix Timestamp', Math.floor(Date.now() / 1000));
+row('localeGrid', 'Currency Symbol (locale)',
+  new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'USD' })
+    .formatToParts(1)[0].value);
+row('localeGrid', 'Date Format Sample',
+  new Intl.DateTimeFormat(navigator.language, { dateStyle: 'long' }).format(new Date()));
+
+/* =========================================================
+   PERFORMANCE
+   ========================================================= */
+const navTiming = performance.getEntriesByType('navigation')[0];
+if (navTiming && !meta.isFileProto) {
+  row('perfGrid', 'DNS Lookup', (navTiming.domainLookupEnd - navTiming.domainLookupStart).toFixed(1) + ' ms');
+  row('perfGrid', 'TCP Connect', (navTiming.connectEnd - navTiming.connectStart).toFixed(1) + ' ms');
+  row('perfGrid', 'TLS Negotiation', navTiming.secureConnectionStart ?
+    (navTiming.connectEnd - navTiming.secureConnectionStart).toFixed(1) + ' ms' : 'N/A');
+  row('perfGrid', 'TTFB', (navTiming.responseStart - navTiming.requestStart).toFixed(1) + ' ms');
+  row('perfGrid', 'Response', (navTiming.responseEnd - navTiming.responseStart).toFixed(1) + ' ms');
+  row('perfGrid', 'DOM Interactive', navTiming.domInteractive.toFixed(1) + ' ms');
+  row('perfGrid', 'DOM Complete', navTiming.domComplete.toFixed(1) + ' ms');
+  row('perfGrid', 'Load Event', navTiming.loadEventEnd.toFixed(1) + ' ms');
+  row('perfGrid', 'Transfer Size', (navTiming.transferSize / 1024).toFixed(1) + ' KB');
+  row('perfGrid', 'Decoded Body', (navTiming.decodedBodySize / 1024).toFixed(1) + ' KB');
+  row('perfGrid', 'Protocol', navTiming.nextHopProtocol || 'Unknown');
+} else if (meta.isFileProto) {
+  row('perfGrid', 'Navigation Timings', 'Unavailable on file:// protocol', 'warn');
+  row('perfGrid', 'DOM Interactive', performance.now().toFixed(1) + ' ms (since page start)');
+  row('perfGrid', 'Time Origin', new Date(performance.timeOrigin).toLocaleTimeString());
+}
+
+if (performance.memory) {
+  row('perfGrid', 'JS Heap Used', (performance.memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB');
+  row('perfGrid', 'JS Heap Total', (performance.memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB');
+  row('perfGrid', 'JS Heap Limit', (performance.memory.jsHeapSizeLimit / 1048576).toFixed(2) + ' MB');
+} else {
+  row('perfGrid', 'JS Heap', 'Not exposed (Firefox/Safari)', 'muted');
+}
+
+const resources = performance.getEntriesByType('resource');
+row('perfGrid', 'Resources Loaded', resources.length);
+row('perfGrid', 'Scan Duration', (performance.now() - meta.startedAt).toFixed(0) + ' ms', 'ok');
+
+/* =========================================================
+   SENSORS — auto-populate availability info
+   ========================================================= */
+row('sensorGrid', 'Accelerometer API',
+  'Accelerometer' in window ? 'Available — click activate' : 'Not in this browser',
+  'Accelerometer' in window ? 'ok' : null);
+row('sensorGrid', 'Gyroscope API',
+  'Gyroscope' in window ? 'Available — click activate' : 'Not in this browser',
+  'Gyroscope' in window ? 'ok' : null);
+row('sensorGrid', 'Magnetometer API',
+  'Magnetometer' in window ? 'Available — click activate' : 'Not in this browser',
+  'Magnetometer' in window ? 'ok' : null);
+row('sensorGrid', 'Ambient Light Sensor',
+  'AmbientLightSensor' in window ? 'Available' : 'Not in this browser',
+  'AmbientLightSensor' in window ? 'ok' : null);
+row('sensorGrid', 'Linear Acceleration',
+  'LinearAccelerationSensor' in window ? 'Available' : 'Not in this browser',
+  'LinearAccelerationSensor' in window ? 'ok' : null);
+row('sensorGrid', 'Absolute Orientation',
+  'AbsoluteOrientationSensor' in window ? 'Available' : 'Not in this browser',
+  'AbsoluteOrientationSensor' in window ? 'ok' : null);
+row('sensorGrid', 'DeviceOrientation Event',
+  'DeviceOrientationEvent' in window ? 'Available' : 'Not supported',
+  'DeviceOrientationEvent' in window ? 'ok' : null);
+row('sensorGrid', 'DeviceMotion Event',
+  'DeviceMotionEvent' in window ? 'Available' : 'Not supported',
+  'DeviceMotionEvent' in window ? 'ok' : null);
+
+/* =========================================================
+   IDENTITY / FINGERPRINT
+   ========================================================= */
+async function internalFingerprint() {
+  // Build a deterministic signature from many client signals
+  const signals = [
+    navigator.userAgent, navigator.language, (navigator.languages||[]).join(','),
+    screen.width, screen.height, screen.colorDepth, window.devicePixelRatio,
+    new Date().getTimezoneOffset(), navigator.hardwareConcurrency || 0,
+    navigator.platform, navigator.vendor,
+    !!navigator.cookieEnabled, !!window.indexedDB, !!window.localStorage
+  ];
+
+  // Canvas fingerprint
+  try {
+    const c = document.createElement('canvas');
+    c.width = 280; c.height = 60;
+    const ctx = c.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = "14px 'Arial'";
+    ctx.fillStyle = '#f60';
+    ctx.fillRect(125, 1, 62, 20);
+    ctx.fillStyle = '#069';
+    ctx.fillText('Sentinel diagnostic 🔒', 2, 15);
+    ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+    ctx.fillText('Sentinel diagnostic 🔒', 4, 17);
+    signals.push(c.toDataURL().slice(-100));
+  } catch {}
+
+  // WebGL fingerprint
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    if (dbg) {
+      signals.push(gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL));
+      signals.push(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL));
+    }
+  } catch {}
+
+  // Hash with Web Crypto SHA-256
+  const data = new TextEncoder().encode(signals.join('||'));
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash))
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function buildIdentity() {
+  row('identityGrid', 'Session ID', meta.sessionId);
+  row('identityGrid', 'Scan Timestamp', meta.scanTime.toISOString());
+
+  // Try FingerprintJS first
+  if (typeof FingerprintJS !== 'undefined') {
+    try {
+      const f = await FingerprintJS.load();
+      const r = await f.get();
+      row('identityGrid', 'Visitor ID (FingerprintJS)', r.visitorId, 'ok');
+      row('identityGrid', 'Confidence',
+        (r.confidence.score * 100).toFixed(1) + '%',
+        r.confidence.score > 0.9 ? 'ok' : 'warn');
+      row('identityGrid', 'Components Analyzed', Object.keys(r.components).length);
+      const canv = r.components.canvas?.value;
+      if (canv?.geometry) row('identityGrid', 'Canvas Geometry Hash', canv.geometry.slice(0, 32) + '…');
+      document.getElementById('kpiVisitor').textContent = r.visitorId.slice(0, 12) + '…';
+      document.getElementById('kpiVisitorSub').textContent =
+        `${Object.keys(r.components).length} signals · ${(r.confidence.score*100).toFixed(0)}% conf.`;
+      return;
+    } catch (e) {
+      // Fall through to internal
+    }
+  }
+  // Internal fallback
+  const id = await internalFingerprint();
+  row('identityGrid', 'Visitor ID (internal SHA-256)', id, 'ok');
+  row('identityGrid', 'Algorithm', 'SHA-256 over 14+ client signals');
+  row('identityGrid', 'Components Analyzed', '14');
+  row('identityGrid', 'Stability Note', 'Changes with browser/OS updates', 'warn');
+  document.getElementById('kpiVisitor').textContent = id.slice(0, 12) + '…';
+  document.getElementById('kpiVisitorSub').textContent = 'Internal SHA-256 fingerprint';
+}
+buildIdentity();
+
+/* =========================================================
+   KPI PAINTING
+   ========================================================= */
+function paintKPIs() {
+  const pct = Math.round((meta.capsSupported / meta.capsTotal) * 100);
+  document.getElementById('kpiCaps').textContent = pct + '%';
+  document.getElementById('kpiCapsSub').textContent =
+    `${meta.capsSupported} of ${meta.capsTotal} APIs`;
+
+  document.getElementById('kpiPlatform').textContent = ua.browser.name || 'Unknown';
+  document.getElementById('kpiPlatformSub').textContent =
+    `${ua.os.name || ''} ${ua.os.version || ''} · ${ua.cpu.architecture || ''}`.trim();
+
+  let health = 0;
+  if (window.isSecureContext) health += 25;
+  health += Math.round(pct * 0.5);
+  if (navigator.cookieEnabled) health += 10;
+  if (!meta.isFileProto) health += 10;
+  if (window.crossOriginIsolated) health += 5;
+  if (navigator.onLine) health += 5;
+  health = Math.min(100, health);
+
+  document.getElementById('kpiHealth').textContent = health;
+  document.getElementById('kpiHealthSub').textContent =
+    health >= 80 ? 'Production-ready environment' :
+    health >= 50 ? 'Acceptable — minor gaps' : 'Significant environment limitations';
+  const badge = document.getElementById('kpiHealthBadge');
+  badge.className = 'kpi-trend ' + (health >= 80 ? 'ok' : health >= 50 ? 'warn' : 'err');
+  badge.textContent = health >= 80 ? 'HEALTHY' : health >= 50 ? 'DEGRADED' : 'IMPAIRED';
+
+  // Donut
+  document.getElementById('capDonut').style.setProperty('--pct', pct);
+  document.getElementById('capDonutCenter').textContent = pct + '%';
+  document.getElementById('legSup').textContent = meta.capsSupported;
+  document.getElementById('legNo').textContent = meta.capsTotal - meta.capsSupported;
+
+  document.getElementById('totalDataPoints').textContent = Object.keys(report).length;
+}
+paintKPIs();
+
+/* =========================================================
+   CHARTS
+   ========================================================= */
+if (typeof Chart !== 'undefined' && performance.memory) {
+  Chart.defaults.color = '#a1a1aa';
+  Chart.defaults.borderColor = '#27272a';
+  Chart.defaults.font.family = 'Inter, sans-serif';
+  document.getElementById('memChart').style.display = 'block';
+  document.getElementById('memChartFallback').style.display = 'none';
+  const memChart = new Chart(document.getElementById('memChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: Array(40).fill(''),
+      datasets: [{
+        label: 'Heap Used (MB)', data: Array(40).fill(0),
+        borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)',
+        fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { display: false },
+                y: { ticks: { font: { size: 10 } }, grid: { color: '#1f1f23' } } }
+    }
+  });
+  setInterval(() => {
+    const mb = performance.memory.usedJSHeapSize / 1048576;
+    memChart.data.datasets[0].data.push(mb);
+    memChart.data.datasets[0].data.shift();
+    memChart.update('none');
+  }, 1000);
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+document.getElementById('scanTs').textContent = meta.scanTime.toLocaleTimeString();
+document.getElementById('sessId').textContent = meta.sessionId;
+
+/* =========================================================
+   NETWORK BUTTONS
+   ========================================================= */
+/* IP providers — tried in order until one succeeds.
+   Each returns either a plain IP string or an object with extra fields. */
+const IP_PROVIDERS = [
+  { name: 'Cloudflare',   url: 'https://1.1.1.1/cdn-cgi/trace',
+    parse: t => Object.fromEntries(t.trim().split('\n').map(l => l.split('='))).ip },
+  { name: 'ipify',        url: 'https://api64.ipify.org?format=json',
+    parse: j => j.ip },
+  { name: 'ipapi.co',     url: 'https://ipapi.co/json/',
+    parse: j => ({ ip: j.ip, org: j.org, asn: j.asn, country: j.country_name, city: j.city }) },
+  { name: 'ip.sb',        url: 'https://api.ip.sb/jsonip',
+    parse: j => j.ip },
+  { name: 'icanhazip',    url: 'https://icanhazip.com',
+    parse: t => t.trim() }
+];
+
+/* Geo enrichment providers — separate chain, tried only after IP is known. */
+const GEO_PROVIDERS = [
+  { name: 'ipapi.co',     fn: async () => {
+      const r = await fetch('https://ipapi.co/json/');
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      return { org: j.org, asn: j.asn, country: j.country_name, city: j.city };
+    }},
+  { name: 'ipwho.is',     fn: async () => {
+      const r = await fetch('https://ipwho.is/');
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      if (!j.success) throw new Error(j.message || 'failed');
+      return { org: j.connection?.isp, asn: j.connection?.asn, country: j.country, city: j.city };
+    }},
+  { name: 'ipapi.is',     fn: async () => {
+      const r = await fetch('https://api.ipapi.is/');
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      return { org: j.company?.name, asn: j.asn?.asn, country: j.location?.country, city: j.location?.city };
+    }}
+];
+
+async function tryIpProvider(p) {
+  const r = await fetch(p.url, { cache: 'no-store' });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  const ct = r.headers.get('content-type') || '';
+  const body = ct.includes('json') ? await r.json() : await r.text();
+  const parsed = p.parse(body);
+  return typeof parsed === 'string' ? { ip: parsed } : parsed;
+}
+
+async function lookupIp() {
+  const cards = [...document.querySelectorAll('#networkGrid .data-row')];
+  const get = lbl => cards.find(c => c.dataset.label === lbl)?.querySelector('.data-value');
+  const ipEl = get('public ip'), asnEl = get('ip asn / isp'), ccEl = get('ip country');
+  if (!ipEl) return;
+
+  ipEl.textContent = 'Querying providers…';
+  ipEl.className = 'data-value pending';
+
+  // Phase 1: get the IP from any provider
+  let result = null;
+  const tried = [];
+  for (const p of IP_PROVIDERS) {
+    try {
+      result = await tryIpProvider(p);
+      result._provider = p.name;
+      if (result.ip) break;
+    } catch (e) {
+      tried.push(`${p.name}: ${e.message}`);
+    }
+  }
+
+  if (!result?.ip) {
+    ipEl.textContent = `Failed after ${IP_PROVIDERS.length} providers — likely ad-blocker, firewall, or offline`;
+    ipEl.className = 'data-value err';
+    ipEl.title = tried.join(' | ');
+    if (asnEl) { asnEl.textContent = 'Unavailable'; asnEl.className = 'data-value muted'; }
+    if (ccEl)  { ccEl.textContent  = 'Unavailable'; ccEl.className = 'data-value muted'; }
+    return;
+  }
+
+  // Show IP immediately
+  ipEl.textContent = `${result.ip}  ·  via ${result._provider}`;
+  ipEl.className = 'data-value ok';
+  report['Public IP'] = result.ip;
+  report['IP Provider'] = result._provider;
+
+  // Phase 2: enrich with geo. If the IP provider already returned geo, use it; else query enrichment chain.
+  if (result.org || result.country) {
+    if (asnEl) { asnEl.textContent = `${result.org || '?'} (${result.asn || 'AS?'})`; asnEl.className = 'data-value'; }
+    if (ccEl)  { ccEl.textContent  = `${result.country || '?'} · ${result.city || '?'}`; ccEl.className = 'data-value'; }
+    report['IP ASN / ISP'] = `${result.org} (${result.asn || ''})`.trim();
+    report['IP Country']   = `${result.country} · ${result.city}`;
+    return;
+  }
+
+  if (asnEl) { asnEl.textContent = 'Enriching…'; asnEl.className = 'data-value pending'; }
+  if (ccEl)  { ccEl.textContent  = 'Enriching…'; ccEl.className = 'data-value pending'; }
+
+  for (const g of GEO_PROVIDERS) {
+    try {
+      const geo = await g.fn();
+      if (asnEl) { asnEl.textContent = `${geo.org || '?'} (${geo.asn || 'AS?'})`; asnEl.className = 'data-value'; }
+      if (ccEl)  { ccEl.textContent  = `${geo.country || '?'} · ${geo.city || '?'}`; ccEl.className = 'data-value'; }
+      report['IP ASN / ISP'] = `${geo.org} (${geo.asn || ''})`.trim();
+      report['IP Country']   = `${geo.country} · ${geo.city}`;
+      report['Geo Provider'] = g.name;
+      return;
+    } catch (e) {
+      // try next
+    }
+  }
+  if (asnEl) { asnEl.textContent = 'Enrichment failed'; asnEl.className = 'data-value warn'; }
+  if (ccEl)  { ccEl.textContent  = 'Enrichment failed'; ccEl.className = 'data-value warn'; }
+}
+document.getElementById('getIp').addEventListener('click', lookupIp);
+
+document.getElementById('getLocation').addEventListener('click', () => {
+  const locEl = [...document.querySelectorAll('#networkGrid .data-row')]
+    .find(c => c.dataset.label === 'location')?.querySelector('.data-value');
+  if (!locEl) return;
+  locEl.textContent = 'Requesting permission…'; locEl.className = 'data-value pending';
+  if (!navigator.geolocation) {
+    locEl.textContent = 'Geolocation API not available'; locEl.className = 'data-value err';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const { latitude, longitude, accuracy } = pos.coords;
+    locEl.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)} — resolving…`;
+    try {
+      const r = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=9d1c47ac7729497f91cafaeb3c7bc97b`);
+      const d = await r.json();
+      locEl.textContent = `${d.results[0]?.formatted || '?'} (±${Math.round(accuracy)}m)`;
+      locEl.className = 'data-value ok';
+    } catch {
+      locEl.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)} (geocoding failed)`;
+      locEl.className = 'data-value warn';
+    }
+  }, err => { locEl.textContent = 'Permission denied: ' + err.message; locEl.className = 'data-value err'; });
+});
+
+document.getElementById('speedTest').addEventListener('click', async () => {
+  const el = [...document.querySelectorAll('#networkGrid .data-row')]
+    .find(c => c.dataset.label === 'speed test')?.querySelector('.data-value');
+  if (!el) return;
+  el.textContent = 'Testing 10MB download…'; el.className = 'data-value pending';
+  try {
+    const start = performance.now();
+    const r = await fetch('https://speed.cloudflare.com/__down?bytes=10000000', { cache: 'no-store' });
+    await r.blob();
+    const secs = (performance.now() - start) / 1000;
+    const mbps = (10 * 8 / secs).toFixed(2);
+    el.textContent = `${mbps} Mbps (${secs.toFixed(1)}s for 10MB)`;
+    el.className = 'data-value ok';
+  } catch (e) { el.textContent = 'Failed: ' + e.message; el.className = 'data-value err'; }
+});
+
+document.getElementById('testMic').addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC();
+    const src = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    src.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    let micRow = [...document.querySelectorAll('#audioGrid .data-row')]
+                 .find(c => c.dataset.label === 'mic level');
+    if (!micRow) {
+      document.getElementById('audioGrid').insertAdjacentHTML('beforeend',
+        `<div class="data-row" data-label="mic level">
+           <div class="data-label">Mic Level</div>
+           <div class="meter"><div id="micBar" style="width:0%"></div></div>
+         </div>`);
+    }
+    const bar = document.getElementById('micBar');
+    function loop() {
+      analyser.getByteFrequencyData(data);
+      const avg = data.reduce((a,b) => a+b, 0) / data.length;
+      bar.style.width = Math.min(100, avg * 1.5) + '%';
+      requestAnimationFrame(loop);
+    }
+    loop();
+    setTimeout(() => { stream.getTracks().forEach(t => t.stop()); ctx.close(); }, 20000);
+  } catch (e) { row('audioGrid', 'Mic Test', 'Denied: ' + e.message, 'err'); }
+});
+
+document.getElementById('enumDevices').addEventListener('click', async () => {
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    s.getTracks().forEach(t => t.stop());
+    const devs = await navigator.mediaDevices.enumerateDevices();
+    devs.forEach((d, i) => row('mediaGrid', `${d.kind} #${i}`, d.label || '(label hidden)'));
+  } catch (e) { row('mediaGrid', 'Enumeration', 'Denied: ' + e.message, 'err'); }
+});
+
+document.getElementById('activateSensors').addEventListener('click', () => {
+  let activated = false;
+  if ('Accelerometer' in window) {
+    try {
+      const acc = new Accelerometer({ frequency: 4 });
+      acc.addEventListener('reading', () => {
+        const ex = [...document.querySelectorAll('#sensorGrid .data-row')]
+                  .find(c => c.dataset.label === 'accelerometer reading');
+        const html = `X ${acc.x.toFixed(2)} · Y ${acc.y.toFixed(2)} · Z ${acc.z.toFixed(2)}`;
+        if (ex) ex.querySelector('.data-value').textContent = html;
+        else row('sensorGrid', 'Accelerometer Reading', html, 'ok');
+      });
+      acc.start(); activated = true;
+    } catch (e) { row('sensorGrid', 'Accelerometer Error', e.message, 'err'); }
+  }
+  if ('DeviceOrientationEvent' in window) {
+    window.addEventListener('deviceorientation', e => {
+      const ex = [...document.querySelectorAll('#sensorGrid .data-row')]
+                .find(c => c.dataset.label === 'device orientation reading');
+      const html = `α ${(e.alpha||0).toFixed(1)} · β ${(e.beta||0).toFixed(1)} · γ ${(e.gamma||0).toFixed(1)}`;
+      if (ex) ex.querySelector('.data-value').textContent = html;
+      else row('sensorGrid', 'Device Orientation Reading', html, 'ok');
+    });
+    activated = true;
+  }
+  if (!activated) row('sensorGrid', 'Sensors', 'No sensors available on this device', 'err');
+});
+
+document.getElementById('rescan').addEventListener('click', () => location.reload());
+
+document.getElementById('downloadJson').addEventListener('click', () => {
+  const payload = {
+    meta: { ...meta, scanTime: meta.scanTime.toISOString(), generatedAt: new Date().toISOString() },
+    report
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `sentinel-report-${meta.sessionId}-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+if (!meta.isFileProto) setTimeout(lookupIp, 800);
+
+/* =========================================================
+   FILTER
+   ========================================================= */
+document.getElementById('search').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('.data-row').forEach(r => {
+    r.classList.toggle('hidden', q && !r.textContent.toLowerCase().includes(q));
+  });
+});
+
+/* =========================================================
+   NAV ACTIVE STATE
+   ========================================================= */
+const sections = [...document.querySelectorAll('.section')];
+const navItems = [...document.querySelectorAll('.nav-item')];
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navItems.forEach(n => n.classList.toggle('active', n.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => io.observe(s));
+}
+
+/* =========================================================
+   RAW JSON LIVE UPDATE + COUNTERS
+   ========================================================= */
+setInterval(() => {
+  document.getElementById('rawJson').textContent = JSON.stringify(
+    { meta: { ...meta, scanTime: meta.scanTime.toISOString() }, report },
+    null, 2
+  );
+  document.getElementById('totalDataPoints').textContent = Object.keys(report).length;
+}, 1500);
+
+window.addEventListener('resize', () => {
+  const vp = [...document.querySelectorAll('#displayGrid .data-row')]
+    .find(c => c.dataset.label === 'viewport');
+  if (vp) vp.querySelector('.data-value').textContent =
+    `${window.innerWidth} × ${window.innerHeight}`;
+});
+
+}); // end DOMContentLoaded
+</script>
 </body>
 </html>

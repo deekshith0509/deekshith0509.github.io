@@ -1,298 +1,935 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customizable Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-/* General Styles */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-    color: #333;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-}
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.widget {
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    background-color: #fff;
-    transition: transform 0.3s ease;
-}
-
-.widget:hover {
-    transform: translateY(-5px);
-}
-
-.widget-header {
-    padding: 15px;
-    background-color: #4CAF50;
-    color: #fff;
-    font-size: 24px;
-    text-align: center;
-    cursor: move;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.widget-content {
-    padding: 20px;
-}
-
-/* Typography */
-.widget-content h3 {
-    margin-top: 0;
-    font-size: 20px;
-    color: #333;
-}
-
-.widget-content p {
-    margin: 0 0 15px 0;
-    line-height: 1.6;
-    color: #555;
-}
-
-/* Buttons */
-.widget-content button {
-    padding: 12px 24px;
-    border: none;
-    background-color: #4CAF50;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    text-transform: uppercase;
-}
-
-.widget-content button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-/* Inputs */
-.widget-content input[type="text"],
-.widget-content input[type="number"],
-.widget-content select {
-    width: calc(100% - 22px);
-    padding: 12px;
-    margin-bottom: 15px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.3s ease;
-}
-
-.widget-content input[type="text"]:focus,
-.widget-content input[type="number"]:focus,
-.widget-content select:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
-}
-
-/* Tables */
-.widget-content table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.widget-content table th, .widget-content table td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
-
-.widget-content table th {
-    background-color: #4CAF50;
-    color: #fff;
-}
-
-.widget-content table td {
-    background-color: #f9f9f9;
-}
-
-/* Calculator and Converter */
-.widget-content .calculator-output,
-.widget-content .conversion-output {
-    margin-top: 15px;
-    font-size: 16px;
-    color: #555;
-}
-
-.widget-content .calculator-output span,
-.widget-content .conversion-output span {
-    font-weight: bold;
-    color: #333;
-}
-
-/* Iframe */
-.widget-content iframe {
-    max-width: 100%;
-    height: 300px;
-    width: 100%;
-    border: none;
-    border-radius: 5px;
-}
-
-
-/* Hover Effect */
-.widget:hover .widget-header {
-    background-color: #45a049;
-    transform: translateY(-5px);
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 768px) {
-    .dashboard {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 10px;
-        padding: 10px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Customizable productivity dashboard" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- CSP: tightens what the page can load. Adjust origins if you add new APIs. -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    font-src https://cdnjs.cloudflare.com;
+    img-src 'self' data: https:;
+    frame-src https://calendar.google.com;
+    connect-src https://zenquotes.io https://api.quotable.kurokeita.dev https://date.nager.at;
+  " />
+  <title>Dashboard</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+  <style>
+    /* ---------- Design Tokens ---------- */
+    :root {
+      --color-bg: #f4f6f8;
+      --color-surface: #ffffff;
+      --color-surface-alt: #f9fafb;
+      --color-border: #e5e7eb;
+      --color-text: #111827;
+      --color-text-muted: #6b7280;
+      --color-primary: #16a34a;
+      --color-primary-hover: #15803d;
+      --color-primary-contrast: #ffffff;
+      --color-danger: #dc2626;
+      --color-focus: #2563eb;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+      --radius: 10px;
+      --space-1: 4px; --space-2: 8px; --space-3: 12px;
+      --space-4: 16px; --space-5: 20px; --space-6: 24px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      --transition: 180ms cubic-bezier(.4,0,.2,1);
     }
-}
+    [data-theme="dark"] {
+      --color-bg: #0f172a;
+      --color-surface: #1e293b;
+      --color-surface-alt: #273449;
+      --color-border: #334155;
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-primary: #22c55e;
+      --color-primary-hover: #16a34a;
+      --shadow-md: 0 4px 12px rgba(0,0,0,.4);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
 
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    </style>
+    /* ---------- Top Bar ---------- */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-5);
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar h1 {
+      font-size: 18px; margin: 0; font-weight: 600;
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .topbar-actions { display: flex; gap: var(--space-2); }
+    .icon-btn {
+      background: transparent; border: 1px solid var(--color-border);
+      color: var(--color-text); width: 36px; height: 36px;
+      border-radius: 8px; cursor: pointer; display: inline-flex;
+      align-items: center; justify-content: center; transition: var(--transition);
+    }
+    .icon-btn:hover { background: var(--color-surface-alt); }
+    .icon-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+    /* ---------- Dashboard Grid ---------- */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-5);
+      padding: var(--space-5);
+    }
+
+    /* ---------- Widget ---------- */
+    .widget {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .widget:hover { box-shadow: var(--shadow-md); }
+    .widget.dragging { opacity: .5; transform: scale(.98); }
+    .widget.drag-over { outline: 2px dashed var(--color-primary); outline-offset: -4px; }
+
+    .widget-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-primary);
+      color: var(--color-primary-contrast);
+      font-size: 15px; font-weight: 600;
+    }
+    .widget-header .drag-handle {
+      cursor: grab; user-select: none;
+      padding: 4px 8px; border-radius: 4px;
+      opacity: .85;
+    }
+    .widget-header .drag-handle:active { cursor: grabbing; }
+    .widget-header .drag-handle:focus-visible { outline: 2px solid #fff; }
+
+    .widget-content { padding: var(--space-4); flex: 1; }
+    .widget-content h3 { margin: 0 0 var(--space-3); font-size: 15px; color: var(--color-text); }
+    .widget-content p { margin: 0 0 var(--space-3); color: var(--color-text-muted); }
+
+    /* ---------- Forms ---------- */
+    .field { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-3); }
+    label { font-size: 13px; font-weight: 500; color: var(--color-text-muted); }
+    input[type="text"], input[type="number"], select {
+      width: 100%; padding: 10px 12px; font: inherit;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 6px; color: var(--color-text);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 25%, transparent);
+    }
+
+    button.btn {
+      padding: 10px 16px; font: inherit; font-weight: 500;
+      background: var(--color-primary); color: var(--color-primary-contrast);
+      border: none; border-radius: 6px; cursor: pointer;
+      transition: background var(--transition);
+    }
+    button.btn:hover { background: var(--color-primary-hover); }
+    button.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+    button.btn:disabled { opacity: .6; cursor: not-allowed; }
+    button.btn-secondary {
+      background: transparent; color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+    button.btn-secondary:hover { background: var(--color-surface-alt); }
+
+    .row { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+    .row > * { flex: 1; min-width: 0; }
+
+    /* ---------- Output blocks ---------- */
+    .output {
+      margin-top: var(--space-3); padding: var(--space-3);
+      background: var(--color-surface-alt);
+      border-radius: 6px; font-size: 14px;
+      min-height: 20px;
+      word-break: break-word;
+    }
+    .output.error { color: var(--color-danger); }
+
+    /* ---------- Quote ---------- */
+    blockquote.quote {
+      margin: 0 0 var(--space-3); padding: var(--space-3) var(--space-4);
+      border-left: 3px solid var(--color-primary);
+      background: var(--color-surface-alt); border-radius: 4px;
+      font-style: italic; color: var(--color-text);
+    }
+    .quote-author { display: block; margin-top: var(--space-2); font-size: 13px; color: var(--color-text-muted); font-style: normal; }
+
+    /* ---------- Clock ---------- */
+    .clock-time { font-size: 28px; font-weight: 600; letter-spacing: .5px; margin: 0; }
+    .clock-date { color: var(--color-text-muted); margin: 4px 0 var(--space-3); font-size: 14px; }
+    .holidays { list-style: none; padding: 0; margin: 0; max-height: 180px; overflow-y: auto; }
+    .holidays li {
+      padding: 8px 0; font-size: 13px; display: flex; justify-content: space-between; gap: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .holidays li:last-child { border-bottom: none; }
+    .holidays time { color: var(--color-text-muted); white-space: nowrap; }
+
+    /* ---------- To-Do ---------- */
+    .todo-list { list-style: none; padding: 0; margin: var(--space-3) 0 0; }
+    .todo-item {
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: 8px; border-bottom: 1px solid var(--color-border);
+    }
+    .todo-item:last-child { border-bottom: none; }
+    .todo-item input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; }
+    .todo-item label { flex: 1; font-size: 14px; color: var(--color-text); cursor: pointer; word-break: break-word; }
+    .todo-item.done label { text-decoration: line-through; color: var(--color-text-muted); }
+    .todo-item .remove-btn {
+      background: transparent; border: none; color: var(--color-danger);
+      cursor: pointer; padding: 4px 8px; border-radius: 4px;
+    }
+    .todo-item .remove-btn:hover { background: color-mix(in srgb, var(--color-danger) 12%, transparent); }
+    .todo-empty { color: var(--color-text-muted); font-size: 13px; text-align: center; padding: var(--space-3); }
+
+    /* ---------- Iframe ---------- */
+    iframe {
+      width: 100%; height: 320px; border: none; border-radius: 6px;
+      background: var(--color-surface-alt);
+    }
+
+    /* ---------- Toasts ---------- */
+    .toast-container {
+      position: fixed; bottom: 20px; right: 20px;
+      display: flex; flex-direction: column; gap: 8px; z-index: 1000;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--color-surface); color: var(--color-text);
+      border: 1px solid var(--color-border); border-left: 4px solid var(--color-primary);
+      padding: 12px 16px; border-radius: 6px; box-shadow: var(--shadow-md);
+      font-size: 14px; max-width: 320px; pointer-events: auto;
+      animation: slidein 220ms ease;
+    }
+    .toast.error { border-left-color: var(--color-danger); }
+    @keyframes slidein { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* ---------- Screen reader only ---------- */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ---------- Skeleton ---------- */
+    .skeleton {
+      background: linear-gradient(90deg, var(--color-surface-alt) 0%, var(--color-border) 50%, var(--color-surface-alt) 100%);
+      background-size: 200% 100%; animation: shimmer 1.4s infinite;
+      border-radius: 4px; height: 14px; margin: 6px 0;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    @media (max-width: 600px) {
+      .dashboard { grid-template-columns: 1fr; padding: var(--space-3); gap: var(--space-3); }
+      .topbar { padding: var(--space-3); }
+    }
+  </style>
 </head>
 <body>
- <div class="dashboard">
-    <div class="widget" draggable="true">
-            <div class="widget-header">Calendar</div>
-            <div class="widget-content" id="cal">
-                <iframe scrolling="no" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FKolkata&bgcolor=%237CB342&title=Deekshith's%20Calendar&src=ZGVla3NoaXRoLmJoMDUwOUBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4uY2hyaXN0aWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4uaGluZHVpc20jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4uaW5kaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4uaXNsYW1pYyNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%237CB342&color=%2333B679&color=%230B8043&color=%230B8043&color=%230B8043&color=%230B8043"></iframe>
-            </div>
-        </div>
-		       <div class="widget" draggable="true">
-            <div class="widget-header">Random Quote</div>
-            <div class="widget-content">
-               <blockquote id="quote"></blockquote>
-                <button onclick="getRandomQuote()">Generate Quote</button>
-            </div>
-        </div>
-		  <div class="widget" draggable="true">
-            <div class="widget-header">Date and Time</div>
-            <div class="widget-content" id="datetime">
-                // Holidays will be dynamically fetched here 
-            </div>
-        </div>  
-        <div class="widget" >
-            <div class="widget-header">Calculator</div>
-            <div class="widget-content">
-                <input type="text" id="calculator-input" placeholder="Enter expression">
-                <br>
-                <button onclick="calculate()">Calculate</button>
-                <div class="calculator-output" id="calculator-output"></div>
-            </div>
-        </div>
-        <div class="widget" draggable="true">
-            <div class="widget-header">Unit Converter</div>
-            <div class="widget-content">
-                <input type="number" id="converter-input" placeholder="Enter value">
-                <select class="converter-select" id="converter-type">
-                    <option value="m">Meter</option>
-                    <option value="kg">Kilogram</option>
-                    <option value="l">Liter</option>
-                </select>
-                <br>
-                <button onclick="convert()">Convert</button>
-                <div class="conversion-output" id="conversion-output"></div>
-            </div>
-        </div>
-        <div class="widget" draggable="true">
-            <div class="widget-header">To-Do List</div>
-            <div class="widget-content">
-                <input type="text" id="todo-input" placeholder="Add a new task">
-                <button onclick="addTodo()">Add Task</button>
-                <ul id="todo-list"></ul>
-            </div>
-        </div>
- 
+  <header class="topbar" role="banner">
+    <h1><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Dashboard</h1>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="btn-theme" aria-label="Toggle dark mode" title="Toggle theme">
+        <i class="fa-solid fa-moon" aria-hidden="true"></i>
+      </button>
+      <button class="icon-btn" id="btn-reset" aria-label="Reset dashboard layout" title="Reset layout">
+        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+      </button>
     </div>
-    <script>
-        function calculate() {
-            var input = document.getElementById("calculator-input").value;
-            try {
-                var result = eval(input);
-                document.getElementById("calculator-output").innerHTML = "<span>Result: </span>" + result;
-            } catch (error) {
-                document.getElementById("calculator-output").innerHTML = "<span>Error: </span>" + error.message;
+  </header>
+
+  <main id="dashboard" class="dashboard" role="main" aria-label="Widget dashboard">
+
+    <!-- Calendar -->
+    <section class="widget" data-widget-id="calendar" aria-labelledby="w-cal-title">
+      <div class="widget-header">
+        <span id="w-cal-title"><i class="fa-regular fa-calendar" aria-hidden="true"></i> Calendar</span>
+        <span class="drag-handle" tabindex="0" role="button" aria-label="Reorder calendar widget" title="Drag to reorder">⋮⋮</span>
+      </div>
+      <div class="widget-content">
+        <iframe
+          title="Google Calendar"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          sandbox="allow-scripts allow-same-origin allow-popups"
+          src="https://calendar.google.com/calendar/embed?height=320&wkst=1&ctz=Asia%2FKolkata&bgcolor=%237CB342&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&mode=AGENDA&src=ZW4uaW5kaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t"></iframe>
+      </div>
+    </section>
+
+    <!-- Date / Time / Holidays -->
+    <section class="widget" data-widget-id="datetime" aria-labelledby="w-dt-title">
+      <div class="widget-header">
+        <span id="w-dt-title"><i class="fa-regular fa-clock" aria-hidden="true"></i> Date &amp; Time</span>
+        <span class="drag-handle" tabindex="0" role="button" aria-label="Reorder date and time widget">⋮⋮</span>
+      </div>
+      <div class="widget-content">
+        <p class="clock-time" id="clock-time" aria-live="off">--:--:--</p>
+        <p class="clock-date" id="clock-date"></p>
+        <div class="field">
+          <label for="holiday-country">Holidays</label>
+          <select id="holiday-country">
+            <option value="US">United States</option>
+            <option value="IN">India</option>
+            <option value="GB">United Kingdom</option>
+            <option value="DE">Germany</option>
+            <option value="JP">Japan</option>
+          </select>
+        </div>
+        <ul class="holidays" id="holiday-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="widget" data-widget-id="quote" aria-labelledby="w-q-title">
+      <div class="widget-header">
+        <span id="w-q-title"><i class="fa-solid fa-quote-left" aria-hidden="true"></i> Random Quote</span>
+        <span class="drag-handle" tabindex="0" role="button" aria-label="Reorder quote widget">⋮⋮</span>
+      </div>
+      <div class="widget-content">
+        <blockquote class="quote" id="quote" aria-live="polite">
+          <span class="skeleton" style="width:90%"></span>
+          <span class="skeleton" style="width:60%"></span>
+        </blockquote>
+        <button class="btn" id="btn-quote">
+          <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> New Quote
+        </button>
+      </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="widget" data-widget-id="calculator" aria-labelledby="w-calc-title">
+      <div class="widget-header">
+        <span id="w-calc-title"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Calculator</span>
+        <span class="drag-handle" tabindex="0" role="button" aria-label="Reorder calculator widget">⋮⋮</span>
+      </div>
+      <div class="widget-content">
+        <div class="field">
+          <label for="calc-input">Expression</label>
+          <input type="text" id="calc-input" placeholder="e.g. (3 + 4) * 2" autocomplete="off"
+                 inputmode="text" spellcheck="false" />
+        </div>
+        <div class="row">
+          <button class="btn" id="btn-calc">Calculate</button>
+          <button class="btn btn-secondary" id="btn-calc-clear">Clear</button>
+        </div>
+        <div class="output" id="calc-output" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Unit Converter -->
+    <section class="widget" data-widget-id="converter" aria-labelledby="w-conv-title">
+      <div class="widget-header">
+        <span id="w-conv-title"><i class="fa-solid fa-right-left" aria-hidden="true"></i> Unit Converter</span>
+        <span class="drag-handle" tabindex="0" role="button" aria-label="Reorder converter widget">⋮⋮</span>
+      </div>
+      <div class="widget-content">
+        <div class="field">
+          <label for="conv-input">Value</label>
+          <input type="number" id="conv-input" step="any" placeholder="0" />
+        </div>
+        <div class="row">
+          <select id="conv-from" aria-label="From unit"></select>
+          <select id="conv-to" aria-label="To unit"></select>
+        </div>
+        <div class="field" style="margin-top:var(--space-3)">
+          <label for="conv-category">Category</label>
+          <select id="conv-category">
+            <option value="length">Length</option>
+            <option value="mass">Mass</option>
+            <option value="volume">Volume</option>
+            <option value="temperature">Temperature</option>
+          </select>
+        </div>
+        <button class="btn" id="btn-convert">Convert</button>
+        <div class="output" id="conv-output" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- To-Do -->
+    <section class="widget" data-widget-id="todo" aria-labelledby="w-todo-title">
+      <div class="widget-header">
+        <span id="w-todo-title"><i class="fa-solid fa-list-check" aria-hidden="true"></i> To-Do List</span>
+        <span class="drag-handle" tabindex="0" role="button" aria-label="Reorder to-do widget">⋮⋮</span>
+      </div>
+      <div class="widget-content">
+        <form id="todo-form" autocomplete="off">
+          <div class="field">
+            <label for="todo-input" class="sr-only">New task</label>
+            <input type="text" id="todo-input" placeholder="Add a task and press Enter" maxlength="200" required />
+          </div>
+          <button class="btn" type="submit">Add Task</button>
+        </form>
+        <ul class="todo-list" id="todo-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast-container" id="toasts" role="region" aria-label="Notifications" aria-live="polite"></div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ============================================================
+    // Logger — structured, level-aware, swappable for Sentry/Datadog
+    // ============================================================
+    const Logger = (() => {
+      const LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
+      const min = LEVELS.info;
+      const fmt = (lvl, msg, ctx) =>
+        `[${new Date().toISOString()}] [${lvl.toUpperCase()}] ${msg}` +
+        (ctx ? ' ' + JSON.stringify(ctx) : '');
+      return {
+        debug: (m, c) => LEVELS.debug >= min && console.debug(fmt('debug', m, c)),
+        info:  (m, c) => LEVELS.info  >= min && console.info(fmt('info', m, c)),
+        warn:  (m, c) => LEVELS.warn  >= min && console.warn(fmt('warn', m, c)),
+        error: (m, c) => LEVELS.error >= min && console.error(fmt('error', m, c)),
+      };
+    })();
+
+    window.addEventListener('error', (e) =>
+      Logger.error('UncaughtError', { message: e.message, file: e.filename, line: e.lineno }));
+    window.addEventListener('unhandledrejection', (e) =>
+      Logger.error('UnhandledPromiseRejection', { reason: String(e.reason) }));
+
+    // ============================================================
+    // Storage — versioned, namespaced, fault-tolerant
+    // ============================================================
+    const Storage = (() => {
+      const NS = 'dashboard.v1.';
+      const safe = (fn, fallback) => { try { return fn(); } catch (e) { Logger.warn('StorageError', { e: String(e) }); return fallback; } };
+      return {
+        get: (k, d = null) => safe(() => {
+          const v = localStorage.getItem(NS + k);
+          return v === null ? d : JSON.parse(v);
+        }, d),
+        set: (k, v) => safe(() => { localStorage.setItem(NS + k, JSON.stringify(v)); return true; }, false),
+        remove: (k) => safe(() => { localStorage.removeItem(NS + k); return true; }, false),
+      };
+    })();
+
+    // ============================================================
+    // Toast notifications
+    // ============================================================
+    const Toast = (() => {
+      const root = document.getElementById('toasts');
+      return (msg, type = 'info', ttl = 3500) => {
+        const el = document.createElement('div');
+        el.className = 'toast' + (type === 'error' ? ' error' : '');
+        el.textContent = msg; // textContent => XSS-safe
+        root.appendChild(el);
+        setTimeout(() => el.remove(), ttl);
+      };
+    })();
+
+    // ============================================================
+    // HTTP — fetch with timeout, abort, single retry
+    // ============================================================
+    async function http(url, { timeout = 6000, retries = 1 } = {}) {
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), timeout);
+        try {
+          const res = await fetch(url, { signal: ctrl.signal, headers: { 'Accept': 'application/json' } });
+          clearTimeout(t);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch (e) {
+          clearTimeout(t);
+          Logger.warn('HttpAttemptFailed', { url, attempt, error: String(e) });
+          if (attempt === retries) throw e;
+        }
+      }
+    }
+
+    // ============================================================
+    // Theme
+    // ============================================================
+    const Theme = (() => {
+      const KEY = 'theme';
+      const btn = document.getElementById('btn-theme');
+      const apply = (t) => {
+        document.documentElement.setAttribute('data-theme', t);
+        btn.querySelector('i').className = t === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      };
+      const init = () => {
+        const saved = Storage.get(KEY);
+        const sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        apply(saved || sys);
+        btn.addEventListener('click', () => {
+          const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          apply(next); Storage.set(KEY, next);
+        });
+      };
+      return { init };
+    })();
+
+    // ============================================================
+    // Safe expression evaluator (NO eval/Function)
+    // Supports: + - * / % ( ) numbers and decimals
+    // Shunting-yard → RPN → evaluate
+    // ============================================================
+    const SafeMath = (() => {
+      const isDigit = (c) => /[0-9.]/.test(c);
+      const ops = { '+': { p: 1, a: 'L' }, '-': { p: 1, a: 'L' },
+                    '*': { p: 2, a: 'L' }, '/': { p: 2, a: 'L' }, '%': { p: 2, a: 'L' } };
+
+      function tokenize(s) {
+        const tokens = []; let i = 0; let prev = null;
+        while (i < s.length) {
+          const c = s[i];
+          if (c === ' ') { i++; continue; }
+          if (isDigit(c)) {
+            let num = '';
+            while (i < s.length && isDigit(s[i])) { num += s[i++]; }
+            if ((num.match(/\./g) || []).length > 1) throw new Error('Malformed number');
+            tokens.push({ t: 'num', v: parseFloat(num) }); prev = 'num'; continue;
+          }
+          if (c in ops) {
+            // unary minus / plus
+            if ((c === '-' || c === '+') && (prev === null || prev === 'op' || prev === 'lp')) {
+              tokens.push({ t: 'num', v: 0 });
             }
+            tokens.push({ t: 'op', v: c }); prev = 'op'; i++; continue;
+          }
+          if (c === '(') { tokens.push({ t: 'lp' }); prev = 'lp'; i++; continue; }
+          if (c === ')') { tokens.push({ t: 'rp' }); prev = 'rp'; i++; continue; }
+          throw new Error(`Unexpected character: ${c}`);
         }
-
-        function convert() {
-            var input = parseFloat(document.getElementById("converter-input").value);
-            var type = document.getElementById("converter-type").value;
-            var output;
-
-            switch (type) {
-                case "m":
-                    output = input * 3.28084 + " ft";
-                    break;
-                case "kg":
-                    output = input * 2.20462 + " lb";
-                    break;
-                case "l":
-                    output = input * 0.264172 + " gal";
-                    break;
+        return tokens;
+      }
+      function toRPN(tokens) {
+        const out = [], st = [];
+        for (const tk of tokens) {
+          if (tk.t === 'num') out.push(tk);
+          else if (tk.t === 'op') {
+            while (st.length && st[st.length-1].t === 'op' &&
+                   ops[st[st.length-1].v].p >= ops[tk.v].p) out.push(st.pop());
+            st.push(tk);
+          } else if (tk.t === 'lp') st.push(tk);
+          else if (tk.t === 'rp') {
+            while (st.length && st[st.length-1].t !== 'lp') out.push(st.pop());
+            if (!st.length) throw new Error('Mismatched parentheses');
+            st.pop();
+          }
+        }
+        while (st.length) {
+          const t = st.pop();
+          if (t.t === 'lp') throw new Error('Mismatched parentheses');
+          out.push(t);
+        }
+        return out;
+      }
+      function evalRPN(rpn) {
+        const s = [];
+        for (const tk of rpn) {
+          if (tk.t === 'num') s.push(tk.v);
+          else {
+            const b = s.pop(), a = s.pop();
+            if (a === undefined || b === undefined) throw new Error('Invalid expression');
+            switch (tk.v) {
+              case '+': s.push(a + b); break;
+              case '-': s.push(a - b); break;
+              case '*': s.push(a * b); break;
+              case '/': if (b === 0) throw new Error('Division by zero'); s.push(a / b); break;
+              case '%': s.push(a % b); break;
             }
-
-            document.getElementById("conversion-output").innerHTML = "<span>Conversion: </span>" + output;
+          }
         }
+        if (s.length !== 1) throw new Error('Invalid expression');
+        return s[0];
+      }
+      return { evaluate: (str) => {
+        if (typeof str !== 'string' || !str.trim()) throw new Error('Empty expression');
+        if (str.length > 200) throw new Error('Expression too long');
+        return evalRPN(toRPN(tokenize(str)));
+      }};
+    })();
 
-        function addTodo() {
-            var input = document.getElementById("todo-input").value;
-            if (input.trim() !== "") {
-                var listItem = document.createElement("li");
-                listItem.textContent = input;
-                document.getElementById("todo-list").appendChild(listItem);
-                document.getElementById("todo-input").value = "";
-            }
+    // ============================================================
+    // Calculator widget
+    // ============================================================
+    const Calculator = (() => {
+      const input = document.getElementById('calc-input');
+      const out = document.getElementById('calc-output');
+      const calc = () => {
+        out.classList.remove('error');
+        try {
+          const r = SafeMath.evaluate(input.value);
+          out.textContent = `Result: ${Number.isFinite(r) ? r : 'Invalid'}`;
+        } catch (e) {
+          out.classList.add('error');
+          out.textContent = `Error: ${e.message}`;
         }
+      };
+      const init = () => {
+        document.getElementById('btn-calc').addEventListener('click', calc);
+        document.getElementById('btn-calc-clear').addEventListener('click', () => {
+          input.value = ''; out.textContent = ''; input.focus();
+        });
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') calc(); });
+      };
+      return { init };
+    })();
 
-        function getRandomQuote() {
-            fetch("https://api.quotable.io/random")
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("quote").textContent = `"${data.content}" - ${data.author}`;
-                })
-                .catch(error => console.error("Error fetching quote:", error));
+    // ============================================================
+    // Unit converter
+    // ============================================================
+    const Converter = (() => {
+      // base units: meter, kg, liter, celsius
+      const UNITS = {
+        length: { m: 1, km: 1000, cm: 0.01, mm: 0.001, mi: 1609.344, yd: 0.9144, ft: 0.3048, in: 0.0254 },
+        mass:   { kg: 1, g: 0.001, mg: 0.000001, lb: 0.45359237, oz: 0.028349523125, ton: 1000 },
+        volume: { l: 1, ml: 0.001, m3: 1000, gal: 3.785411784, qt: 0.946352946, pt: 0.473176473, cup: 0.2365882365 },
+        temperature: { C: 'C', F: 'F', K: 'K' },
+      };
+      const LABELS = {
+        m: 'Meter', km: 'Kilometer', cm: 'Centimeter', mm: 'Millimeter',
+        mi: 'Mile', yd: 'Yard', ft: 'Foot', in: 'Inch',
+        kg: 'Kilogram', g: 'Gram', mg: 'Milligram', lb: 'Pound', oz: 'Ounce', ton: 'Metric Ton',
+        l: 'Liter', ml: 'Milliliter', m3: 'Cubic Meter', gal: 'Gallon (US)', qt: 'Quart', pt: 'Pint', cup: 'Cup',
+        C: 'Celsius', F: 'Fahrenheit', K: 'Kelvin',
+      };
+      const cat = document.getElementById('conv-category');
+      const from = document.getElementById('conv-from');
+      const to = document.getElementById('conv-to');
+      const input = document.getElementById('conv-input');
+      const out = document.getElementById('conv-output');
+
+      const populate = () => {
+        const keys = Object.keys(UNITS[cat.value]);
+        [from, to].forEach((sel, idx) => {
+          sel.innerHTML = '';
+          keys.forEach((k) => {
+            const opt = document.createElement('option');
+            opt.value = k; opt.textContent = `${LABELS[k] || k} (${k})`;
+            sel.appendChild(opt);
+          });
+          sel.selectedIndex = idx === 0 ? 0 : Math.min(1, keys.length - 1);
+        });
+      };
+
+      const tempConvert = (v, f, t) => {
+        let c = f === 'C' ? v : f === 'F' ? (v - 32) * 5/9 : v - 273.15;
+        return t === 'C' ? c : t === 'F' ? c * 9/5 + 32 : c + 273.15;
+      };
+
+      const convert = () => {
+        const v = parseFloat(input.value);
+        if (!Number.isFinite(v)) {
+          out.classList.add('error'); out.textContent = 'Enter a valid number'; return;
         }
-
-        function updateDateTime() {
-            var now = new Date();
-            var datetime = now.toLocaleString();
-            document.getElementById("datetime").innerHTML = datetime;
-
-            // Fetch holidays for New York
-            fetch("https://kayaposoft.com/enrico/json/v2.0/?action=getPublicHolidaysForYear&year=2024&country=usa&region=ny")
-                .then(response => response.json())
-                .then(data => {
-                    var holidays = data;
-                    var holidayList = "<h3>Upcoming Holidays in New York</h3><ul>";
-                    holidays.forEach(holiday => {
-                        holidayList += `<li>${holiday.date}: ${holiday.localName}</li>`;
-                    });
-                    holidayList += "</ul>";
-                    document.getElementById("datetime").innerHTML += holidayList;
-                })
-                .catch(error => console.error("Error fetching holidays:", error));
+        out.classList.remove('error');
+        let result;
+        if (cat.value === 'temperature') {
+          result = tempConvert(v, from.value, to.value);
+        } else {
+          const factors = UNITS[cat.value];
+          result = v * factors[from.value] / factors[to.value];
         }
+        out.textContent = `${v} ${from.value} = ${Number(result.toFixed(6))} ${to.value}`;
+      };
 
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-		getRandomQuote();
-    </script>
+      const init = () => {
+        populate();
+        cat.addEventListener('change', populate);
+        document.getElementById('btn-convert').addEventListener('click', convert);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') convert(); });
+      };
+      return { init };
+    })();
+
+    // ============================================================
+    // To-Do (persisted, sanitized)
+    // ============================================================
+    const Todo = (() => {
+      const KEY = 'todos';
+      const form = document.getElementById('todo-form');
+      const input = document.getElementById('todo-input');
+      const list = document.getElementById('todo-list');
+      let items = Storage.get(KEY, []);
+
+      const persist = () => Storage.set(KEY, items);
+
+      const render = () => {
+        list.innerHTML = '';
+        if (!items.length) {
+          const empty = document.createElement('li');
+          empty.className = 'todo-empty'; empty.textContent = 'No tasks yet.';
+          list.appendChild(empty); return;
+        }
+        items.forEach((it) => {
+          const li = document.createElement('li');
+          li.className = 'todo-item' + (it.done ? ' done' : '');
+          const cb = document.createElement('input');
+          cb.type = 'checkbox'; cb.checked = it.done; cb.id = `todo-${it.id}`;
+          cb.addEventListener('change', () => { it.done = cb.checked; persist(); render(); });
+          const lbl = document.createElement('label');
+          lbl.htmlFor = cb.id; lbl.textContent = it.text; // textContent => XSS-safe
+          const del = document.createElement('button');
+          del.type = 'button'; del.className = 'remove-btn';
+          del.setAttribute('aria-label', `Remove task: ${it.text}`);
+          del.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+          del.addEventListener('click', () => { items = items.filter(x => x.id !== it.id); persist(); render(); });
+          li.append(cb, lbl, del); list.appendChild(li);
+        });
+      };
+
+      const init = () => {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const text = input.value.trim();
+          if (!text) return;
+          items.push({ id: Date.now() + Math.random().toString(36).slice(2,6), text, done: false });
+          input.value = ''; persist(); render();
+        });
+        render();
+      };
+      return { init };
+    })();
+
+    // ============================================================
+    // Quote — multi-source with offline fallback
+    // ============================================================
+    const Quote = (() => {
+      const FALLBACKS = [
+        { content: 'The best way to predict the future is to invent it.', author: 'Alan Kay' },
+        { content: 'Simplicity is the ultimate sophistication.', author: 'Leonardo da Vinci' },
+        { content: 'Programs must be written for people to read.', author: 'Harold Abelson' },
+        { content: 'First, solve the problem. Then, write the code.', author: 'John Johnson' },
+        { content: 'Make it work, make it right, make it fast.', author: 'Kent Beck' },
+      ];
+      const el = document.getElementById('quote');
+      const btn = document.getElementById('btn-quote');
+
+      const renderQuote = (q) => {
+        el.innerHTML = '';
+        const text = document.createElement('span');
+        text.textContent = `“${q.content}”`;
+        const author = document.createElement('span');
+        author.className = 'quote-author';
+        author.textContent = `— ${q.author || 'Unknown'}`;
+        el.append(text, author);
+      };
+
+      const load = async () => {
+        btn.disabled = true;
+        try {
+          // Primary: ZenQuotes (free, CORS-enabled)
+          const data = await http('https://zenquotes.io/api/random');
+          if (Array.isArray(data) && data[0]?.q) {
+            renderQuote({ content: data[0].q, author: data[0].a }); return;
+          }
+          throw new Error('Unexpected payload');
+        } catch (e) {
+          Logger.warn('QuoteApiFailed', { error: String(e) });
+          renderQuote(FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]);
+        } finally {
+          btn.disabled = false;
+        }
+      };
+
+      const init = () => { btn.addEventListener('click', load); load(); };
+      return { init };
+    })();
+
+    // ============================================================
+    // Clock + Holidays (split intervals — bug fix from original)
+    // ============================================================
+    const Clock = (() => {
+      const time = document.getElementById('clock-time');
+      const date = document.getElementById('clock-date');
+      const list = document.getElementById('holiday-list');
+      const country = document.getElementById('holiday-country');
+      const KEY_COUNTRY = 'holidayCountry';
+      const CACHE_KEY = (c, y) => `holidays.${c}.${y}`;
+      const CACHE_TTL = 24 * 60 * 60 * 1000; // 24h
+
+      const tick = () => {
+        const now = new Date();
+        time.textContent = now.toLocaleTimeString();
+        date.textContent = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      };
+
+      const renderHolidays = (data) => {
+        list.innerHTML = '';
+        if (!Array.isArray(data) || !data.length) {
+          const li = document.createElement('li'); li.textContent = 'No holiday data.'; list.appendChild(li); return;
+        }
+        const today = new Date(); today.setHours(0,0,0,0);
+        const upcoming = data
+          .map(h => ({ ...h, _d: new Date(h.date) }))
+          .filter(h => h._d >= today)
+          .sort((a, b) => a._d - b._d)
+          .slice(0, 8);
+        if (!upcoming.length) {
+          const li = document.createElement('li'); li.textContent = 'No upcoming holidays this year.'; list.appendChild(li); return;
+        }
+        upcoming.forEach((h) => {
+          const li = document.createElement('li');
+          const name = document.createElement('span'); name.textContent = h.localName || h.name;
+          const t = document.createElement('time'); t.dateTime = h.date;
+          t.textContent = h._d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+          li.append(name, t); list.appendChild(li);
+        });
+      };
+
+      const loadHolidays = async () => {
+        const c = country.value;
+        const y = new Date().getFullYear();
+        const cacheKey = CACHE_KEY(c, y);
+        const cached = Storage.get(cacheKey);
+        if (cached && Date.now() - cached.ts < CACHE_TTL) {
+          renderHolidays(cached.data); return;
+        }
+        list.innerHTML = '<li class="skeleton" style="width:80%"></li><li class="skeleton" style="width:60%"></li>';
+        try {
+          // Nager.Date — free, public, no key required
+          const data = await http(`https://date.nager.at/api/v3/PublicHolidays/${y}/${c}`);
+          Storage.set(cacheKey, { ts: Date.now(), data });
+          renderHolidays(data);
+        } catch (e) {
+          Logger.error('HolidayLoadFailed', { country: c, year: y, error: String(e) });
+          list.innerHTML = '';
+          const li = document.createElement('li'); li.textContent = 'Could not load holidays.'; list.appendChild(li);
+        }
+      };
+
+      const init = () => {
+        const saved = Storage.get(KEY_COUNTRY);
+        if (saved) country.value = saved;
+        country.addEventListener('change', () => { Storage.set(KEY_COUNTRY, country.value); loadHolidays(); });
+        tick(); setInterval(tick, 1000);
+        loadHolidays();
+        // Refresh holidays once a day if tab stays open
+        setInterval(loadHolidays, CACHE_TTL);
+      };
+      return { init };
+    })();
+
+    // ============================================================
+    // Drag-and-drop reordering (HTML5 Drag API on handles)
+    // ============================================================
+    const DragReorder = (() => {
+      const KEY = 'order';
+      const root = document.getElementById('dashboard');
+      let dragged = null;
+
+      const applyOrder = () => {
+        const order = Storage.get(KEY);
+        if (!Array.isArray(order)) return;
+        const map = new Map();
+        root.querySelectorAll('.widget').forEach(w => map.set(w.dataset.widgetId, w));
+        order.forEach(id => { const w = map.get(id); if (w) root.appendChild(w); });
+      };
+
+      const persistOrder = () => {
+        const order = [...root.querySelectorAll('.widget')].map(w => w.dataset.widgetId);
+        Storage.set(KEY, order);
+      };
+
+      const initWidget = (widget) => {
+        const handle = widget.querySelector('.drag-handle');
+        if (!handle) return;
+        widget.setAttribute('draggable', 'false'); // only handle initiates
+        handle.addEventListener('mousedown', () => widget.setAttribute('draggable', 'true'));
+        handle.addEventListener('mouseup', () => widget.setAttribute('draggable', 'false'));
+        widget.addEventListener('dragstart', (e) => {
+          dragged = widget; widget.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+          // Required for Firefox
+          try { e.dataTransfer.setData('text/plain', widget.dataset.widgetId); } catch (_) {}
+        });
+        widget.addEventListener('dragend', () => {
+          widget.classList.remove('dragging');
+          widget.setAttribute('draggable', 'false');
+          root.querySelectorAll('.drag-over').forEach(w => w.classList.remove('drag-over'));
+          dragged = null; persistOrder();
+        });
+        widget.addEventListener('dragover', (e) => {
+          if (!dragged || dragged === widget) return;
+          e.preventDefault();
+          widget.classList.add('drag-over');
+        });
+        widget.addEventListener('dragleave', () => widget.classList.remove('drag-over'));
+        widget.addEventListener('drop', (e) => {
+          e.preventDefault(); widget.classList.remove('drag-over');
+          if (!dragged || dragged === widget) return;
+          const all = [...root.querySelectorAll('.widget')];
+          const di = all.indexOf(dragged), ti = all.indexOf(widget);
+          root.insertBefore(dragged, di < ti ? widget.nextSibling : widget);
+        });
+      };
+
+      const init = () => {
+        applyOrder();
+        root.querySelectorAll('.widget').forEach(initWidget);
+      };
+      return { init };
+    })();
+
+    // ============================================================
+    // Reset
+    // ============================================================
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (!confirm('Reset dashboard? This clears layout, theme, todos, and cached data.')) return;
+      Object.keys(localStorage).filter(k => k.startsWith('dashboard.v1.')).forEach(k => localStorage.removeItem(k));
+      Toast('Dashboard reset', 'info');
+      setTimeout(() => location.reload(), 600);
+    });
+
+    // ============================================================
+    // Boot
+    // ============================================================
+    const boot = () => {
+      performance.mark?.('app-boot-start');
+      Theme.init();
+      Calculator.init();
+      Converter.init();
+      Todo.init();
+      Quote.init();
+      Clock.init();
+      DragReorder.init();
+      performance.mark?.('app-boot-end');
+      try { performance.measure?.('app-boot', 'app-boot-start', 'app-boot-end'); } catch (_) {}
+      Logger.info('AppReady');
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+  })();
+  </script>
 </body>
 </html>
-

@@ -1,1077 +1,1983 @@
 <!DOCTYPE html>
-
 <html lang="en" ng-app="horrorApp">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Horror Fan Page — a haunted experience.">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="color-scheme" content="dark">
+
   <title>Horror Fan Page</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://raw.githubusercontent.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
-    
+    /* ============================================================
+       TOKENS
+       ============================================================ */
+    :root {
+      --color-bg: #0a0a0a;
+      --color-surface: rgba(17, 17, 17, 0.78);
+      --color-surface-alt: rgba(28, 18, 18, 0.85);
+      --color-card: #18100f;
+      --color-card-alt: #2a1a1a;
+      --color-accent: #c4001a;
+      --color-blood: #6e0000;
+      --color-accent-glow: rgba(196, 0, 26, 0.6);
+      --color-text: #f0e8e8;
+      --color-text-muted: #9a8a8a;
+
+      --shadow-elev: 0 4px 28px rgba(0, 0, 0, 0.75);
+      --shadow-glow: 0 0 28px var(--color-accent-glow);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+
+      --font-display: 'Creepster', serif;
+      --font-horror: 'Nosifer', serif;
+      --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+      --img-max-portrait-h: 720px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    /* FIX TURN 2: SYSTEM CURSOR IS DEFAULT.
+       The custom horror cursor is now opt-in via .horror-cursor class on <html>.
+       Removed the .haunted class auto-application entirely. */
+    html.horror-cursor { cursor: none; }
+    html.horror-cursor input,
+    html.horror-cursor textarea { cursor: text; }
+    html.horror-cursor button,
+    html.horror-cursor a,
+    html.horror-cursor [role="button"],
+    html.horror-cursor [role="menuitem"] { cursor: pointer; }
+
     body {
-      font-family: 'Arial', sans-serif;
-      background: url('https://c4.wallpaperflare.com/wallpaper/44/888/946/abandoned-house-haunted-moonlight-night-wallpaper-preview.jpg') no-repeat center center fixed;
+      font-family: var(--font-body);
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(60,0,0,0.4) 0%, transparent 60%),
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        url('https://c4.wallpaperflare.com/wallpaper/44/888/946/abandoned-house-haunted-moonlight-night-wallpaper-preview.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      background-color: var(--color-bg);
+      color: var(--color-text);
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-	  user-select: none;
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      animation: breathing 7s ease-in-out infinite;
     }
-    header {
-      text-align: center;
-      padding: 20px;
-      background-color: rgba(0, 0, 0, 0.8);
+
+    @keyframes breathing {
+      0%, 100% { filter: brightness(1) contrast(1); }
+      50%      { filter: brightness(0.94) contrast(1.04); }
+    }
+
+    body.possessed {
+      animation: possession-shake 0.12s infinite, possession-hue 4s linear infinite;
+      filter: invert(0.85) hue-rotate(180deg) contrast(1.4);
+    }
+    @keyframes possession-shake {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-2px, 1px); }
+      50%  { transform: translate(2px, -1px); }
+      75%  { transform: translate(-1px, 2px); }
+      100% { transform: translate(1px, -2px); }
+    }
+    @keyframes possession-hue {
+      0%   { filter: invert(0.85) hue-rotate(0deg) contrast(1.4); }
+      100% { filter: invert(0.85) hue-rotate(360deg) contrast(1.4); }
+    }
+
+    /* ============================================================
+       CURSOR EYE — FIX TURN 2:
+       - Display ONLY when html.horror-cursor is present
+       - Removed mix-blend-mode (was causing invisibility on dark surfaces)
+       - High-contrast white outer ring + red glow
+       ============================================================ */
+    .cursor-eye {
+      display: none; /* hidden by default — only shown when explicitly enabled */
+      position: fixed;
+      top: 0; left: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%,
+        #fff 0%, #fff 30%,
+        var(--color-accent) 32%, var(--color-blood) 55%,
+        #000 58%, #000 100%);
+      /* Always visible: thick white ring + red glow */
+      box-shadow:
+        0 0 0 2px #fff,
+        0 0 0 4px var(--color-accent),
+        0 0 16px var(--color-accent),
+        0 0 32px var(--color-accent-glow);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate3d(var(--cx, -100px), var(--cy, -100px), 0) translate(-50%, -50%);
+      will-change: transform;
+      transition: width 180ms ease, height 180ms ease;
+    }
+    html.horror-cursor .cursor-eye { display: block; }
+    .cursor-eye.dilated { width: 44px; height: 44px; }
+    .cursor-eye::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 35%; height: 35%;
+      background: #000;
+      border-radius: 50%;
+      transform: translate(calc(-50% + var(--pupil-x, 0px)), calc(-50% + var(--pupil-y, 0px)));
+      transition: transform 80ms linear;
+    }
+
+    .blood-drop {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: var(--color-blood);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      pointer-events: none;
+      z-index: 9997;
+      transform: translate(-50%, -50%);
+      animation: blood-fade 1.4s ease-out forwards;
+    }
+    @keyframes blood-fade {
+      0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, calc(-50% + 30px)) scale(0.5); }
+    }
+
+    .blood-rail {
+      position: fixed;
+      top: 0; right: 0;
+      width: 4px;
+      height: 100vh;
+      pointer-events: none; /* always non-blocking */
+      z-index: 5;
+      background: linear-gradient(180deg,
+        var(--color-blood) 0%,
+        var(--color-accent) calc(var(--scroll-pct, 0) * 1%),
+        transparent calc(var(--scroll-pct, 0) * 1% + 2%));
+      box-shadow: 0 0 8px var(--color-accent-glow);
+    }
+    .blood-rail::after {
+      content: '';
+      position: absolute;
+      top: calc(var(--scroll-pct, 0) * 1vh - 6px);
+      right: -3px;
+      width: 10px; height: 14px;
+      background: var(--color-accent);
+      border-radius: 50% 50% 50% 50% / 50% 50% 70% 70%;
+      box-shadow: 0 0 6px var(--color-accent-glow);
+    }
+
+    .subliminal {
+      position: fixed; inset: 0;
+      background-size: cover;
+      background-position: center;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0;
+      mix-blend-mode: screen;
+    }
+    .subliminal.flash { animation: flash-frame 80ms linear; }
+    @keyframes flash-frame {
+      0%   { opacity: 0; }
+      40%  { opacity: 0.85; }
+      100% { opacity: 0; }
+    }
+
+    .vignette {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background: radial-gradient(ellipse at center,
+        transparent 50%,
+        rgba(0,0,0,0.7) 100%);
+    }
+    .static-noise {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      animation: static-shift 0.4s steps(4) infinite;
+    }
+    @keyframes static-shift {
+      0%   { transform: translate(0,0); }
+      25%  { transform: translate(-2%,1%); }
+      50%  { transform: translate(1%,-2%); }
+      75%  { transform: translate(-1%,2%); }
+      100% { transform: translate(2%,1%); }
+    }
+
+    /* ============================================================
+       THREE.JS HERO STAGE
+       ============================================================ */
+    .three-stage {
       position: relative;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 70vh;
+      background: radial-gradient(ellipse at center, #1a0000 0%, #000 70%);
+      border: 2px solid var(--color-accent);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-elev), inset 0 0 80px rgba(0,0,0,0.8);
+      margin: 20px 0;
+    }
+    .three-stage canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      pointer-events: none; /* canvas never captures clicks */
+    }
+    .three-stage .stage-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 3px);
+      z-index: 2;
+    }
+    .three-stage .stage-label {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      font-family: var(--font-horror);
+      color: var(--color-accent);
+      font-size: 0.85rem;
+      text-shadow: 0 0 8px #000;
+      pointer-events: none;
+      letter-spacing: 0.1em;
+      z-index: 3;
+      opacity: 0.7;
+    }
+    .three-stage .mic-meter {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 120px;
+      height: 6px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--color-blood);
+      border-radius: 3px;
+      overflow: hidden;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .three-stage .mic-meter-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-blood), var(--color-accent), #ff5500);
+      width: 0%;
+      transition: width 60ms linear;
+      box-shadow: 0 0 8px var(--color-accent);
+    }
+
+    /* ============================================================
+       MIC CONSENT
+       ============================================================ */
+    .mic-consent {
+      background: var(--color-card);
+      border: 2px solid var(--color-accent);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin: 20px 0;
+      box-shadow: var(--shadow-glow);
+      text-align: center;
+      position: relative;
+      z-index: 6;
+    }
+    .mic-consent h3 {
+      color: var(--color-accent);
+      font-family: var(--font-horror);
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+    }
+    .mic-consent p {
+      color: var(--color-text-muted);
+      margin: 0 0 16px;
+      line-height: 1.7;
+    }
+    .mic-consent .btn-row {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .mic-btn {
+      padding: 10px 20px;
+      font-family: var(--font-horror);
+      font-size: 0.95rem;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+      transition: all 200ms;
+      border: 1.5px solid var(--color-accent);
+      cursor: pointer;
+      position: relative;
+      z-index: 7;
+    }
+    .mic-btn:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+    .mic-btn.primary {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .mic-btn.primary:hover { box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+    .mic-btn.secondary {
+      background: transparent;
+      color: var(--color-text-muted);
+      border-color: var(--color-blood);
+    }
+    .mic-btn.secondary:hover { background: var(--color-card-alt); color: var(--color-text); }
+
+    .mic-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--color-blood);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .mic-status::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--color-text-muted);
+    }
+    .mic-status.active::before {
+      background: var(--color-accent);
+      box-shadow: 0 0 8px var(--color-accent);
+      animation: pulse-mic 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse-mic {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    /* ============================================================
+       HEADER / NAV
+       ============================================================ */
+    header[role="banner"] {
+      position: relative;
+      text-align: center;
+      padding: 28px 16px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.92), rgba(0,0,0,0.7));
+      box-shadow: var(--shadow-elev);
+      border-bottom: 1px solid var(--color-blood);
+      z-index: 10;
     }
     header h1 {
       margin: 0;
-      font-size: 4rem;
-      color: #e60000;
-      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-      font-family: 'Creepster', cursive;
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: rgba(51, 51, 51, 0.8);
-	  
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-      border-bottom: 3px solid #e60000; /* Horror-themed border */
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      gap: 20px;
-    }
-    nav ul li {
-      margin: 0;
-    }
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 20px;
-      display: block;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      font-family: 'Nosifer', cursive;
-      border-radius: 10px; /* Rounded corners */
-      border: 2px solid #e60000; /* Border color */
-      text-align: center;
-    }
-    nav ul li a.active, nav ul li a:hover {
-      background-color: #e60000;
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(230, 0, 0, 0.8); /* Hover effect */
-    }
-    .content {
-      display: none;
-      margin: 6px;
-	  padding: 4px;
-      background-color: rgba(17, 17, 17, 0.7);
-      animation: fadeIn 1s ease-in-out;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-      border: 2px solid #e60000; /* Horror-themed border */
-      border-radius: 10px; /* Rounded corners */
-      margin-top: 20px;
-    }
-    .content.active {
-      display: block;
-	  
-      background-color: rgba(17, 17, 17, 0.7);
-    }
-    .section {
-      padding: 20px;
-      border: 1px solid #444;
-      margin-bottom: 20px;
-      background-color: rgba(34, 34, 34, 0.2);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-      border-radius: 10px; /* Rounded corners */
-    }
-    .section h2 {
-      margin-top: 0;
-      color: #e60000;
-      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-      font-family: 'Nosifer', cursive;
-    }
-    .section p {
-      color: #fff;
-    }
-    .section img {
-      max-width: 800px;
-      height: auto;
-      border: 2px solid #e60000;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border-radius: 10px; /* Rounded corners */
-    }
-    <!-- .section img:hover { -->
-      <!-- transform: scale(1.05); -->
-      <!-- box-shadow: 0 0 20px rgba(230, 0, 0, 0.8); -->
-    <!-- } -->
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    .scary-text {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-      font-family: 'Nosifer', cursive;
-    }
-    .audio-button {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      color: var(--color-accent);
+      font-family: var(--font-display);
       cursor: pointer;
-      text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-      transition: transform 0.3s ease;
-    }
-    .audio-button:hover {
-      transform: scale(1.2);
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      text-align: center;
-      font-size: 2rem;
-      font-family: 'Nosifer', cursive;
-      opacity: 0;
-      transition: opacity 1s ease;
-      pointer-events: none;
-    }
-    .overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-	
-	
-	
-
-
-
-
-#home img:hover {
-	transform: scale(1.05); -->
-	box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
-
-}
-
-
-.section {
-  margin: 20px 0;
-}
-
-.demon-card {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-}
-
-.demon-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.demon-image {
-  display: block;
-  margin: 0 auto;
-  max-width: 800px;
-  width: 100%;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-}
-
-.demon-image:hover {
-  transform: scale(1.04);
-}
-
-.demon-details {
-  margin-top: 20px;
-}
-
-.demon-details h4 {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-}
-
-.competitors {
-  margin-top: 10px;
-}
-
-.competitor {
-  display: flex;
-  align-items: center;
-  background-color: #333333;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.competitor-image {
-  width: 100px;
-  height: 100px;
-  margin-right: 20px;
-  border-radius: 8px;
-}
-
-.competitor-info {
-  flex: 1;
-}
-
-.competitor h5 {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-}
-
-
-
-
-
-
-
-
-
-
-.section {
-  padding: 40px;
-  background-color: rgba(0, 0, 0, 0.9);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  text-align: center;
-  color: #ff6666; /* Reddish scary color */
-}
-
-.movie-container {
-  margin-bottom: 30px;
-}
-
-.movie-details {
-  text-align: left;
-}
-
-.movie-details img {
-  max-width: 100%;
-  height: auto;
-  border: 5px solid #e60000; /* Reddish border */
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); /* Reddish shadow */
-  transition: transform 0.3s ease;
-}
-
-.movie-details img:hover {
-  transform: scale(1.05);
-}
-
-.movie-details h3 {
-  color: #e60000; /* Reddish title color */
-  font-size: 2rem;
-  margin-top: 10px;
-}
-
-.movie-details p {
-  color: #fff;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.characters {
-  margin-top: 20px;
-}
-
-.characters h4 {
-  color: #e60000; /* Reddish title color */
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.characters ul {
-  list-style: none;
-  padding: 0;
-}
-
-.characters ul li {
-  color: #fff;
-  font-size: 1.2rem;
-}
-
-.movie-item {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.movie-image {
-  max-width: 800px;
-  max-height: 500px;
-  height: auto;
-  border: 2px solid #e60000; /* Horror-themed border */
-  border-radius: 10px; /* Rounded corners */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.movie-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
-}
-
-.movie-details {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: rgba(34, 34, 34, 0.9);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-  border-radius: 10px; /* Rounded corners */
-}
-
-.movie-details h4 {
-  color: #e60000; /* Horror-themed text color */
-  font-family: 'Nosifer', cursive;
-}
-
-.characters, .description {
-  margin-bottom: 20px;
-}
-
-.characters strong {
-  color: #e60000; /* Horror-themed text color */
-}
-
-
-
-
-
-/* Media Query for smaller screens */
-@media (max-width: 768px) {
-  header {
-    padding: 10px;
-  }
-
-  header h1 {
-    font-size: 3rem;
-    margin: 0; /* Reset margin to avoid spacing issues */
-  }
-
-nav {
-	width: 100vw !important;
-	
-	}
-
-  nav ul {
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: nowrap; /* Prevent items from wrapping */
-    gap: 10px; /* Gap between items */
-    padding: 20px 10px; /* Padding on both sides */
-    margin: 0; /* Remove default margin */
-    justify-content: flex-start; /* Align items to the start */
-    overflow-x: auto; /* Enable horizontal scrolling */
-  }
-
-    nav ul li {
-        font-size: 14px; /* Reduce font size for smaller screens */
-    }
-
-  nav ul li a {
-    display: block;
-    padding: 7px 5px;
-
-    font-size: 0.9rem;
-    white-space: nowrap; /* Prevent text wrapping */
-  }
-
-  .content {
-    padding: 10px;
-  }
-
-  .section {
-    padding: 10px;
-  }
-
-  .section h2 {
-    font-size: 1.8rem;
-  }
-
-  .section p {
-    font-size: 1rem;
-  }
-
-  .section img {
-    max-width: 100%;
-  }
-
-  .scary-text {
-    font-size: 1rem;
-  }
-
-  .audio-button {
-    font-size: 1.2rem;
-  }
-
-  .overlay {
-    font-size: 1.5rem;
-  }
-}
-
-
-
-
-    .audio-container {
-      margin: 20px 0;
+      letter-spacing: 0.04em;
+      text-shadow:
+        0 0 12px var(--color-accent-glow),
+        0 0 32px rgba(196,0,26,0.3),
+        2px 2px 0 var(--color-blood);
+      animation: title-flicker 5.2s infinite;
       position: relative;
     }
-
-
-    .audio-container audio {
+    @keyframes title-flicker {
+      0%, 91%, 100% { opacity: 1; }
+      92%           { opacity: 0.3; }
+      93%           { opacity: 1; }
+      94%           { opacity: 0.5; }
+      95%           { opacity: 1; }
+    }
+    header h1::before, header h1::after {
+      content: 'Horror Fan Page';
+      position: absolute;
+      top: 0; left: 0;
       width: 100%;
-      margin-top: 10px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    header h1::before {
+      color: #00ffea;
+      animation: glitch-1 3s infinite linear alternate-reverse;
+    }
+    header h1::after {
+      color: #ff0040;
+      animation: glitch-2 2.7s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-1 {
+      0%, 95%, 100% { transform: translate(0,0); clip-path: inset(0 0 0 0); }
+      96% { transform: translate(-2px,1px); clip-path: inset(20% 0 60% 0); }
+      98% { transform: translate(2px,-1px); clip-path: inset(60% 0 20% 0); }
+    }
+    @keyframes glitch-2 {
+      0%, 95%, 100% { transform: translate(0,0); clip-path: inset(0 0 0 0); }
+      97% { transform: translate(2px,2px); clip-path: inset(40% 0 30% 0); }
+      99% { transform: translate(-2px,-2px); clip-path: inset(10% 0 70% 0); }
+    }
+    .header-content {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      position: relative; z-index: 2;
+    }
+    .audio-button {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--color-accent);
+      color: var(--color-text);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 200ms;
+      display: inline-flex; gap: 8px; align-items: center;
+    }
+    .audio-button:hover {
+      background: var(--color-accent);
+      box-shadow: var(--shadow-glow);
     }
 
-    .audio-container audio::-webkit-media-controls-panel {
-      background-color:red;
-      color: black;
+    .silence-all {
+      position: fixed;
+      top: 14px; right: 14px;
+      z-index: 250;
+      background: var(--color-blood);
+      color: #fff;
+      border: 1.5px solid var(--color-accent);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      box-shadow: var(--shadow-glow);
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .silence-all:hover { background: var(--color-accent); transform: scale(1.05); }
+
+    nav[role="navigation"] {
+      display: flex;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(20,10,10,0.95), rgba(15,8,8,0.95));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-elev);
+      border-bottom: 2px solid var(--color-blood);
+    }
+    nav ul {
+      list-style: none; padding: 12px; margin: 0;
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    }
+    /* FIX TURN 2: Nav items are now <button> not <a href="#">.
+       <a href="#"> was making the URL fragment change & scrolling unpredictably. */
+    nav ul li button.nav-btn {
+      color: var(--color-text);
+      background: rgba(0,0,0,0.5);
+      text-decoration: none;
+      padding: 10px 18px;
+      display: block;
+      font-family: var(--font-horror);
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--color-accent);
+      cursor: pointer;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      transition: all 200ms;
+      position: relative;
+    }
+    nav ul li button.nav-btn:hover,
+    nav ul li button.nav-btn.active {
+      background: var(--color-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow);
+    }
+    nav ul li button.nav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -10px; left: 50%;
+      width: 6px; height: 6px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 8px var(--color-accent);
     }
 
-    .audio-container audio::-webkit-media-controls-play-button,
-    .audio-container audio::-webkit-media-controls-current-time-display,
-    .audio-container audio::-webkit-media-controls-time-remaining-display {
-      color: black;
+    /* ============================================================
+       SEARCH / LAYOUT / IMG
+       ============================================================ */
+    .search-bar { display: flex; gap: 10px; margin-bottom: 24px; align-items: center; }
+    .search-bar input {
+      flex: 1; padding: 10px 14px;
+      background: rgba(0,0,0,0.7);
+      border: 1.5px solid var(--color-blood);
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      font-family: inherit; cursor: text;
     }
-
-    .audio-container audio::-moz-range-track,
-    .audio-container audio::-ms-track {
-      background-color: red;
-      color: black;
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-glow);
     }
+    .search-count { color: var(--color-text-muted); font-size: 0.85rem; white-space: nowrap; }
 
+    main { padding-bottom: 80px; }
+    .content {
+      display: none; margin: 24px auto; max-width: 1200px; padding: 16px;
+      animation: fadeIn 500ms ease-out;
+    }
+    .content.active { display: block; }
     .section {
-      animation: fadeIn 2s;
+      padding: 28px; margin-bottom: 24px;
+      background: var(--color-surface-alt);
+      box-shadow: var(--shadow-elev);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-blood);
+    }
+    .section h2 {
+      margin: 0 0 20px;
+      color: var(--color-accent);
+      font-family: var(--font-horror);
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      text-shadow: 0 0 12px var(--color-accent-glow);
+    }
+    .scary-text {
+      font-size: 1.15rem; line-height: 1.7;
+      font-family: var(--font-horror);
+      text-shadow: 0 0 5px rgba(255,0,0,0.4);
+    }
+
+    .img-frame {
+      display: flex; justify-content: center; align-items: center;
+      width: 100%; margin: 0 auto;
+      position: relative;
+      background: linear-gradient(135deg, rgba(40,0,0,0.5), rgba(0,0,0,0.7));
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      min-height: 120px;
+    }
+    .responsive-img {
+      width: auto; height: auto;
+      max-width: 100%;
+      max-height: var(--img-max-portrait-h);
+      object-fit: contain;
+      object-position: center;
+      border: 2px solid var(--color-accent);
+      border-radius: var(--radius-md);
+      transition: transform 320ms cubic-bezier(0.4,0,0.2,1), filter 320ms;
+      cursor: pointer;
+      background: #000;
+      display: block;
+    }
+    .responsive-img:hover { transform: scale(1.02); filter: brightness(1.08) contrast(1.05); }
+    .responsive-img.possessed-frame { animation: img-possess 0.4s linear; }
+    @keyframes img-possess {
+      0%, 100% { filter: none; }
+      30% { filter: hue-rotate(180deg) invert(1) brightness(1.5); }
+      70% { filter: hue-rotate(90deg) saturate(2); }
+    }
+    .responsive-img.awakening { animation: awaken 1.2s ease-in-out; }
+    @keyframes awaken {
+      0%   { filter: brightness(1) contrast(1); transform: scale(1); }
+      50%  { filter: brightness(1.4) contrast(1.3) hue-rotate(15deg); transform: scale(1.04); }
+      100% { filter: brightness(0.9) contrast(1.1) saturate(1.3); transform: scale(1); }
+    }
+
+    .movie-item {
+      margin-bottom: 40px; display: grid; gap: 20px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) {
+      .movie-item { grid-template-columns: minmax(280px, 1fr) 1.2fr; align-items: start; }
+    }
+    .movie-item h3 {
+      grid-column: 1 / -1; margin: 0;
+      color: var(--color-accent);
+      font-family: var(--font-horror);
+      font-size: clamp(1.25rem, 3vw, 1.6rem);
+    }
+    .movie-details {
+      padding: 20px; background: var(--color-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-blood);
+    }
+    .movie-details h4 {
+      color: var(--color-accent); font-family: var(--font-horror);
+      margin: 0 0 10px; font-size: 1.05rem;
+    }
+    .movie-details ul { padding-left: 18px; margin: 0 0 16px; }
+    .movie-details li { margin-bottom: 8px; }
+    .movie-details li strong { color: var(--color-accent); }
+    .movie-details .description p { color: var(--color-text-muted); margin: 0; }
+
+    .demon-card {
+      background: var(--color-card);
+      padding: 24px; margin-bottom: 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-blood);
+    }
+    .demon-card h3 {
+      font-size: clamp(1.4rem, 3vw, 1.75rem);
+      margin: 0 0 16px;
+      color: var(--color-accent);
+      font-family: var(--font-horror);
+    }
+    .demon-details { margin-top: 20px; }
+    .demon-details h4 {
+      font-size: 1.1rem; margin: 16px 0 8px;
+      color: var(--color-accent);
+      font-family: var(--font-horror);
+    }
+    .competitors { margin-top: 12px; display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .competitors { grid-template-columns: 1fr 1fr; } }
+    .competitor {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: var(--color-card-alt);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-blood);
+    }
+    .competitor-thumb-wrap {
+      flex-shrink: 0;
+      width: 140px; max-width: 35vw;
+      display: flex; align-items: center; justify-content: center;
+      background: #000; border-radius: var(--radius-sm); overflow: hidden;
+      border: 1px solid var(--color-accent);
+    }
+    .competitor-image { width: 100%; height: auto; max-height: 200px; object-fit: contain; cursor: pointer; }
+    .competitor h5 { margin: 0 0 6px; color: var(--color-accent); font-family: var(--font-horror); }
+    .competitor p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
+
+    .audio-container {
+      margin: 0 0 20px; padding: 16px;
+      background: var(--color-card);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-blood);
+    }
+    .audio-container h3 { color: var(--color-accent); font-family: var(--font-horror); margin: 0 0 10px; }
+    .audio-container audio { width: 100%; }
+
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(6px);
+      display: flex; justify-content: center; align-items: center;
+      color: var(--color-text); text-align: center;
+      font-family: var(--font-horror);
+      opacity: 0; pointer-events: none;
+      transition: opacity 600ms;
+      z-index: 200; padding: 24px;
+    }
+    .overlay.active { opacity: 1; pointer-events: all; }
+    .overlay p {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      text-shadow: 0 0 16px var(--color-accent-glow);
+      margin: 0;
+    }
+    .lightbox {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.96);
+      display: none; align-items: center; justify-content: center;
+      z-index: 300; padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 95vw; max-height: 92vh;
+      width: auto; height: auto; object-fit: contain;
+      border: 2px solid var(--color-accent);
+      box-shadow: 0 0 40px var(--color-accent-glow);
+    }
+    .lightbox-close {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--color-accent); color: #fff;
+      border: none; width: 44px; height: 44px;
+      border-radius: 50%; font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .sanity-panel {
+      position: fixed;
+      bottom: 16px; left: 16px;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid var(--color-blood);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      z-index: 100;
+      max-width: 300px;
+      backdrop-filter: blur(4px);
+    }
+    .sanity-panel button {
+      background: transparent;
+      border: 1px solid var(--color-accent);
+      color: var(--color-text);
+      padding: 5px 10px;
+      margin-top: 6px;
+      margin-right: 4px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      display: inline-block;
+    }
+    .sanity-panel button:hover { background: var(--color-accent); }
+    .sanity-panel kbd {
+      background: var(--color-card-alt);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 0.7rem;
+    }
+    .sanity-panel button.toggle-on {
+      background: var(--color-accent);
+      color: #fff;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
+    .empty-state {
+      text-align: center; padding: 40px 20px;
+      color: var(--color-text-muted); font-style: italic;
+    }
 
-img:hover {
-box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
-}
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      html.horror-cursor { cursor: auto; }
+      html { scroll-behavior: auto; }
+      .cursor-eye, .blood-drop, .blood-rail, .static-noise, .subliminal { display: none !important; }
+      header h1::before, header h1::after { display: none; }
+      body { animation: none; }
+      .three-stage { display: none; }
+    }
 
+    @media (max-width: 768px) {
+      html.horror-cursor { cursor: auto; }
+      .cursor-eye { display: none !important; }
+      nav ul {
+        flex-wrap: nowrap; overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+      }
+      nav ul li button.nav-btn { padding: 8px 14px; font-size: 0.8rem; white-space: nowrap; }
+      .competitor { flex-direction: column; align-items: center; text-align: center; }
+      :root { --img-max-portrait-h: 80vh; }
+      .three-stage { aspect-ratio: 4 / 3; }
+      .silence-all { top: 8px; right: 8px; padding: 6px 10px; font-size: 0.7rem; }
+    }
 
+    @media print {
+      *, *::before, *::after { animation: none !important; }
+      body { background: #fff; color: #000; }
+      nav, .audio-button, .overlay, audio, .lightbox,
+      .blood-rail, .static-noise, .vignette, .cursor-eye,
+      .sanity-panel, .subliminal, .three-stage, .mic-consent, .silence-all { display: none !important; }
+      .content { display: block !important; }
+    }
 
-header {
-  position: relative;
-  color: white; /* White text for contrast */
-  text-align: center; /* Center-align text */
-}
-
-.header-content {
-  position: relative;
-  z-index: 2; /* Ensure content is above the canvas */
-}
-
-h1 {
-  margin: 0; /* Remove default margin */
-}
-
-.audio-button {
-  font-size: 24px;
-  background: none;
-  border: none;
-  color: red;
-  cursor: pointer;
-}
-
-
-#h1 {
-   <!-- color: black; -->
-   cursor: pointer;
-
-}
-
-
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
   </style>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 </head>
+
 <body ng-controller="MainController">
 
-<header>
-  <div class="header-content">
-    <h1 id="h1" onclick="refreshpage()">Horror Fan Page</h1>
-    <button class="audio-button" ng-click="toggleSound()">&#128264;</button>
-  </div>
-</header>
+  <div class="static-noise" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="blood-rail" aria-hidden="true"></div>
+  <div class="cursor-eye" id="cursor-eye" aria-hidden="true"></div>
+  <div class="subliminal" id="subliminal" aria-hidden="true"></div>
 
+  <button class="silence-all" ng-click="silenceEverything()" type="button" aria-label="Silence all audio">
+    <span aria-hidden="true">🔇</span>
+    <span>Silence All</span>
+  </button>
 
+  <header role="banner">
+    <div class="header-content">
+      <h1 ng-click="reloadPage()" tabindex="0" ng-keydown="onTitleKey($event)">Horror Fan Page</h1>
+      <button class="audio-button" ng-click="toggleHeartbeat()" type="button">
+        <span aria-hidden="true">{{ heartbeatOn ? '\u2665' : '\u2661' }}</span>
+        <span>{{ heartbeatOn ? 'Silence the heart' : 'Hear the heart' }}</span>
+      </button>
+    </div>
+  </header>
 
-  <nav>
-    <ul>
-      <li><a href="" ng-class="{active: currentSection === 'home'}" ng-click="navigate('home')">Home</a></li>
-      <li><a href="" ng-class="{active: currentSection === 'movies'}" ng-click="navigate('movies')">Movies</a></li>
-      <li><a href="" ng-class="{active: currentSection === 'wiki'}" ng-click="navigate('wiki')">Wiki</a></li>
-      <li><a href="" ng-class="{active: currentSection === 'sounds'}" ng-click="navigate('sounds')">Sounds</a></li> <!-- New section -->
+  <!-- FIX TURN 2: nav uses <button> not <a href="#"> to prevent URL hash navigation -->
+  <nav role="navigation" aria-label="Primary">
+    <ul role="menubar">
+      <li role="none"><button type="button" class="nav-btn" role="menuitem" ng-class="{active: currentSection === 'home'}"   ng-click="navigate('home')">Home</button></li>
+      <li role="none"><button type="button" class="nav-btn" role="menuitem" ng-class="{active: currentSection === 'movies'}" ng-click="navigate('movies')">Movies</button></li>
+      <li role="none"><button type="button" class="nav-btn" role="menuitem" ng-class="{active: currentSection === 'wiki'}"   ng-click="navigate('wiki')">Wiki</button></li>
+      <li role="none"><button type="button" class="nav-btn" role="menuitem" ng-class="{active: currentSection === 'sounds'}" ng-click="navigate('sounds')">Sounds</button></li>
     </ul>
   </nav>
 
-<div ng-show="currentSection === 'home'" class="content active">
-  <div class="section" id="home">
-    <h2>Welcome to the Horror Fan Page</h2>
-    <p class="scary-text">Enter if you dare! Discover the most terrifying characters and stories that will haunt your nightmares.</p>
-    <div class="image-container" ng-click="showOverlay = true">
-	
-<img ng-src="{{ randomHorrorImage }}" alt="Random Scary Image" class="movie-image" ng-mouseenter="playRandomAudio()" ng-mouseleave="stopRandomAudio()">
+  <main id="main-content" role="main">
 
-<audio id="randomAudio" src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3">
-</audio>
+    <!-- HOME -->
+    <section ng-show="currentSection === 'home'" class="content active" aria-labelledby="home-heading">
+      <div class="section">
+        <h2 id="home-heading">
+          Welcome to the Horror Fan Page
+          <span class="mic-status" ng-class="{active: micActive}" ng-show="micActive">listening</span>
+        </h2>
+        <p class="scary-text">Enter if you dare. Something is watching you scroll. Something is listening to you breathe.</p>
 
-      <div class="overlay" ng-show="showOverlay">
-        <p>Click to reveal more...</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div ng-show="currentSection === 'movies'" class="content active">
-  <div class="section">
-    <h2>Horror Movies</h2>
-    <div ng-repeat="movie in movies" class="movie-item">
-      <h3>{{ movie.title }}</h3>
-
-<img ng-src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-image" ng-mouseenter="playAudio($event.target.nextElementSibling)" ng-mouseleave="stopAudio($event.target.nextElementSibling)">
-
-<audio src="{{ movie.audio }}"></audio>
-
-
-
-
-		<div class="movie-details">
-        <div class="characters">
-          <h4>Characters:</h4>
-          <ul>
-            <li ng-repeat="character in movie.characters">
-              <strong>{{ character.name }}</strong>: {{ character.description }}
-            </li>
-          </ul>
+        <div class="three-stage" id="three-stage" ng-show="threeAvailable">
+          <div class="stage-overlay"></div>
+          <div class="mic-meter" ng-show="micActive">
+            <div class="mic-meter-fill" id="mic-meter-fill"></div>
+          </div>
+          <div class="stage-label">// SUMMONING //</div>
         </div>
-        <div class="description">
-          <h4>Description:</h4>
-          <p>{{ movie.description }}</p>
+
+        <div class="mic-consent" ng-show="!micActive && !micDenied">
+          <h3>Will you let them hear you?</h3>
+          <p>
+            Grant microphone access. The page will use your voice to summon whispers
+            built from your own breath — pitched down, reversed, and scattered around you in 3D space.
+            <br><br>
+            <strong style="color:var(--color-accent);">Your audio never leaves your device.</strong>
+            No recording is saved or transmitted. Everything happens in your browser.
+          </p>
+          <div class="btn-row">
+            <button class="mic-btn primary" ng-click="requestMic()" type="button">Summon them</button>
+            <button class="mic-btn secondary" ng-click="declineMic()" type="button">No, I'm afraid</button>
+          </div>
+        </div>
+
+        <div class="mic-consent" ng-show="micActive">
+          <h3>They are listening.</h3>
+          <p>Voice harvesting active. Whispers will emerge in 3-8 second intervals.</p>
+          <div class="btn-row">
+            <button class="mic-btn secondary" ng-click="stopMicUI()" type="button">Stop listening</button>
+          </div>
+        </div>
+
+        <div class="mic-consent" ng-show="micDenied">
+          <h3>They could not reach you.</h3>
+          <p>Microphone access denied or unavailable. You can change this in your browser's site settings.</p>
+          <button class="mic-btn secondary" ng-click="micDenied = false" type="button">Try again</button>
+        </div>
+
+        <p style="margin-top:24px; color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.8;">
+          <strong style="color: var(--color-accent);">Secrets:</strong><br>
+          • Toggle the demonic eye cursor in the sanity panel (bottom-left).<br>
+          • Try the <kbd>Konami Code</kbd> (↑ ↑ ↓ ↓ ← → ← → B A).<br>
+          • Long-press any image to <em>awaken</em> it.<br>
+          • Triple-tap <kbd>Esc</kbd> to exorcise all effects, or click <kbd>Silence All</kbd>.<br>
+          • <kbd>Ctrl</kbd>+<kbd>H/M/Q/S</kbd> to navigate.
+        </p>
+      </div>
+    </section>
+
+    <!-- MOVIES -->
+    <section ng-show="currentSection === 'movies'" class="content active" aria-labelledby="movies-heading">
+      <div class="section">
+        <h2 id="movies-heading">Horror Movies</h2>
+        <div class="search-bar" role="search">
+          <label for="movie-search" class="visually-hidden">Search movies</label>
+          <input id="movie-search" type="search"
+                 ng-model="movieQuery"
+                 ng-model-options="{ debounce: 200 }"
+                 placeholder="Search movies, characters, descriptions…"
+                 autocomplete="off">
+          <span class="search-count">{{ (movies | movieFilter:movieQuery).length }} / {{ movies.length }}</span>
+        </div>
+        <article ng-repeat="movie in filteredMovies = (movies | movieFilter:movieQuery) track by movie.title" class="movie-item">
+          <h3>{{ movie.title }}</h3>
+          <div class="img-frame">
+            <img ng-src="{{ movie.image }}"
+                 alt="Poster art for {{ movie.title }}"
+                 class="responsive-img"
+                 loading="lazy" decoding="async"
+                 ng-click="openLightbox(movie.image, movie.title)"
+                 ng-mousedown="startLongPress($event)"
+                 ng-mouseup="endLongPress($event)"
+                 ng-mouseleave="endLongPress($event); stopAudio($event.target.parentElement.nextElementSibling)"
+                 ng-mouseenter="playAudio($event.target.parentElement.nextElementSibling)">
+          </div>
+          <audio preload="none" ng-src="{{ movie.audio }}"></audio>
+          <div class="movie-details">
+            <div class="characters">
+              <h4>Characters</h4>
+              <ul>
+                <li ng-repeat="character in movie.characters">
+                  <strong>{{ character.name }}</strong>: {{ character.description }}
+                </li>
+              </ul>
+            </div>
+            <div class="description">
+              <h4>Description</h4>
+              <p>{{ movie.description }}</p>
+            </div>
+          </div>
+        </article>
+        <div ng-if="filteredMovies.length === 0" class="empty-state">
+          No movies match "<strong>{{ movieQuery }}</strong>".
         </div>
       </div>
-    </div>
-  </div>
-</div>
+    </section>
 
-
-
-<div ng-show="currentSection === 'wiki'" class="content active">
-  <div class="section">
-    <h2>Wiki: Demon Characters</h2>
-    <div ng-repeat="demon in wikiStories">
-      <div class="demon-card">
-        <h3>{{ demon.title }}</h3>
-        <img ng-src="{{ demon.image }}" alt="{{ demon.title }}" class="demon-image">
-        <div class="demon-details">
-          <p>{{ demon.description }}</p>
-          <h4>Background Story</h4>
-          <p>{{ demon.backgroundStory }}</p>
-          <h4>Foreground Story</h4>
-          <p>{{ demon.foregroundStory }}</p>
-          <h4>Competitors</h4>
-          <div class="competitors">
-            <div ng-repeat="competitor in demon.competitors" class="competitor">
-              <img ng-src="{{ competitor.image }}" alt="{{ competitor.name }}" class="competitor-image">
-              <div class="competitor-info">
-                <h5>{{ competitor.name }}</h5>
-                <p>{{ competitor.description }}</p>
+    <!-- WIKI -->
+    <section ng-show="currentSection === 'wiki'" class="content active" aria-labelledby="wiki-heading">
+      <div class="section">
+        <h2 id="wiki-heading">Wiki: Demon Characters</h2>
+        <div class="search-bar" role="search">
+          <label for="wiki-search" class="visually-hidden">Search wiki</label>
+          <input id="wiki-search" type="search"
+                 ng-model="wikiQuery"
+                 ng-model-options="{ debounce: 200 }"
+                 placeholder="Search demons, lore…"
+                 autocomplete="off">
+          <span class="search-count">{{ (wikiStories | wikiFilter:wikiQuery).length }} / {{ wikiStories.length }}</span>
+        </div>
+        <article ng-repeat="demon in filteredWiki = (wikiStories | wikiFilter:wikiQuery) track by demon.title" class="demon-card">
+          <h3>{{ demon.title }}</h3>
+          <div class="img-frame">
+            <img ng-src="{{ demon.image }}"
+                 alt="Depiction of {{ demon.title }}"
+                 class="responsive-img"
+                 loading="lazy" decoding="async"
+                 ng-click="openLightbox(demon.image, demon.title)"
+                 ng-mousedown="startLongPress($event)"
+                 ng-mouseup="endLongPress($event)"
+                 ng-mouseleave="endLongPress($event)">
+          </div>
+          <div class="demon-details">
+            <p>{{ demon.description }}</p>
+            <h4>Background Story</h4><p>{{ demon.backgroundStory }}</p>
+            <h4>Foreground Story</h4><p>{{ demon.foregroundStory }}</p>
+            <h4>Competitors</h4>
+            <div class="competitors">
+              <div ng-repeat="competitor in demon.competitors" class="competitor">
+                <div class="competitor-thumb-wrap">
+                  <img ng-src="{{ competitor.image }}"
+                       alt="{{ competitor.name }}"
+                       class="competitor-image"
+                       loading="lazy" decoding="async"
+                       ng-click="openLightbox(competitor.image, competitor.name)">
+                </div>
+                <div class="competitor-info">
+                  <h5>{{ competitor.name }}</h5>
+                  <p>{{ competitor.description }}</p>
+                </div>
               </div>
             </div>
           </div>
+        </article>
+        <div ng-if="filteredWiki.length === 0" class="empty-state">
+          No entries match "<strong>{{ wikiQuery }}</strong>".
         </div>
       </div>
+    </section>
+
+    <!-- SOUNDS -->
+    <section ng-show="currentSection === 'sounds'" class="content active" aria-labelledby="sounds-heading">
+      <div class="section">
+        <h2 id="sounds-heading">Horror Movie Sounds</h2>
+        <div ng-repeat="sound in sounds track by sound.title" class="audio-container">
+          <h3>{{ sound.title }}</h3>
+          <audio controls preload="none" aria-label="{{ sound.title }} audio">
+            <source ng-src="{{ sound.source }}" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FIX TURN 2: Sanity panel now has horror-cursor toggle -->
+  <div class="sanity-panel" role="status" aria-live="polite">
+    <div><strong style="color:var(--color-accent);">Sanity:</strong> {{ sanityLabel }}</div>
+    <div ng-show="micActive" style="margin-top:4px; color:var(--color-accent);">
+      🎙 Mic active — voice harvesting
     </div>
-  </div>
-</div>
-
-
-
-<div ng-show="currentSection === 'sounds'" class="content active">
-  <div class="section">
-    <h2>Horror Movie Sounds</h2>
-    <div ng-repeat="sound in sounds" class="audio-container">
-      <h3>{{ sound.title }}</h3>
-      <audio id="audio-{{ $index }}" controls>
-        <source ng-src="{{ sound.source }}" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
+    <div style="margin-top:6px;">
+      <button type="button"
+              ng-click="toggleHorrorCursor()"
+              ng-class="{'toggle-on': horrorCursorOn}">
+        {{ horrorCursorOn ? '👁 Eye cursor ON' : '👁 Reveal the eye' }}
+      </button>
     </div>
-  </div>
-</div>
-
-
-
-
-
-
-  <div class="overlay" ng-class="{active: showOverlay}">
-    <p>BOO! Are you scared yet?</p>
+    <div style="margin-top:6px;">Triple-tap <kbd>Esc</kbd> to exorcise.</div>
+    <button ng-click="exorcise()" type="button" ng-if="!safeMode">Banish all spirits</button>
+    <button ng-click="rejoinTheDarkness()" type="button" ng-if="safeMode">Re-enter the darkness</button>
   </div>
 
-  <audio id="background-audio" loop>
+  <div class="overlay" ng-class="{active: showOverlay}" aria-hidden="{{ !showOverlay }}" role="status">
+    <p>{{ overlayText }}</p>
+  </div>
+
+  <div class="lightbox" ng-class="{active: lightbox.open}" ng-click="closeLightbox()" role="dialog" aria-modal="true">
+    <button class="lightbox-close" ng-click="closeLightbox(); $event.stopPropagation()" type="button" aria-label="Close">&times;</button>
+    <img ng-if="lightbox.open" ng-src="{{ lightbox.src }}" alt="{{ lightbox.alt }}">
+  </div>
+
+  <audio id="background-audio" loop preload="none">
     <source src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
 
-  <script>
-    var app = angular.module('horrorApp', []);
-    app.controller('MainController', function($scope, $timeout){
-      $scope.currentSection = 'home'; // Default section
-	  $scope.randomHorrorImage = 'https://wallpaperaccess.com/download/the-nun-1727297';
-	  $scope.randomHorrorAudio = 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3'; 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-$scope.playRandomAudio = function() {
-    console.log("Mouse entered, playing audio...");
-    var audio = document.getElementById('randomAudio');
-    audio.play();
-};
+  <script type="module">
+    try {
+      const THREE = await import('three');
+      const { EffectComposer } = await import('three/addons/postprocessing/EffectComposer.js');
+      const { RenderPass } = await import('three/addons/postprocessing/RenderPass.js');
+      const { UnrealBloomPass } = await import('three/addons/postprocessing/UnrealBloomPass.js');
 
+      window.HorrorEngine = (function () {
+        let scene, camera, renderer, composer;
+        let skull, eyes = [], particles, fogMesh;
+        let stageEl, raf = null;
+        let micLevel = 0, targetMicLevel = 0;
+        let started = false;
+        let clock = new THREE.Clock();
 
-$scope.stopRandomAudio = function() {
-  var audio = document.getElementById('randomAudio');
-  audio.pause();
-  audio.currentTime = 0;
-}
+        function buildSkull() {
+          const group = new THREE.Group();
+          const craniumGeom = new THREE.SphereGeometry(1, 32, 32);
+          const skullMat = new THREE.MeshStandardMaterial({
+            color: 0xe8dfc8, roughness: 0.85, metalness: 0.05,
+            emissive: 0x110000, emissiveIntensity: 0.3
+          });
+          const cranium = new THREE.Mesh(craniumGeom, skullMat);
+          cranium.scale.set(1, 1.05, 1.1);
+          group.add(cranium);
+          const jawGeom = new THREE.SphereGeometry(0.85, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+          const jaw = new THREE.Mesh(jawGeom, skullMat);
+          jaw.position.y = -0.55; jaw.position.z = 0.1;
+          jaw.rotation.x = Math.PI;
+          jaw.scale.set(1, 0.6, 0.9);
+          group.add(jaw);
+          const socketMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+          const socketGeom = new THREE.SphereGeometry(0.22, 16, 16);
+          const leftSocket = new THREE.Mesh(socketGeom, socketMat);
+          leftSocket.position.set(-0.32, 0.15, 0.85);
+          group.add(leftSocket);
+          const rightSocket = leftSocket.clone();
+          rightSocket.position.x = 0.32;
+          group.add(rightSocket);
+          const eyeGeom = new THREE.SphereGeometry(0.06, 12, 12);
+          const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+          const leftEye = new THREE.Mesh(eyeGeom, eyeMat);
+          leftEye.position.set(-0.32, 0.15, 0.95);
+          group.add(leftEye);
+          const rightEye = leftEye.clone();
+          rightEye.position.x = 0.32;
+          group.add(rightEye);
+          eyes.push(leftEye, rightEye);
+          const leftLight = new THREE.PointLight(0xff0000, 1.5, 3);
+          leftLight.position.copy(leftEye.position);
+          group.add(leftLight);
+          const rightLight = new THREE.PointLight(0xff0000, 1.5, 3);
+          rightLight.position.copy(rightEye.position);
+          group.add(rightLight);
+          const noseGeom = new THREE.ConeGeometry(0.12, 0.25, 8);
+          const nose = new THREE.Mesh(noseGeom, socketMat);
+          nose.position.set(0, -0.1, 1);
+          nose.rotation.x = Math.PI;
+          group.add(nose);
+          return group;
+        }
 
+        function buildParticles() {
+          const count = 600;
+          const geom = new THREE.BufferGeometry();
+          const positions = new Float32Array(count * 3);
+          const velocities = new Float32Array(count * 3);
+          for (let i = 0; i < count; i++) {
+            positions[i*3]   = (Math.random() - 0.5) * 14;
+            positions[i*3+1] = (Math.random() - 0.5) * 8;
+            positions[i*3+2] = (Math.random() - 0.5) * 8 - 2;
+            velocities[i*3]   = (Math.random() - 0.5) * 0.005;
+            velocities[i*3+1] = Math.random() * 0.01 + 0.002;
+            velocities[i*3+2] = (Math.random() - 0.5) * 0.005;
+          }
+          geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+          geom.userData.velocities = velocities;
+          const mat = new THREE.PointsMaterial({
+            color: 0xc4001a, size: 0.04,
+            transparent: true, opacity: 0.55,
+            blending: THREE.AdditiveBlending, depthWrite: false
+          });
+          return new THREE.Points(geom, mat);
+        }
 
-$scope.playAudio = function(audioElement) {
-  audioElement.play();
-}
+        function init(el) {
+          if (started || !el) return;
+          stageEl = el;
+          const w = stageEl.clientWidth, h = stageEl.clientHeight;
+          if (w === 0 || h === 0) return;
+          scene = new THREE.Scene();
+          scene.fog = new THREE.FogExp2(0x110000, 0.18);
+          camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 100);
+          camera.position.set(0, 0, 4.2);
+          renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+          renderer.setSize(w, h);
+          renderer.setClearColor(0x000000, 0);
+          stageEl.appendChild(renderer.domElement);
+          scene.add(new THREE.AmbientLight(0x331111, 0.4));
+          const keyLight = new THREE.DirectionalLight(0xff2200, 0.8);
+          keyLight.position.set(2, 3, 4);
+          scene.add(keyLight);
+          const rimLight = new THREE.DirectionalLight(0x4400aa, 0.4);
+          rimLight.position.set(-3, -1, -2);
+          scene.add(rimLight);
+          skull = buildSkull(); scene.add(skull);
+          particles = buildParticles(); scene.add(particles);
+          const fogGeom = new THREE.PlaneGeometry(20, 20);
+          const fogMat = new THREE.ShaderMaterial({
+            transparent: true, depthWrite: false,
+            uniforms: { uTime: { value: 0 }, uIntensity: { value: 0.5 } },
+            vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+            fragmentShader: `
+              varying vec2 vUv; uniform float uTime; uniform float uIntensity;
+              float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+              float noise(vec2 p) {
+                vec2 i = floor(p), f = fract(p);
+                float a = hash(i), b = hash(i + vec2(1.0, 0.0));
+                float c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));
+                vec2 u = f*f*(3.0-2.0*f);
+                return mix(a, b, u.x) + (c - a)*u.y*(1.0 - u.x) + (d - b)*u.x*u.y;
+              }
+              float fbm(vec2 p) { float v = 0.0; float a = 0.5; for (int i=0;i<5;i++) { v += a*noise(p); p *= 2.0; a *= 0.5; } return v; }
+              void main() {
+                vec2 uv = vUv * 3.0; uv.x += uTime * 0.05; uv.y += uTime * 0.02;
+                float n = fbm(uv);
+                vec3 col = mix(vec3(0.05,0.0,0.0), vec3(0.6,0.0,0.05), n);
+                gl_FragColor = vec4(col, n * uIntensity * 0.7);
+              }
+            `
+          });
+          fogMesh = new THREE.Mesh(fogGeom, fogMat);
+          fogMesh.position.z = -3;
+          scene.add(fogMesh);
+          composer = new EffectComposer(renderer);
+          composer.addPass(new RenderPass(scene, camera));
+          const bloom = new UnrealBloomPass(new THREE.Vector2(w, h), 1.4, 0.5, 0.2);
+          composer.addPass(bloom);
+          const resize = () => {
+            if (!stageEl || !renderer) return;
+            const nw = stageEl.clientWidth, nh = stageEl.clientHeight;
+            if (nw === 0 || nh === 0) return;
+            camera.aspect = nw / nh;
+            camera.updateProjectionMatrix();
+            renderer.setSize(nw, nh);
+            composer.setSize(nw, nh);
+          };
+          window.addEventListener('resize', resize);
+          started = true;
+          animate();
+        }
 
-$scope.stopAudio = function(audioElement) {
-  audioElement.pause();
-  audioElement.currentTime = 0;
-}
+        function animate() {
+          raf = requestAnimationFrame(animate);
+          const t = clock.elapsedTime;
+          micLevel += (targetMicLevel - micLevel) * 0.1;
+          if (skull) {
+            skull.rotation.y += 0.003 + micLevel * 0.04;
+            skull.rotation.x = Math.sin(t * 0.4) * 0.1 + micLevel * 0.2;
+            const s = 1 + micLevel * 0.18 + Math.sin(t * 2) * 0.01;
+            skull.scale.set(s, s, s);
+          }
+          eyes.forEach((e, i) => {
+            const pulse = 0.06 + micLevel * 0.18 + Math.sin(t * 3 + i) * 0.01;
+            e.scale.set(pulse * 16, pulse * 16, pulse * 16);
+            e.material.color.setHSL(0, 1, 0.5 + micLevel * 0.3);
+          });
+          if (particles) {
+            const pos = particles.geometry.attributes.position.array;
+            const vel = particles.geometry.userData.velocities;
+            const speedMul = 1 + micLevel * 4;
+            for (let i = 0; i < pos.length; i += 3) {
+              pos[i]   += vel[i]   * speedMul;
+              pos[i+1] += vel[i+1] * speedMul;
+              pos[i+2] += vel[i+2] * speedMul;
+              if (pos[i+1] > 4) {
+                pos[i+1] = -4;
+                pos[i] = (Math.random() - 0.5) * 14;
+              }
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.material.opacity = 0.4 + micLevel * 0.5;
+          }
+          if (fogMesh) {
+            fogMesh.material.uniforms.uTime.value = t;
+            fogMesh.material.uniforms.uIntensity.value = 0.4 + micLevel * 0.6;
+          }
+          if (camera) {
+            const shake = micLevel * 0.08;
+            camera.position.x = Math.sin(t * 8) * shake;
+            camera.position.y = Math.cos(t * 7) * shake;
+            camera.lookAt(0, 0, 0);
+          }
+          if (composer) composer.render();
+        }
 
+        function setMicLevel(v) { targetMicLevel = Math.max(0, Math.min(1, v)); }
 
+        function dispose() {
+          if (raf) cancelAnimationFrame(raf);
+          raf = null;
+          if (renderer) {
+            renderer.dispose();
+            if (renderer.domElement?.parentNode) {
+              renderer.domElement.parentNode.removeChild(renderer.domElement);
+            }
+          }
+          scene = camera = renderer = composer = skull = particles = fogMesh = null;
+          eyes = [];
+          started = false;
+        }
 
+        let audioCtx = null;
+        let micStream = null, micSource = null, analyser = null;
+        let levelLoopId = null;
+        let voiceBuffer = null;
+        let bufferWriteIdx = 0, bufferLengthSamples = 0;
+        let scriptNode = null, muteNode = null;
+        let whisperTimer = null;
+        let convolver = null, masterWhisperGain = null;
+        let listening = false;
+        let activeWhisperSources = [];
 
-angular.element(document).on('keydown', function(event) {
-    $scope.$apply(function() {
-      $scope.handleKeyDown(event);
-    });
-  });
+        async function startMic() {
+          try {
+            if (!navigator.mediaDevices?.getUserMedia) throw new Error('getUserMedia not supported');
+            micStream = await navigator.mediaDevices.getUserMedia({
+              audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+            });
+            const Ctor = window.AudioContext || window.webkitAudioContext;
+            audioCtx = audioCtx || new Ctor();
+            if (audioCtx.state === 'suspended') await audioCtx.resume();
+            micSource = audioCtx.createMediaStreamSource(micStream);
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 1024;
+            analyser.smoothingTimeConstant = 0.7;
+            micSource.connect(analyser);
+            bufferLengthSamples = audioCtx.sampleRate * 4;
+            voiceBuffer = new Float32Array(bufferLengthSamples);
+            scriptNode = audioCtx.createScriptProcessor(2048, 1, 1);
+            scriptNode.onaudioprocess = (e) => {
+              if (!listening) return;
+              const input = e.inputBuffer.getChannelData(0);
+              for (let i = 0; i < input.length; i++) {
+                voiceBuffer[bufferWriteIdx] = input[i];
+                bufferWriteIdx = (bufferWriteIdx + 1) % bufferLengthSamples;
+              }
+            };
+            micSource.connect(scriptNode);
+            muteNode = audioCtx.createGain();
+            muteNode.gain.value = 0;
+            scriptNode.connect(muteNode).connect(audioCtx.destination);
+            buildReverb();
+            masterWhisperGain = audioCtx.createGain();
+            masterWhisperGain.gain.value = 0.6;
+            masterWhisperGain.connect(audioCtx.destination);
+            listening = true;
+            const dataArr = new Uint8Array(analyser.frequencyBinCount);
+            const tick = () => {
+              if (!listening || !analyser) return;
+              analyser.getByteTimeDomainData(dataArr);
+              let sum = 0;
+              for (let i = 0; i < dataArr.length; i++) {
+                const v = (dataArr[i] - 128) / 128;
+                sum += v * v;
+              }
+              const rms = Math.sqrt(sum / dataArr.length);
+              const level = Math.min(1, rms * 4);
+              setMicLevel(level);
+              const meter = document.getElementById('mic-meter-fill');
+              if (meter) meter.style.width = (level * 100).toFixed(1) + '%';
+              levelLoopId = requestAnimationFrame(tick);
+            };
+            tick();
+            scheduleWhisper();
+            return true;
+          } catch (err) {
+            console.warn('Mic start failed:', err);
+            await stopMic();
+            return false;
+          }
+        }
 
+        function buildReverb() {
+          const len = audioCtx.sampleRate * 2.5;
+          const impulse = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+          for (let ch = 0; ch < 2; ch++) {
+            const data = impulse.getChannelData(ch);
+            for (let i = 0; i < len; i++) {
+              const decay = Math.pow(1 - i / len, 3);
+              data[i] = (Math.random() * 2 - 1) * decay;
+            }
+          }
+          convolver = audioCtx.createConvolver();
+          convolver.buffer = impulse;
+        }
 
+        function scheduleWhisper() {
+          if (!listening) return;
+          const delay = 3000 + Math.random() * 5000;
+          whisperTimer = setTimeout(() => {
+            if (!listening) return;
+            emitWhisper();
+            scheduleWhisper();
+          }, delay);
+        }
 
-  // Keyboard shortcuts handler
-$scope.handleKeyDown = function(event) {
-  if (event.ctrlKey) {
-    switch(event.key.toLowerCase()) {
-      case 'h': // Ctrl + H for Home
-        $scope.navigate('home');
-        break;
-      case 'm': // Ctrl + M for Movies
-        $scope.navigate('movies');
-        break;
-      case 'q': // Ctrl + W for Wiki
-        $scope.navigate('wiki');
-        event.preventDefault(); // Prevent default only for Ctrl + W
-        break;
-      case 's': // Ctrl + S for Sounds
-        $scope.navigate('sounds');
-        break;
-      default:
-        return; // Exit if no match
+        function emitWhisper() {
+          if (!audioCtx || !voiceBuffer || !listening) return;
+          const chunkSec = 0.3 + Math.random() * 0.9;
+          const chunkLen = Math.floor(audioCtx.sampleRate * chunkSec);
+          const startIdx = Math.floor(Math.random() * (bufferLengthSamples - chunkLen));
+          let energy = 0;
+          for (let i = 0; i < chunkLen; i++) {
+            const idx = (startIdx + i) % bufferLengthSamples;
+            energy += voiceBuffer[idx] * voiceBuffer[idx];
+          }
+          if (energy / chunkLen < 0.0005) return;
+          const buf = audioCtx.createBuffer(1, chunkLen, audioCtx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < chunkLen; i++) {
+            const srcIdx = (startIdx + (chunkLen - 1 - i)) % bufferLengthSamples;
+            data[i] = voiceBuffer[srcIdx];
+          }
+          const src = audioCtx.createBufferSource();
+          src.buffer = buf;
+          src.playbackRate.value = 0.55 + Math.random() * 0.25;
+          const bp = audioCtx.createBiquadFilter();
+          bp.type = 'bandpass';
+          bp.frequency.value = 400 + Math.random() * 800;
+          bp.Q.value = 3 + Math.random() * 4;
+          const panner = audioCtx.createPanner();
+          panner.panningModel = 'HRTF';
+          panner.distanceModel = 'inverse';
+          panner.refDistance = 1; panner.maxDistance = 10000; panner.rolloffFactor = 1;
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 1.5 + Math.random() * 2;
+          panner.positionX.value = Math.cos(angle) * dist;
+          panner.positionY.value = (Math.random() - 0.5) * 2;
+          panner.positionZ.value = Math.sin(angle) * dist - 1;
+          const env = audioCtx.createGain();
+          env.gain.setValueAtTime(0, audioCtx.currentTime);
+          env.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 0.15);
+          env.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + chunkSec / src.playbackRate.value + 0.5);
+          const dry = audioCtx.createGain(); dry.gain.value = 0.4;
+          const wet = audioCtx.createGain(); wet.gain.value = 0.7;
+          src.connect(bp);
+          bp.connect(env);
+          env.connect(dry).connect(panner).connect(masterWhisperGain);
+          if (convolver) env.connect(convolver).connect(wet).connect(panner);
+          src.start();
+          const handle = { src, bp, env, dry, wet, panner };
+          activeWhisperSources.push(handle);
+          src.onended = () => {
+            try { src.disconnect(); bp.disconnect(); env.disconnect(); dry.disconnect(); wet.disconnect(); panner.disconnect(); } catch(e){}
+            const idx = activeWhisperSources.indexOf(handle);
+            if (idx >= 0) activeWhisperSources.splice(idx, 1);
+          };
+        }
+
+        async function stopMic() {
+          listening = false;
+          if (whisperTimer) { clearTimeout(whisperTimer); whisperTimer = null; }
+          if (levelLoopId) { cancelAnimationFrame(levelLoopId); levelLoopId = null; }
+          activeWhisperSources.forEach(h => {
+            try { h.src.stop(); } catch(e){}
+            try { h.src.disconnect(); h.bp.disconnect(); h.env.disconnect(); h.dry.disconnect(); h.wet.disconnect(); h.panner.disconnect(); } catch(e){}
+          });
+          activeWhisperSources = [];
+          if (masterWhisperGain && audioCtx) {
+            try {
+              masterWhisperGain.gain.cancelScheduledValues(audioCtx.currentTime);
+              masterWhisperGain.gain.setValueAtTime(masterWhisperGain.gain.value, audioCtx.currentTime);
+              masterWhisperGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+            } catch(e){}
+          }
+          if (scriptNode) { try { scriptNode.disconnect(); } catch(e){} scriptNode = null; }
+          if (muteNode) { try { muteNode.disconnect(); } catch(e){} muteNode = null; }
+          if (analyser)  { try { analyser.disconnect(); }  catch(e){} analyser = null; }
+          if (micSource) { try { micSource.disconnect(); } catch(e){} micSource = null; }
+          if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+          voiceBuffer = null;
+          bufferWriteIdx = 0;
+          const meter = document.getElementById('mic-meter-fill');
+          if (meter) meter.style.width = '0%';
+          setMicLevel(0);
+        }
+
+        return { init, dispose, setMicLevel, startMic, stopMic, isListening: () => listening };
+      })();
+
+      window.dispatchEvent(new CustomEvent('horror-engine-ready'));
+    } catch (err) {
+      console.error('Three.js / module init failed:', err);
+      window.HorrorEngine = null;
+      window.dispatchEvent(new CustomEvent('horror-engine-failed', { detail: err }));
     }
-    event.preventDefault(); // Prevent default for all shortcuts
-  }
-};
+  </script>
 
+  <script>
+  (function(){
+    'use strict';
 
+    angular.module('horrorApp', [])
+    .filter('movieFilter', function(){
+      return function(items, q){
+        if (!q) return items;
+        q = q.toLowerCase().trim();
+        return items.filter(function(m){
+          return m.title.toLowerCase().includes(q)
+            || m.description.toLowerCase().includes(q)
+            || m.characters.some(function(c){
+              return c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q);
+            });
+        });
+      };
+    })
+    .filter('wikiFilter', function(){
+      return function(items, q){
+        if (!q) return items;
+        q = q.toLowerCase().trim();
+        return items.filter(function(d){
+          return d.title.toLowerCase().includes(q)
+            || d.description.toLowerCase().includes(q)
+            || (d.backgroundStory||'').toLowerCase().includes(q)
+            || (d.foregroundStory||'').toLowerCase().includes(q)
+            || (d.competitors||[]).some(function(c){
+              return c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q);
+            });
+        });
+      };
+    })
+    .controller('MainController', MainController);
 
+    MainController.$inject = ['$scope','$timeout','$document','$window','$interval'];
 
+    function MainController($scope,$timeout,$document,$window,$interval) {
 
-$scope.movies = [
-  {
-    title: 'The Nun',
-    description: 'A terrifying entity takes the form of a nun to haunt a convent in Romania.',
-    image: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/78e3b466891157.5b26a37ceebf0.jpg',
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3',
+      $scope.currentSection = 'home';
+      $scope.movies = getMovies();
+      $scope.wikiStories = getWikiStories();
+      $scope.sounds = getSounds();
+      $scope.movieQuery = '';
+      $scope.wikiQuery = '';
+      $scope.showOverlay = false;
+      $scope.overlayText = 'BOO! Are you scared yet?';
+      $scope.lightbox = { open:false, src:'', alt:'' };
+      $scope.heartbeatOn = false;
+      $scope.safeMode = false;
+      $scope.sanityLabel = 'Watching';
+      $scope.micActive = false;
+      $scope.micDenied = false;
+      $scope.threeAvailable = true;
+      $scope.horrorCursorOn = false; // FIX TURN 2: opt-in cursor, default OFF
+      $scope.randomHorrorImage = 'https://wallpaperaccess.com/download/the-nun-1727297';
 
-	characters: [
-      {
-        name: 'Valak',
-        description: 'A demonic entity that manifests as a nun to terrorize the living.'
-      },
-      {
-        name: 'Father Burke',
-        description: 'A priest with a haunted past who investigates the mysterious death of a nun.'
-      },
-      {
-        name: 'Sister Irene',
-        description: 'A novitiate preparing to take her final vows, who is drawn into the supernatural events.'
-      }
-    ]
-  },
-  {
-    title: 'The Nun 2',
-    description: 'A sequel to The Nun where the demonic entity continues to wreak havoc.',
-    image: 'https://sportshub.cbsistatic.com/i/2023/07/06/928234b4-1059-4965-8dfd-adfdbdae0864/the-nun-ii-2-poster.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun2.mp3',
-	characters: [
-      {
-        name: 'Valak',
-        description: 'The demonic entity returns, spreading terror in a new setting.'
-      },
-      {
-        name: 'New Character',
-        description: 'Introduce a new character involved in confronting the supernatural threat.'
-      },
-      {
-        name: 'Another New Character',
-        description: 'Another new character who plays a crucial role in the battle against evil.'
-      }
-    ]
-  },
-  {
-    title: 'Annabelle',
-    description: 'A possessed doll terrorizes a young couple, drawing them into a supernatural nightmare.',
-    image: 'https://miro.medium.com/v2/resize:fit:1100/format:webp/1*VsFF0Z7yD3GFyE8z98zXjg.jpeg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabelle.mp3',
-	characters: [
-      {
-        name: 'Annabelle',
-        description: 'A malevolent spirit trapped inside a doll that brings terror wherever it goes.'
-      },
-      {
-        name: 'John Form',
-        description: 'A husband and expectant father who faces the horrors unleashed by Annabelle.'
-      },
-      {
-        name: 'Mia Form',
-        description: 'John’s wife who becomes a target of the doll’s supernatural influence.'
-      }
-    ]
-  },
-  {
-    title: 'Annabelle: Creation',
-    description: 'The origin story of the possessed doll Annabelle, revealing how it became a conduit for evil.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/0e64bca6c68220f986a8e665a2d8f5f8ff60d6b7aed36c033a08cc6798a548c3.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellec.mp3',
-	characters: [
-      {
-        name: 'Sister Charlotte',
-        description: 'A nun who cares for orphaned girls, unwittingly inviting supernatural forces into their lives.'
-      },
-      {
-        name: 'Janice',
-        description: 'An orphaned girl who becomes a target of the malevolent spirit inhabiting Annabelle.'
-      },
-      {
-        name: 'Samuel Mullins',
-        description: 'A dollmaker who unknowingly sets in motion a series of terrifying events involving Annabelle.'
-      }
-    ]
-  },
-  {
-    title: 'Annabelle Comes Home',
-    description: 'The haunted doll Annabelle awakens other malevolent spirits in the Warrens’ artifact room.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/b9751219c625ca6b7d44e3dd3f3d33194099119893c2d5f147c350cd20291bd6.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellech.mp3',
-	characters: [
-      {
-        name: 'Judy Warren',
-        description: 'The daughter of Ed and Lorraine Warren, who faces supernatural dangers at home.'
-      },
-      {
-        name: 'Daniela Rios',
-        description: 'A curious friend who inadvertently releases Annabelle and other spirits from their containment.'
-      },
-      {
-        name: 'Ed and Lorraine Warren',
-        description: 'Paranormal investigators who try to contain the escalating supernatural threat.'
-      }
-    ]
-  },
-  {
-    title: 'The Conjuring',
-    description: 'Paranormal investigators face a powerful demonic entity in a secluded farmhouse.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/6e4eace67c7c6ba205215fb4d2caed81361b6f2df1633bb8c5c43890f7ac0a3a.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring1.mp3',
-	characters: [
-      {
-        name: 'Ed Warren',
-        description: 'A demonologist who investigates paranormal phenomena with his wife, Lorraine.'
-      },
-      {
-        name: 'Lorraine Warren',
-        description: 'A clairvoyant and Ed Warren’s wife, who helps in the investigations.'
-      },
-      {
-        name: 'Roger and Carolyn Perron',
-        description: 'The parents who experience terrifying supernatural occurrences in their farmhouse.'
-      }
-    ]
-  },
-  {
-    title: 'The Conjuring 2',
-    description: 'Ed and Lorraine Warren travel to London to help a single mother and her four children plagued by malicious spirits.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/d7a3c768321316542647d80f38c0b20533c1805e2305bd8845fbd7df111bf708.jpg',
-    
-	
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring2.mp3',characters: [
-      {
-        name: 'Peggy Hodgson',
-        description: 'A single mother whose family is tormented by poltergeist activity in their council house.'
-      },
-      {
-        name: 'Janet Hodgson',
-        description: 'Peggy’s daughter who becomes the focal point of supernatural occurrences, including possession.'
-      },
-      {
-        name: 'The Crooked Man',
-        description: 'A malevolent spirit that terrorizes Janet and her family, manipulated by darker forces.'
-      }
-    ]
-  },
-  {
-    title: 'The Conjuring: The Devil Made Me Do It',
-    description: 'Ed and Lorraine Warren investigate a murder that may be linked to demonic possession.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/4688b49cc1010b00ec054272cff4701df75d9a09e1588464afdac7531ea47f65.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring3.mp3',
-	characters: [
-      {
-        name: 'Arne Johnson',
-        description: 'A young man who claims demonic possession as a defense in a murder trial.'
-      },
-      {
-        name: 'David Glatzel',
-        description: 'A young boy who becomes the initial target of a malevolent entity.'
-      },
-      {
-        name: 'Ed and Lorraine Warren',
-        description: 'Paranormal investigators who face one of their most challenging cases yet.'
-      }
-    ]
-  },
-  {
-    title: 'IT',
-    description: 'A shape-shifting entity terrorizes a small town, primarily appearing as Pennywise the Clown.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/f9e319d6154f5eeb6ce422c5baae349b69b31e47e6cb756e2ce19187036b6894.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it1.mp3',
-	characters: [
-      {
-        name: 'Pennywise',
-        description: 'An ancient, malevolent entity that preys upon the children of Derry, Maine.'
-      },
-      {
-        name: 'The Losers Club',
-        description: 'A group of friends who unite to battle Pennywise and face their deepest fears.'
-      },
-      {
-        name: 'Henry Bowers',
-        description: 'A troubled youth manipulated by Pennywise into doing its bidding.'
-      }
-    ]
-  },
-  {
-    title: 'IT Chapter Two',
-    description: 'The Losers Club returns to Derry years later to confront Pennywise, who has resurfaced.',
-    image: 'https://m.media-amazon.com/images/S/pv-target-images/120d3a94fb6fe29794942cf51b635ec3be89161a3fd578feae8c8a292863cca7._UR1920,1080_SX720_FMjpg_.jpg',
-    
-    audio: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it2.mp3',
-	characters: [
-      {
-        name: 'Adult Losers Club',
-        description: 'The grown-up versions of the Losers Club who reunite to fulfill their oath and defeat Pennywise.'
-      },
-      {
-        name: 'Mike Hanlon',
-        description: 'The only member of the Losers Club who remained in Derry and remembers their past battle with Pennywise.'
-      },
-      {
-        name: 'Stanley Uris',
-        description: 'A member of the Losers Club who took drastic action to avoid facing Pennywise again.'
-      }
-    ]
-  }
-  // Add more movies from The Conjuring Universe and IT as needed
-];
+      var reducedMotion = $window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var isTouch = ('ontouchstart' in $window) || navigator.maxTouchPoints > 0;
 
-
-
-
-
-$scope.wikiStories = [
-  {
-    title: 'Valak',
-    description: 'Valak, also known as the Demon Nun, is a malevolent entity that takes the form of a demonic nun. It is a powerful demon with the ability to possess and manipulate those around it, causing terror and death wherever it appears.',
-    image: 'https://www.denofgeek.com/wp-content/uploads/2021/02/Valak-as-the-Nun-in-The-Conjuring-Movies.png',
-    backgroundStory: 'Valak first appeared in "The Conjuring 2" as the primary antagonist, haunting the Hodgson family in Enfield, London. It later appeared in "The Nun," revealing more of its sinister origins.',
-    foregroundStory: 'In "The Nun," Valak manifests as a nun to terrorize characters like Father Burke and Sister Irene, drawing on their fears and weaknesses to manifest physical harm and psychological torment.',
-    competitors: [
-      {
-        name: 'The Crooked Man',
-        description: 'A demonic entity with a tall, twisted appearance, known for its eerie singing and unnatural movements. It challenges Valak with its own brand of terror and manipulation.',
-        image: 'https://static.wikia.nocookie.net/the-demonic-paradise/images/f/fd/Tthe-conjuring25.jpg'
-      },
-      {
-        name: 'Bathsheba Sherman',
-        description: 'An evil spirit that possessed a mother who later sacrificed her child to Satan. Bathsheba torments the Perron family in "The Conjuring," showing her powerful demonic presence.',
-        image: 'https://static.wikia.nocookie.net/villains/images/4/48/HtorpUnIfKw.jpg'
-      }
-    ]
-  },
-  {
-    title: 'Annabelle',
-    description: 'Annabelle is a possessed doll with a dark history of causing death and chaos. It serves as a conduit for demonic entities seeking to wreak havoc on the living.',
-    image: 'https://www.the-sun.com/wp-content/uploads/sites/6/2021/10/MP-ANNABELLE-DOLL-REG-UPDATE-OFF-PLTFRM-COMP.jpg',
-    backgroundStory: 'The real Annabelle doll was reportedly possessed by a deceased girl named Annabelle Higgins. It was later found to be a conduit for a demonic entity pretending to be the spirit of Annabelle.',
-    foregroundStory: 'In the "Annabelle" film series, the doll terrorizes its owners, manipulating their fears and weaknesses to escalate violence and horror in their lives.',
-    competitors: [
-      {
-        name: 'The Conjuring Dolls',
-        description: 'A collection of haunted and possessed dolls kept under the care of Ed and Lorraine Warren. These dolls, including Annabelle, pose a threat to anyone who comes into contact with them.',
-        image: 'https://hips.hearstapps.com/digitalspyuk.cdnds.net/17/25/1497945126-annabelle-2.jpg'
-      },
-      {
-        name: 'The Ferryman',
-        description: 'A demonic entity that collects souls and condemns them to eternal suffering. It challenges Annabelle with its ability to manipulate souls and bend the fabric of reality.',
-        image: 'https://static.wikia.nocookie.net/theconjuring/images/4/41/Luca-nemolato-ferryman-v5.jpg'
-      }
-    ]
-  },
-  {
-    title: 'Pennywise',
-    description: 'Pennywise, also known as IT, is an ancient cosmic entity that preys on the fears of children in the form of a malevolent clown. It manifests every 27 years to feed on the fear of its victims.',
-    image: 'https://cdn.britannica.com/98/196498-050-51868DCD/Pennywise-Bill-Skarsgard-film-adaptation-novel-Stephen.jpg',
-    backgroundStory: 'IT originates from the Macroverse, a dimension beyond the physical universe. It arrives in the town of Derry, Maine, to sow fear and consume the souls of children, returning every few decades to continue its cycle of terror.',
-    foregroundStory: 'In "IT" and its sequel, Pennywise uses its shape-shifting abilities to take on various forms that reflect the deepest fears of its victims, tormenting the Losers Club and other inhabitants of Derry.',
-    competitors: [
-      {
-        name: 'The Losers Club',
-        description: 'A group of misfit children who confront Pennywise in the town of Derry. They challenge IT with their courage and unity, forming a bond that transcends fear and empowers them to face the cosmic entity head-on.',
-        image: 'https://ew.com/thmb/BScxEqh5ZKatBX2_F9sKpWedrUg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/it-16887r1-2000-69eacd1b53554fffb64235fede23e28d.jpg'
-      },
-      {
-        name: 'Maturin the Turtle',
-        description: 'An ancient guardian and cosmic force of good that opposes Pennywise in the Macroverse. Maturin aids the Losers Club by providing insights into IT\'s origins and weaknesses, guiding them in their battle against the malevolent entity.',
-        image: 'https://img-v3.deepdreamgenerator.com/155435/vm8nym_32cbcce8c6ead2d4b96ef14e3fd45f84057ca118.jpg'
-      }
-    ]
-  }
-  // Add more demon characters and stories as needed
-];
-
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	        $scope.sounds = [
-        { title: 'Nun-1', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3' },
-		{ title: 'Nun-2', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun2.mp3' },
-        { title: 'IT-1', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it1.mp3' },
-        { title: 'IT chapter-2', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it2.mp3' },       
-        { title: 'The Conjuring - 1', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring1.mp3' },
-        { title: 'The Conjuring - 2', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring2.mp3' },	   
-        { title: 'The Conjuring - 3', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring3.mp3' },	  
-        { title: 'Annabelle', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabelle.mp3' },
-		        { title: 'Annabelle - Creation', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellec.mp3' },
-	        { title: 'Annabelle - comes home', source: 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellech.mp3' },
-	
-	  // Add more sounds
-      ];
-
-      $scope.navigate = function(section) {
-        $scope.currentSection = section;
+      // FIX TURN 2: NO automatic cursor application. User must opt in.
+      $scope.toggleHorrorCursor = function(){
+        if (isTouch || reducedMotion) return; // never on touch/reduced motion
+        $scope.horrorCursorOn = !$scope.horrorCursorOn;
+        if ($scope.horrorCursorOn) {
+          document.documentElement.classList.add('horror-cursor');
+        } else {
+          document.documentElement.classList.remove('horror-cursor');
+        }
       };
 
+      $window.addEventListener('horror-engine-ready', function(){
+        $scope.$applyAsync(function(){
+          $scope.threeAvailable = true;
+          maybeMountThree();
+        });
+      });
+      $window.addEventListener('horror-engine-failed', function(){
+        $scope.$applyAsync(function(){ $scope.threeAvailable = false; });
+      });
 
-$scope.toggleOverlay = function() {
-  $scope.showOverlay = true;
-  $timeout(function() {
-    $scope.showOverlay = false;
-  }, 2000); // 2000 milliseconds = 2 seconds
-};
-
-$scope.$watch('showOverlay', function(newVal, oldVal) {
-  if (newVal !== oldVal && newVal === true) {
-    $timeout(function() {
-      $scope.showOverlay = false;
-    }, 2000); // 2000 milliseconds = 2 seconds
-  }
-});
-
-
-
-
-
-    $scope.showOverlay = false;
-
-    $scope.currentAudio = null;
-
-    $scope.navigate = function(section) {
-      $scope.currentSection = section;
-    };
-
-    $scope.toggleSound = function() {
-      var audioElement = document.getElementById('background-audio');
-      if (audioElement.paused) {
-        audioElement.play();
-      } else {
-        audioElement.pause();
+      function maybeMountThree() {
+        if (reducedMotion || isTouch) return;
+        if ($scope.currentSection !== 'home') return;
+        if (!window.HorrorEngine) return;
+        $timeout(function(){
+          var el = document.getElementById('three-stage');
+          if (el && el.clientWidth > 0) window.HorrorEngine.init(el);
+        }, 80);
       }
-    };
+      function maybeUnmountThree() {
+        if (window.HorrorEngine) window.HorrorEngine.dispose();
+      }
 
-    document.addEventListener('play', function(event) {
-      var audios = document.getElementsByTagName('audio');
-      for (var i = 0; i < audios.length; i++) {
-        if (audios[i] !== event.target) {
-          audios[i].pause();
+      $scope.requestMic = function(){
+        if (!window.HorrorEngine) {
+          $scope.micDenied = true;
+          return;
+        }
+        Promise.resolve(window.HorrorEngine.startMic()).then(function(ok){
+          $scope.$applyAsync(function(){
+            $scope.micActive = !!ok;
+            $scope.micDenied = !ok;
+            if (ok) {
+              $scope.sanityLabel = 'Listening';
+              $scope.overlayText = 'They can hear you now.';
+              $scope.showOverlay = true;
+              $timeout(function(){ $scope.showOverlay = false; }, 2000);
+            }
+          });
+        }).catch(function(){
+          $scope.$applyAsync(function(){ $scope.micDenied = true; });
+        });
+      };
+      $scope.declineMic = function(){ $scope.micDenied = true; };
+      $scope.stopMicUI = function(){
+        if (window.HorrorEngine) window.HorrorEngine.stopMic();
+        $scope.micActive = false;
+        $scope.sanityLabel = 'Watching';
+      };
+
+      $scope.silenceEverything = function(){
+        var audios = document.getElementsByTagName('audio');
+        for (var i = 0; i < audios.length; i++) {
+          try { audios[i].pause(); audios[i].currentTime = 0; } catch(e){}
+        }
+        if ($scope.micActive && window.HorrorEngine) {
+          window.HorrorEngine.stopMic();
+          $scope.micActive = false;
+        }
+        if ($scope.heartbeatOn) $scope.toggleHeartbeat();
+        $scope.sanityLabel = 'Silent';
+        $timeout(function(){ $scope.sanityLabel = 'Watching'; }, 2000);
+      };
+
+      // FIX TURN 2: navigate no longer takes event arg (button doesn't need preventDefault)
+      $scope.navigate = function(section){
+        var prev = $scope.currentSection;
+        $scope.currentSection = section;
+        $window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+        increaseDread();
+        pauseAllAudios();
+        if (prev === 'home' && section !== 'home') maybeUnmountThree();
+        else if (prev !== 'home' && section === 'home') maybeMountThree();
+      };
+      $scope.reloadPage = function(){ $window.location.reload(); };
+      $scope.onTitleKey = function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $scope.reloadPage(); }
+      };
+
+      var prevFocus = null;
+      $scope.openLightbox = function(src, alt){
+        prevFocus = document.activeElement;
+        $scope.lightbox = { open:true, src:src, alt:alt||'' };
+        document.body.style.overflow = 'hidden';
+        pauseAllAudios();
+      };
+      $scope.closeLightbox = function(){
+        $scope.lightbox.open = false;
+        document.body.style.overflow = '';
+        if (prevFocus && prevFocus.focus) prevFocus.focus();
+      };
+
+      function pauseAllAudios() {
+        var audios = document.getElementsByTagName('audio');
+        for (var i = 0; i < audios.length; i++) {
+          if (audios[i].id !== 'background-audio') {
+            try { audios[i].pause(); audios[i].currentTime = 0; } catch(e){}
+          }
         }
       }
-    }, true);
 
+      $scope.playAudio = function(el){
+        if (!el || typeof el.play !== 'function') return;
+        pauseAllOthers(el);
+        var p = el.play();
+        if (p && p.catch) p.catch(function(){});
+      };
+      $scope.stopAudio = function(el){
+        if (!el || typeof el.pause !== 'function') return;
+        try { el.pause(); el.currentTime = 0; } catch(e){}
+      };
+      $scope.playRandomAudio = function(){ $scope.playAudio(document.getElementById('randomAudio')); };
 
-
-
-
-    });
-	
-	
-	
-			   function refreshpage() {
-		window.scrollTo(0,0);
-            location.reload(); // Reload the entire page
+      function pauseAllOthers(except){
+        var as = document.getElementsByTagName('audio');
+        for (var i=0;i<as.length;i++){
+          if (as[i]!==except && as[i].id!=='background-audio'){
+            try { as[i].pause(); as[i].currentTime = 0; } catch(e){}
+          }
         }
+      }
+      var onAnyPlay = function(ev){
+        var as = document.getElementsByTagName('audio');
+        for (var i=0;i<as.length;i++){
+          if (as[i]!==ev.target && as[i].id!=='background-audio') {
+            try { as[i].pause(); } catch(e){}
+          }
+        }
+      };
+      document.addEventListener('play', onAnyPlay, true);
+
+      var heartCtx = null, heartbeatTimer = null, dread = 0;
+      function ensureHeartCtx(){
+        if (!heartCtx) {
+          var Ctor = $window.AudioContext || $window.webkitAudioContext;
+          if (Ctor) heartCtx = new Ctor();
+        }
+        return heartCtx;
+      }
+      function thump(when, gain){
+        if (!heartCtx) return;
+        var osc = heartCtx.createOscillator();
+        var g = heartCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(60, when);
+        osc.frequency.exponentialRampToValueAtTime(30, when + 0.12);
+        g.gain.setValueAtTime(0, when);
+        g.gain.linearRampToValueAtTime(gain, when + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, when + 0.18);
+        osc.connect(g).connect(heartCtx.destination);
+        osc.start(when);
+        osc.stop(when + 0.2);
+      }
+      function scheduleHeartbeat(){
+        if (!heartCtx || !$scope.heartbeatOn) return;
+        var now = heartCtx.currentTime;
+        thump(now, 0.55);
+        thump(now + 0.28, 0.4);
+      }
+      $scope.toggleHeartbeat = function(){
+        var ctx = ensureHeartCtx();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
+        $scope.heartbeatOn = !$scope.heartbeatOn;
+        if ($scope.heartbeatOn) {
+          if (heartbeatTimer) $interval.cancel(heartbeatTimer);
+          var rate = Math.max(400, 1200 - dread * 40);
+          heartbeatTimer = $interval(scheduleHeartbeat, rate);
+          scheduleHeartbeat();
+        } else if (heartbeatTimer) {
+          $interval.cancel(heartbeatTimer);
+          heartbeatTimer = null;
+        }
+      };
+
+      function whisper(){
+        var ctx = ensureHeartCtx();
+        if (!ctx || $scope.safeMode) return;
+        var bufferSize = ctx.sampleRate * 0.6;
+        var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        var data = buffer.getChannelData(0);
+        for (var i=0;i<bufferSize;i++){
+          var t = i / bufferSize;
+          data[i] = (Math.random()*2-1) * Math.sin(Math.PI*t) * 0.15;
+        }
+        var src = ctx.createBufferSource();
+        src.buffer = buffer;
+        var filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 800 + Math.random()*400;
+        filter.Q.value = 4;
+        var g = ctx.createGain();
+        g.gain.value = 0.3;
+        src.connect(filter).connect(g).connect(ctx.destination);
+        src.start();
+      }
+
+      // FIX TURN 2: cursor-eye logic ONLY runs when horror-cursor toggle is on
+      var eye = document.getElementById('cursor-eye');
+      var lastDropTime = 0;
+      var pendingMouseEvent = null;
+      var mouseRafScheduled = false;
+      function flushMouseUpdate() {
+        mouseRafScheduled = false;
+        if (!pendingMouseEvent || !eye || !$scope.horrorCursorOn || $scope.safeMode) return;
+        var e = pendingMouseEvent;
+        eye.style.setProperty('--cx', e.clientX + 'px');
+        eye.style.setProperty('--cy', e.clientY + 'px');
+        var cx = $window.innerWidth / 2, cy = $window.innerHeight / 2;
+        var dx = (e.clientX - cx) / cx;
+        var dy = (e.clientY - cy) / cy;
+        eye.style.setProperty('--pupil-x', (dx * 4) + 'px');
+        eye.style.setProperty('--pupil-y', (dy * 4) + 'px');
+        var now = performance.now();
+        if (!reducedMotion && now - lastDropTime > 320 && Math.random() < 0.18) {
+          lastDropTime = now;
+          spawnBloodDrop(e.clientX + (Math.random()*10-5), e.clientY + 8);
+        }
+        pendingMouseEvent = null;
+      }
+      var mouseMoveHandler = function(e){
+        if (!$scope.horrorCursorOn) return; // FIX TURN 2: only handle when on
+        pendingMouseEvent = e;
+        if (!mouseRafScheduled) {
+          mouseRafScheduled = true;
+          requestAnimationFrame(flushMouseUpdate);
+        }
+      };
+      function spawnBloodDrop(x,y){
+        var d = document.createElement('div');
+        d.className = 'blood-drop';
+        d.style.left = x + 'px';
+        d.style.top = y + 'px';
+        document.body.appendChild(d);
+        setTimeout(function(){ d.remove(); }, 1500);
+      }
+      document.addEventListener('mousemove', mouseMoveHandler, { passive: true });
+      document.addEventListener('mousedown', function(){
+        if($scope.horrorCursorOn && eye) eye.classList.add('dilated');
+      });
+      document.addEventListener('mouseup', function(){
+        if(eye) eye.classList.remove('dilated');
+      });
+
+      var leaveWhisperTimer = null;
+      $document.on('mouseleave', function(){
+        if ($scope.safeMode) return;
+        if (leaveWhisperTimer) clearTimeout(leaveWhisperTimer);
+        leaveWhisperTimer = setTimeout(function(){
+          whisper();
+          $scope.$applyAsync(function(){ $scope.sanityLabel = 'Where are you going…'; });
+        }, 2000);
+      });
+      $document.on('mouseenter', function(){
+        if (leaveWhisperTimer) clearTimeout(leaveWhisperTimer);
+        $scope.$applyAsync(function(){ $scope.sanityLabel = $scope.micActive ? 'Listening' : 'Watching'; });
+      });
+
+      var originalTitle = document.title;
+      var titleAwayMessages = ['come back...', 'we are still here', 'don\'t leave us', 'they are waiting'];
+      var titleSwapTimer = null;
+      document.addEventListener('visibilitychange', function(){
+        if (document.hidden) {
+          var i = 0;
+          titleSwapTimer = setInterval(function(){
+            document.title = titleAwayMessages[i % titleAwayMessages.length];
+            i++;
+          }, 1400);
+        } else {
+          if (titleSwapTimer) { clearInterval(titleSwapTimer); titleSwapTimer = null; }
+          document.title = originalTitle;
+          whisper();
+          $scope.$applyAsync(function(){
+            $scope.sanityLabel = 'You came back…';
+            $timeout(function(){ $scope.sanityLabel = $scope.micActive ? 'Listening' : 'Watching'; }, 3000);
+          });
+        }
+      });
+
+      var titleFlickerInterval = setInterval(function(){
+        if (document.hidden || $scope.safeMode) return;
+        if (Math.random() < 0.15) {
+          var creepy = ['He sees you', 'Behind you', '...', 'Run', 'I am here'];
+          var orig = document.title;
+          document.title = creepy[Math.floor(Math.random()*creepy.length)];
+          setTimeout(function(){ document.title = orig; }, 600);
+        }
+      }, 11000);
+
+      var subliminal = document.getElementById('subliminal');
+      function scheduleSubliminal(){
+        var delay = 30000 + Math.random()*30000;
+        $timeout(function(){
+          if ($scope.safeMode || document.hidden) { scheduleSubliminal(); return; }
+          var pool = $scope.movies.concat($scope.wikiStories);
+          var pick = pool[Math.floor(Math.random()*pool.length)];
+          subliminal.style.backgroundImage = 'url("' + pick.image + '")';
+          subliminal.classList.add('flash');
+          setTimeout(function(){ subliminal.classList.remove('flash'); }, 100);
+          var imgs = document.querySelectorAll('.responsive-img');
+          if (imgs.length) {
+            var target = imgs[Math.floor(Math.random()*imgs.length)];
+            target.classList.add('possessed-frame');
+            setTimeout(function(){ target.classList.remove('possessed-frame'); }, 400);
+          }
+          scheduleSubliminal();
+        }, delay);
+      }
+      scheduleSubliminal();
+
+      var ticking = false;
+      $window.addEventListener('scroll', function(){
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function(){
+          var max = document.body.scrollHeight - $window.innerHeight;
+          var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+          document.documentElement.style.setProperty('--scroll-pct', pct.toFixed(1));
+          ticking = false;
+        });
+      }, { passive: true });
+
+      var longPressTimer = null;
+      $scope.startLongPress = function(e){
+        if ($scope.safeMode) return;
+        var img = e.target;
+        longPressTimer = setTimeout(function(){
+          img.classList.add('awakening');
+          whisper();
+          setTimeout(function(){ img.classList.remove('awakening'); }, 1200);
+        }, 600);
+      };
+      $scope.endLongPress = function(){
+        if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+      };
+
+      var konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      var konamiBuf = [];
+      function activatePossession(){
+        document.body.classList.add('possessed');
+        $scope.$applyAsync(function(){
+          $scope.sanityLabel = 'POSSESSED';
+          $scope.overlayText = 'YOU SHOULD NOT HAVE DONE THAT';
+          $scope.showOverlay = true;
+        });
+        whisper();
+        $timeout(function(){ $scope.showOverlay = false; }, 2500);
+        setTimeout(function(){
+          document.body.classList.remove('possessed');
+          $scope.$applyAsync(function(){ $scope.sanityLabel = $scope.micActive ? 'Listening' : 'Watching'; });
+        }, 12000);
+      }
+
+      var escTaps = [];
+      $scope.exorcise = function(){
+        $scope.safeMode = true;
+        $scope.sanityLabel = 'Safe';
+        document.body.classList.remove('possessed');
+        document.documentElement.classList.remove('horror-cursor');
+        $scope.horrorCursorOn = false;
+        document.querySelectorAll('.blood-rail, .static-noise, .vignette').forEach(function(el){ el.style.display = 'none'; });
+        if ($scope.heartbeatOn) $scope.toggleHeartbeat();
+        if ($scope.micActive) $scope.stopMicUI();
+        pauseAllAudios();
+        maybeUnmountThree();
+      };
+      $scope.rejoinTheDarkness = function(){
+        $scope.safeMode = false;
+        $scope.sanityLabel = 'Watching';
+        document.querySelectorAll('.blood-rail, .static-noise, .vignette').forEach(function(el){ el.style.display = ''; });
+        maybeMountThree();
+      };
+
+      var navKeyMap = { h:'home', m:'movies', q:'wiki', s:'sounds' };
+      var onKey = function(e){
+        konamiBuf.push(e.key);
+        if (konamiBuf.length > konami.length) konamiBuf.shift();
+        if (konamiBuf.length === konami.length &&
+            konamiBuf.every(function(k,i){ return k.toLowerCase() === konami[i].toLowerCase(); })) {
+          konamiBuf = [];
+          if (!$scope.safeMode) activatePossession();
+        }
+        if (e.key === 'Escape') {
+          if ($scope.lightbox.open) { $scope.$apply(function(){ $scope.closeLightbox(); }); e.preventDefault(); return; }
+          if ($scope.showOverlay)   { $scope.$apply(function(){ $scope.showOverlay = false; }); return; }
+          var now = performance.now();
+          escTaps.push(now);
+          escTaps = escTaps.filter(function(t){ return now - t < 1200; });
+          if (escTaps.length >= 3) {
+            escTaps = [];
+            $scope.$apply(function(){ $scope.exorcise(); });
+          }
+          return;
+        }
+        if (!e.ctrlKey) return;
+        var t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+        var dest = navKeyMap[(e.key||'').toLowerCase()];
+        if (!dest) return;
+        e.preventDefault();
+        $scope.$apply(function(){ $scope.navigate(dest); });
+      };
+      $document.on('keydown', onKey);
+
+      var dreadInterval = setInterval(function(){
+        if (!document.hidden && !$scope.safeMode) increaseDread();
+      }, 15000);
+      function increaseDread(){ dread = Math.min(dread + 1, 20); }
+
+      $timeout(maybeMountThree, 100);
+
+      $scope.$on('$destroy', function(){
+        $document.off('keydown', onKey);
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('play', onAnyPlay, true);
+        if (heartbeatTimer) $interval.cancel(heartbeatTimer);
+        if (titleFlickerInterval) clearInterval(titleFlickerInterval);
+        if (titleSwapTimer) clearInterval(titleSwapTimer);
+        if (dreadInterval) clearInterval(dreadInterval);
+        if ($scope.micActive) $scope.stopMicUI();
+        maybeUnmountThree();
+      });
+
+      function getMovies(){ return [
+        {title:'The Nun',description:'A terrifying entity takes the form of a nun to haunt a convent in Romania.',image:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/78e3b466891157.5b26a37ceebf0.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun1.mp3',characters:[{name:'Valak',description:'A demonic entity that manifests as a nun to terrorize the living.'},{name:'Father Burke',description:'A priest with a haunted past who investigates the mysterious death of a nun.'},{name:'Sister Irene',description:'A novitiate preparing to take her final vows, who is drawn into the supernatural events.'}]},
+        {title:'The Nun 2',description:'A sequel to The Nun where the demonic entity continues to wreak havoc.',image:'https://sportshub.cbsistatic.com/i/2023/07/06/928234b4-1059-4965-8dfd-adfdbdae0864/the-nun-ii-2-poster.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/nun2.mp3',characters:[{name:'Valak',description:'The demonic entity returns, spreading terror in a new setting.'},{name:'New Character',description:'Introduce a new character involved in confronting the supernatural threat.'},{name:'Another New Character',description:'Another new character who plays a crucial role in the battle against evil.'}]},
+        {title:'Annabelle',description:'A possessed doll terrorizes a young couple, drawing them into a supernatural nightmare.',image:'https://miro.medium.com/v2/resize:fit:1100/format:webp/1*VsFF0Z7yD3GFyE8z98zXjg.jpeg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabelle.mp3',characters:[{name:'Annabelle',description:'A malevolent spirit trapped inside a doll that brings terror wherever it goes.'},{name:'John Form',description:'A husband and expectant father who faces the horrors unleashed by Annabelle.'},{name:'Mia Form',description:'John\u2019s wife who becomes a target of the doll\u2019s supernatural influence.'}]},
+        {title:'Annabelle: Creation',description:'The origin story of the possessed doll Annabelle, revealing how it became a conduit for evil.',image:'https://m.media-amazon.com/images/S/pv-target-images/0e64bca6c68220f986a8e665a2d8f5f8ff60d6b7aed36c033a08cc6798a548c3.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellec.mp3',characters:[{name:'Sister Charlotte',description:'A nun who cares for orphaned girls, unwittingly inviting supernatural forces into their lives.'},{name:'Janice',description:'An orphaned girl who becomes a target of the malevolent spirit inhabiting Annabelle.'},{name:'Samuel Mullins',description:'A dollmaker who unknowingly sets in motion a series of terrifying events involving Annabelle.'}]},
+        {title:'Annabelle Comes Home',description:'The haunted doll Annabelle awakens other malevolent spirits in the Warrens\u2019 artifact room.',image:'https://m.media-amazon.com/images/S/pv-target-images/b9751219c625ca6b7d44e3dd3f3d33194099119893c2d5f147c350cd20291bd6.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/annabellech.mp3',characters:[{name:'Judy Warren',description:'The daughter of Ed and Lorraine Warren, who faces supernatural dangers at home.'},{name:'Daniela Rios',description:'A curious friend who inadvertently releases Annabelle and other spirits from their containment.'},{name:'Ed and Lorraine Warren',description:'Paranormal investigators who try to contain the escalating supernatural threat.'}]},
+        {title:'The Conjuring',description:'Paranormal investigators face a powerful demonic entity in a secluded farmhouse.',image:'https://m.media-amazon.com/images/S/pv-target-images/6e4eace67c7c6ba205215fb4d2caed81361b6f2df1633bb8c5c43890f7ac0a3a.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring1.mp3',characters:[{name:'Ed Warren',description:'A demonologist who investigates paranormal phenomena with his wife, Lorraine.'},{name:'Lorraine Warren',description:'A clairvoyant and Ed Warren\u2019s wife, who helps in the investigations.'},{name:'Roger and Carolyn Perron',description:'The parents who experience terrifying supernatural occurrences in their farmhouse.'}]},
+        {title:'The Conjuring 2',description:'Ed and Lorraine Warren travel to London to help a single mother and her four children plagued by malicious spirits.',image:'https://m.media-amazon.com/images/S/pv-target-images/d7a3c768321316542647d80f38c0b20533c1805e2305bd8845fbd7df111bf708.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring2.mp3',characters:[{name:'Peggy Hodgson',description:'A single mother whose family is tormented by poltergeist activity in their council house.'},{name:'Janet Hodgson',description:'Peggy\u2019s daughter who becomes the focal point of supernatural occurrences, including possession.'},{name:'The Crooked Man',description:'A malevolent spirit that terrorizes Janet and her family, manipulated by darker forces.'}]},
+        {title:'The Conjuring: The Devil Made Me Do It',description:'Ed and Lorraine Warren investigate a murder that may be linked to demonic possession.',image:'https://m.media-amazon.com/images/S/pv-target-images/4688b49cc1010b00ec054272cff4701df75d9a09e1588464afdac7531ea47f65.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/conjuring3.mp3',characters:[{name:'Arne Johnson',description:'A young man who claims demonic possession as a defense in a murder trial.'},{name:'David Glatzel',description:'A young boy who becomes the initial target of a malevolent entity.'},{name:'Ed and Lorraine Warren',description:'Paranormal investigators who face one of their most challenging cases yet.'}]},
+        {title:'IT',description:'A shape-shifting entity terrorizes a small town, primarily appearing as Pennywise the Clown.',image:'https://m.media-amazon.com/images/S/pv-target-images/f9e319d6154f5eeb6ce422c5baae349b69b31e47e6cb756e2ce19187036b6894.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it1.mp3',characters:[{name:'Pennywise',description:'An ancient, malevolent entity that preys upon the children of Derry, Maine.'},{name:'The Losers Club',description:'A group of friends who unite to battle Pennywise and face their deepest fears.'},{name:'Henry Bowers',description:'A troubled youth manipulated by Pennywise into doing its bidding.'}]},
+        {title:'IT Chapter Two',description:'The Losers Club returns to Derry years later to confront Pennywise, who has resurfaced.',image:'https://m.media-amazon.com/images/S/pv-target-images/120d3a94fb6fe29794942cf51b635ec3be89161a3fd578feae8c8a292863cca7._UR1920,1080_SX720_FMjpg_.jpg',audio:'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/it2.mp3',characters:[{name:'Adult Losers Club',description:'The grown-up versions of the Losers Club who reunite to fulfill their oath and defeat Pennywise.'},{name:'Mike Hanlon',description:'The only member of the Losers Club who remained in Derry and remembers their past battle with Pennywise.'},{name:'Stanley Uris',description:'A member of the Losers Club who took drastic action to avoid facing Pennywise again.'}]}
+      ];}
+
+      function getWikiStories(){ return [
+        {title:'Valak',description:'Valak, also known as the Demon Nun, is a malevolent entity that takes the form of a demonic nun. It is a powerful demon with the ability to possess and manipulate those around it, causing terror and death wherever it appears.',image:'https://www.denofgeek.com/wp-content/uploads/2021/02/Valak-as-the-Nun-in-The-Conjuring-Movies.png',backgroundStory:'Valak first appeared in "The Conjuring 2" as the primary antagonist, haunting the Hodgson family in Enfield, London. It later appeared in "The Nun," revealing more of its sinister origins.',foregroundStory:'In "The Nun," Valak manifests as a nun to terrorize characters like Father Burke and Sister Irene, drawing on their fears and weaknesses to manifest physical harm and psychological torment.',competitors:[{name:'The Crooked Man',description:'A demonic entity with a tall, twisted appearance, known for its eerie singing and unnatural movements. It challenges Valak with its own brand of terror and manipulation.',image:'https://static.wikia.nocookie.net/the-demonic-paradise/images/f/fd/Tthe-conjuring25.jpg'},{name:'Bathsheba Sherman',description:'An evil spirit that possessed a mother who later sacrificed her child to Satan. Bathsheba torments the Perron family in "The Conjuring," showing her powerful demonic presence.',image:'https://static.wikia.nocookie.net/villains/images/4/48/HtorpUnIfKw.jpg'}]},
+        {title:'Annabelle',description:'Annabelle is a possessed doll with a dark history of causing death and chaos. It serves as a conduit for demonic entities seeking to wreak havoc on the living.',image:'https://www.the-sun.com/wp-content/uploads/sites/6/2021/10/MP-ANNABELLE-DOLL-REG-UPDATE-OFF-PLTFRM-COMP.jpg',backgroundStory:'The real Annabelle doll was reportedly possessed by a deceased girl named Annabelle Higgins. It was later found to be a conduit for a demonic entity pretending to be the spirit of Annabelle.',foregroundStory:'In the "Annabelle" film series, the doll terrorizes its owners, manipulating their fears and weaknesses to escalate violence and horror in their lives.',competitors:[{name:'The Conjuring Dolls',description:'A collection of haunted and possessed dolls kept under the care of Ed and Lorraine Warren. These dolls, including Annabelle, pose a threat to anyone who comes into contact with them.',image:'https://hips.hearstapps.com/digitalspyuk.cdnds.net/17/25/1497945126-annabelle-2.jpg'},{name:'The Ferryman',description:'A demonic entity that collects souls and condemns them to eternal suffering. It challenges Annabelle with its ability to manipulate souls and bend the fabric of reality.',image:'https://static.wikia.nocookie.net/theconjuring/images/4/41/Luca-nemolato-ferryman-v5.jpg'}]},
+        {title:'Pennywise',description:'Pennywise, also known as IT, is an ancient cosmic entity that preys on the fears of children in the form of a malevolent clown. It manifests every 27 years to feed on the fear of its victims.',image:'https://cdn.britannica.com/98/196498-050-51868DCD/Pennywise-Bill-Skarsgard-film-adaptation-novel-Stephen.jpg',backgroundStory:'IT originates from the Macroverse, a dimension beyond the physical universe. It arrives in the town of Derry, Maine, to sow fear and consume the souls of children, returning every few decades to continue its cycle of terror.',foregroundStory:'In "IT" and its sequel, Pennywise uses its shape-shifting abilities to take on various forms that reflect the deepest fears of its victims, tormenting the Losers Club and other inhabitants of Derry.',competitors:[{name:'The Losers Club',description:'A group of misfit children who confront Pennywise in the town of Derry. They challenge IT with their courage and unity, forming a bond that transcends fear and empowers them to face the cosmic entity head-on.',image:'https://ew.com/thmb/BScxEqh5ZKatBX2_F9sKpWedrUg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/it-16887r1-2000-69eacd1b53554fffb64235fede23e28d.jpg'},{name:'Maturin the Turtle',description:'An ancient guardian and cosmic force of good that opposes Pennywise in the Macroverse. Maturin aids the Losers Club by providing insights into IT\'s origins and weaknesses, guiding them in their battle against the malevolent entity.',image:'https://img-v3.deepdreamgenerator.com/155435/vm8nym_32cbcce8c6ead2d4b96ef14e3fd45f84057ca118.jpg'}]}
+      ];}
+
+      function getSounds(){
+        var b = 'https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/horror/';
+        return [
+          {title:'Nun-1',source:b+'nun1.mp3'},{title:'Nun-2',source:b+'nun2.mp3'},
+          {title:'IT-1',source:b+'it1.mp3'},{title:'IT chapter-2',source:b+'it2.mp3'},
+          {title:'The Conjuring - 1',source:b+'conjuring1.mp3'},{title:'The Conjuring - 2',source:b+'conjuring2.mp3'},
+          {title:'The Conjuring - 3',source:b+'conjuring3.mp3'},{title:'Annabelle',source:b+'annabelle.mp3'},
+          {title:'Annabelle - Creation',source:b+'annabellec.mp3'},{title:'Annabelle - comes home',source:b+'annabellech.mp3'}
+        ];
+      }
+    }
+  })();
   </script>
 </body>
 </html>

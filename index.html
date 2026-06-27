@@ -1,1040 +1,1173 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-  <title>My GitHub Page</title>
-  <style>
-
-.custom-cursor{
-    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neon.cur'), auto;
- }
-#repository-contents-container {
-  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-  font-family: 'Google Sans', sans-serif;
-  font-style: italic;
-  color: #fff;
-  margin: 20px auto; /* Center alignment */
-  overflow: auto;
-  background: linear-gradient(135deg, rgba(255, 140, 0, 0.8), rgba(255, 215, 0, 0.8), rgba(127, 255, 0, 0.8), rgba(0, 255, 127, 0.8), rgba(0, 191, 255, 0.8), rgba(138, 43, 226, 0.8)); /* Colorful gradient background with increased opacity */
-  background-size: 600% 600%; /* Background size */
-  animation: gradient-animation 20s ease infinite; /* Gradient animation */
-  max-width: 100%; /* Responsivenes*/
-  width: 90%; /* Responsiveness */
-  height: 300px; /* Fixed height */
-  padding: 20px;
-  border: 6px solid #ccc;
-  border-radius: 20px;
-  overflow-y: auto;
-  font-size: 16px;
-  position: relative;
-}
-
-
-body * {
-  color: black !important;
-    box-shadow: none !important;
-  text-shadow: none !important;
-  
-
-}
-
-@keyframes gradient-animation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-
-
-/* Additional adjustments for smaller screens */
-@media (max-width: 768px) {
-  #repository-contents-container {
-    margin: 0 auto;
-    max-width: 98%;
-	position: relative;
-	right: 19px;
-    width:98%;
-    font-size: 16px; /* Adjust font size for smaller screens */
-    height: 210px !important; /* Fixed height for smaller screens */
-    overflow-y: scroll; /* Add a scrollbar when content exceeds the height */
- }
- 
-   body {
-    font-size: 14px;
-  }
-  
- 
-}
-
-
-.external-link {
-  color: blue;
-}
-
-input:hover {
-  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonques.cur'), auto;
-}
-
-#tools select:hover {
-   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/'), auto;
-}
-
-body {
-  user-select: none !important;
-  margin: 30px !important;
-  overflow: auto !important;
- background-attachment:fixed !important;
-}
-
-body {
-  user-select: none;
-  font-family: "Ubuntu", sans-serif;
-  color: #fff;
-  margin: 30px;
-  background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #fad0c4, #ff9a9e);
-  background-size: 200% 200%;
-    animation: gradientAnimation 10s ease infinite;
-  background-attachment: fixed;
-  position: relative;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100vh; /* Covers entire viewport height */
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.3));
-  opacity: 0.3;
-  overflow-x: hidden;
-  animation: radialAnimation 10s linear infinite;
-  pointer-events: none; /* Allows clicks through the pseudo-element */
-}
-
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  25% {
-    background-position: 50% 100%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  75% {
-    background-position: 50% 0%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes radialAnimation {
-  0% {
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.5) rotate(180deg);
-  }
-  100% {
-    transform: scale(1) rotate(360deg);
-  }
-}
-
-
-
-/* Customize scrollbar (for WebKit browsers like Chrome and Safari) */
-body::-webkit-scrollbar {
-  width: 10px;
-}
-
-body::-webkit-scrollbar-track {
-  background: #f5f5f5;
-}
-
-body::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 5px;
-}
-
-
-/* Your existing CSS styles continued... */
-h1,
-h2 {
-  animation: fadeInUp 1s ease-in-out;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-}
-
-h1 {
-  color: #fff;
-  font-size: 3em;
-  margin-bottom: 20px;
-}
-
-h2 {
-  color: #fff;
-  font-size: 2em;
-  margin-bottom: 20px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 10px;
-  opacity: 0;
-  animation: fadeInUp 1s ease-in-out forwards;
-  transition: background-color 0.3s, transform 0.3s;
-   cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-5px);
-}
-
-a.external-link {
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none;
- cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-  transition: color 0.3s, transform 0.3s;
-}
-
-a.external-link:hover {
-  color: FireBrick    !important;
-  transform: scale(1.1);
-}
-
-
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-
-/* Additional styles for the tools section */
-#tools {
-  margin-top: 30px;
-  text-align: center;
-}
-
-#search-bar {
-  margin-bottom: 30px;
-
-}
-
-#search-input{
-  padding: 10px;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 250px;
-  font-family: 'Google Sans', sans-serif; /* Use Google Sans font with fallback to generic sans-serif */ 
-  font-size: 1em;
-  font-style: italic; /* Apply italic style */
-  font-weight: bold;
-}
-#search-input::placeholder {
-  color: #555; /* Placeholder text color */
-  font-family: 'Google Sans', sans-serif; /* Use Google Sans font with fallback to generic sans-serif */
-  font-style: italic; /* Placeholder text style */
-  font-weight: bold; /* Placeholder text weight */
-  font-size: 16px; /* Placeholder text size */
-  text-transform: uppercase; /* Convert text to uppercase */
-  letter-spacing: 1px; /* Adjust letter spacing */
-  opacity: 0.8; /* Adjust opacity */
-}
-
-
-
-
-
-#search-button,
-#voice-search-button {
-  padding: 10px 20px;
-  background-color: #0366d6;
-    color: white !important;
-  border: none;
-  margin: 10px;
-  border-radius: 8px;
-  font-size: 1em;
-}
-
-#search-button:hover,
-#voice-search-button:hover {
-  top: 90px;
-  background-color: #004080;
-  border: 2px solid #002d59; /* Add a border */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow */
-  transition: all 0.3s ease; /* Add a transition effect */
-  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/rgb.cur'), auto;
-  /* Additional customizations */
-  transform: scale(1.1); /* Scale the button slightly on hover */
-  color: #fff; /* Change text color to white */
-}
-
-#search-button:hover::before,
-#voice-search-button:hover::before {
-  content: ""; /* Add a pseudo-element */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-  border-radius: 5px; /* Rounded corners */
-}
-
-#search-button:hover::after,
-#voice-search-button:hover::after {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: FontAwesome; /* Use FontAwesome for icons */
-  font-size: 24px;
-  color: #fff; /* White icon color */
-}
-
-#search-engine {
-  padding: 10px;
-  font-size: 16px;
-    color: white !important;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 200px;
-  transition: all 0.3s ease;
-}
-
-/* Style the options when the select is expanded */
-#search-engine {
-  color: white;
-  background-color: #584f7b; 
-}
-/* Style the options when hovered over */
-#search-engine:hover {
-  background-color: #584f7b;	
-}  
-/* Style the select element when expanded (focus) */
-#search-engine:focus {
-  color: white;
-  border-color: hsl(132, 22%, 40%);
-  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
-}
-/* New styles for clock */
-
-
-
-#developer-link {
-  position: relative;
-  color: green;
-  text-decoration: underline overline #556B2F;
-  font-family: "Exo 2", sans-serif;
-  transition: transform 0.3s ease, color 0.3s ease; /* Include color transition here */
-}
-
-#developer-link:hover {
-  color: red !important; /* Change to your desired hover color */
-  animation: glow 1.4s ease infinite alternate !important; /* Apply color glow animation on hover */
-}
-
-@keyframes glow {
-  0% {
-    color: rgb(87, 208, 47); /* Initial color */
-  }
-  100% {
-    color: rgb(255, 0, 0); /* Final color */
-  }
-}
-
-
-/* For larger screens, display the joke normally */
-#joke{
-    position: absolute;
-    top: 10px; /* Adjust as needed */
-	right: -10px;
-}
-
-/* For smaller screens, apply the marquee effect */
-@media screen and (max-width: 768px) {
-
-    /* General style for marquee elements */
-    .marquee {
-        text-decoration: underline;
-        position: relative; /* Set relative positioning */
-        margin: 0 -10px 0 -10px;
-        white-space: nowrap; /* Prevent line breaks */
-        overflow: hidden; /* Hide overflowing content */
-		
-    }
-
-    /* Apply marquee animation */
-    .marquee-content {
-        display: inline-block;
-		
-        animation: marquee 20s linear infinite; /* Apply marquee animation */
-    }
-
-    @keyframes marquee {
-        0% { transform: translateX(100%); }
-        100% { transform: translateX(-150%); }
-    }
-#joke {
-	bottom: 10px !important;
-    position: relative !important;
-    height: auto !important; /* Adjust the height value as needed */
-}
-
-#temp {
-	height: auto !important;
-
-}
-#clock {
-    position: relative;
-	top: 34px;
-    display: inline-block;
-	font-size: 2.4em !important;
-	font-family: cursive;
-}
-#quote {
-border: none !important;
-}
-
-.bl {
-    position: absolute;
-    top: 0;
-	left:0;
-    width: 4px; /* Set the width to match the border width */
-    height: 100%; /* Occupy the full height of the quote */
-    background-color: black; /* Set the border color */
-}
-
-
-.b2 {
-    position: absolute;
-    top: 0;
-    right: -1px;
-    width: 4px; /* Set the width to match the border width */
-    height: 100%; /* Occupy the full height of the quote */
-    background-color: black; /* Set the border color */
-	border-bottom: solid 4px #123456;
-}
-.quotes-text {
-	display: none;
-	}
-#joke-text {
-	display: none;
-	}
-  #weather {
-    Position: absolute;
-    top: 75px !important; /* Adjust the position for smaller screens */
-    right: -10px !important; /* Adjust the position for smaller screens */
-  }
-
-.quotes-text {
-	display: none;
-}
-#search-input {
-	margin:10px;
-}
-
-body {
-	margin-top: 30px;
-}
-
-div {
-    margin: 1px 0px 15px 0px; /* Top, Right, Bottom, Left */
-}
-
-}
-
-
-
-#clock {
-  cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/neonload.cur'), auto;
-  position: relative; /* Position absolute to its parent container */
-  top: 24px;
-  font-size: 3.6em;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  display: inline-block;
-  font-family: cursive;
-}
-
-#weather {
-  font-size: 1em;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  position: absolute;
-  top: 49px;
-  right: 20px;
-  z-index: 9999; /* Ensure the weather element is above other elements */
-}
-#quote-container {
-     text-align: center;
-
-}
-
-#quote {
-  display: inline-block;
-  text-align: center;
-  border: 3.6mm ridge rgba(211, 100, 50, .3);
-}
-
-.quotes-text {
-    text-align: center;
-    text-decoration: underline dotted red;
-    font-family: cursive;
-    font-size: 30px;
-    position: relative;
-	top: -10px;
-
-}
-.quotes-text span:hover{
-		cursor: pointer;
-}
-
-
-#temp {
-	position: relative;
-	bottom:20px;
-	border-width: 10px 10px 10px 10px;
-    width: 100%; /* Ensures the text spans the entire width of the screen */
-    padding: 16px; /* Example padding */
-    box-sizing: border-box; /* Ensures padding and border are included in the width */
-    text-align: center; /* Centers the text horizontally */
-}
-
-
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes">
+<meta name="description" content="Deekshith - Enterprise Developer Portfolio with Advanced GitHub Explorer">
+<meta name="theme-color" content="#0f172a">
+<meta property="og:title" content="Deekshith | Enterprise Portfolio">
+<meta property="og:description" content="Advanced GitHub repository explorer with code viewer, multi-engine search, and AI-powered features">
+<meta property="og:type" content="website">
+<title>Deekshith | Enterprise Developer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--bg:#f8fafc;--bg2:#fff;--bg3:#f1f5f9;--bg4:#e2e8f0;--card:rgba(255,255,255,.85);--cardH:rgba(255,255,255,.95);--t1:#0f172a;--t2:#475569;--t3:#64748b;--t4:#94a3b8;--bd:rgba(15,23,42,.1);--bdH:rgba(15,23,42,.2);--ac:#6366f1;--ac2:#8b5cf6;--ac3:#ec4899;--suc:#10b981;--wrn:#f59e0b;--err:#ef4444;--inf:#3b82f6;--sm:0 1px 2px rgba(0,0,0,.05);--md:0 4px 6px -1px rgba(0,0,0,.1);--lg:0 10px 15px -3px rgba(0,0,0,.1);--xl:0 20px 25px -5px rgba(0,0,0,.1);--g1:linear-gradient(135deg,#667eea 0%,#764ba2 100%);--g2:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);--g3:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);--g4:linear-gradient(135deg,#fa709a 0%,#fee140 100%);--mesh:radial-gradient(at 47% 33%,hsl(245,100%,75%) 0,transparent 59%),radial-gradient(at 82% 65%,hsl(290,100%,70%) 0,transparent 55%);--tr:250ms cubic-bezier(.4,0,.2,1);--tf:150ms cubic-bezier(.4,0,.2,1);--ts:400ms cubic-bezier(.4,0,.2,1);--r1:.375rem;--r2:.5rem;--r3:.75rem;--r4:1rem;--r5:1.5rem;--r6:2rem}
+[data-theme="dark"]{--bg:#0a0f1c;--bg2:#1e293b;--bg3:#334155;--bg4:#475569;--card:rgba(30,41,59,.85);--cardH:rgba(30,41,59,.95);--t1:#f1f5f9;--t2:#cbd5e1;--t3:#94a3b8;--t4:#64748b;--bd:rgba(255,255,255,.1);--bdH:rgba(255,255,255,.2)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;line-height:1.6;overflow-x:hidden;transition:background var(--tr),color var(--tr);position:relative}
+.bga{position:fixed;inset:0;z-index:-2;overflow:hidden;background:var(--bg)}
+.bga::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:var(--mesh);animation:mesh 20s ease infinite;opacity:.3}
+[data-theme="dark"] .bga::before{opacity:.15}
+@keyframes mesh{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(-30px,-50px) rotate(120deg)}66%{transform:translate(50px,30px) rotate(240deg)}}
+.prt{position:fixed;inset:0;pointer-events:none;z-index:-1}
+.p{position:absolute;background:var(--ac);border-radius:50%;opacity:.3;animation:flt 15s infinite ease-in-out}
+@keyframes flt{0%,100%{transform:translate(0,0)}25%{transform:translate(20px,-30px)}50%{transform:translate(-20px,20px)}75%{transform:translate(30px,-20px)}}
+@keyframes sd{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fu{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes fis{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pls{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes orb{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,50px)}}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes wb{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+@keyframes rec{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 12px rgba(239,68,68,0)}}
+@keyframes ti{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes too{to{transform:translateX(120%);opacity:0}}
+@keyframes mi{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.app{max-width:1400px;margin:0 auto;padding:1.5rem;min-height:100vh;display:flex;flex-direction:column;gap:1.5rem}
+.gl{background:var(--card);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);border:1px solid var(--bd);border-radius:var(--r4);box-shadow:var(--md)}
+.hd{padding:1rem 1.5rem;position:sticky;top:1rem;z-index:100;animation:sd .6s ease}
+.nv{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.lg{display:flex;align-items:center;gap:.75rem;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.25rem;color:var(--t1);text-decoration:none}
+.lgi{width:42px;height:42px;background:var(--g1);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.25rem;box-shadow:var(--md);animation:pls 3s ease infinite}
+.acts{display:flex;align-items:center;gap:.5rem}
+.ib{width:40px;height:40px;border-radius:var(--r2);border:1px solid var(--bd);background:var(--bg2);color:var(--t1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all var(--tr);position:relative;overflow:hidden;text-decoration:none;flex-shrink:0}
+.ib:hover{background:var(--ac);color:#fff;transform:translateY(-2px);box-shadow:var(--md);border-color:var(--ac)}
+.ib::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,.3);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+.ib:active::before{width:100px;height:100px}
+.ib.act{background:var(--ac);color:#fff;border-color:var(--ac)}
+.hero{padding:2.5rem;border-radius:var(--r5);box-shadow:var(--lg);position:relative;overflow:hidden;animation:fu .6s ease .1s backwards}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:500px;height:500px;background:var(--g1);border-radius:50%;opacity:.1;filter:blur(60px);animation:orb 8s ease infinite}
+.hc{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.hb{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;color:var(--ac);font-size:.8125rem;font-weight:500;margin-bottom:1rem}
+.dt{width:8px;height:8px;background:var(--suc);border-radius:50%;animation:pls 2s ease infinite}
+.ht{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.75rem,5vw,3rem);font-weight:800;line-height:1.1;margin-bottom:.75rem;background:linear-gradient(135deg,var(--t1) 0%,var(--ac) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hsu{font-size:1.125rem;color:var(--t2);margin-bottom:1.5rem;max-width:600px}
+.stt{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;max-width:600px}
+.st{display:flex;flex-direction:column;padding:.75rem 1rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);transition:all var(--tr)}
+.st:hover{transform:translateY(-2px);box-shadow:var(--md);border-color:var(--ac)}
+.sv{font-size:1.5rem;font-weight:700;color:var(--t1);font-family:'Space Grotesk',sans-serif}
+.sl{font-size:.75rem;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}
+.hw{display:flex;flex-direction:column;align-items:flex-end;gap:.75rem}
+.wg{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);padding:1rem 1.25rem;text-align:center;box-shadow:var(--sm);cursor:pointer;transition:all var(--tr);min-width:200px}
+.wg:hover{transform:translateY(-2px);box-shadow:var(--md);border-color:var(--ac)}
+.ck{font-family:'JetBrains Mono',monospace;font-size:1.75rem;font-weight:700;color:var(--t1);letter-spacing:.5px}
+.cdt{font-size:.75rem;color:var(--t3);margin-top:.25rem}
+.wth{padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem}
+.wi{font-size:1.5rem;color:var(--ac)}
+.wt{font-weight:700;font-size:1rem;color:var(--t1)}
+.wd{font-size:.75rem;color:var(--t3);text-transform:capitalize}
+.sec{padding:2rem;border-radius:var(--r5);box-shadow:var(--lg);animation:fu .6s ease .2s backwards}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.tt{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:.75rem;color:var(--t1)}
+.tt i{color:var(--ac)}
+.row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:stretch}
+.iw{flex:1;min-width:240px;position:relative}
+.inp{width:100%;padding:.875rem 1rem .875rem 2.75rem;background:var(--bg2);border:2px solid var(--bd);border-radius:var(--r3);color:var(--t1);font-size:.9375rem;font-family:inherit;transition:all var(--tr)}
+.inp:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 4px rgba(99,102,241,.1)}
+.inp::placeholder{color:var(--t3)}
+.inp.np{padding-left:1rem}
+.si{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none}
+.sel{padding:.875rem 2.5rem .875rem 1rem;background:var(--bg2);border:2px solid var(--bd);border-radius:var(--r3);color:var(--t1);font-size:.9375rem;font-family:inherit;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .75rem center;background-size:1rem;transition:all var(--tr);min-width:160px}
+.sel:focus{outline:none;border-color:var(--ac)}
+.btn{padding:.875rem 1.5rem;border:none;border-radius:var(--r3);font-size:.9375rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all var(--tr);display:inline-flex;align-items:center;justify-content:center;gap:.5rem;position:relative;overflow:hidden;color:inherit;text-decoration:none}
+.bp{background:var(--g1);color:#fff;box-shadow:var(--md)}
+.bp:hover{transform:translateY(-2px);box-shadow:var(--lg)}
+.bs{background:var(--bg2);color:var(--t1);border:2px solid var(--bd)}
+.bs:hover{border-color:var(--ac);color:var(--ac)}
+.bi{padding:.875rem;width:48px;height:48px}
+.vb.lst{background:var(--err);color:#fff;animation:rec 1s ease infinite}
+.vs{font-size:.875rem;color:var(--t3);margin-top:.5rem;min-height:1.25rem}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.chip{padding:.5rem 1rem;background:var(--bg2);border:1px solid var(--bd);border-radius:100px;font-size:.8125rem;cursor:pointer;transition:all var(--tr);color:var(--t2);display:inline-flex;align-items:center;gap:.375rem;font-weight:500}
+.chip:hover,.chip.act{background:var(--ac);color:#fff;border-color:var(--ac);transform:translateY(-1px)}
+.tabs{display:flex;gap:.25rem;background:var(--bg3);padding:.25rem;border-radius:var(--r2);margin-bottom:1rem;overflow-x:auto;scrollbar-width:thin}
+.tabs::-webkit-scrollbar{height:4px}
+.tab{padding:.625rem 1rem;border:none;background:transparent;color:var(--t2);cursor:pointer;border-radius:var(--r1);transition:all var(--tf);font-size:.875rem;font-weight:500;font-family:inherit;white-space:nowrap;display:inline-flex;align-items:center;gap:.375rem;flex-shrink:0}
+.tab:hover{color:var(--t1)}
+.tab.act{background:var(--bg2);color:var(--ac);box-shadow:var(--sm)}
+.tab .cnt{background:var(--bg3);padding:1px 7px;border-radius:100px;font-size:.6875rem;font-weight:600;color:var(--t3)}
+.tab.act .cnt{background:var(--ac);color:#fff}
+.bc{display:flex;align-items:center;gap:.5rem;font-size:.875rem;color:var(--t3);margin-bottom:1rem;flex-wrap:wrap;padding:.625rem .875rem;background:var(--bg3);border-radius:var(--r2)}
+.bci{cursor:pointer;color:var(--ac);transition:all var(--tf);padding:.25rem .5rem;border-radius:var(--r1);font-weight:500;display:inline-flex;align-items:center;gap:.25rem}
+.bci:hover{background:var(--bg2)}
+.bcs{color:var(--t4);font-weight:300}
+.vt{display:flex;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:.25rem;gap:.25rem}
+.vb2{padding:.5rem .75rem;border:none;background:transparent;color:var(--t3);cursor:pointer;border-radius:var(--r1);transition:all var(--tf);font-size:.875rem}
+.vb2:hover{color:var(--t1)}
+.vb2.act{background:var(--ac);color:#fff}
+.gd{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:1rem;max-height:650px;overflow-y:auto;padding-right:.5rem}
+.gd.lst{grid-template-columns:1fr}
+.gd.lst .cd2{display:flex;align-items:center;padding:1rem}
+.gd.lst .ch2{margin-bottom:0;flex:1}
+.gd.lst .dsc{display:none}
+.gd.lst .mta{margin-left:auto;margin-top:0}
+.cd2{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);padding:1.25rem;cursor:pointer;transition:all var(--tr);position:relative;overflow:hidden;animation:fis .4s ease backwards;text-decoration:none;color:inherit;display:block}
+.cd2::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--g1);transform:scaleY(0);transition:transform var(--tr);transform-origin:bottom}
+.cd2:hover{transform:translateY(-4px);box-shadow:var(--lg);border-color:var(--ac)}
+.cd2:hover::before{transform:scaleY(1);transform-origin:top}
+.ch2{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.ic{width:38px;height:38px;border-radius:var(--r2);background:var(--g1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.875rem;flex-shrink:0}
+.ic.fld{background:var(--g4)}
+.ic.fil{background:var(--g3)}
+.ic.html{background:linear-gradient(135deg,#e34c26,#f06529)}
+.nm{font-weight:600;font-size:.9375rem;color:var(--t1);word-break:break-word;line-height:1.3;flex:1;min-width:0}
+.dsc{font-size:.8125rem;color:var(--t2);margin:.5rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5;word-break:break-word}
+.mta{display:flex;gap:.625rem;font-size:.75rem;color:var(--t3);align-items:center;flex-wrap:wrap;margin-top:.625rem}
+.mta span{display:inline-flex;align-items:center;gap:.25rem}
+.lng{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ac)}
+.tg{display:inline-block;padding:2px 8px;background:var(--bg3);border-radius:100px;font-size:.6875rem;color:var(--t2);margin-right:4px;font-weight:500}
+.qs{background:var(--g1);border-radius:var(--r5);padding:2rem;color:#fff;box-shadow:var(--lg);position:relative;overflow:hidden;animation:fu .6s ease .4s backwards}
+.qs::before{content:'"';position:absolute;top:-2rem;right:1rem;font-size:12rem;font-family:Georgia,serif;opacity:.1;line-height:1}
+.qc{position:relative;z-index:1;max-width:800px}
+.qx{font-size:1.25rem;line-height:1.6;margin-bottom:1rem;font-style:italic;font-family:'Space Grotesk',sans-serif}
+.qa{font-weight:600;opacity:.9;display:flex;align-items:center;gap:.5rem}
+.qa::before{content:'';display:inline-block;width:30px;height:2px;background:#fff}
+.qact{margin-top:1.5rem;display:flex;gap:.625rem;flex-wrap:wrap}
+.qb{padding:.5rem 1rem;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:var(--r2);cursor:pointer;font-size:.875rem;font-family:inherit;transition:all var(--tr);display:inline-flex;align-items:center;gap:.375rem}
+.qb:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}
+.jb{padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;animation:fu .6s ease .5s backwards}
+.ji{font-size:1.5rem;animation:wb 3s ease infinite;flex-shrink:0}
+.jt{flex:1;color:var(--t2);font-size:.9375rem;min-width:0}
+.ftr{text-align:center;padding:2rem 1rem 1rem;color:var(--t3);font-size:.875rem}
+.ftr a{color:var(--ac);text-decoration:none;font-weight:500}
+.ftr a:hover{text-decoration:underline}
+.skl{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg2) 50%,var(--bg3) 75%);background-size:200% 100%;animation:sk 1.5s ease infinite;border-radius:var(--r2);height:120px}
+.tc{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;pointer-events:none;max-width:calc(100% - 2rem)}
+.ts{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:var(--r3);padding:.875rem 1.25rem;box-shadow:var(--xl);display:flex;align-items:center;gap:.75rem;min-width:250px;max-width:400px;animation:ti .3s ease;pointer-events:all}
+.ts.suc{border-left:4px solid var(--suc)}
+.ts.err{border-left:4px solid var(--err)}
+.ts.inf{border-left:4px solid var(--inf)}
+.ts.wrn{border-left:4px solid var(--wrn)}
+.ts.rm{animation:too .3s ease forwards}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg3);border-radius:4px}
+::-webkit-scrollbar-thumb{background:var(--ac);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--ac2)}
+.spn{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite;margin:2rem auto}
+.es{text-align:center;padding:3rem 1rem;color:var(--t3);grid-column:1/-1}
+.es i{font-size:3rem;margin-bottom:1rem;opacity:.5;display:block}
+.es h3{margin-bottom:.5rem;color:var(--t2);font-weight:600}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;animation:fi .2s ease}
+.mo.act{display:flex}
+.md{background:var(--bg2);border-radius:var(--r4);max-width:600px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--xl);animation:mi .3s ease;overflow:hidden}
+.md.lg{max-width:1100px}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid var(--bd);flex-shrink:0;gap:1rem}
+.mt{font-size:1.125rem;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:.5rem;min-width:0;flex:1}
+.mt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mac{display:flex;gap:.375rem;align-items:center;flex-shrink:0}
+.mc{background:none;border:1px solid transparent;color:var(--t3);cursor:pointer;font-size:.9375rem;padding:.5rem .625rem;border-radius:var(--r2);transition:all var(--tr);display:flex;align-items:center;gap:.375rem;font-family:inherit;min-width:36px;justify-content:center}
+.mc:hover{background:var(--bg3);color:var(--t1);border-color:var(--bd)}
+.mc.dl-btn:hover{background:var(--suc);color:#fff;border-color:var(--suc)}
+.mb{padding:1.5rem;overflow-y:auto;flex:1}
+.sl2{display:flex;flex-direction:column;gap:.625rem}
+.si2{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:var(--bg3);border-radius:var(--r2);font-size:.875rem}
+.kbd{padding:.25rem .5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r1);font-family:'JetBrains Mono',monospace;font-size:.75rem;box-shadow:0 2px 0 var(--bd);font-weight:600}
+.pf{display:flex;align-items:center;gap:1.25rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);margin-bottom:1.25rem;flex-wrap:wrap}
+.av{width:80px;height:80px;border-radius:50%;border:3px solid var(--ac);box-shadow:var(--md);flex-shrink:0}
+.pi{flex:1;min-width:200px}
+.pn{font-size:1.25rem;font-weight:700;color:var(--t1);margin-bottom:.25rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.pn .vrf{color:var(--ac);font-size:.875rem}
+.pb{font-size:.875rem;color:var(--t2);margin-bottom:.625rem;line-height:1.5}
+.pst{display:flex;gap:1rem;font-size:.8125rem;color:var(--t3);flex-wrap:wrap}
+.pst span{display:inline-flex;align-items:center;gap:.375rem}
+.pst a{color:var(--ac);text-decoration:none}
+.pst a:hover{text-decoration:underline}
+.cv{background:#1e1e1e;border-radius:var(--r3);margin-top:.75rem;max-height:60vh;overflow:auto;font-family:'JetBrains Mono',monospace;font-size:.8125rem;line-height:1.7;border:1px solid var(--bd)}
+.cv pre{margin:0;padding:1.25rem;white-space:pre-wrap;word-break:break-word;color:#d4d4d4}
+.cv pre code{font-family:inherit;background:none!important;padding:0!important}
+.dv{padding:1.5rem;background:var(--bg2);border-radius:var(--r3);max-height:60vh;overflow:auto;border:1px solid var(--bd)}
+.dv h1,.dv h2,.dv h3,.dv h4{margin:1rem 0 .625rem;color:var(--t1);font-family:'Space Grotesk',sans-serif}
+.dv h1{font-size:1.75rem;border-bottom:2px solid var(--bd);padding-bottom:.5rem}
+.dv h2{font-size:1.4rem;border-bottom:1px solid var(--bd);padding-bottom:.375rem}
+.dv h3{font-size:1.2rem}
+.dv p{margin:.75rem 0;color:var(--t2);line-height:1.7}
+.dv code{background:var(--bg3);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.875em;color:var(--ac)}
+.dv pre{background:#1e1e1e;padding:1rem;border-radius:var(--r2);overflow-x:auto;margin:.75rem 0}
+.dv pre code{background:none;color:#d4d4d4;padding:0;font-size:.8125rem}
+.dv ul,.dv ol{margin:.5rem 0 .75rem;padding-left:1.75rem;color:var(--t2)}
+.dv li{margin:.25rem 0;line-height:1.6}
+.dv a{color:var(--ac);text-decoration:none}
+.dv a:hover{text-decoration:underline}
+.dv img{max-width:100%;border-radius:var(--r2);margin:.5rem 0}
+.dv blockquote{border-left:4px solid var(--ac);padding:.5rem 1rem;margin:.75rem 0;background:var(--bg3);border-radius:0 var(--r2) var(--r2) 0;color:var(--t2);font-style:italic}
+.dv table{border-collapse:collapse;margin:.75rem 0;width:100%}
+.dv th,.dv td{border:1px solid var(--bd);padding:.5rem .75rem;text-align:left}
+.dv th{background:var(--bg3);font-weight:600;color:var(--t1)}
+.dv hr{border:0;border-top:1px solid var(--bd);margin:1.5rem 0}
+.lyt{display:inline-flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2);cursor:pointer;padding:.5rem .75rem;background:var(--bg3);border-radius:var(--r2);user-select:none}
+.lyt input{accent-color:var(--ac);cursor:pointer}
+.lyt:hover{background:var(--bg4)}
+.frm{width:100%;height:60vh;border:1px solid var(--bd);border-radius:var(--r3);background:#fff;margin-top:.75rem}
+.fts{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+.bdg{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .625rem;background:var(--bg3);color:var(--t2);font-size:.75rem;border-radius:100px;font-weight:500}
+.bdg.lng-b{background:var(--ac);color:#fff}
+.bdg.suc-b{background:var(--suc);color:#fff}
+.lds{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:3rem 1rem;color:var(--t3)}
+.fl-ic{font-size:.875rem;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--r2);color:#fff;flex-shrink:0}
+.dlft{display:none;align-items:center;justify-content:center;background:rgba(99,102,241,.1);border:2px dashed var(--ac);border-radius:var(--r3);padding:1.5rem;margin:1rem 0;color:var(--ac)}
+.shrtg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-top:1rem}
+.shrtc{padding:1rem;background:var(--bg3);border-radius:var(--r2);text-align:center;cursor:pointer;transition:all var(--tr);text-decoration:none;color:inherit;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;gap:.375rem}
+.shrtc:hover{transform:translateY(-2px);border-color:var(--ac);background:var(--bg2)}
+.shrtc i{font-size:1.5rem;color:var(--ac)}
+.shrtc span{font-size:.8125rem;font-weight:500}
+.alt{display:flex;align-items:center;gap:.5rem;padding:.75rem 1rem;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--r2);color:var(--wrn);font-size:.8125rem;margin:.75rem 0}
+.cmd{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:flex-start;justify-content:center;padding:5rem 1rem 1rem}
+.cmd.act{display:flex;animation:fi .15s ease}
+.cmdb{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);width:100%;max-width:600px;box-shadow:var(--xl);overflow:hidden;animation:mi .2s ease}
+.cmdi{display:flex;align-items:center;gap:.75rem;padding:1rem 1.25rem;border-bottom:1px solid var(--bd)}
+.cmdi i{color:var(--t3)}
+.cmdi input{flex:1;background:none;border:none;outline:none;color:var(--t1);font-size:1rem;font-family:inherit}
+.cmdr{max-height:400px;overflow-y:auto;padding:.5rem}
+.cmdrt{padding:.5rem 1rem;font-size:.6875rem;text-transform:uppercase;color:var(--t4);font-weight:600;letter-spacing:.5px}
+.cmdo{display:flex;align-items:center;gap:.75rem;padding:.625rem 1rem;border-radius:var(--r2);cursor:pointer;color:var(--t1);transition:background var(--tf)}
+.cmdo:hover,.cmdo.sel{background:var(--bg3)}
+.cmdo i{color:var(--t3);width:20px}
+.cmdo.sel i{color:var(--ac)}
+.cmdo span.kb{margin-left:auto;font-size:.75rem;color:var(--t4)}
+.scrl{position:fixed;bottom:1rem;right:1rem;width:44px;height:44px;border-radius:50%;background:var(--ac);color:#fff;border:none;cursor:pointer;box-shadow:var(--lg);display:none;align-items:center;justify-content:center;font-size:1rem;z-index:50;transition:all var(--tr)}
+.scrl.show{display:flex;animation:fis .3s ease}
+.scrl:hover{transform:translateY(-2px);background:var(--ac2)}
+.prog{position:fixed;top:0;left:0;height:3px;background:var(--g1);z-index:9999;transition:width var(--tf);width:0}
+.cnt-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem}
+.cnt-info{font-size:.8125rem;color:var(--t3)}
+.tag-list{display:flex;flex-wrap:wrap;gap:.375rem;margin:.5rem 0}
+.info-banner{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.08));border:1px solid rgba(99,102,241,.2);border-radius:var(--r3);padding:.875rem 1.125rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--t2)}
+.info-banner i{color:var(--ac);font-size:1rem;flex-shrink:0}
+.info-banner code{background:var(--bg2);padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8125rem;color:var(--ac)}
+.dl-progress{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:var(--r3);padding:.875rem 1.25rem;box-shadow:var(--xl);display:none;align-items:center;gap:.75rem;z-index:9998;font-size:.875rem;color:var(--t1);min-width:240px}
+.dl-progress.show{display:flex;animation:fis .3s ease}
+.dl-progress i{color:var(--ac);animation:sp 1s linear infinite}
+@media(max-width:1024px){.app{padding:1rem;gap:1.25rem}.hero{padding:2rem}.hc{grid-template-columns:1fr}.hw{align-items:flex-start;flex-direction:row;flex-wrap:wrap}.gd{max-height:550px}}
+@media(max-width:768px){.app{padding:.75rem;gap:1rem}.hd{padding:.75rem 1rem;position:relative;top:0}.lg{font-size:1.0625rem}.lgi{width:36px;height:36px;font-size:1rem}.hero,.sec,.qs{padding:1.25rem;border-radius:var(--r4)}.ht{font-size:1.625rem}.hsu{font-size:.95rem}.ck{font-size:1.5rem}.row{flex-direction:column}.iw,.sel,.btn{width:100%}.bi{width:100%}.gd{grid-template-columns:1fr;max-height:450px}.tt{font-size:1.25rem}.tc{top:.5rem;right:.5rem;left:.5rem}.ts{min-width:auto;max-width:none}.qx{font-size:1.0625rem}.md{max-height:95vh;border-radius:var(--r3)}.mh{padding:1rem;flex-wrap:wrap}.mb{padding:1rem}.mt{font-size:1rem}.cv{font-size:.75rem}.cv pre{padding:1rem}.frm{height:50vh}.shrtg{grid-template-columns:repeat(2,1fr)}.av{width:64px;height:64px}.cmd{padding:3rem 1rem 1rem}.acts{gap:.375rem}.ib{width:38px;height:38px;font-size:.9rem}.tabs{flex-wrap:nowrap;overflow-x:auto}.tab{padding:.5rem .75rem;font-size:.8125rem}.mac{flex-wrap:wrap;justify-content:flex-end}}
+@media(max-width:480px){.stt{grid-template-columns:repeat(2,1fr);gap:.625rem}.sv{font-size:1.25rem}.acts{gap:.25rem}.ib{width:36px;height:36px;font-size:.8125rem}.jb{flex-direction:column;text-align:center;gap:.5rem;padding:1rem}.jt{font-size:.875rem}.shrtg{grid-template-columns:1fr}.bc{font-size:.8125rem;padding:.5rem .625rem}.qact{flex-direction:column}.qb{justify-content:center}}
+@media print{.hd,.acts,.sec,.qs,.jb,.tc,.scrl,.prog{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+@supports not (backdrop-filter:blur(20px)){.gl,.ts{background:var(--bg2)}}
+</style>
 </head>
 <body>
+<div class="bga"></div>
+<div class="prt" id="prt"></div>
+<div class="prog" id="prog"></div>
+<div class="tc" id="tcc" role="status" aria-live="polite"></div>
+<div class="dl-progress" id="dlProg"><i class="fas fa-circle-notch"></i><span id="dlProgText">Downloading...</span></div>
 
-<div class="marquee" ><div id="temp"><span class="bl"></span>
-    <div class="marquee-content" id="joke"></div>
-	<span class="b2"></span>
-</div></div>
+<div class="app">
+<header class="hd gl">
+<nav class="nv">
+<a href="#" class="lg"><div class="lgi"><i class="fas fa-code"></i></div><span>Deekshith.dev</span></a>
+<div class="acts">
+<button class="ib" id="bCmd" title="Command Palette (Ctrl+K)" aria-label="Command palette"><i class="fas fa-terminal"></i></button>
+<button class="ib" id="bSrch" title="Shortcuts (?)" aria-label="Shortcuts"><i class="fas fa-keyboard"></i></button>
+<button class="ib" id="bFs" title="Fullscreen (F)" aria-label="Fullscreen"><i class="fas fa-expand"></i></button>
+<button class="ib" id="bTh" title="Theme (Ctrl+D)" aria-label="Theme"><i class="fas fa-moon"></i></button>
+<a href="https://github.com/deekshith0509" target="_blank" rel="noopener" class="ib" title="GitHub" aria-label="GitHub"><i class="fab fa-github"></i></a>
+</div>
+</nav>
+</header>
 
-
-  <!-- Clock and weather forecast -->
-  <div id="clock" onclick="refreshPage()" ></div>
-
-
-  <div id="weather"></div>
-
-<br>
-<h1><a id="developer-link"  class="custom-cursor" href="https://github.com/deekshith0509/" >Developed BY</a></h1>
-  <h2 id="repo" style="font-family: serif;">My Repository:</h2>
-
- <div id="repository-contents-container">
-        <!-- Fetched repository contents will be displayed here -->
-        <h2 id="name"></h2>
-        <ul id="repository-contents"></ul>
-    </div>
-  <div id="tools" >
-    <div id="search-bar">
-      <h2>Search Your Query with Your Preferred Search Engine</h2>
-      <input type="text" id="search-input"  x-webkit-speech placeholder="Enter your search" autocomplete="off">
-      <select id="search-engine">
-        <option value="google">Google</option>
-        <option value="bing">Bing</option>
-        <option value="yahoo">Yahoo</option>
-        <option value="duckduckgo">DuckDuckGo</option>
-        <option value="baidu">Baidu</option>
-        <option value="yandex">Yandex</option>
-        <option value="ask">Ask</option>
-        <option value="aol">AOL</option>
-        <option value="dogpile">Dogpile</option>
-        <option value="excite">Excite</option>
-        <option value="YT">Youtube</option>
-        <option value="webcrawler">WebCrawler</option>
-        <option value="tb">TamilBlasters</option>
-        <option value="imdb">IMDb</option>
-        <!-- Add more search engines as needed -->
-      </select>
-      <button id="search-button" onclick="performSearch()">Search</button>
- <button id="voice-search-button">Voice Search</button> 
- <p id="voice-status"></p>
-    </div>
-  </div><div class="quotes-text" onclick="fetchQuote()"><span>Random-Quote</span></div>
-  <div id="quote-container">
-      <div class= "marquee" ><span class="bl"></span><div id="quote" class="marquee-content"></div>
-<span class="b2"></span>
+<section class="hero gl">
+<div class="hc">
+<div>
+<div class="hb"><span class="dt"></span><span>Available for opportunities</span></div>
+<h1 class="ht">Welcome to my Portfolio</h1>
+<p class="hsu">Explore my GitHub universe with advanced repository navigation, intelligent code viewer, and multi-engine search powered by enterprise-grade tooling.</p>
+<div class="stt">
+<div class="st"><span class="sv" id="sRepo">--</span><span class="sl">Repos</span></div>
+<div class="st"><span class="sv" id="sFlw">--</span><span class="sl">Followers</span></div>
+<div class="st"><span class="sv" id="sStar">--</span><span class="sl">Stars</span></div>
+<div class="st"><span class="sv" id="sFrk">--</span><span class="sl">Forks</span></div>
+<div class="st"><span class="sv" id="sVis">--</span><span class="sl">Visits</span></div>
 </div>
 </div>
-  <script>
+<div class="hw">
+<div class="wg" id="wClk" title="Click to refresh">
+<div class="ck" id="clk">00:00:00</div>
+<div class="cdt" id="cdt">Loading...</div>
+</div>
+<div class="wg wth" id="wWth">
+<i class="fas fa-cloud wi"></i>
+<div><div class="wt" id="wTm">--°C</div><div class="wd" id="wDc">Loading...</div></div>
+</div>
+</div>
+</div>
+</section>
 
-    // Function to update clock
-    function updateClock() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-    }
-    // Function to fetch weather forecast
-    function fetchWeather() {
-      const apiKey = '25c97ed9fb1bb9e5768b3b12bbfe9137';
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Hyderabad&units=metric&appid=${apiKey}`;
+<div class="jb gl">
+<div class="ji">😄</div>
+<div class="jt" id="jkt">Loading...</div>
+<button class="ib" id="bJk" title="New joke"><i class="fas fa-sync-alt"></i></button>
+</div>
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          const weatherDescription = data.weather[0].description;
-          const temperature = data.main.temp;
-          document.getElementById('weather').textContent = `Weather: ${weatherDescription}, Temperature: ${temperature}°C`;
-        })
-        .catch(error => console.error('Error fetching weather:', error));
-    }
+<section class="sec gl">
+<div class="sh"><h2 class="tt"><i class="fas fa-search"></i>Universal Search</h2></div>
+<div class="row">
+<div class="iw"><i class="fas fa-search si"></i><input type="text" id="qInp" class="inp" placeholder="Search anything... (Ctrl+Q)" autocomplete="off" spellcheck="false"></div>
+<select id="qEng" class="sel" aria-label="Search engine"></select>
+<button class="btn bp" id="bGo"><i class="fas fa-search"></i><span>Search</span></button>
+<button class="btn bs bi vb" id="bVc" title="Voice (Ctrl+M)" aria-label="Voice search"><i class="fas fa-microphone"></i></button>
+</div>
+<div class="vs" id="vSt"></div>
+<div class="chips" id="chips"></div>
+</section>
 
-    // Update clock and fetch weather when the page loads
-    updateClock();
-    fetchWeather();
+<section class="sec gl">
+<div class="sh">
+<h2 class="tt"><i class="fab fa-github"></i>GitHub Explorer</h2>
+<div class="vt">
+<button class="vb2 act" data-v="grid" title="Grid view" aria-label="Grid"><i class="fas fa-th"></i></button>
+<button class="vb2" data-v="list" title="List view" aria-label="List"><i class="fas fa-list"></i></button>
+</div>
+</div>
 
-    // Update clock every second
-    setInterval(updateClock, 1000);
-	
-	
-const githubUsername = 'deekshith0509';
-const repositoryName = 'deekshith0509.github.io';
+<div class="pf" id="pfl">
+<div class="skl" style="width:80px;height:80px;border-radius:50%;flex-shrink:0"></div>
+<div class="pi" style="display:flex;flex-direction:column;gap:.5rem">
+<div class="skl" style="height:24px;width:50%"></div>
+<div class="skl" style="height:14px;width:80%"></div>
+<div class="skl" style="height:14px;width:60%"></div>
+</div>
+</div>
 
-fetch(`https://api.github.com/repos/${githubUsername}/${repositoryName}/contents`)
-  .then(response => response.json())
-  .then(contents => {
-    // Exclude README.md and index.html
-    const filteredContents = contents.filter(item =>
-      item.type === 'file' &&
-      item.name.toLowerCase() !== 'readme.md' &&
-      item.name.toLowerCase() !== 'index.html'
-    );
+<div class="tabs" id="tbs" role="tablist">
+<button class="tab act" data-t="repos" role="tab"><i class="fas fa-folder"></i>Repositories<span class="cnt" id="cRepo">0</span></button>
+<button class="tab" data-t="livepages" role="tab"><i class="fas fa-rocket"></i>Live Pages<span class="cnt" id="cLive">0</span></button>
+<button class="tab" data-t="starred" role="tab"><i class="fas fa-star"></i>Starred<span class="cnt" id="cStar">0</span></button>
+<button class="tab" data-t="gists" role="tab"><i class="fas fa-file-code"></i>Gists<span class="cnt" id="cGist">0</span></button>
+<button class="tab" data-t="pages" role="tab"><i class="fas fa-globe"></i>Pages<span class="cnt" id="cPage">0</span></button>
+<button class="tab" data-t="orgs" role="tab"><i class="fas fa-building"></i>Orgs<span class="cnt" id="cOrg">0</span></button>
+</div>
 
-    // Create promises to fetch HTML file contents
-    const fileContentPromises = filteredContents.map(item => {
-      if (item.name.endsWith('.html')) {
-        return fetch(item.download_url)
-          .then(response => response.text())
-          .then(htmlContent => ({
-            ...item,
-            lineCount: htmlContent.split('\n').length,
-            htmlContent: htmlContent
-          }));
-      }
-      return Promise.resolve(item);
+<div class="bc" id="bcr" style="display:none"></div>
+
+<div class="info-banner" id="infoBanner" style="display:none">
+<i class="fas fa-info-circle"></i>
+<span id="infoBannerText"></span>
+</div>
+
+<div class="row" style="margin-bottom:1rem">
+<div class="iw"><i class="fas fa-filter si"></i><input type="text" id="fInp" class="inp" placeholder="Filter by name, description, language..."></div>
+<select id="sortSel" class="sel" aria-label="Sort">
+<option value="updated">📅 Recent</option>
+<option value="created">🆕 Created</option>
+<option value="name">🔤 Name</option>
+<option value="stars">⭐ Stars</option>
+<option value="size">📦 Size</option>
+</select>
+<button class="btn bs" id="bRf" title="Refresh"><i class="fas fa-sync-alt"></i><span>Refresh</span></button>
+</div>
+
+<div class="cnt-h"><span class="cnt-info" id="cntInfo"></span></div>
+<div class="gd" id="gd"><div class="skl"></div><div class="skl"></div><div class="skl"></div><div class="skl"></div><div class="skl"></div><div class="skl"></div></div>
+</section>
+
+<section class="qs">
+<div class="qc">
+<div class="qx" id="qtx">Loading...</div>
+<div class="qa" id="qau">—</div>
+<div class="qact">
+<button class="qb" id="bQn"><i class="fas fa-sync-alt"></i>New</button>
+<button class="qb" id="bQc"><i class="fas fa-copy"></i>Copy</button>
+<button class="qb" id="bQs"><i class="fas fa-share-alt"></i>Share</button>
+<button class="qb" id="bQt"><i class="fab fa-twitter"></i>Tweet</button>
+</div>
+</div>
+</section>
+
+<footer class="ftr">
+<p>Built with ❤️ by <a href="https://github.com/deekshith0509" target="_blank" rel="noopener">Deekshith</a> · © <span id="yr"></span> · <span id="apiSt">●</span> <a href="#" id="aboutLnk">About</a></p>
+</footer>
+</div>
+
+<button class="scrl" id="scrlBtn" title="Top" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></button>
+
+<div class="cmd" id="cmdP">
+<div class="cmdb">
+<div class="cmdi"><i class="fas fa-search"></i><input type="text" id="cmdInp" placeholder="Type a command..." autocomplete="off"><span class="kb"><kbd class="kbd">ESC</kbd></span></div>
+<div class="cmdr" id="cmdR"></div>
+</div>
+</div>
+
+<div class="mo" id="mSc"><div class="md"><div class="mh"><h3 class="mt"><i class="fas fa-keyboard"></i><span>Keyboard Shortcuts</span></h3><div class="mac"><button class="mc" data-close="mSc"><i class="fas fa-times"></i></button></div></div><div class="mb">
+<div class="sl2">
+<div class="si2"><span>Command Palette</span><span><kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">K</kbd></span></div>
+<div class="si2"><span>Focus Search</span><span><kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">Q</kbd></span></div>
+<div class="si2"><span>Toggle Theme</span><span><kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">D</kbd></span></div>
+<div class="si2"><span>Voice Search</span><span><kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">M</kbd></span></div>
+<div class="si2"><span>New Quote</span><span><kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">N</kbd></span></div>
+<div class="si2"><span>Refresh Data</span><span><kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">⇧</kbd>+<kbd class="kbd">R</kbd></span></div>
+<div class="si2"><span>Fullscreen</span><span><kbd class="kbd">F</kbd></span></div>
+<div class="si2"><span>Show Shortcuts</span><span><kbd class="kbd">?</kbd></span></div>
+<div class="si2"><span>Go Back</span><span><kbd class="kbd">Backspace</kbd></span></div>
+<div class="si2"><span>Close Modal</span><span><kbd class="kbd">Esc</kbd></span></div>
+<div class="si2"><span>Switch Tabs</span><span><kbd class="kbd">1</kbd>-<kbd class="kbd">6</kbd></span></div>
+</div>
+</div></div></div>
+
+<div class="mo" id="mVw"><div class="md lg"><div class="mh"><h3 class="mt"><i class="fas fa-file-alt"></i><span id="vTtl">File</span></h3><div class="mac"><button class="mc" id="vCp" title="Copy content"><i class="fas fa-copy"></i></button><button class="mc dl-btn" id="vDl" title="Download file"><i class="fas fa-download"></i></button><button class="mc" id="vRw" title="Open raw"><i class="fas fa-external-link-alt"></i></button><button class="mc" id="vOp" title="View on GitHub"><i class="fab fa-github"></i></button><button class="mc" data-close="mVw" title="Close"><i class="fas fa-times"></i></button></div></div><div class="mb" id="vBd"></div></div></div>
+
+<div class="mo" id="mAb"><div class="md"><div class="mh"><h3 class="mt"><i class="fas fa-info-circle"></i><span>About</span></h3><div class="mac"><button class="mc" data-close="mAb"><i class="fas fa-times"></i></button></div></div><div class="mb">
+<p style="color:var(--t2);line-height:1.7;margin-bottom:1rem">Enterprise-grade portfolio application showcasing GitHub repositories with advanced features.</p>
+<div class="shrtg">
+<div class="shrtc"><i class="fas fa-bolt"></i><span>Multi-CDN Proxy</span></div>
+<div class="shrtc"><i class="fas fa-database"></i><span>Smart Caching</span></div>
+<div class="shrtc"><i class="fas fa-microphone"></i><span>Voice Search</span></div>
+<div class="shrtc"><i class="fas fa-keyboard"></i><span>Keyboard First</span></div>
+<div class="shrtc"><i class="fas fa-mobile"></i><span>Responsive</span></div>
+<div class="shrtc"><i class="fas fa-universal-access"></i><span>Accessible</span></div>
+</div>
+<div class="alt" style="margin-top:1rem"><i class="fas fa-info-circle"></i>All external resources are loaded via CORS proxy with automatic failover.</div>
+</div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+
+<script>
+const C={u:'deekshith0509',pagesRepo:'deekshith0509.github.io',pagesBase:'https://deekshith0509.github.io',k:'25c97ed9fb1bb9e5768b3b12bbfe9137',cy:'Hyderabad',mxL:1500,prx:['https://corsproxy.io/?','https://api.allorigins.win/raw?url=','https://api.codetabs.com/v1/proxy?quest=','https://cors.eu.org/','https://thingproxy.freeboard.io/fetch/']};
+const E={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',yahoo:'https://search.yahoo.com/search?p=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q=',ecosia:'https://www.ecosia.org/search?q=',startpage:'https://www.startpage.com/do/search?q=',yandex:'https://yandex.com/search/?text=',YT:'https://www.youtube.com/results?search_query=',github:'https://github.com/search?q=',stackoverflow:'https://stackoverflow.com/search?q=',npm:'https://www.npmjs.com/search?q=',mdn:'https://developer.mozilla.org/en-US/search?q=',wikipedia:'https://en.wikipedia.org/wiki/Special:Search?search=',reddit:'https://www.reddit.com/search/?q=',twitter:'https://twitter.com/search?q=',imdb:'https://www.imdb.com/find/?q=',pypi:'https://pypi.org/search/?q=',crates:'https://crates.io/search?q=',unsplash:'https://unsplash.com/s/photos/'};
+const EI={google:'🔍',bing:'🅱️',yahoo:'📧',duckduckgo:'🦆',brave:'🦁',ecosia:'🌳',startpage:'🔒',yandex:'🇷🇺',YT:'📺',github:'🐙',stackoverflow:'📚',npm:'📦',mdn:'📘',wikipedia:'📖',reddit:'🤖',twitter:'🐦',imdb:'🎬',pypi:'🐍',crates:'📦',unsplash:'📷'};
+const QT=[{c:"The only way to do great work is to love what you do.",a:"Steve Jobs"},{c:"Innovation distinguishes between a leader and a follower.",a:"Steve Jobs"},{c:"The future belongs to those who believe in the beauty of their dreams.",a:"Eleanor Roosevelt"},{c:"Code is like humor. When you have to explain it, it's bad.",a:"Cory House"},{c:"First, solve the problem. Then, write the code.",a:"John Johnson"},{c:"Simplicity is the soul of efficiency.",a:"Austin Freeman"},{c:"Make it work, make it right, make it fast.",a:"Kent Beck"},{c:"Programs must be written for people to read.",a:"Harold Abelson"},{c:"Talk is cheap. Show me the code.",a:"Linus Torvalds"},{c:"Premature optimization is the root of all evil.",a:"Donald Knuth"},{c:"Any fool can write code that a computer can understand.",a:"Martin Fowler"},{c:"Software is a great combination of artistry and engineering.",a:"Bill Gates"},{c:"The most important property of a program is whether it accomplishes the intention of its user.",a:"C.A.R. Hoare"},{c:"Programming isn't about what you know; it's about what you can figure out.",a:"Chris Pine"},{c:"The best error message is the one that never shows up.",a:"Thomas Fuchs"}];
+const JK=["Why do programmers prefer dark mode? Light attracts bugs! 🐛","Why did the programmer quit? He didn't get arrays. 😄","How many programmers to change a bulb? None, hardware problem. 💡","Why do Java devs wear glasses? They don't C#. 👓","JavaScript developer was sad - couldn't Express himself. 😢","10 types of people: those who understand binary and those who don't. 🔢","Developer went broke - used all his cache. 💸","Debugging is twice as hard as writing the code. 🔍","SQL query walks into a bar: 'Can I JOIN you?' 🍺","Programmers don't like nature - too many bugs. 🌳","Comfort a JavaScript bug? Console it. 🤗","A boolean: even if wrong, only off by a bit. ✨","99 little bugs in the code, take one down, patch it around, 117 little bugs in the code 🎵","I would tell you a UDP joke, but you might not get it. 📡","There are 10 kinds of jokes: Programming jokes and others. 😂"];
+const LNG={JavaScript:'#f1e05a',TypeScript:'#3178c6',Python:'#3572A5',HTML:'#e34c26',CSS:'#563d7c',Java:'#b07219',Go:'#00ADD8',Rust:'#dea584',C:'#555555','C++':'#f34b7d','C#':'#178600',Shell:'#89e051',Vue:'#41b883',Svelte:'#ff3e00',PHP:'#4F5D95',Ruby:'#701516',Swift:'#FA7343',Kotlin:'#A97BFF',Dart:'#00B4AB',Lua:'#000080',R:'#198CE7',Scala:'#c22d40',Perl:'#0298c3',Haskell:'#5e5086',Elixir:'#6e4a7e',Clojure:'#db5855',Julia:'#a270ba'};
+const FX={js:'fab fa-js',ts:'fab fa-js',jsx:'fab fa-react',tsx:'fab fa-react',py:'fab fa-python',html:'fab fa-html5',css:'fab fa-css3-alt',scss:'fab fa-sass',md:'fas fa-file-alt',json:'fas fa-brackets-curly',xml:'fas fa-code',yml:'fas fa-cog',yaml:'fas fa-cog',toml:'fas fa-cog',ini:'fas fa-cog',env:'fas fa-key',sh:'fas fa-terminal',bash:'fas fa-terminal',zsh:'fas fa-terminal',fish:'fas fa-terminal',java:'fab fa-java',php:'fab fa-php',rb:'fas fa-gem',go:'fas fa-file-code',rs:'fas fa-cog',c:'fas fa-file-code',cpp:'fas fa-file-code',h:'fas fa-file-code',hpp:'fas fa-file-code',cs:'fas fa-file-code',swift:'fab fa-swift',kt:'fas fa-file-code',dart:'fas fa-file-code',sql:'fas fa-database',db:'fas fa-database',gitignore:'fab fa-git-alt',gitattributes:'fab fa-git-alt',dockerfile:'fab fa-docker',png:'fas fa-image',jpg:'fas fa-image',jpeg:'fas fa-image',gif:'fas fa-image',svg:'fas fa-image',webp:'fas fa-image',ico:'fas fa-image',pdf:'fas fa-file-pdf',zip:'fas fa-file-archive',tar:'fas fa-file-archive',gz:'fas fa-file-archive',mp4:'fas fa-file-video',mp3:'fas fa-file-audio',txt:'fas fa-file-alt',log:'fas fa-file-alt',csv:'fas fa-table',xlsx:'fas fa-file-excel',doc:'fas fa-file-word',docx:'fas fa-file-word'};
+const HLM={js:'javascript',jsx:'javascript',ts:'typescript',tsx:'typescript',py:'python',rb:'ruby',java:'java',go:'go',rs:'rust',c:'c',cpp:'cpp',h:'cpp',cs:'csharp',php:'php',swift:'swift',kt:'kotlin',scala:'scala',sh:'bash',bash:'bash',zsh:'bash',html:'xml',xml:'xml',svg:'xml',css:'css',scss:'scss',less:'less',json:'json',yml:'yaml',yaml:'yaml',toml:'toml',ini:'ini',sql:'sql',md:'markdown',markdown:'markdown',dockerfile:'dockerfile',vue:'xml',svelte:'xml'};
+
+const S={th:localStorage.getItem('theme')||'light',eng:'google',vw:'grid',tab:'repos',sort:'updated',path:[],curRepo:null,data:{repos:[],starred:[],gists:[],pages:[],orgs:[],livePages:[]},cur:[],q:null,vs:0,user:null,cache:new Map(),cacheTime:new Map(),cacheTTL:300000,proxyIdx:0,fav:JSON.parse(localStorage.getItem('fav')||'[]'),hist:JSON.parse(localStorage.getItem('hist')||'[]'),scrlPos:0,readme:null,curFile:null,curFileTxt:''};
+
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const dbc=(f,w)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(...a),w)}};
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtN=n=>n>=1000000?(n/1000000).toFixed(1)+'M':n>=1000?(n/1000).toFixed(1)+'k':String(n);
+const fmtB=b=>{if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';return(b/1048576).toFixed(1)+'MB'};
+const fmtD=d=>{const dt=new Date(d),n=new Date(),s=Math.floor((n-dt)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';if(s<2592000)return Math.floor(s/86400)+'d ago';if(s<31536000)return Math.floor(s/2592000)+'mo ago';return Math.floor(s/31536000)+'y ago'};
+
+const tst=(m,t='inf',d=3000)=>{const c=$('#tcc'),e=document.createElement('div');e.className=`ts ${t}`;const ic={suc:'check-circle',err:'exclamation-circle',inf:'info-circle',wrn:'exclamation-triangle'};e.innerHTML=`<i class="fas fa-${ic[t]}"></i><span>${esc(m)}</span>`;c.appendChild(e);setTimeout(()=>{e.classList.add('rm');setTimeout(()=>e.remove(),300)},d)};
+
+const setProg=p=>{$('#prog').style.width=p+'%'};
+const setApiSt=ok=>{const el=$('#apiSt');el.style.color=ok?'var(--suc)':'var(--err)';el.title=ok?'Online':'Limited'};
+
+const showDlProg=(text='Downloading...')=>{$('#dlProgText').textContent=text;$('#dlProg').classList.add('show')};
+const hideDlProg=()=>$('#dlProg').classList.remove('show');
+
+async function fp(url,opts={}){
+  const ck=url+(opts.raw?'_raw':'');
+  if(S.cache.has(ck)&&(Date.now()-S.cacheTime.get(ck))<S.cacheTTL){return S.cache.get(ck)}
+  setProg(20);
+  try{
+    const r=await fetch(url,{...opts,headers:{Accept:opts.raw?'text/plain':'application/vnd.github.v3+json',...opts.headers}});
+    setProg(50);
+    if(r.ok){const d=opts.raw?await r.text():await r.json();S.cache.set(ck,d);S.cacheTime.set(ck,Date.now());setProg(100);setTimeout(()=>setProg(0),300);setApiSt(true);return d}
+    if(r.status===403||r.status===429||r.status===0)throw new Error('rate-limited');
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+  }catch(e){}
+  for(let i=0;i<C.prx.length;i++){
+    const idx=(S.proxyIdx+i)%C.prx.length,p=C.prx[idx];
+    try{
+      setProg(20+i*15);
+      const pu=p+encodeURIComponent(url);
+      const r=await fetch(pu);
+      if(r.ok){const d=opts.raw?await r.text():await r.json();S.cache.set(ck,d);S.cacheTime.set(ck,Date.now());S.proxyIdx=idx;setProg(100);setTimeout(()=>setProg(0),300);setApiSt(true);return d}
+    }catch(e){}
+  }
+  setProg(0);setApiSt(false);
+  throw new Error('All proxies failed');
+}
+
+// Fetch as blob (for binary downloads) with proxy fallback
+async function fetchBlob(url){
+  try{
+    const r=await fetch(url);
+    if(r.ok)return await r.blob();
+  }catch{}
+  for(let i=0;i<C.prx.length;i++){
+    const idx=(S.proxyIdx+i)%C.prx.length,p=C.prx[idx];
+    try{
+      const r=await fetch(p+encodeURIComponent(url));
+      if(r.ok){S.proxyIdx=idx;return await r.blob()}
+    }catch{}
+  }
+  throw new Error('Failed to fetch file');
+}
+
+// Trigger actual file download
+async function downloadFile(url,filename){
+  showDlProg(`Downloading ${filename}...`);
+  try{
+    const blob=await fetchBlob(url);
+    const blobUrl=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=blobUrl;
+    a.download=filename||'download';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(blobUrl),1000);
+    hideDlProg();
+    tst(`Downloaded: ${filename}`,'suc');
+  }catch(e){
+    hideDlProg();
+    tst(`Download failed: ${e.message}`,'err');
+  }
+}
+
+// Download text content directly (already loaded)
+function downloadText(text,filename,mime='text/plain'){
+  try{
+    const blob=new Blob([text],{type:mime});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    tst(`Downloaded: ${filename}`,'suc');
+  }catch(e){
+    tst('Download failed','err');
+  }
+}
+
+const setTheme=t=>{document.documentElement.setAttribute('data-theme',t);$('#bTh i').className=t==='dark'?'fas fa-sun':'fas fa-moon';localStorage.setItem('theme',t);S.th=t;document.querySelector('meta[name="theme-color"]').content=t==='dark'?'#0a0f1c':'#f8fafc'};
+const tgTheme=()=>{const n=S.th==='light'?'dark':'light';setTheme(n);tst(`${n.charAt(0).toUpperCase()+n.slice(1)} mode`,'suc')};
+
+const tick=()=>{const n=new Date();$('#clk').textContent=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;$('#cdt').textContent=n.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})};
+
+async function fWth(){
+  try{
+    const d=await fp(`https://api.openweathermap.org/data/2.5/weather?q=${C.cy}&units=metric&appid=${C.k}`);
+    $('#wTm').textContent=`${Math.round(d.main.temp)}°C`;
+    $('#wDc').textContent=`${d.weather[0].description} · ${C.cy}`;
+    const im={Clear:'sun',Clouds:'cloud',Rain:'cloud-rain',Drizzle:'cloud-rain',Thunderstorm:'bolt',Snow:'snowflake',Mist:'smog',Fog:'smog',Haze:'smog'};
+    $('.wi').className=`fas fa-${im[d.weather[0].main]||'cloud'} wi`;
+  }catch{$('#wTm').textContent='--°C';$('#wDc').textContent='Unavailable'}
+}
+
+async function fUsr(){
+  try{
+    const u=await fp(`https://api.github.com/users/${C.u}`);
+    S.user=u;
+    $('#pfl').innerHTML=`<img src="${u.avatar_url}" class="av" alt="${esc(u.login)}" loading="lazy"><div class="pi"><div class="pn">${esc(u.name||u.login)} ${u.hireable?'<i class="fas fa-check-circle vrf" title="Hireable"></i>':''}</div>${u.bio?`<div class="pb">${esc(u.bio)}</div>`:''}<div class="pst"><span><i class="fas fa-users"></i><strong>${fmtN(u.followers)}</strong> followers</span><span><i class="fas fa-user-friends"></i><strong>${fmtN(u.following)}</strong> following</span><span><i class="fas fa-folder"></i><strong>${u.public_repos}</strong> repos</span>${u.public_gists?`<span><i class="fas fa-file-code"></i><strong>${u.public_gists}</strong> gists</span>`:''}${u.location?`<span><i class="fas fa-map-marker-alt"></i>${esc(u.location)}</span>`:''}${u.company?`<span><i class="fas fa-building"></i>${esc(u.company)}</span>`:''}${u.blog?`<span><i class="fas fa-link"></i><a href="${esc(u.blog.startsWith('http')?u.blog:'https://'+u.blog)}" target="_blank" rel="noopener">Website</a></span>`:''}<span><i class="fas fa-calendar"></i>Joined ${new Date(u.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short'})}</span></div></div>`;
+    $('#sFlw').textContent=fmtN(u.followers);
+  }catch(e){$('#pfl').innerHTML=`<div class="es" style="padding:1rem"><i class="fas fa-exclamation-circle"></i><h3>Failed to load profile</h3><p style="font-size:.875rem">Check connection or rate limits</p></div>`}
+}
+
+async function fRepos(){
+  try{
+    const r=await fp(`https://api.github.com/users/${C.u}/repos?per_page=100&sort=updated`);
+    S.data.repos=r;
+    $('#sRepo').textContent=r.length;
+    $('#cRepo').textContent=r.length;
+    $('#sStar').textContent=fmtN(r.reduce((a,b)=>a+b.stargazers_count,0));
+    $('#sFrk').textContent=fmtN(r.reduce((a,b)=>a+b.forks_count,0));
+    return r;
+  }catch{return[]}
+}
+async function fStar(){try{const r=await fp(`https://api.github.com/users/${C.u}/starred?per_page=100`);S.data.starred=r;$('#cStar').textContent=r.length;return r}catch{return[]}}
+async function fGists(){try{const r=await fp(`https://api.github.com/users/${C.u}/gists?per_page=100`);S.data.gists=r;$('#cGist').textContent=r.length;return r}catch{return[]}}
+async function fPages(){const r=S.data.repos.length?S.data.repos:await fRepos();const p=r.filter(x=>x.has_pages||x.name.endsWith('.github.io'));S.data.pages=p;$('#cPage').textContent=p.length;return p}
+async function fOrgs(){try{const r=await fp(`https://api.github.com/users/${C.u}/orgs`);S.data.orgs=r;$('#cOrg').textContent=r.length;return r}catch{return[]}}
+
+async function fLivePages(){
+  try{
+    let branch='main';
+    try{
+      const repoInfo=await fp(`https://api.github.com/repos/${C.u}/${C.pagesRepo}`);
+      branch=repoInfo.default_branch||'main';
+    }catch{}
+    const tree=await fp(`https://api.github.com/repos/${C.u}/${C.pagesRepo}/git/trees/${branch}?recursive=1`);
+    if(!tree||!tree.tree){throw new Error('No tree data')}
+    const htmlFiles=tree.tree.filter(item=>{
+      if(item.type!=='blob')return false;
+      const path=item.path.toLowerCase();
+      if(!path.endsWith('.html')&&!path.endsWith('.htm'))return false;
+      if(path==='index.html')return false;
+      if(path.includes('node_modules/'))return false;
+      if(path.startsWith('.'))return false;
+      if(path.includes('/.git/'))return false;
+      return true;
     });
-
-    // Wait for all file contents to be fetched
-    Promise.all(fileContentPromises)
-      .then(processedContents => {
-        // Sort files alphabetically
-        const sortedContents = processedContents.sort((a, b) => 
-          a.name.localeCompare(b.name)
-        );
-
-        const contentsList = document.getElementById('repository-contents');
-        contentsList.innerHTML = ''; // Clear existing contents
-
-        sortedContents.forEach(item => {
-          const listItem = document.createElement('li');
-          const fileLink = document.createElement('a');
-          fileLink.textContent = item.name.split('.').slice(0, -1).join('.');
-
-          if (item.name.endsWith('.html')) {
-            if (item.lineCount > 1500) {
-              // Use Blob if line count exceeds 1500
-              fileLink.onclick = () => openHtmlFileFromBlob(item.htmlContent);
-            } else {
-              // Use GitHub Pages URL if line count is 1500 or less
-              const githubPagesUrl = `https://${githubUsername}.github.io/${item.name}`;
-              fileLink.href = githubPagesUrl;
-              fileLink.target = '_blank';
-            }
-          } else {
-            // For other file types, provide a direct download link
-            fileLink.href = item.download_url;
-            fileLink.setAttribute('download', item.name);
-          }
-
-          fileLink.classList.add('external-link');
-          listItem.appendChild(fileLink);
-          contentsList.appendChild(listItem);
-        });
-      })
-      .catch(error => console.error('Error processing repository contents:', error));
-  })
-  .catch(error => console.error('Error fetching repository contents:', error));
-
-function openHtmlFileFromBlob(htmlContent) {
-  const blob = new Blob([htmlContent], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
+    const pages=htmlFiles.map(item=>{
+      const fullPath=item.path;
+      const parts=fullPath.split('/');
+      const filename=parts[parts.length-1];
+      const nameNoExt=filename.replace(/\.html?$/i,'');
+      const folder=parts.length>1?parts.slice(0,-1).join('/'):'';
+      let urlPath;
+      if(filename.toLowerCase()==='index.html'&&folder){urlPath=folder+'/'}else{urlPath=fullPath}
+      return {
+        path:fullPath,filename:filename,name:nameNoExt,folder:folder,
+        url:`${C.pagesBase}/${urlPath}`,size:item.size||0,sha:item.sha,
+        displayName:nameNoExt.replace(/[-_]/g,' ').replace(/\b\w/g,l=>l.toUpperCase())
+      };
+    }).sort((a,b)=>{
+      if(!a.folder&&b.folder)return -1;
+      if(a.folder&&!b.folder)return 1;
+      return a.name.localeCompare(b.name);
+    });
+    S.data.livePages=pages;
+    $('#cLive').textContent=pages.length;
+    return pages;
+  }catch(e){console.error('Failed to fetch live pages:',e);$('#cLive').textContent=0;return[]}
 }
 
+function srt(items,how){
+  const a=[...items];
+  if(how==='name')return a.sort((x,y)=>(x.name||x.displayName||'').localeCompare(y.name||y.displayName||''));
+  if(how==='stars')return a.sort((x,y)=>(y.stargazers_count||0)-(x.stargazers_count||0));
+  if(how==='size')return a.sort((x,y)=>(y.size||0)-(x.size||0));
+  if(how==='created')return a.sort((x,y)=>new Date(y.created_at||0)-new Date(x.created_at||0));
+  return a.sort((x,y)=>new Date(y.updated_at||y.pushed_at||0)-new Date(x.updated_at||x.pushed_at||0));
+}
 
+function rendRepo(items){
+  const g=$('#gd');
+  $('#cntInfo').textContent=`Showing ${items.length} repositories`;
+  if(!items.length){g.innerHTML='<div class="es"><i class="fas fa-folder-open"></i><h3>No repositories</h3><p>Try adjusting filters</p></div>';return}
+  g.innerHTML=items.map((r,i)=>{
+    const lc=LNG[r.language]||'var(--ac)';
+    const tp=(r.topics||[]).slice(0,4).map(t=>`<span class="tg">${esc(t)}</span>`).join('');
+    const isFav=S.fav.includes(r.id);
+    return `<a href="#" class="cd2" data-id="${r.id}" data-type="repo" style="animation-delay:${Math.min(i,20)*.02}s">
+      <div class="ch2"><div class="ic fld"><i class="fas fa-${r.fork?'code-branch':r.archived?'archive':'folder'}"></i></div><div class="nm">${esc(r.name)}${isFav?' <i class="fas fa-heart" style="color:var(--err);font-size:.75rem"></i>':''}</div></div>
+      ${r.description?`<div class="dsc">${esc(r.description)}</div>`:''}
+      ${tp?`<div class="tag-list">${tp}</div>`:''}
+      <div class="mta">
+        ${r.language?`<span><span class="lng" style="background:${lc}"></span>${esc(r.language)}</span>`:''}
+        <span><i class="fas fa-star"></i>${fmtN(r.stargazers_count)}</span>
+        <span><i class="fas fa-code-branch"></i>${fmtN(r.forks_count)}</span>
+        ${r.has_pages?'<span title="GitHub Pages enabled"><i class="fas fa-globe" style="color:var(--suc)"></i></span>':''}
+        ${r.private?'<span><i class="fas fa-lock"></i></span>':''}
+        <span title="${new Date(r.updated_at).toLocaleString()}"><i class="fas fa-clock"></i>${fmtD(r.updated_at)}</span>
+      </div>
+    </a>`;
+  }).join('');
+  $$('.cd2[data-type="repo"]').forEach(c=>c.addEventListener('click',e=>{e.preventDefault();const r=items.find(x=>x.id==c.dataset.id);if(r){S.curRepo=r;S.path=[r.name];loadHist(r.name);navigate(r,'')}}));
+}
 
-    <!-- // Existing JavaScript code remains unchanged -->
-    <!-- const githubUsername = 'deekshith0509'; -->
-    <!-- const repositoryName = 'deekshith0509.github.io'; -->
+function rendLivePages(items){
+  const g=$('#gd');
+  $('#cntInfo').textContent=`Showing ${items.length} live page${items.length!==1?'s':''}`;
+  if(!items.length){g.innerHTML=`<div class="es"><i class="fas fa-globe"></i><h3>No HTML pages found</h3><p style="font-size:.875rem">No deployable HTML files in <code>${C.pagesRepo}</code></p></div>`;return}
+  g.innerHTML=items.map((p,i)=>{
+    const urlDisplay=p.url.replace(C.pagesBase+'/','');
+    return `<a href="${p.url}" target="_blank" rel="noopener" class="cd2" style="animation-delay:${Math.min(i,20)*.025}s">
+      <div class="ch2">
+        <div class="ic html"><i class="fab fa-html5"></i></div>
+        <div class="nm">${esc(p.displayName)}</div>
+      </div>
+      <div class="dsc"><i class="fas fa-link" style="margin-right:.25rem;font-size:.7rem"></i>${esc(urlDisplay)}</div>
+      <div class="mta">
+        ${p.folder?`<span><i class="fas fa-folder"></i>${esc(p.folder)}</span>`:'<span><i class="fas fa-home"></i>root</span>'}
+        ${p.size?`<span><i class="fas fa-weight"></i>${fmtB(p.size)}</span>`:''}
+        <span style="margin-left:auto;color:var(--ac);font-weight:600"><i class="fas fa-external-link-alt"></i>Launch</span>
+      </div>
+    </a>`;
+  }).join('');
+}
 
-    <!-- const nameElement = document.getElementById('name'); -->
+function rendGists(items){
+  const g=$('#gd');
+  $('#cntInfo').textContent=`Showing ${items.length} gists`;
+  if(!items.length){g.innerHTML='<div class="es"><i class="fas fa-file-code"></i><h3>No gists</h3></div>';return}
+  g.innerHTML=items.map((gs,i)=>{
+    const fls=Object.values(gs.files);
+    const f0=fls[0]||{};
+    return `<a href="${gs.html_url}" target="_blank" rel="noopener" class="cd2" style="animation-delay:${Math.min(i,20)*.02}s">
+      <div class="ch2"><div class="ic fil"><i class="fas fa-file-code"></i></div><div class="nm">${esc(f0.filename||'Untitled')}</div></div>
+      ${gs.description?`<div class="dsc">${esc(gs.description)}</div>`:''}
+      <div class="mta">
+        <span><i class="fas fa-file"></i>${fls.length} file${fls.length>1?'s':''}</span>
+        ${f0.language?`<span><span class="lng" style="background:${LNG[f0.language]||'var(--ac)'}"></span>${esc(f0.language)}</span>`:''}
+        ${gs.public?'<span><i class="fas fa-globe"></i>Public</span>':'<span><i class="fas fa-lock"></i>Secret</span>'}
+        <span><i class="fas fa-comment"></i>${gs.comments}</span>
+        <span><i class="fas fa-clock"></i>${fmtD(gs.updated_at)}</span>
+      </div>
+    </a>`;
+  }).join('');
+}
 
+function rendPages(items){
+  const g=$('#gd');
+  $('#cntInfo').textContent=`Showing ${items.length} pages`;
+  if(!items.length){g.innerHTML='<div class="es"><i class="fas fa-globe"></i><h3>No GitHub Pages</h3></div>';return}
+  g.innerHTML=items.map((r,i)=>{
+    const url=r.homepage||(r.name===`${C.u}.github.io`?`https://${C.u}.github.io`:`https://${C.u}.github.io/${r.name}`);
+    return `<div class="cd2" data-id="${r.id}" style="animation-delay:${Math.min(i,20)*.02}s">
+      <div class="ch2"><div class="ic"><i class="fas fa-globe"></i></div><div class="nm">${esc(r.name)}</div></div>
+      ${r.description?`<div class="dsc">${esc(r.description)}</div>`:''}
+      <div class="mta">
+        ${r.language?`<span><span class="lng" style="background:${LNG[r.language]||'var(--ac)'}"></span>${esc(r.language)}</span>`:''}
+        <span><i class="fas fa-star"></i>${fmtN(r.stargazers_count)}</span>
+        <span><i class="fas fa-clock"></i>${fmtD(r.updated_at)}</span>
+      </div>
+      <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn bs" data-act="visit" style="padding:.5rem .875rem;font-size:.8125rem;flex:1"><i class="fas fa-external-link-alt"></i>Visit Site</button><button class="btn bs" data-act="explore" style="padding:.5rem .875rem;font-size:.8125rem;flex:1"><i class="fas fa-folder-open"></i>Explore</button></div>
+    </div>`;
+  }).join('');
+  $$('.cd2 [data-act]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    const r=items.find(x=>x.id==b.closest('.cd2').dataset.id);
+    if(b.dataset.act==='visit'){window.open(r.homepage||(r.name===`${C.u}.github.io`?`https://${C.u}.github.io`:`https://${C.u}.github.io/${r.name}`),'_blank')}
+    else{S.curRepo=r;S.path=[r.name];loadHist(r.name);navigate(r,'')}
+  }));
+}
 
-    <!-- fetch(`https://api.github.com/repos/${githubUsername}/${repositoryName}/contents`) -->
-      <!-- .then(response => response.json()) -->
-      <!-- .then(contents => { -->
-        <!-- const contentsList = document.getElementById('repository-contents'); -->
-        <!-- contents.forEach(item => { -->
-          <!-- const listItem = document.createElement('li'); -->
+function rendOrgs(items){
+  const g=$('#gd');
+  $('#cntInfo').textContent=`Showing ${items.length} organizations`;
+  if(!items.length){g.innerHTML='<div class="es"><i class="fas fa-building"></i><h3>No organizations</h3></div>';return}
+  g.innerHTML=items.map((o,i)=>`<a href="${o.url.replace('api.','').replace('/users/','/').replace('/orgs/','/')}" target="_blank" rel="noopener" class="cd2" style="animation-delay:${Math.min(i,20)*.02}s">
+    <div class="ch2"><img src="${o.avatar_url}" alt="" style="width:38px;height:38px;border-radius:var(--r2)"><div class="nm">${esc(o.login)}</div></div>
+    ${o.description?`<div class="dsc">${esc(o.description)}</div>`:''}
+    <div class="mta"><span><i class="fab fa-github"></i>Organization</span></div>
+  </a>`).join('');
+}
 
-          <!-- if (item.type === 'file') { -->
-            <!-- const fileLink = document.createElement('a'); -->
-            <!-- fileLink.textContent = item.name.split('.').slice(0, -1).join('.'); -->
+function bcRend(){
+  const b=$('#bcr');
+  if(!S.path.length){b.style.display='none';return}
+  b.style.display='flex';
+  b.innerHTML=`<span class="bci" data-idx="-1"><i class="fas fa-home"></i><span>Home</span></span>`+S.path.map((p,i)=>`<span class="bcs">/</span><span class="bci" data-idx="${i}">${esc(p)}</span>`).join('');
+  $$('.bci').forEach(el=>el.addEventListener('click',()=>{
+    const i=+el.dataset.idx;
+    if(i===-1){S.path=[];S.curRepo=null;loadTab(S.tab);return}
+    S.path=S.path.slice(0,i+1);
+    nav2Path();
+  }));
+}
 
+async function nav2Path(){
+  bcRend();
+  if(!S.path.length){loadTab(S.tab);return}
+  if(!S.curRepo||S.curRepo.name!==S.path[0]){
+    try{S.curRepo=await fp(`https://api.github.com/repos/${C.u}/${S.path[0]}`)}catch{tst('Failed to load repo','err');return}
+  }
+  await navigate(S.curRepo,S.path.slice(1).join('/'));
+}
 
-
-
-
-
-
-
-<!-- if (item.name.endsWith('.html')) { -->
-    <!-- // If it's an HTML file, store its URL in local storage -->
-    <!-- localStorage.setItem(item.name, item.download_url); // Store HTML file URL in local storage -->
-    <!-- fileLink.classList.add('external-link'); -->
-    <!-- fileLink.onclick = () => openHtmlFileFromLocalStorage(item.name); -->
-<!-- } else { -->
-    <!-- // For other file types, provide a direct download link -->
-    <!-- fileLink.href = item.download_url; -->
-    <!-- fileLink.setAttribute('download', item.name); -->
-    <!-- fileLink.classList.add('external-link'); -->
-<!-- } -->
-
-<!-- listItem.appendChild(fileLink); -->
-<!-- contentsList.appendChild(listItem); -->
-
-<!-- function openHtmlFileFromLocalStorage(fileName) { -->
-    <!-- const htmlFileUrl = localStorage.getItem(fileName); -->
-    <!-- if (htmlFileUrl) { -->
-        <!-- // Fetch the HTML content -->
-        <!-- fetch(htmlFileUrl) -->
-            <!-- .then(response => response.text()) -->
-            <!-- .then(htmlContent => { -->
-                <!-- // Create a new Blob containing the HTML content -->
-                <!-- const blob = new Blob([htmlContent], { type: 'text/html' }); -->
-                <!-- const url = URL.createObjectURL(blob); -->
-                
-                <!-- // Open the newly created HTML file in a new tab -->
-                <!-- window.open(url, '_blank'); -->
-            <!-- }) -->
-            <!-- .catch(error => console.error('Error fetching HTML file:', error)); -->
-    <!-- } else { -->
-        <!-- console.error('HTML file URL not found in local storage:', fileName); -->
-    <!-- } -->
-<!-- } -->
-<!-- }  -->
-
-        <!-- }); -->
-      <!-- }) -->
-      <!-- .catch(error => console.error('Error fetching repository contents:', error)); -->
-
-    <!-- function openHtmlFileInNewTab(fileUrl) { -->
-      <!-- fetch(fileUrl) -->
-        <!-- .then(response => response.text()) -->
-        <!-- .then(htmlContent => { -->
-          <!-- const newWindow = window.open(); -->
-          <!-- newWindow.document.write(htmlContent); -->
-        <!-- }) -->
-        <!-- .catch(error => console.error('Error fetching HTML content:', error)); -->
-    <!-- } -->
-
-    function performSearch() {
-      const searchInput = document.getElementById('search-input').value.toLowerCase();
-      const searchEngineSelect = document.getElementById('search-engine');
-      const selectedSearchEngine = searchEngineSelect.value;
-
-      // Set of video-related keywords
-      const videoKeywords = new Set(['video', 'videos', 'clip', 'clips']);
-      // Set of shopping-related keywords
-      const shoppingKeywords = new Set(['shopping', 'products', 'items',"item", 'mobiles', 'electronics']);
-
-      // Split the search input into words
-      const words = searchInput.split(' ');
-
-      // Check if the last word is a video-related keyword
-      const lastWord = words[words.length - 1];
-      if (videoKeywords.has(lastWord)) {
-        // If yes, remove the last word
-        words.pop();
-        // Redirect to YouTube with the modified query
-        window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(words.join(' ').trim()));
-        return;
-      }
-
-      // Check if the last word is a shopping-related keyword
-      if (shoppingKeywords.has(lastWord)) {
-        // If yes, remove the last word
-        words.pop();
-        // Redirect to Flipkart or Amazon with the modified query
-        window.open('https://www.flipkart.com/search?q=' + encodeURIComponent(words.join(' ').trim()));
-        return;
-      }
-
-      // Perform search based on selected search engine
-      switch (selectedSearchEngine) {
-        case 'google':
-          window.open('https://www.google.com/search?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'bing':
-          window.open('https://www.bing.com/search?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'yahoo':
-          window.open('https://search.yahoo.com/search?p=' + encodeURIComponent(searchInput));
-          break;
-        case 'duckduckgo':
-          window.open('https://duckduckgo.com/?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'baidu':
-          window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(searchInput));
-          break;
-        case 'yandex':
-          window.open('https://yandex.com/search/?text=' + encodeURIComponent(searchInput));
-          break;
-        case 'ask':
-          window.open('https://www.ask.com/web?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'aol':
-          window.open('https://search.aol.com/aol/search?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'dogpile':
-          window.open('https://www.dogpile.com/search/web?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'excite':
-          window.open('https://www.excite.com/search?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'YT':
-          window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(searchInput));
-          break;
-        case 'webcrawler':
-          window.open('https://www.webcrawler.com/serp?q=' + encodeURIComponent(searchInput));
-          break;
-        case 'tb':
-          window.open('https://www.1tamilblasters.tel/index.php?/search/&q=' + encodeURIComponent(searchInput) + '&search_and_or=and&sortby=relevancy');
-          break;
-        case 'imdb':
-          window.open('https://www.imdb.com/find/?q=' + encodeURIComponent(searchInput) + '&ref_=nv_sr_sm');
-          break;
-        // Add more cases for additional search engines if needed
-        default:
-          break;
-      }
+async function navigate(repo,path){
+  bcRend();
+  const g=$('#gd');
+  g.innerHTML='<div class="lds"><div class="spn"></div><span>Loading...</span></div>';
+  $('#cntInfo').textContent='';
+  try{
+    const url=`https://api.github.com/repos/${C.u}/${repo.name}/contents/${path}`;
+    const items=await fp(url);
+    if(!Array.isArray(items)){await viewFile(items);return}
+    const sorted=items.sort((a,b)=>{if(a.type!==b.type)return a.type==='dir'?-1:1;return a.name.localeCompare(b.name)});
+    $('#cntInfo').innerHTML=`<i class="fas fa-folder"></i> ${sorted.filter(x=>x.type==='dir').length} folders, ${sorted.filter(x=>x.type==='file').length} files`;
+    
+    let readme=sorted.find(x=>/^readme\.md$/i.test(x.name));
+    let readmeHtml='';
+    if(readme&&!path){
+      try{
+        const txt=await fp(readme.download_url,{raw:true});
+        readmeHtml=`<div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);padding:1.25rem;margin-bottom:1rem;grid-column:1/-1"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;color:var(--t2);font-weight:600;font-size:.875rem"><i class="fas fa-book"></i>README.md</div><div class="dv" style="border:0;padding:0;max-height:300px">${mdParse(txt)}</div></div>`;
+      }catch{}
     }
-
-
-        const inputField = document.getElementById('search-input');
-
-        // Add key press event listener to the input field
-        inputField.addEventListener('keypress', function(event) {
-            // Check if the Enter key (key code 13) is pressed
-            if (event.key === 'Enter') {
-                // Prevent the default form submission behavior
-                event.preventDefault();
-
-                // Call a function or open a new window here
-                performSearch();
-            }
-        });
-
-        
-        // Call the function to initialize voice search when the DOM is fully loaded
-                document.addEventListener("DOMContentLoaded", function() {
-            const speechInput = document.getElementById("search-input");
-            const startButton = document.getElementById("voice-search-button");
-            const status = document.getElementById("voice-status");
-
-            // Check if the browser supports the Web Speech API
-            if (!('webkitSpeechRecognition' in window)) {
-    status.textContent = "Your browser does not support speech recognition.";
-    startButton.disabled = true;
-
-    // Hide the message after 5 seconds
-    setTimeout(function() {
-        status.textContent = "";
-    }, 5000); // 5000 milliseconds = 5 seconds
-
-    return;
+    
+    g.innerHTML=readmeHtml+sorted.map((it,i)=>{
+      const isDir=it.type==='dir';
+      const ext=(it.name.split('.').pop()||'').toLowerCase();
+      const ico=isDir?'fas fa-folder':(FX[ext]||FX[it.name.toLowerCase()]||'fas fa-file');
+      return `<a href="#" class="cd2" data-name="${esc(it.name)}" data-type="${it.type}" data-path="${esc(it.path)}" style="animation-delay:${Math.min(i,20)*.015}s">
+        <div class="ch2"><div class="ic ${isDir?'fld':'fil'}"><i class="${ico}"></i></div><div class="nm">${esc(it.name)}</div></div>
+        <div class="mta"><span><i class="fas fa-tag"></i>${isDir?'Folder':(ext.toUpperCase()||'FILE')}</span>${!isDir?`<span><i class="fas fa-weight"></i>${fmtB(it.size)}</span>`:''}</div>
+      </a>`;
+    }).join('');
+    $$('.cd2[data-name]').forEach(c=>c.addEventListener('click',async e=>{
+      e.preventDefault();
+      const it=sorted.find(x=>x.name===c.dataset.name);
+      if(!it)return;
+      if(it.type==='dir'){S.path.push(it.name);await navigate(repo,it.path)}
+      else await viewFile(it);
+    }));
+  }catch(e){g.innerHTML=`<div class="es"><i class="fas fa-exclamation-circle"></i><h3>Failed to load</h3><p>${esc(e.message)}</p></div>`;tst('Load failed','err')}
 }
 
-
-            const recognition = new webkitSpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = "en-US";
-
-            startButton.addEventListener("click", function() {
-                recognition.start();
-                status.textContent = "Listening...";
-            });
-
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
-                speechInput.value = transcript;
-                status.textContent = "Speech recognized.";
-            };
-
-            recognition.onerror = function(event) {
-                status.textContent = "Error occurred in recognition: " + event.error;
-				setTimeout(function() {
-				status.textContent = "";}, 5000);
-            };
-
-            recognition.onend = function() {
-                status.textContent = "Stopped listening.";
-            };
-        });
-
-document.addEventListener('keydown', function(event) {
-    var input = document.getElementById('search-input');
-    var searchEngine = document.getElementById('search-engine');
-
-    if (event.ctrlKey && event.key === 'q') {
-        // Trigger the input
-        if (input) {
-            input.focus();
+async function viewFile(it){
+  S.curFile=it;
+  S.curFileTxt='';
+  $('#vTtl').textContent=it.name;
+  const bd=$('#vBd');
+  bd.innerHTML='<div class="lds"><div class="spn"></div><span>Loading file...</span></div>';
+  $('#mVw').classList.add('act');
+  
+  // Setup buttons - DOWNLOAD now actually downloads, RAW opens in new tab, GITHUB opens GH page
+  $('#vDl').onclick=()=>downloadFile(it.download_url,it.name);
+  $('#vRw').onclick=()=>window.open(it.download_url,'_blank','noopener');
+  $('#vOp').onclick=()=>window.open(it.html_url,'_blank','noopener');
+  $('#vCp').onclick=async()=>{
+    if(!S.curFileTxt){tst('Nothing to copy (binary file)','wrn');return}
+    try{await navigator.clipboard.writeText(S.curFileTxt);tst('Copied to clipboard!','suc')}
+    catch{tst('Copy failed','err')}
+  };
+  
+  try{
+    const ext=(it.name.split('.').pop()||'').toLowerCase();
+    const isImg=['png','jpg','jpeg','gif','webp','ico','bmp'].includes(ext);
+    const isSvg=ext==='svg';
+    const isPdf=ext==='pdf';
+    const isMedia=['mp4','mp3','wav','ogg','webm'].includes(ext);
+    const isHtml=ext==='html'||ext==='htm';
+    const isBinary=['zip','tar','gz','rar','7z','exe','dll','bin','so','dylib','class','jar','war','pyc'].includes(ext);
+    
+    if(isImg){
+      bd.innerHTML=`<div style="text-align:center;padding:1rem"><img src="${it.download_url}" style="max-width:100%;max-height:60vh;border-radius:var(--r2);box-shadow:var(--md)" alt="${esc(it.name)}"></div><div class="alt"><i class="fas fa-info-circle"></i>Image preview · ${fmtB(it.size)} · Click <strong>Download</strong> to save</div>`;
+      return;
+    }
+    if(isPdf){
+      const u=`https://docs.google.com/viewer?url=${encodeURIComponent(it.download_url)}&embedded=true`;
+      bd.innerHTML=`<div class="alt"><i class="fas fa-info-circle"></i>PDF rendered via Google Viewer · ${fmtB(it.size)}</div><iframe src="${u}" class="frm"></iframe>`;
+      return;
+    }
+    if(isMedia){
+      const tag=ext==='mp3'||ext==='wav'||ext==='ogg'?'audio':'video';
+      bd.innerHTML=`<div style="text-align:center;padding:1rem"><${tag} controls style="max-width:100%;max-height:60vh;border-radius:var(--r2)"><source src="${it.download_url}"></${tag}></div><div class="alt"><i class="fas fa-info-circle"></i>Media file · ${fmtB(it.size)}</div>`;
+      return;
+    }
+    if(isBinary){
+      bd.innerHTML=`<div class="es"><i class="fas fa-file-archive"></i><h3>Binary file</h3><p>This file type cannot be previewed.</p><p style="margin-top:.5rem;font-size:.875rem">Size: ${fmtB(it.size)}</p><button class="btn bp" style="margin-top:1rem" onclick="downloadFile('${it.download_url}','${esc(it.name)}')"><i class="fas fa-download"></i>Download File</button></div>`;
+      return;
+    }
+    
+    if(it.size>2*1048576){
+      bd.innerHTML=`<div class="alt"><i class="fas fa-exclamation-triangle"></i>File too large to preview (${fmtB(it.size)}). Use <strong>Download</strong> button to save it locally.</div>`;
+      return;
+    }
+    
+    const txt=await fp(it.download_url,{raw:true});
+    S.curFileTxt=txt;
+    
+    if(ext==='md'||ext==='markdown'){
+      bd.innerHTML=`<div class="fts"><span class="bdg lng-b"><i class="fab fa-markdown"></i>Markdown</span><span class="bdg">${fmtB(it.size)}</span></div><div class="dv">${mdParse(txt)}</div>`;
+    }else if(isSvg){
+      bd.innerHTML=`<div class="fts"><label class="lyt"><input type="checkbox" id="svgPrv">Preview SVG</label><span class="bdg lng-b">SVG</span><span class="bdg">${fmtB(it.size)}</span></div><div class="cv" id="cvBox"><pre><code class="language-xml">${esc(txt)}</code></pre></div>`;
+      $('#svgPrv').addEventListener('change',e=>{
+        if(e.target.checked){$('#cvBox').outerHTML=`<div style="text-align:center;padding:2rem;background:var(--bg3);border-radius:var(--r3)" id="cvBox">${txt}</div>`}
+        else $('#cvBox').outerHTML=`<div class="cv" id="cvBox"><pre><code class="language-xml">${esc(txt)}</code></pre></div>`;
+        if(window.hljs)window.hljs.highlightAll();
+      });
+      if(window.hljs)window.hljs.highlightAll();
+    }else if(isHtml&&txt.split('\n').length<=C.mxL){
+      bd.innerHTML=`<div class="fts"><label class="lyt"><input type="checkbox" id="htmlPrv">Render Preview</label><span class="bdg lng-b"><i class="fab fa-html5"></i>HTML</span><span class="bdg">${fmtB(it.size)}</span><span class="bdg">${txt.split('\n').length} lines</span></div><div id="cvBox" class="cv"><pre><code class="language-xml">${esc(txt)}</code></pre></div>`;
+      $('#htmlPrv').addEventListener('change',e=>{
+        if(e.target.checked){
+          const blob=new Blob([txt],{type:'text/html'}),u=URL.createObjectURL(blob);
+          $('#cvBox').outerHTML=`<iframe id="cvBox" src="${u}" class="frm" sandbox="allow-scripts allow-same-origin"></iframe>`;
+        }else{
+          $('#cvBox').outerHTML=`<div id="cvBox" class="cv"><pre><code class="language-xml">${esc(txt)}</code></pre></div>`;
+          if(window.hljs)window.hljs.highlightAll();
         }
-    } else if (event.key === 'Enter' && input === document.activeElement ) {
-            if (searchEngine) {
-                searchEngine.focus();  
-        }
-    } else if (event.key === "Enter" && searchEngine ===document.activeElement){
-performSearch();
-		//var b1= document.getElementById("search-button");
-		//b1.focus();"""
-		
-	}
-	
-	
-		
-	
-	
-});
+      });
+      if(window.hljs)window.hljs.highlightAll();
+    }else if(ext==='json'){
+      let pretty=txt;
+      try{pretty=JSON.stringify(JSON.parse(txt),null,2)}catch{}
+      bd.innerHTML=`<div class="fts"><span class="bdg lng-b">JSON</span><span class="bdg">${fmtB(it.size)}</span><span class="bdg suc-b">Formatted</span></div><div class="cv"><pre><code class="language-json">${esc(pretty)}</code></pre></div>`;
+      if(window.hljs)window.hljs.highlightAll();
+    }else{
+      const lang=HLM[ext]||'plaintext';
+      const ln=txt.split('\n').length;
+      bd.innerHTML=`<div class="fts"><span class="bdg lng-b"><i class="fas fa-code"></i>${ext.toUpperCase()||'TEXT'}</span><span class="bdg">${fmtB(it.size)}</span><span class="bdg">${ln} lines</span></div><div class="cv"><pre><code class="language-${lang}">${esc(txt)}</code></pre></div>`;
+      if(window.hljs)window.hljs.highlightAll();
+    }
+  }catch(e){bd.innerHTML=`<div class="es"><i class="fas fa-exclamation-circle"></i><h3>Cannot preview</h3><p>${esc(e.message)}</p><button class="btn bp" style="margin-top:1rem" onclick="downloadFile('${it.download_url}','${esc(it.name)}')"><i class="fas fa-download"></i>Try Download Instead</button></div>`}
+}
 
+// Expose for inline onclick
+window.downloadFile=downloadFile;
 
-	  var jokes = {
-    "2025-03-23": "Why don’t skeletons fight each other? They don’t have the guts.",
-    "2025-03-24": "What do you call fake spaghetti? An impasta.",
-    "2025-03-25": "I told my wife she should embrace her mistakes. She gave me a hug.",
-    "2025-03-26": "Why did the scarecrow win an award? Because he was outstanding in his field!",
-    "2025-03-27": "How does a penguin build its house? Igloos it together.",
-    "2025-03-28": "Why don’t you ever see elephants hiding in trees? Because they’re so good at it.",
-    "2025-03-29": "Why don’t scientists trust atoms? Because they make up everything!",
-    "2025-03-30": "How do you organize a space party? You planet!",
-    "2025-03-31": "I’m reading a book on anti-gravity. It’s impossible to put down.",
-    "2025-04-01": "What’s orange and sounds like a parrot? A carrot.",
-    "2025-04-02": "Why did the bicycle fall over? Because it was two-tired!",
-    "2025-04-03": "How many tickles does it take to make an octopus laugh? Ten-tickles.",
-    "2025-04-04": "Why was the math book sad? Because it had too many problems.",
-    "2025-04-05": "What did one ocean say to the other ocean? Nothing, they just waved.",
-    "2025-04-06": "Why don’t some couples go to the gym? Because some relationships don’t work out.",
-    "2025-04-07": "I used to play piano by ear, but now I use my hands.",
-    "2025-04-08": "What do you call a fish wearing a bowtie? SoFISHticated.",
-    "2025-04-09": "What do you call an alligator in a vest? An investigator.",
-    "2025-04-10": "I used to be a baker, but I couldn’t make enough dough.",
-    "2025-04-11": "Why don’t skeletons fight each other? They don’t have the guts.",
-    "2025-04-12": "Why did the scarecrow become a successful neurosurgeon? Because he was outstanding in his field!",
-    "2025-04-13": "Why did the scarecrow win an award? Because he was outstanding in his field!",
-    "2025-04-14": "I’m on a whiskey diet. I’ve lost three days already.",
-    "2025-04-15": "How do you catch a squirrel? Climb a tree and act like a nut.",
-    "2025-04-16": "Why don’t you ever see elephants hiding in trees? Because they’re so good at it.",
-    "2025-04-17": "Why did the bicycle fall over? Because it was two-tired!",
-    "2025-04-18": "How does a penguin build its house? Igloos it together.",
-    "2025-04-19": "What did one ocean say to the other ocean? Nothing, they just waved.",
-    "2025-04-20": "Why don’t some couples go to the gym? Because some relationships don’t work out.",
-    "2025-04-21": "Why don’t scientists trust atoms? Because they make up everything!",
-    "2025-04-22": "What do you call fake spaghetti? An impasta."
-    // Add more jokes as needed
+function mdParse(s){
+  const cb=[];
+  let h=s.replace(/```(\w*)\n?([\s\S]*?)```/g,(m,l,c)=>{cb.push(`<pre><code class="language-${l||'plaintext'}">${esc(c)}</code></pre>`);return`{{CB${cb.length-1}}}`});
+  h=esc(h);
+  h=h.replace(/`([^`\n]+)`/g,'<code>$1</code>');
+  h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  h=h.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
+  h=h.replace(/~~([^~]+)~~/g,'<del>$1</del>');
+  h=h.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1" loading="lazy">');
+  h=h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  h=h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  h=h.replace(/^---+$/gm,'<hr>');
+  h=h.replace(/^[-*+] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*?<\/li>\s*)+/gs,m=>`<ul>${m}</ul>`);
+  h=h.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
+  h=h.split(/\n\n+/).map(p=>{p=p.trim();if(!p)return'';if(p.match(/^<(h\d|ul|ol|pre|img|blockquote|hr|table)/))return p;if(p.startsWith('{{CB'))return p;return`<p>${p.replace(/\n/g,'<br>')}</p>`}).join('\n');
+  cb.forEach((c,i)=>{h=h.replace(`{{CB${i}}}`,c)});
+  return h;
+}
+
+function loadHist(name){
+  S.hist=S.hist.filter(x=>x!==name);
+  S.hist.unshift(name);
+  S.hist=S.hist.slice(0,10);
+  localStorage.setItem('hist',JSON.stringify(S.hist));
+}
+
+function showInfoBanner(html){
+  const b=$('#infoBanner');
+  if(html){b.style.display='flex';$('#infoBannerText').innerHTML=html}
+  else{b.style.display='none'}
+}
+
+async function loadTab(t){
+  S.tab=t;S.path=[];S.curRepo=null;
+  bcRend();
+  $$('.tab').forEach(b=>b.classList.toggle('act',b.dataset.t===t));
+  const g=$('#gd');
+  g.innerHTML='<div class="skl"></div><div class="skl"></div><div class="skl"></div><div class="skl"></div><div class="skl"></div><div class="skl"></div>';
+  showInfoBanner('');
+  
+  try{
+    let items;
+    if(t==='repos'){
+      items=S.data.repos.length?S.data.repos:await fRepos();
+      S.cur=items;rendRepo(srt(items,S.sort));
+    }
+    else if(t==='livepages'){
+      showInfoBanner(`Live deployed pages from <code>${C.pagesRepo}</code>. Click any card to open in new tab.`);
+      items=S.data.livePages.length?S.data.livePages:await fLivePages();
+      S.cur=items;rendLivePages(srt(items,S.sort==='name'?'name':'name'));
+    }
+    else if(t==='starred'){
+      items=S.data.starred.length?S.data.starred:await fStar();
+      S.cur=items;rendRepo(srt(items,S.sort));
+    }
+    else if(t==='gists'){
+      items=S.data.gists.length?S.data.gists:await fGists();
+      S.cur=items;rendGists(items);
+    }
+    else if(t==='pages'){
+      showInfoBanner(`GitHub repositories with Pages enabled. Click <strong>Visit Site</strong> to launch or <strong>Explore</strong> to browse files.`);
+      items=await fPages();
+      S.cur=items;rendPages(srt(items,S.sort));
+    }
+    else if(t==='orgs'){
+      items=S.data.orgs.length?S.data.orgs:await fOrgs();
+      S.cur=items;rendOrgs(items);
+    }
+  }catch(e){g.innerHTML=`<div class="es"><i class="fas fa-exclamation-circle"></i><h3>Load failed</h3><p>${esc(e.message)}</p></div>`}
+}
+
+function filt(q){
+  if(S.path.length)return;
+  if(!q.trim()){
+    if(S.tab==='gists')rendGists(S.cur);
+    else if(S.tab==='pages')rendPages(srt(S.cur,S.sort));
+    else if(S.tab==='orgs')rendOrgs(S.cur);
+    else if(S.tab==='livepages')rendLivePages(S.cur);
+    else rendRepo(srt(S.cur,S.sort));
+    return;
+  }
+  const lq=q.toLowerCase();
+  const f=S.cur.filter(x=>{
+    if(S.tab==='gists'){const f0=Object.values(x.files||{})[0]||{};return(f0.filename||'').toLowerCase().includes(lq)||(x.description||'').toLowerCase().includes(lq)}
+    if(S.tab==='livepages'){return(x.name||'').toLowerCase().includes(lq)||(x.displayName||'').toLowerCase().includes(lq)||(x.folder||'').toLowerCase().includes(lq)||(x.path||'').toLowerCase().includes(lq)}
+    return(x.name||x.login||'').toLowerCase().includes(lq)||(x.description||'').toLowerCase().includes(lq)||(x.language||'').toLowerCase().includes(lq)||(x.topics||[]).some(t=>t.toLowerCase().includes(lq));
+  });
+  if(S.tab==='gists')rendGists(f);
+  else if(S.tab==='pages')rendPages(srt(f,S.sort));
+  else if(S.tab==='orgs')rendOrgs(f);
+  else if(S.tab==='livepages')rendLivePages(f);
+  else rendRepo(srt(f,S.sort));
+}
+
+const doSearch=()=>{
+  const q=$('#qInp').value.trim();
+  if(!q){tst('Enter a query','wrn');$('#qInp').focus();$('#qInp').classList.add('shake');setTimeout(()=>$('#qInp').classList.remove('shake'),500);return}
+  const e=$('#qEng').value,w=q.toLowerCase().split(/\s+/),lw=w[w.length-1];
+  const vk=['video','videos','clip','clips','movie','watch'],sk=['buy','shop','price','amazon','flipkart'],dk=['repo','code','library','package'];
+  let url;
+  if(vk.includes(lw)){w.pop();url=E.YT+encodeURIComponent(w.join(' '));tst('Smart redirect → YouTube','inf')}
+  else if(sk.includes(lw)){w.pop();url='https://www.amazon.com/s?k='+encodeURIComponent(w.join(' '));tst('Smart redirect → Amazon','inf')}
+  else if(dk.includes(lw)){w.pop();url=E.github+encodeURIComponent(w.join(' '));tst('Smart redirect → GitHub','inf')}
+  else url=E[e]+encodeURIComponent(q);
+  window.open(url,'_blank','noopener');
+  const h=JSON.parse(localStorage.getItem('sh')||'[]');h.unshift({q,e,t:Date.now()});localStorage.setItem('sh',JSON.stringify(h.slice(0,50)));
 };
 
+let rec=null,lst=false;
+const initVc=()=>{
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){$('#bVc').style.display='none';return}
+  rec=new SR();rec.continuous=false;rec.interimResults=true;rec.lang='en-US';
+  rec.onresult=e=>{const t=Array.from(e.results).map(r=>r[0].transcript).join('');$('#qInp').value=t;$('#vSt').textContent=`Heard: "${t}"`};
+  rec.onerror=e=>{$('#vSt').textContent=`Error: ${e.error}`;stpVc();tst(`Voice: ${e.error}`,'err')};
+  rec.onend=()=>{stpVc();if($('#qInp').value.trim())setTimeout(doSearch,500)};
+};
+const stVc=()=>{if(!rec)return;try{rec.start();lst=true;$('#bVc').classList.add('lst');$('#bVc i').className='fas fa-stop';$('#vSt').textContent='🎤 Listening...';tst('Listening...','inf',2000)}catch{}};
+const stpVc=()=>{lst=false;$('#bVc').classList.remove('lst');$('#bVc i').className='fas fa-microphone';setTimeout(()=>$('#vSt').textContent='',3000)};
+const tgVc=()=>{if(!rec){tst('Voice not supported','wrn');return}lst?rec.stop():stVc()};
 
+const newQ=()=>{S.q=QT[Math.floor(Math.random()*QT.length)];$('#qtx').textContent=`"${S.q.c}"`;$('#qau').textContent=S.q.a};
+const cpQ=async()=>{if(!S.q)return;try{await navigator.clipboard.writeText(`"${S.q.c}" — ${S.q.a}`);tst('Copied!','suc')}catch{tst('Copy failed','err')}};
+const shQ=async()=>{if(!S.q)return;const t=`"${S.q.c}" — ${S.q.a}`;if(navigator.share){try{await navigator.share({title:'Quote',text:t})}catch{}}else cpQ()};
+const twQ=()=>{if(!S.q)return;window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${S.q.c}" — ${S.q.a}`)}`,'_blank')};
+const newJ=()=>$('#jkt').textContent=JK[Math.floor(Math.random()*JK.length)];
 
-	  
+const tgFs=()=>{if(!document.fullscreenElement){document.documentElement.requestFullscreen().then(()=>$('#bFs i').className='fas fa-compress').catch(()=>tst('Unavailable','wrn'))}else{document.exitFullscreen();$('#bFs i').className='fas fa-expand'}};
 
+const mkPrt=()=>{const c=$('#prt'),n=window.innerWidth<768?12:25;for(let i=0;i<n;i++){const p=document.createElement('div');p.className='p';const s=Math.random()*4+2;Object.assign(p.style,{width:s+'px',height:s+'px',left:Math.random()*100+'%',top:Math.random()*100+'%',animationDelay:Math.random()*15+'s',animationDuration:15+Math.random()*10+'s'});c.appendChild(p)}};
 
-var quotes = [
-    { content: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
-    { content: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi" },
-    { content: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" },
-    { content: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
-    { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-    { content: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
-    { content: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-    { content: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi" },
-    { content: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
-    { content: "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time.", author: "Thomas A. Edison" },
-    { content: "The best way to predict the future is to invent it.", author: "Alan Kay" },
-    { content: "Do not go where the path may lead, go instead where there is no path and leave a trail.", author: "Ralph Waldo Emerson" },
-    { content: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-    { content: "It is never too late to be what you might have been.", author: "George Eliot" },
-    { content: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas A. Edison" },
-    { content: "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.", author: "Ralph Waldo Emerson" },
-    { content: "Strive not for success, but rather to be of value.", author: "Albert Einstein" },
-    { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-    { content: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
-    { content: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" }
-];
+const initE=()=>{
+  $('#qEng').innerHTML=Object.keys(E).map(k=>`<option value="${k}">${EI[k]||'🌐'} ${k.charAt(0).toUpperCase()+k.slice(1)}</option>`).join('');
+  const ch=['google','YT','github','stackoverflow','wikipedia','npm','mdn','reddit'];
+  $('#chips').innerHTML=ch.map((k,i)=>`<span class="chip${i===0?' act':''}" data-e="${k}">${EI[k]} ${k.charAt(0).toUpperCase()+k.slice(1)}</span>`).join('');
+};
 
+const cmdItems=()=>{
+  const base=[
+    {grp:'Navigation',items:[
+      {n:'Repositories',i:'fa-folder',a:()=>loadTab('repos'),k:'1'},
+      {n:'Live Pages',i:'fa-rocket',a:()=>loadTab('livepages'),k:'2'},
+      {n:'Starred',i:'fa-star',a:()=>loadTab('starred'),k:'3'},
+      {n:'Gists',i:'fa-file-code',a:()=>loadTab('gists'),k:'4'},
+      {n:'GitHub Pages',i:'fa-globe',a:()=>loadTab('pages'),k:'5'},
+      {n:'Organizations',i:'fa-building',a:()=>loadTab('orgs'),k:'6'},
+    ]},
+    {grp:'Actions',items:[
+      {n:'Toggle Theme',i:'fa-moon',a:tgTheme,k:'Ctrl+D'},
+      {n:'Toggle Fullscreen',i:'fa-expand',a:tgFs,k:'F'},
+      {n:'Refresh All Data',i:'fa-sync-alt',a:()=>$('#bRf').click(),k:'Ctrl+⇧+R'},
+      {n:'Clear Cache',i:'fa-trash',a:()=>{S.cache.clear();S.cacheTime.clear();tst('Cache cleared','suc')}},
+      {n:'Voice Search',i:'fa-microphone',a:tgVc,k:'Ctrl+M'},
+      {n:'New Quote',i:'fa-quote-right',a:newQ,k:'Ctrl+N'},
+      {n:'New Joke',i:'fa-laugh',a:newJ},
+      {n:'About',i:'fa-info-circle',a:()=>$('#mAb').classList.add('act')},
+      {n:'Show Shortcuts',i:'fa-keyboard',a:()=>$('#mSc').classList.add('act'),k:'?'},
+    ]},
+    {grp:'External',items:[
+      {n:'Open GitHub Profile',i:'fab fa-github',a:()=>window.open(`https://github.com/${C.u}`,'_blank')},
+      {n:'View Source Code',i:'fa-code',a:()=>window.open(`https://github.com/${C.u}/${C.pagesRepo}`,'_blank')},
+    ]},
+  ];
+  if(S.data.livePages.length){
+    const liveItems=S.data.livePages.slice(0,15).map(p=>({
+      n:`Open: ${p.displayName}`,
+      i:'fab fa-html5',
+      a:()=>window.open(p.url,'_blank')
+    }));
+    base.unshift({grp:'Live Pages',items:liveItems});
+  }
+  return base;
+};
 
-function fetchQuote() {
-    var resultDiv = document.getElementById('quote');
-    
-    // Generate a random index to select a quote from the array
-    var randomIndex = Math.floor(Math.random() * quotes.length);
-    var randomQuote = quotes[randomIndex];
-    
-    // Display the random quote
-    resultDiv.innerHTML = `<blockquote>${randomQuote.content}</blockquote><p>- ${randomQuote.author}</p>`;
-}
+let cmdSelIdx=0;
+const renderCmd=(filter='')=>{
+  const all=cmdItems();
+  const r=$('#cmdR');
+  const fl=filter.toLowerCase().trim();
+  const flat=[];
+  all.forEach(g=>{
+    const fi=g.items.filter(it=>!fl||it.n.toLowerCase().includes(fl));
+    if(fi.length)flat.push({grp:g.grp,items:fi});
+  });
+  if(!flat.length){r.innerHTML='<div class="cmdrt" style="text-align:center;padding:2rem">No results</div>';return[]}
+  let idx=0;
+  r.innerHTML=flat.map(g=>`<div class="cmdrt">${g.grp}</div>`+g.items.map(it=>{const i=idx++;return`<div class="cmdo${i===cmdSelIdx?' sel':''}" data-idx="${i}"><i class="fas ${it.i}"></i><span>${it.n}</span>${it.k?`<span class="kb">${it.k}</span>`:''}</div>`}).join('')).join('');
+  const flatItems=flat.flatMap(g=>g.items);
+  $$('.cmdo').forEach(el=>el.addEventListener('click',()=>{flatItems[+el.dataset.idx].a();closeCmd()}));
+  return flatItems;
+};
 
-// Call fetchQuote when the page loads
-window.onload = fetchQuote;
+let cmdFlat=[];
+const openCmd=()=>{cmdSelIdx=0;$('#cmdInp').value='';cmdFlat=renderCmd();$('#cmdP').classList.add('act');setTimeout(()=>$('#cmdInp').focus(),50)};
+const closeCmd=()=>$('#cmdP').classList.remove('act');
 
-        // Get current date
-        var currentDate = new Date().toISOString().split('T')[0];
+const events=()=>{
+  $('#bTh').onclick=tgTheme;
+  $('#bFs').onclick=tgFs;
+  $('#bSrch').onclick=()=>$('#mSc').classList.add('act');
+  $('#bCmd').onclick=openCmd;
+  $('#aboutLnk').onclick=e=>{e.preventDefault();$('#mAb').classList.add('act')};
+  $$('.mc[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).classList.remove('act'));
+  $$('.mo').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('act')});
+  $('#bGo').onclick=doSearch;
+  $('#bVc').onclick=tgVc;
+  $('#qEng').onchange=e=>{S.eng=e.target.value;$$('.chip').forEach(c=>c.classList.toggle('act',c.dataset.e===e.target.value))};
+  $('#fInp').addEventListener('input',dbc(e=>filt(e.target.value),250));
+  $('#sortSel').onchange=e=>{S.sort=e.target.value;filt($('#fInp').value)};
+  $('#bRf').onclick=()=>{S.cache.clear();S.cacheTime.clear();S.data={repos:[],starred:[],gists:[],pages:[],orgs:[],livePages:[]};fUsr();fLivePages().then(()=>loadTab(S.tab));tst('Refreshing...','inf')};
+  $('#bQn').onclick=newQ;$('#bQc').onclick=cpQ;$('#bQs').onclick=shQ;$('#bQt').onclick=twQ;$('#bJk').onclick=newJ;
+  $('#wClk').onclick=()=>{tst('Refreshing page...','inf',1500);setTimeout(()=>location.reload(),1500)};
+  $$('.vb2').forEach(b=>b.onclick=()=>{$$('.vb2').forEach(x=>x.classList.remove('act'));b.classList.add('act');S.vw=b.dataset.v;$('#gd').classList.toggle('lst',S.vw==='list')});
+  $$('.tab').forEach(t=>t.onclick=()=>loadTab(t.dataset.t));
+  document.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c){$$('.chip').forEach(x=>x.classList.remove('act'));c.classList.add('act');$('#qEng').value=c.dataset.e;S.eng=c.dataset.e}});
+  document.addEventListener('fullscreenchange',()=>$('#bFs i').className=document.fullscreenElement?'fas fa-compress':'fas fa-expand');
+  
+  $('#cmdInp').addEventListener('input',e=>{cmdSelIdx=0;cmdFlat=renderCmd(e.target.value)});
+  $('#cmdInp').addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){e.preventDefault();cmdSelIdx=Math.min(cmdSelIdx+1,(cmdFlat||[]).length-1);renderCmd($('#cmdInp').value)}
+    else if(e.key==='ArrowUp'){e.preventDefault();cmdSelIdx=Math.max(cmdSelIdx-1,0);renderCmd($('#cmdInp').value)}
+    else if(e.key==='Enter'){e.preventDefault();if(cmdFlat&&cmdFlat[cmdSelIdx]){cmdFlat[cmdSelIdx].a();closeCmd()}}
+  });
+  
+  document.addEventListener('keydown',e=>{
+    if(e.ctrlKey&&e.key==='k'){e.preventDefault();openCmd()}
+    if(e.ctrlKey&&e.key==='q'){e.preventDefault();$('#qInp').focus()}
+    if(e.ctrlKey&&e.key==='d'){e.preventDefault();tgTheme()}
+    if(e.ctrlKey&&e.key==='m'){e.preventDefault();tgVc()}
+    if(e.ctrlKey&&e.key==='n'){e.preventDefault();newQ()}
+    if(e.ctrlKey&&e.shiftKey&&e.key==='R'){e.preventDefault();$('#bRf').click()}
+    const inInp=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName);
+    if(!inInp){
+      if(e.key==='?'){e.preventDefault();$('#mSc').classList.add('act')}
+      if(e.key==='f'&&!e.ctrlKey){e.preventDefault();tgFs()}
+      if(e.key>='1'&&e.key<='6'){const tabs=['repos','livepages','starred','gists','pages','orgs'];loadTab(tabs[+e.key-1])}
+      if(e.key==='Backspace'&&S.path.length){e.preventDefault();S.path.pop();nav2Path()}
+    }
+    if(e.key==='Escape'){if($('#cmdP').classList.contains('act'))closeCmd();else $$('.mo.act').forEach(m=>m.classList.remove('act'))}
+    if(e.key==='Enter'&&document.activeElement===$('#qInp')){e.preventDefault();doSearch()}
+  });
+  
+  window.addEventListener('scroll',()=>{const sb=$('#scrlBtn');sb.classList.toggle('show',window.scrollY>400)});
+  $('#scrlBtn').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+  
+  window.addEventListener('online',()=>{setApiSt(true);tst('Online','suc')});
+  window.addEventListener('offline',()=>{setApiSt(false);tst('Offline','err')});
+};
 
-if (jokes[currentDate]) {
-    document.getElementById("joke").innerHTML = `<p id="joke-text" style="display: inline;">Joke🤣: </p><p style="display: inline;">${jokes[currentDate]}</p>`;
-} else {
-    document.getElementById("joke").textContent = "Sorry, no joke for today!";
-}
+const init=async()=>{
+  setTheme(S.th);
+  $('#yr').textContent=new Date().getFullYear();
+  let v=parseInt(localStorage.getItem('vc')||'0',10);v++;localStorage.setItem('vc',v);S.vs=v;$('#sVis').textContent=fmtN(v);
+  tick();setInterval(tick,1000);
+  initE();initVc();events();mkPrt();
+  newQ();newJ();
+  fWth();setInterval(fWth,600000);
+  setApiSt(navigator.onLine);
+  
+  // Load live pages in background (for tab counter & command palette)
+  fLivePages();
+  
+  await fUsr();
+  await loadTab('repos');
+  fStar();fGists();fOrgs();
+  setTimeout(()=>tst('Press Ctrl+K for command palette','inf',4000),1500);
+};
 
-
-
-   function refreshPage() {
-		window.scrollTo(0,0);
-            location.reload(); // Reload the entire page
-        }
-
-
-  </script>
-
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+</script>
 </body>
 </html>

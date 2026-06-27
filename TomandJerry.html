@@ -1,1909 +1,606 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="TomAndJerryApp">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tom and Jerry Fan Page</title>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-	<style>
-	@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-
-body {
-    font-family: "Ubuntu", sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    background: linear-gradient(135deg, #F5F5F5, #964B00, #666666); /* Gradient background with Tom and Jerry's colors */
-    background-size: 200% 200%;
-    background-position: 0% 0%;
-    background-attachment: fixed;
-    animation: gradientAnimation 15s ease infinite alternate; /* Gradient animation */
-}
-
-@keyframes gradientAnimation {
-    0% {
-        background-position: 0% 0%;
-    }
-    100% {
-        background-position: 100% 100%;
-    }
-}
-
-.home {
-    background-color: rgba(0, 0, 0, 0); /* Fully transparent background */
-    padding: 20px; /* Example padding */
-    border-radius: 10px; /* Example border radius */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box shadow */
-    /* Additional styling */
-    text-align: center; /* Center align text */
-    margin: 20px; /* Example margin */
-    color: #333; /* Example text color */
-}
-
-
-
-    nav {
-        background-color: #ffd700;
-        border-bottom: 2px solid #ff4500;
-    }
-
-    nav ul {
-        list-style: none;
-        padding: 10px;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    nav ul li {
-        margin: 10px;
-    }
-
-    nav ul li a {
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    nav ul li a:hover {
-        background-color: #ff4500;
-		cursor: pointer;
-     
-	 color: white;
-    }
-
-
-
-
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-
-
-.section {
-    padding: 20px; /* Adequate padding for content */
-    border-radius: 5px; /* Rounded corners for a modern look */
-    animation: fadeIn 0.5s ease-in; /* Fade-in animation */
-    border: none; /* Remove borders */
-}
-
-
-
-section#home.section {
-    background-color: Bisque ; /* Fully transparent background */
-    padding: 20px; /* Example padding */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box shadow */
-    /* Additional styling */
-    text-align: center; /* Center align text */
-    color: #333; /* Example text color */
-}
-
-
-
-
-
-
-
-
-#episodes {
-    display: block; /* Ensure block-level display */
-    border-radius: 10px; /* Corrected duplicate border-radius */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center text content */
-    background: linear-gradient(135deg, rgba(247, 189, 78, 0.8), rgba(210, 83, 67, 0.8)); /* Gradient background with reduced opacity */
-    animation: gradientAnimation 10s ease infinite alternate; /* Gradient animation */
-}
-
-@keyframes gradientAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
-}
-
-#episodePlayer {
-    width: 100%; /* Full width of parent container */
-    max-width: 850px;
-    height: 400px; /* Set a fixed height for consistency */
-    border-radius: 10px;
-    margin: 0 auto 20px; /* Center horizontally with bottom margin for spacing */
-    display: block; /* Ensure block-level display */
-}
-.movie iframe {
-	
-    width: 100%; /* Full width of parent container */
-    max-width: 850px;
-    height: 400px; /* Set a fixed height for consistency */
-    border-radius: 10px;
-    display: block; /* Ensure block-level display */
-}
-@media (max-width: 768px) {
-    #episodePlayer, .movie iframe {
-        height: 250px; /* Adjust height for smaller screens */
-    }
-	.movie iframe {
-        height: 220px !important; /* Adjust height for smaller screens */
-		margin: 40px;
-    }
-}
-.season-group {
-	padding: 0 10px 5px 10px;
-	 border: 1px solid AntiqueWhite;
-
-		 width: calc(100%-30px);
-}
-
-.episode-list {
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    max-height: 400px; /* Set a maximum height */
-		     max-width: 950px;
-    overflow-y: auto; /* Enable vertical scrolling */
-    background-color: rgba(255, 255, 255, 0.5);
-    margin: 0 auto; /* Center horizontally */
-}
-
-
-.episode-list ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1; /* Take up the remaining space */
-    display: flex;
-    flex-direction: column;
-}
-
-.episode-list li {
-    margin-bottom: 5px;
-	
-}
-
-.episode-list ul li a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: #333;
-    transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Smooth transition */
-    width: 100%; /* Full width of its container */
-    box-sizing: border-box; /* Include padding and border in element's total width */
-}
-
-.episode-list ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white background on hover */
-    color: #000; /* Darken text color on hover */
-    transform: scale(1.0); /* Scale up slightly on hover */
-}
-
-/* Optional: Animation for the hover effect */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-.episode-list ul li a:hover {
-    animation: pulse 0.3s ease-in-out; /* Apply animation on hover */
-}
-
-
-.search-bar input[type="text"] {
-    width: 94vw; /* Adjusted width for search input */
-    max-width: 900px; /* Maximum width for larger screens */
-    padding: 15px; /* Apply padding similar to movie class */
-    margin: 0 auto 10px auto; /* Center align and adjust margin */
-    background-color:Wheat ; /* Light background */
-    border: 1px solid #ccc; /* Border for details */
-    text-align: center; /* Center text horizontally */
-    border-radius: 10px; /* Rounded corners */
-    font-size: 16px; /* Font size */
-    box-sizing: border-box; /* Ensure padding and border are included in width */
-    display: block; /* Ensure input is displayed as block element */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.movie-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-		border-radius: 10px;
-		background-color red;
-}
-#movies {
-  background-color: rgba(255, 255, 255, 0); /* Fully transparent background */
-  color: white !important; /* Set text color to white, !important used if necessary */
-}
-
-
-.movie {
-    width: 100vw; /* Adjusted width for movies */
-    max-width: 1200px; /* Maximum width for larger screens */
-	
-	box-sizing: border-box;
-    text-align: center; /* Center text horizontally */
-    border-radius: 10px;
-	margin: 5px;
-}
-
-/* Movie name (clickable to expand) */
-.movie-name {
-    cursor: pointer; /* Pointer cursor to indicate clickable */
-    padding: 10px;
-    background-color: #ffd700;
-    border-radius: 5px;
-    text-align: center; /* Center movie names */
-	animation: slideInLeft 1s ease-out;
-}
-
-.movie-name h3 {
-    margin: 0;
-    font-size: 18px; /* Adjust font size */
-	color: black;
-}
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-/* Expanded movie details */
-.movie-details {
-    display: none;
-    padding: 20px;
-   background-color: Moccasin  ;
-    text-align: center; /* Center text horizontally */
-	animation: slideInRight 1s ease-out;
-}
-
-/* Show movie details when expanded */
-.movie-details.active {
-    display: block;
-	border-radius: 5px;
-	color: black;
-}
-
-/* Style for iframe inside movie details */
-.movie-details.active iframe {
-    width: 100%; /* Full width of parent container */
-    max-width: 850px;
-    height: 400px; /* Set a fixed height for consistency */
-    border-radius: 10px;
-    margin: 0 auto 20px; /* Center horizontally with bottom margin for spacing */
-    display: block; /* Ensure block-level display */
-}
-
-.movie-details img {
-    max-width: 500px; /* Limit maximum width to 500px */
-    height: auto; /* Automatically adjust height */
-    display: block; /* Ensure the image behaves as a block element */
-    margin: 10px auto; /* Center the image horizontally with top and bottom margin */
-    border-radius: 8px; /* Optional: Add rounded corners */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Character cards */
-.character-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.character-card {
-    width: 200px; /* Adjust width as needed */
-    border: 1px solid wheat;
-    border-radius: 5px;
-    text-align: center;
-	max-width: 400px;
-}
-
-.character-card img {
-    width: 100%; /* Ensure the image fills the container */
-    height: auto; /* Maintain aspect ratio */
-    height: 500px; /* Max height for images */
-    border-radius: 5px; /* Slight border radius */
-    object-fit: cover; /* Cover the container without distortion */
-}
-
-.character-card h3 {
-    margin-top: 10px; /* Top margin for character names */
-    font-size: 18px; /* Font size for names */
-    color: #333; /* Dark text color */
-}
-
-.character-card p {
-    margin-top: 10px; /* Top margin for descriptions */
-    font-size: 14px; /* Font size for descriptions */
-    color: #666; /* Lighter text color */
-}
-
-/* Media Queries for Smaller Screens */
-@media screen and (max-width: 768px) {
-    .character-card {
-        width: 90vw; /* Two cards per row with spacing */
-	
-    }
-
-    .character-card img {
-        height: 400px !important; /* Reduce image height for smaller screens */
-      }
-	  .search-bar input[type="text"] {
-		width: 90vw;
-		margin: 4px auto;
-	  
-	  }
-}
-
-
-.random-section {
-    margin-top: 20px;
-    text-align: center; /* Align all contents center */
-}
-
-.random-section img {
-    max-width: 300px;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-
-.random-button {
-    padding: 10px 20px;
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 16px; /* Increase font size */
-    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
-}
-
-.random-button:hover {
-    background-color: #45a049; /* Darker green on hover */
-    transform: scale(1.05); /* Slightly enlarge button on hover */
-}
-
-.random-button:active {
-    background-color: #3e8e41; /* Even darker green on click */
-    transform: scale(1); /* Reset scale on click */
-}
-
-
-/* Styles for the search input */
-.char {
-    width: 90%; /* Full width of its container */
-    padding: 10px; /* Padding inside the input */
-    font-size: 16px; /* Font size */
-    border: 1px solid #ccc; /* Border color and style */
-    border-radius: 4px; /* Rounded corners */
-	   background-color: BurlyWood   ; /* Light background */
-	     border-radius:25px;
-		margin: 4px auto;
-    box-sizing: border-box; /* Include padding and border in element's total width */
-}
-
-
-
-
-
-
-
-
-.home {
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin: 20px auto;
-    max-width: 800px;
-    color: #333;
-}
-
-.featured-video, .about-creators, .did-you-know, .character-spotlight, .episodes-gallery, .fan-art-showcase, .quote-of-the-day {
-    background-color: AliceBlue ;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.character-spotlight {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.character-card {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 45%;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.character-card img {
-    max-width: 100%;
-    border-radius: 10px;
-}
-
-.episodes-gallery ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.episodes-gallery li {
-    margin: 10px 0;
-}
-
-.episodes-gallery a {
-    color: #1e90ff;
-    text-decoration: none;
-}
-
-.episodes-gallery a:hover {
-    text-decoration: underline;
-}
-
-.fan-art-gallery {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  overflow-x: auto;
-  padding: 22px 12px;
-}
-
-.fan-art-gallery img {
-  max-width: none; /* Remove fixed maximum width */
-  height: 260px; /* Set a specific height */
-  width: auto; /* Allow width to adjust dynamically */
-  object-fit: cover; /* Ensure image covers the specified dimensions */
-  margin: 10px; /* Simplified margin for all sides */
-  border-radius: 10px; /* Rounded corners */
-}
-
-
-<!-- .fan-art-gallery img:first-child { -->
-  <!-- margin-left: 10px; /* Adjust margin for the first image */ -->
-<!-- } -->
-.fan-art-gallery img:hover {
-    transform: scale(1.1); /* Enlarge on hover */
-}
-
-
-
-.quote-of-the-day {
-    text-align: left;
-}
-
-quote {
-    font-style: italic;
-    color: #555;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.featured-video iframe {
-	max-height: 600px;
-	height: 500px;
-	max-width: 800px;
-	width: 90vw;
-	border-radius: 10px;
-
-}
-
-
-@media (max-width: 600px) {
-    .section {
-        padding: 2.5vw !important; /* Dynamic padding based on viewport width */
-        font-size: 4vw; /* Dynamic font size based on viewport width */
-    }
-
-    .featured-video {
-        overflow: hidden; /* Hide any overflow */
-        height: 370px; /* Set a fixed height for testing purposes */
-		
-    }
-
-    .featured-video iframe {
-        width: 100% !important;
-        height: 63%; /* Set iframe height to 90% of parent container */
-
-        box-sizing: border-box; /* Include padding and border in the total height */
-    }
-	.featured-video, .about-creators, .did-you-know, .character-spotlight, .episodes-gallery, .fan-art-showcase, .quote-of-the-day {
-padding: 10px;
-}
-    .about-creators p,
-    .did-you-know p,
-    .character-card p,
-    .episodes-gallery p,
-    .fan-art-showcase p,
-    .quote-of-the-day quote {
-        font-size: 3.5vw; /* Dynamic font size based on viewport width */
-    }
-
-    .did-you-know accordion,
-    .did-you-know accordion-item,
-    .did-you-know accordion-header,
-    .did-you-know accordion-content {
-        width: 90vw; /* Dynamic width based on viewport width */
-    }
-
-    .character-card {
-        width: 90vw; /* Dynamic width based on viewport width */
-        margin-bottom: 5vh; /* Dynamic margin based on viewport height */
-    }
-
-    .character-card img {
-        width: 100%; /* Make images responsive */
-    }
-
-    .episodes-gallery ul {
-        padding-left: 5vw; /* Dynamic padding based on viewport width */
-    }
-
-    .episodes-gallery li {
-        margin-bottom: 2vh; /* Dynamic margin based on viewport height */
-    }
-.fan-art-gallery {
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on WebKit browsers */
-  white-space: nowrap;
-  font-size: 0; /* Remove gap between inline-block elements */
-  padding: 0px 30px; /* Padding to ensure scrollbar is visible */
-}
-
-.fan-art-gallery img {
-  object-fit: cover; /* Maintain aspect ratio */
-  margin: 10px 10px; /* Add margin between images */
-  border-radius: 10px;
-  
-}
-.fan-art-gallery img:first-child {
-}
-
-    .quote-of-the-day {
-        padding: 5vw; /* Dynamic padding based on viewport width */
-    }
-
-    .quote-of-the-day quote {
-        font-size: 3.5vw; /* Dynamic font size based on viewport width */
-    }
-
-    h2, h3, h4 {
-        font-size: 5vw; /* Dynamic font size based on viewport width */
-    }
-
-    .character-card ul {
-        padding-left: 5vw; /* Dynamic padding based on viewport width */
-    }
-
-    .character-card li {
-        margin-bottom: 1vh; /* Dynamic margin based on viewport height */
-    }
-
-    .character-card h4 {
-        font-size: 4.5vw; /* Dynamic font size based on viewport width */
-    }
-
-    .did-you-know accordion-item,
-    .did-you-know accordion-header,
-    .did-you-know accordion-content {
-        font-size: 3.5vw; /* Dynamic font size based on viewport width */
-    }
-	.movie-details img {
-	width : 76vw;
-	height: auto;
-	
-	}
-	
-	
-}
-
-
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#e8a93b">
+<meta name="description" content="A nostalgic Tom and Jerry fan page — episodes, movies, characters and fan art.">
+<title>Tom and Jerry Fan Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--ink:#1a1410;--ink-soft:#3a2e22;--cream:#f6ecd4;--paper:#fdf6e3;--paper-2:#f1e4c2;--mustard:#e8a93b;--mustard-dk:#c9881e;--maroon:#7a1f1f;--maroon-dk:#531414;--tom-blue:#5b8aa6;--jerry-brn:#8a5a2b;--shadow-1:0 1px 2px rgba(26,20,16,.18),0 4px 14px rgba(26,20,16,.12);--shadow-2:0 6px 24px rgba(26,20,16,.22);--ring:0 0 0 3px rgba(232,169,59,.55),0 0 0 5px rgba(122,31,31,.65);--r-sm:6px;--r-md:12px;--r-lg:18px;--ease:cubic-bezier(.2,.8,.2,1);--grain:radial-gradient(rgba(0,0,0,.045) 1px,transparent 1.2px) 0 0/3px 3px,radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px) 1.5px 1.5px/3px 3px;--halftone:radial-gradient(circle at 1px 1px,rgba(26,20,16,.22) 1.2px,transparent 1.6px) 0 0/8px 8px;}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background-color:#fdf6e3;background-image:linear-gradient(135deg,#fdf6e3 0%,#f1e4c2 100%);}
+body{font-family:"Ubuntu","Segoe UI",system-ui,sans-serif;color:#1a1410;margin:0;padding:0;text-align:center;background-color:#fdf6e3;background-image:var(--grain),radial-gradient(1200px 700px at 10% -10%,rgba(232,169,59,.18),transparent 60%),radial-gradient(1100px 800px at 110% 110%,rgba(122,31,31,.16),transparent 55%),linear-gradient(135deg,#fdf6e3 0%,#f1e4c2 100%);background-attachment:fixed;min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(to right,rgba(0,0,0,.18),transparent 6%,transparent 94%,rgba(0,0,0,.18)),linear-gradient(to bottom,rgba(0,0,0,.10),transparent 4%,transparent 96%,rgba(0,0,0,.10));z-index:1;}
+::selection{background:var(--mustard);color:var(--ink);}
+a,button,[ng-click]{-webkit-tap-highlight-color:transparent;}
+:focus-visible{outline:none;box-shadow:var(--ring);border-radius:var(--r-sm);}
+h1,h2,h3,h4{font-family:"Fraunces","Ubuntu",Georgia,serif;font-weight:800;letter-spacing:.2px;color:#1a1410;}
+header{position:relative;height:110px;display:flex;justify-content:space-between;align-items:center;background:var(--halftone),linear-gradient(180deg,#fff7df 0%,#f1d98a 100%);background-blend-mode:multiply,normal;border-bottom:4px solid var(--ink);box-shadow:var(--shadow-1);z-index:3;}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;background:repeating-linear-gradient(90deg,var(--ink) 0 14px,var(--paper) 14px 22px);}
+header h1{font-family:"Bungee","Fraunces",Impact,sans-serif!important;font-size:clamp(20px,4.6vw,44px)!important;margin:0;flex:1;text-align:center;cursor:pointer;color:var(--maroon);text-shadow:2px 2px 0 var(--mustard),3px 3px 0 var(--ink);letter-spacing:1.5px;transition:transform .25s var(--ease),text-shadow .25s var(--ease);}
+header h1:hover{transform:translateY(-1px) rotate(-.5deg);text-shadow:2px 2px 0 var(--mustard),4px 4px 0 var(--ink);}
+#headim,header img{height:100%;width:auto;filter:saturate(1.05) contrast(1.02);}
+nav{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,rgba(232,169,59,.96),rgba(201,136,30,.96));border-bottom:3px solid var(--ink);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);box-shadow:var(--shadow-1);}
+nav ul{list-style:none;padding:8px 10px;margin:0;display:flex;justify-content:center;flex-wrap:wrap;gap:6px;}
+nav ul li{margin:2px;}
+nav ul li a{position:relative;text-decoration:none;color:#1a1410;font-weight:700;font-family:"Bungee","Ubuntu",sans-serif;letter-spacing:.5px;padding:10px 18px;border-radius:999px;background:rgba(253,246,227,.55);border:2px solid #1a1410;box-shadow:2px 2px 0 #1a1410;transition:transform .2s var(--ease),background .2s var(--ease),box-shadow .2s var(--ease),color .2s var(--ease);display:inline-block;cursor:pointer;}
+nav ul li a:hover{background:var(--maroon);color:#fdf6e3;transform:translate(-1px,-1px);box-shadow:4px 4px 0 #1a1410;}
+nav ul li a:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #1a1410;}
+nav ul li a.is-current{background:var(--maroon);color:#fdf6e3;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideInRight{from{transform:translateX(40px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes slideInLeft{from{transform:translateX(-40px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes wiggle{0%,100%{transform:rotate(0);}25%{transform:rotate(-1.5deg);}75%{transform:rotate(1.5deg);}}
+.section{padding:22px 18px;border-radius:var(--r-lg);animation:fadeIn .5s var(--ease) both;max-width:1280px;margin:18px auto;position:relative;z-index:2;color:#1a1410;}
+#episodes,#movies{content-visibility:auto;contain-intrinsic-size:800px;}
+.section>h2,.section>h1{position:relative;display:inline-block;font-family:"Bungee","Fraunces",sans-serif;font-size:clamp(20px,3.6vw,34px);color:#fdf6e3;background:var(--maroon);padding:10px 26px;border-radius:var(--r-sm);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);margin:4px auto 22px;letter-spacing:1px;}
+section#home.section{background:var(--grain),linear-gradient(180deg,#fdf6e3 0%,#f7e9c2 100%);background-blend-mode:multiply,normal;padding:24px 18px;box-shadow:var(--shadow-2);color:#1a1410!important;border:2px solid rgba(26,20,16,.18);}
+section#home.section p,section#home.section li,section#home.section h2,section#home.section h3,section#home.section h4{color:#1a1410;}
+#episodes{display:block;border-radius:var(--r-lg);box-shadow:var(--shadow-2);background:var(--halftone),linear-gradient(135deg,rgba(247,189,78,.92),rgba(210,83,67,.92));background-blend-mode:overlay,normal;border:2px solid var(--ink);padding:18px 14px 22px;}
+#episodes p{color:#fdf6e3;font-weight:600;}
+.video-frame,#episodePlayer,.movie iframe,.movie-details.active iframe{width:100%;max-width:900px;aspect-ratio:16/9;height:auto;border-radius:var(--r-md);margin:0 auto 16px;display:block;background:#000;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+@media (max-width:480px){#episodePlayer,.movie iframe,.movie-details.active iframe{border-width:2px;box-shadow:4px 4px 0 var(--ink);margin:0 auto 12px;}}
+.season-group{padding:6px 12px 8px;border:2px solid #1a1410;background:#fdf6e3;border-radius:var(--r-md);width:100%;max-width:980px;margin:8px auto;box-shadow:3px 3px 0 #1a1410;color:#1a1410;}
+.season-group h3{cursor:pointer;font-family:"Bungee",sans-serif;font-size:16px;margin:6px 0;padding:10px 14px;background:#e8a93b;color:#1a1410;border-radius:var(--r-sm);border:2px solid #1a1410;position:relative;transition:background .2s var(--ease),transform .2s var(--ease);user-select:none;}
+.season-group h3::after{content:"▾";position:absolute;right:14px;transition:transform .25s var(--ease);}
+.season-group h3:hover{background:#fdf6e3;transform:translateY(-1px);}
+.season-group h3.active{background:#7a1f1f;color:#fdf6e3;}
+.season-group h3.active::after{transform:rotate(180deg);}
+.episode-list{display:flex;flex-direction:column;border-radius:var(--r-sm);max-height:400px;max-width:980px;overflow-y:auto;background-color:#f1e4c2;margin:0 auto;scrollbar-width:thin;scrollbar-color:#7a1f1f transparent;}
+.episode-list::-webkit-scrollbar{width:8px;}
+.episode-list::-webkit-scrollbar-thumb{background:#7a1f1f;border-radius:4px;}
+.episode-list ul{list-style:none;padding:0;margin:0;flex-grow:1;display:flex;flex-direction:column;}
+.episode-list li{margin-bottom:0;}
+.episode-list ul li a{display:block;padding:12px 14px;text-decoration:none;color:#1a1410;background:#fdf6e3;font-weight:500;border-bottom:1px solid rgba(26,20,16,.12);border-left:4px solid transparent;transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease),transform .25s var(--ease);cursor:pointer;}
+.episode-list ul li:nth-child(even) a{background:#f6ecd4;}
+.episode-list ul li:last-child a{border-bottom:none;}
+.episode-list ul li a:hover{background:linear-gradient(90deg,#e8a93b,rgba(232,169,59,.4));color:#531414;border-left-color:#7a1f1f;transform:translateX(3px);}
+.episode-list ul li a.is-active{background:linear-gradient(90deg,#e8a93b,rgba(232,169,59,.55));color:#531414;border-left-color:#7a1f1f;font-weight:700;}
+.search-bar input[type="text"]{width:94%;max-width:900px;padding:14px 18px;margin:4px auto 12px;background:#fdf6e3;border:2px solid #1a1410;text-align:center;border-radius:999px;font-family:"Ubuntu",sans-serif;font-size:16px;color:#1a1410;box-shadow:3px 3px 0 #1a1410;display:block;transition:box-shadow .2s var(--ease),transform .2s var(--ease);}
+.search-bar input[type="text"]::placeholder{color:rgba(26,20,16,.55);}
+.search-bar input[type="text"]:focus{outline:none;transform:translate(-1px,-1px);box-shadow:4px 4px 0 #1a1410,var(--ring);}
+.movie-list{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;border-radius:var(--r-md);}
+#movies{background:var(--grain),linear-gradient(180deg,rgba(122,31,31,.95),rgba(83,20,20,.97));background-blend-mode:overlay,normal;color:#fdf6e3!important;border:2px solid var(--ink);box-shadow:var(--shadow-2);}
+#movies>h2{background:#e8a93b;color:#1a1410;}
+#movies>p{color:#fdf6e3;}
+.movie{width:100%;max-width:1200px;text-align:center;border-radius:var(--r-md);margin:4px;}
+.movie-name{cursor:pointer;padding:14px;background:linear-gradient(180deg,#e8a93b,#c9881e);border:3px solid #1a1410;border-radius:var(--r-md);text-align:center;animation:slideInLeft .6s var(--ease) both;box-shadow:4px 4px 0 #1a1410;transition:transform .2s var(--ease),box-shadow .2s var(--ease);}
+.movie-name:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #1a1410;}
+.movie-name.active{animation:wiggle .4s var(--ease);background:linear-gradient(180deg,#fdf6e3,#f1e4c2);}
+.movie-name h3{margin:0;font-family:"Bungee",sans-serif;font-size:18px;color:#1a1410;letter-spacing:.5px;}
+.movie-details{display:none;padding:22px 18px;background:var(--grain),linear-gradient(180deg,#fdf6e3,#ffe9b8);background-blend-mode:multiply,normal;text-align:center;animation:slideInRight .6s var(--ease) both;border:3px solid #1a1410;border-top:none;border-radius:0 0 var(--r-md) var(--r-md);margin-top:-6px;color:#1a1410;}
+.movie-details.active{display:block;}
+.movie-details img{max-width:min(100%,500px);height:auto;display:block;margin:14px auto;border-radius:var(--r-sm);border:3px solid #1a1410;box-shadow:5px 5px 0 #1a1410;transition:transform .25s var(--ease);}
+.movie-details img:hover{transform:scale(1.02);}
+.movie-details p{margin:8px 0;font-size:15px;color:#1a1410;}
+.movie-details strong{color:#531414;}
+.character-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;}
+.character-card{background:#fdf6e3;padding:12px;border-radius:var(--r-md);box-shadow:4px 4px 0 #1a1410;border:3px solid #1a1410;width:45%;max-width:320px;margin:10px 0;text-align:center;color:#1a1410;transition:transform .25s var(--ease),box-shadow .25s var(--ease);}
+.character-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #1a1410;}
+.character-card img{width:100%;height:320px;object-fit:cover;border-radius:var(--r-sm);border:2px solid #1a1410;background:#f1e4c2;}
+.character-card h3,.character-card h4{margin-top:10px;font-family:"Bungee",sans-serif;font-size:18px;color:#531414;letter-spacing:.4px;}
+.character-card p{margin-top:8px;font-size:14px;color:#3a2e22;}
+.character-card ul{list-style:none;padding:0;margin:8px 0 0;font-size:12.5px;color:#3a2e22;}
+.character-card li{margin:4px 0;}
+@media screen and (max-width:768px){.character-card{width:90vw;}.character-card img{height:360px!important;}.search-bar input[type="text"]{width:90vw;margin:4px auto;}}
+.char{width:92%;max-width:900px;padding:12px 18px;font-family:"Ubuntu",sans-serif;font-size:16px;border:2px solid #1a1410;border-radius:999px;background:#fdf6e3;color:#1a1410;margin:4px auto 16px;display:block;box-shadow:3px 3px 0 #1a1410;transition:box-shadow .2s var(--ease),transform .2s var(--ease);}
+.char::placeholder{color:rgba(26,20,16,.55);}
+.char:focus{outline:none;transform:translate(-1px,-1px);box-shadow:4px 4px 0 #1a1410,var(--ring);}
+.featured-video,.about-creators,.did-you-know,.character-spotlight,.episodes-gallery,.fan-art-showcase,.quote-of-the-day{background:var(--grain),linear-gradient(180deg,#fdf6e3,#fff5d8);background-blend-mode:multiply,normal;padding:22px 20px;border-radius:var(--r-md);border:2px solid #1a1410;box-shadow:5px 5px 0 #1a1410;margin:18px auto;max-width:1080px;position:relative;text-align:left;color:#1a1410;}
+.featured-video p,.about-creators p,.did-you-know p,.character-spotlight p,.episodes-gallery p,.fan-art-showcase p,.quote-of-the-day p{color:#1a1410;}
+.featured-video h3,.about-creators h3,.did-you-know h3,.character-spotlight h3,.episodes-gallery h3,.fan-art-showcase h1,.quote-of-the-day h3{font-family:"Bungee","Fraunces",sans-serif;font-size:clamp(18px,2.6vw,24px);color:#531414;margin-top:0;text-align:center;position:relative;display:inline-block;padding-bottom:6px;}
+.featured-video h3::after,.about-creators h3::after,.did-you-know h3::after,.character-spotlight h3::after,.episodes-gallery h3::after,.fan-art-showcase h1::after,.quote-of-the-day h3::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:#e8a93b;border-radius:2px;}
+.character-spotlight{display:flex;justify-content:space-around;flex-wrap:wrap;gap:14px;}
+.character-spotlight>h3{flex-basis:100%;text-align:center;}
+.episodes-gallery ul{list-style:none;padding:0;}
+.episodes-gallery li{margin:8px 0;padding:8px 12px;background:#f6ecd4;border-left:4px solid #e8a93b;border-radius:var(--r-sm);color:#1a1410;transition:border-color .25s var(--ease),transform .25s var(--ease),background .25s var(--ease);}
+.episodes-gallery li:hover{border-left-color:#7a1f1f;transform:translateX(4px);background:#f1d98a;}
+.episodes-gallery a{color:#531414;text-decoration:none;font-weight:600;}
+.episodes-gallery a:hover{text-decoration:underline;}
+.fan-art-gallery{display:flex;flex-wrap:nowrap;overflow-x:auto;padding:20px 12px;gap:14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#7a1f1f transparent;}
+.fan-art-gallery::-webkit-scrollbar{height:8px;}
+.fan-art-gallery::-webkit-scrollbar-thumb{background:#7a1f1f;border-radius:4px;}
+.fan-art-gallery img{height:280px;width:auto;object-fit:cover;margin:0;border-radius:var(--r-md);border:3px solid #1a1410;box-shadow:5px 5px 0 #1a1410;scroll-snap-align:center;flex-shrink:0;transition:transform .3s var(--ease),box-shadow .3s var(--ease),filter .3s var(--ease);filter:saturate(.95) contrast(1.02);}
+.fan-art-gallery img:hover,.fan-art-gallery img.centered{transform:scale(1.05) translateY(-2px);box-shadow:8px 8px 0 #1a1410;filter:saturate(1.1) contrast(1.05);}
+.quote-of-the-day{text-align:left;background:var(--grain),linear-gradient(135deg,#fff5d8,#fdf6e3);background-blend-mode:multiply,normal;position:relative;}
+.quote-of-the-day::before{content:"\201C";position:absolute;top:-10px;left:18px;font-family:"Fraunces",Georgia,serif;font-size:100px;color:#e8a93b;line-height:1;opacity:.6;pointer-events:none;}
+quote{font-family:"Fraunces",Georgia,serif;font-style:italic;color:#3a2e22;display:block;margin:8px 0 12px;font-size:17px;padding-left:8px;}
+.featured-video iframe{max-height:600px;height:auto;aspect-ratio:16/9;max-width:800px;width:min(100%,90vw);border-radius:var(--r-md);border:3px solid #1a1410;box-shadow:6px 6px 0 #1a1410;background:#1a1410;display:block;margin:12px auto 0;}
+.did-you-know accordion{display:block;}
+.did-you-know accordion-item{display:block;background:#f6ecd4;border:2px solid #1a1410;border-radius:var(--r-sm);padding:10px 14px;margin:8px 0;box-shadow:3px 3px 0 #1a1410;color:#1a1410;transition:transform .2s var(--ease);}
+.did-you-know accordion-item:hover{transform:translate(-1px,-1px);}
+.did-you-know accordion-header{display:block;font-family:"Bungee",sans-serif;color:#531414;font-size:15px;margin-bottom:6px;}
+.did-you-know accordion-content{display:block;font-size:14.5px;color:#1a1410;}
+.did-you-know accordion-content p{margin:6px 0;color:#1a1410;}
+carousel{display:block;}
+carousel-item{display:block;margin-bottom:10px;}
+@media (max-width:600px){header{height:90px;}header h1{font-size:6vw!important;}.section{padding:12px 8px!important;margin:10px 4px;}.section>h2,.section>h1{font-size:16px;padding:8px 14px;box-shadow:4px 4px 0 #1a1410;}.featured-video,.about-creators,.did-you-know,.character-spotlight,.episodes-gallery,.fan-art-showcase,.quote-of-the-day{padding:14px 12px;box-shadow:4px 4px 0 #1a1410;margin:14px 4px;}.about-creators p,.did-you-know p,.character-card p,.episodes-gallery p,.fan-art-showcase p,.quote-of-the-day quote{font-size:14px;}.character-card{width:92vw;margin-bottom:18px;}.character-card img{width:100%;}.episodes-gallery ul{padding-left:0;}.fan-art-gallery{padding:8px 12px;gap:10px;}.fan-art-gallery img{height:200px;border-width:2px;box-shadow:4px 4px 0 #1a1410;}.quote-of-the-day{padding:18px 16px;}.quote-of-the-day quote{font-size:15px;}h2,h3,h4{font-size:16px;}.movie-details img{width:80vw;height:auto;}nav ul li a{padding:8px 14px;font-size:13px;}.episode-list ul li a{padding:14px 12px;font-size:14px;}.season-group h3{font-size:14px;padding:10px 12px;}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}}
+@media print{nav,.fan-art-gallery,.featured-video iframe{display:none!important;}body{background:#fff;color:#000;}}
+</style>
 </head>
-
-
 <body ng-controller="MainController" hammer-swipe>
+<header role="banner">
 
-<header style="height: 110px; position: relative; display: flex; justify-content: space-between; align-items: center;background-color:AntiqueWhite;">
-    <img id="headim" src="https://www.wallpapers13.com/wp-content/uploads/2016/11/Tom-and-Jerry-heroes-Cartoons-Desktop-HD-Wallpaper-for-Mobile-phones-Tablet-and-PC-1920x1200.jpg" style="height: 100%; width: auto;">
-    <h1 onclick="refreshpage()" style="font-size: 5vw; margin: 0; flex: 1;  text-align: center; cursor: pointer;">Tom and Jerry</h1>
-    <img src="https://st.hzcdn.com/simgs/6cd139330910353b_4-4435/eclectic-decorative-signs.jpg" alt="Tom and Jerry" style="height: 100%; width: auto;">
+<h1 onclick="refreshpage()" tabindex="0" role="button" aria-label="Refresh page">Tom and Jerry</h1>
+<img src="https://st.hzcdn.com/simgs/6cd139330910353b_4-4435/eclectic-decorative-signs.jpg" alt="Tom and Jerry sign" loading="eager" decoding="async">
 </header>
+<nav role="navigation" aria-label="Main">
+<ul>
+<li><a ng-click="showSection('home')" ng-class="{'is-current':currentSection==='home'}" tabindex="0" role="button">Home</a></li>
+<li><a ng-click="showSection('episodes')" ng-class="{'is-current':currentSection==='episodes'}" tabindex="0" role="button">Episodes</a></li>
+<li><a ng-click="showSection('movies')" ng-class="{'is-current':currentSection==='movies'}" tabindex="0" role="button">Movies</a></li>
+</ul>
+</nav>
 
-
-
-
-    <nav>
-        <ul>
-            <li><a ng-click="showSection('home')">Home</a></li>
-            <li><a ng-click="showSection('episodes')">Episodes</a></li>
-            <li><a ng-click="showSection('movies')">Movies</a></li>
-        </ul>
-    </nav>
-
-
-
-
-
-
-<section id="image-gallery" class="section" ng-show="currentSection === 'image-gallery'">
-  <h2>Tom and Jerry Image Gallery</h2>
-  <p>Welcome to the Tom and Jerry Image Gallery, where you can explore various images featuring our beloved characters!</p>
-  <div class="image-gallery">
-    <div class="image" ng-repeat="image in images">
-      <img ng-src="{{ image.url }}" alt="{{ image.name }}">
-      <p>{{ image.name }}</p>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section id="home" class="section" ng-show="currentSection === 'home'">
+<section id="home" class="section" ng-if="currentSection==='home'">
 <h2>Welcome to the Tom and Jerry Fan Page</h2>
 <p>Step into the timeless world of Tom and Jerry, a beloved animated series created by William Hanna and Joseph Barbera. This classic series revolves around the timeless rivalry between Tom, the cunning cat, and Jerry, the clever mouse. Renowned for its uproarious slapstick humor and enduring charm, Tom and Jerry has captivated audiences of all generations for decades.</p>
-
 <div class="featured-video">
-    <h3>Featured Video: Tales Series Intro</h3>
-    <p>Explore the captivating world of the Tales series with this introductory video. Immerse yourself in the rich storytelling and vibrant characters that define this beloved franchise.</p>
-    <iframe ng-src="{{ featuredVideoUrl }}" frameborder="1" allowfullscreen></iframe>
+<h3>Featured Video: Tales Series Intro</h3>
+<p>Explore the captivating world of the Tales series with this introductory video. Immerse yourself in the rich storytelling and vibrant characters that define this beloved franchise.</p>
+<iframe ng-src="{{featuredVideoUrl}}" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" title="Tales Series Intro"></iframe>
 </div>
-
-
-    <!-- About the creators section -->
-    <div class="about-creators">
-        <h3>About the Creators</h3>
-        <p>William Hanna and Joseph Barbera were American animation directors, producers, and animators. They co-founded the animation studio Hanna-Barbera, which produced iconic shows like The Flintstones, The Jetsons, and of course, Tom and Jerry.</p>
-    </div>
-
-<!-- Did you know section -->
+<div class="about-creators">
+<h3>About the Creators</h3>
+<p>William Hanna and Joseph Barbera were American animation directors, producers, and animators. They co-founded the animation studio Hanna-Barbera, which produced iconic shows like The Flintstones, The Jetsons, and of course, Tom and Jerry.</p>
+</div>
 <div class="did-you-know">
-    <h3>Did you know?</h3>
-    <accordion>
-        <accordion-item>
-            <accordion-header>Tom and Jerry were created in 1940</accordion-header>
-            <accordion-content>
-                <p>Tom and Jerry were created by William Hanna and Joseph Barbera in 1940. The first episode, "Puss Gets the Boot," was released on February 10, 1940.</p>
-                <p>This iconic duo quickly became one of the most beloved and enduring animated pairings in history.</p>
-            </accordion-content>
-        </accordion-item>
-        <accordion-item>
-            <accordion-header>Tom and Jerry have won numerous awards</accordion-header>
-            <accordion-content>
-                <p>Tom and Jerry have won numerous awards, including seven Academy Awards for Best Short Subject (Cartoon). They were also inducted into the Cartoon Hall of Fame in 1991.</p>
-                <p>Throughout their illustrious career, they have continued to captivate audiences worldwide with their timeless humor and slapstick antics.</p>
-            </accordion-content>
-        </accordion-item>
-        <accordion-item>
-            <accordion-header>Their rivalry is legendary</accordion-header>
-            <accordion-content>
-                <p>The enduring rivalry between Tom and Jerry is one of the longest-running and most beloved in animation history.</p>
-                <p>Despite their constant chases and skirmishes, deep down, they share a unique bond that has resonated with generations of viewers.</p>
-            </accordion-content>
-        </accordion-item>
-    </accordion>
+<h3>Did you know?</h3>
+<accordion>
+<accordion-item>
+<accordion-header>Tom and Jerry were created in 1940</accordion-header>
+<accordion-content>
+<p>Tom and Jerry were created by William Hanna and Joseph Barbera in 1940. The first episode, "Puss Gets the Boot," was released on February 10, 1940.</p>
+<p>This iconic duo quickly became one of the most beloved and enduring animated pairings in history.</p>
+</accordion-content>
+</accordion-item>
+<accordion-item>
+<accordion-header>Tom and Jerry have won numerous awards</accordion-header>
+<accordion-content>
+<p>Tom and Jerry have won numerous awards, including seven Academy Awards for Best Short Subject (Cartoon). They were also inducted into the Cartoon Hall of Fame in 1991.</p>
+<p>Throughout their illustrious career, they have continued to captivate audiences worldwide with their timeless humor and slapstick antics.</p>
+</accordion-content>
+</accordion-item>
+<accordion-item>
+<accordion-header>Their rivalry is legendary</accordion-header>
+<accordion-content>
+<p>The enduring rivalry between Tom and Jerry is one of the longest-running and most beloved in animation history.</p>
+<p>Despite their constant chases and skirmishes, deep down, they share a unique bond that has resonated with generations of viewers.</p>
+</accordion-content>
+</accordion-item>
+</accordion>
 </div>
-
-
-<!-- Character spotlight section -->
 <div class="character-spotlight">
-    <h3>Character Spotlight</h3>
-	
-	    <!-- Jerry's Character Card -->
-    <div class="character-card">
-        <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/9/98/Stardetective.png" alt="Jerry">
-        <h4>Jerry</h4>
-        <p>Jerry is a brown mouse who often outsmarts Tom.</p>
-        <ul>
-            <li>First appearance: "Puss Gets the Boot" (1940)</li>
-            <li>Creator: William Hanna and Joseph Barbera</li>
-        </ul>
-    </div>
-
-    <!-- Tom's Character Card -->
-    <div class="character-card">
-        <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/8/8c/Tomrealposter.png" alt="Tom">
-        <h4>Tom</h4>
-        <p>Tom is a grey and white domestic shorthair cat who often chases Jerry.</p>
-        <ul>
-            <li>First appearance: "Puss Gets the Boot" (1940)</li>
-            <li>Creator: William Hanna and Joseph Barbera</li>
-        </ul>
-    </div>
-
-
-
-    <!-- Spike's Character Card -->
-    <div class="character-card">
-        <img src="https://static.wikia.nocookie.net/tomandjerry/images/0/0e/Spike_Bulldog_(2006-2008).jpeg" alt="Spike">
-        <h4>Spike</h4>
-        <p>Spike is a muscular bulldog who sometimes befriends Jerry and antagonizes Tom.</p>
-        <ul>
-            <li>First appearance: "Dog Trouble" (1942)</li>
-            <li>Creator: William Hanna and Joseph Barbera</li>
-        </ul>
-    </div>
-
-    <!-- Butch's Character Card -->
-    <div class="character-card">
-        <img src="https://static.wikia.nocookie.net/tomandjerry/images/4/44/Butch_in_Tom_and_Jerry_Tales_Ep2-3.png" alt="Butch">
-        <h4>Butch</h4>
-        <p>Butch is a black alley cat who often competes with Tom over Jerry or other pursuits.</p>
-        <ul>
-            <li>First appearance: "Baby Puss" (1943)</li>
-            <li>Creator: William Hanna and Joseph Barbera</li>
-        </ul>
-    </div>
-
-    <!-- Tuffy's Character Card -->
-    <div class="character-card">
-        <img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/7/78/Tuffyrealposter.png" alt="Tuffy">
-        <h4>Tuffy</h4>
-        <p>Tuffy, also known as Nibbles, is Jerry's young nephew who sometimes assists in his schemes.</p>
-        <ul>
-            <li>First appearance: "The Milky Waif" (1946)</li>
-            <li>Creator: William Hanna and Joseph Barbera</li>
-        </ul>
-    </div>
+<h3>Character Spotlight</h3>
+<div class="character-card">
+<img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/9/98/Stardetective.png" alt="Jerry" loading="lazy" decoding="async">
+<h4>Jerry</h4>
+<p>Jerry is a brown mouse who often outsmarts Tom.</p>
+<ul><li>First appearance: "Puss Gets the Boot" (1940)</li><li>Creator: William Hanna and Joseph Barbera</li></ul>
 </div>
-
-
-    <!-- Episodes gallery section -->
-    <div class="episodes-gallery">
-        <h3>Episodes Gallery</h3>
-        <p>Check out some of the classic episodes of Tom and Jerry below:</p>
-        <ul>
-            <li><a href="https://drive.google.com/file/d/1gh_COSapxo0WpIbQfpJtTlHr4BSe_5Wv/preview" target="_blank">Puss Gets the Boot</a></li>
-            <li><a href="https://drive.google.com/file/d/1lpy0TivPxZ_7M0mFSd3HhwAJuNydmwxz/preview" target="_blank">The Midnight Snack</a></li>
-            <li><a href="https://drive.google.com/file/d/1vb4WWdgFIZxkeF1QKCA1dP3bppOtusDl/preview" target="_blank">The Night Before Christmas</a></li>
-            <!-- Add more episodes as needed -->
-        </ul>
-    </div>
-
-    <!-- Fan art showcase section -->
-    <div class="fan-art-showcase">
-        <h1>Fan Art Showcase</h1>
-        <p>Here are some amazing fan arts created by Tom and Jerry fans:</p>
-        <div class="fan-art-gallery">
-            <img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/1.jpg" alt="Fan Art 1">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/2.jpg" alt="Fan Art 2">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/3.jpg" alt="Fan Art 3">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/4.jpg" alt="Fan Art 4">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/5.jpg" alt="Fan Art 5">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/6.jpg" alt="Fan Art 6">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/7.jpg" alt="Fan Art 7">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/8.jpg" alt="Fan Art 8">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/9.jpg" alt="Fan Art 9">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/10.jpg" alt="Fan Art 10">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/11.jpg" alt="Fan Art 11">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/12.jpg" alt="Fan Art 12">
-<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/13.jpg" alt="Fan Art 13">
-
-        </div>
-    </div>
-
-    <!-- Quote of the day section -->
-    <div class="quote-of-the-day">
-        <h3>Quote of the Day</h3>
-        <carousel>
-            <carousel-item>
-                <quote>"I'm not bad, I'm just drawn that way." - Tom</quote>
-            </carousel-item>
-            <carousel-item>
-                <quote>"You can't catch me, I'm the fastest mouse in the west!" - Jerry</quote>
-            </carousel-item>
-        </carousel>
-    </div>
+<div class="character-card">
+<img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/8/8c/Tomrealposter.png" alt="Tom" loading="lazy" decoding="async">
+<h4>Tom</h4>
+<p>Tom is a grey and white domestic shorthair cat who often chases Jerry.</p>
+<ul><li>First appearance: "Puss Gets the Boot" (1940)</li><li>Creator: William Hanna and Joseph Barbera</li></ul>
+</div>
+<div class="character-card">
+<img src="https://static.wikia.nocookie.net/tomandjerry/images/0/0e/Spike_Bulldog_(2006-2008).jpeg" alt="Spike" loading="lazy" decoding="async">
+<h4>Spike</h4>
+<p>Spike is a muscular bulldog who sometimes befriends Jerry and antagonizes Tom.</p>
+<ul><li>First appearance: "Dog Trouble" (1942)</li><li>Creator: William Hanna and Joseph Barbera</li></ul>
+</div>
+<div class="character-card">
+<img src="https://static.wikia.nocookie.net/tomandjerry/images/4/44/Butch_in_Tom_and_Jerry_Tales_Ep2-3.png" alt="Butch" loading="lazy" decoding="async">
+<h4>Butch</h4>
+<p>Butch is a black alley cat who often competes with Tom over Jerry or other pursuits.</p>
+<ul><li>First appearance: "Baby Puss" (1943)</li><li>Creator: William Hanna and Joseph Barbera</li></ul>
+</div>
+<div class="character-card">
+<img src="https://static.wikia.nocookie.net/tom-and-jerry-chase/images/7/78/Tuffyrealposter.png" alt="Tuffy" loading="lazy" decoding="async">
+<h4>Tuffy</h4>
+<p>Tuffy, also known as Nibbles, is Jerry's young nephew who sometimes assists in his schemes.</p>
+<ul><li>First appearance: "The Milky Waif" (1946)</li><li>Creator: William Hanna and Joseph Barbera</li></ul>
+</div>
+</div>
+<div class="episodes-gallery">
+<h3>Episodes Gallery</h3>
+<p>Check out some of the classic episodes of Tom and Jerry below:</p>
+<ul>
+<li><a href="https://drive.google.com/file/d/1gh_COSapxo0WpIbQfpJtTlHr4BSe_5Wv/preview" target="_blank" rel="noopener">Puss Gets the Boot</a></li>
+<li><a href="https://drive.google.com/file/d/1lpy0TivPxZ_7M0mFSd3HhwAJuNydmwxz/preview" target="_blank" rel="noopener">The Midnight Snack</a></li>
+<li><a href="https://drive.google.com/file/d/1vb4WWdgFIZxkeF1QKCA1dP3bppOtusDl/preview" target="_blank" rel="noopener">The Night Before Christmas</a></li>
+</ul>
+</div>
+<div class="fan-art-showcase">
+<h1>Fan Art Showcase</h1>
+<p>Here are some amazing fan arts created by Tom and Jerry fans:</p>
+<div class="fan-art-gallery">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/1.jpg" alt="Fan Art 1" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/2.jpg" alt="Fan Art 2" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/3.jpg" alt="Fan Art 3" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/4.jpg" alt="Fan Art 4" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/5.jpg" alt="Fan Art 5" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/6.jpg" alt="Fan Art 6" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/7.jpg" alt="Fan Art 7" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/8.jpg" alt="Fan Art 8" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/9.jpg" alt="Fan Art 9" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/10.jpg" alt="Fan Art 10" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/11.jpg" alt="Fan Art 11" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/12.jpg" alt="Fan Art 12" loading="lazy" decoding="async">
+<img src="https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/TomandJerry/13.jpg" alt="Fan Art 13" loading="lazy" decoding="async">
+</div>
+</div>
+<div class="quote-of-the-day">
+<h3>Quote of the Day</h3>
+<carousel>
+<carousel-item><quote>"I'm not bad, I'm just drawn that way." - Tom</quote></carousel-item>
+<carousel-item><quote>"You can't catch me, I'm the fastest mouse in the west!" - Jerry</quote></carousel-item>
+</carousel>
+</div>
 </section>
 
-
-
-
-
-
-
-
-
-
-
-<section id="episodes" class="section" ng-show="currentSection === 'episodes'">
-<p style="align: center;"> **ScrollUp for Seasons</p>
-  <iframe id="episodePlayer" width="560" height="315" ng-src="{{ selectedEpisodeEmbedUrl }}" frameborder="0" allowfullscreen></iframe>
-  
-  <div class="search-container" style="padding-top: 20px;">
-    <div class="search-bar">
-      <input type="text" id="episodeSearch" ng-model="searchEpisode" placeholder="Search episodes...">
-    </div>
-  </div>
-  
-  <div class="episode-list">
-    <div ng-repeat="(season, episodes) in seasonGroups" class="season-group">
-      <h3 ng-click="toggleSeason(season)" ng-class="{ 'active': isSeasonActive(season) }">{{ season }}</h3>
-      <div class="episode-list" ng-show="isSeasonActive(season)" ng-style="{ 'max-height': '200px', 'overflow-y': 'auto' }">
-        <ul>
-          <li ng-repeat="episode in episodes | filter:searchEpisode">
-            <a ng-click="selectEpisode(episode)">{{ episode.name }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<section id="episodes" class="section" ng-if="currentSection==='episodes'">
+<p>**ScrollUp for Seasons</p>
+<iframe id="episodePlayer" ng-if="selectedEpisodeEmbedUrl" ng-src="{{selectedEpisodeEmbedUrl}}" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Episode player"></iframe>
+<div class="search-container" style="padding-top:20px;">
+<div class="search-bar">
+<input type="text" id="episodeSearch" ng-model="searchEpisode" placeholder="Search episodes..." aria-label="Search episodes">
+</div>
+</div>
+<div class="episode-list">
+<div ng-repeat="(season, episodes) in seasonGroups" class="season-group">
+<h3 ng-click="toggleSeason(season)" ng-class="{'active':isSeasonActive(season)}">{{season}}</h3>
+<div class="episode-list" ng-show="isSeasonActive(season)" ng-style="{'max-height':'300px','overflow-y':'auto'}">
+<ul>
+<li ng-repeat="episode in episodes | filter:searchEpisode">
+<a ng-click="selectEpisode(episode)" ng-class="{'is-active':selectedEpisodeName===episode.name}">{{episode.name}}</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </section>
 
-
-
-
-
-
-
-
-
-
-
-
-<section id="movies" class="section" ng-show="currentSection === 'movies'">
-    <h2>Tom and Jerry Movies</h2>
-    <p>Welcome to the Tom and Jerry Movies section, where you can explore various movies featuring our beloved characters!</p>
-
-    <!-- Search input -->
-    <input type="text" class= "char" ng-model="searchMovie" placeholder="Search movie...">
-
-    <!-- Movie list -->
-    <div class="movie-list">
-        <div class="movie" ng-repeat="movie in movies | filter:searchMovie">
-            <!-- Movie name (clickable to expand) -->
-            <div class="movie-name" ng-click="toggleDetails(movie)" ng-class="{ 'active': movie.expanded }">
-                <h3>{{ movie.name }}</h3>
-            </div>
-
-            <!-- Expanded movie details -->
-            <div class="movie-details" ng-show="movie.expanded" ng-class="{ 'active': movie.expanded }">
-                <img ng-src="{{ movie.image }}" alt="{{ movie.name }}">
-                <p><strong>Year:</strong> {{ movie.details.year }}</p>
-                <p><strong>Director:</strong> {{ movie.details.director }}</p>
-                <p><strong>Stars:</strong> {{ movie.details.stars }}</p>
-                <p>{{ movie.description }}</p>
-                <iframe ng-src="{{ movie.expanded ? movie.embedUrl : '' }}" frameborder="0" allowfullscreen id="movieIframe-{{$index}}"></iframe>
-            </div>
-        </div>
-    </div>
+<section id="movies" class="section" ng-if="currentSection==='movies'">
+<h2>Tom and Jerry Movies</h2>
+<p>Welcome to the Tom and Jerry Movies section, where you can explore various movies featuring our beloved characters!</p>
+<input type="text" class="char" ng-model="searchMovie" placeholder="Search movie..." aria-label="Search movies">
+<div class="movie-list">
+<div class="movie" ng-repeat="movie in movies | filter:searchMovie">
+<div class="movie-name" ng-click="toggleDetails(movie)" ng-class="{'active':movie.expanded}">
+<h3>{{movie.name}}</h3>
+</div>
+<div class="movie-details" ng-if="movie.expanded" ng-class="{'active':movie.expanded}">
+<img ng-src="{{movie.image}}" alt="{{movie.name}}" loading="lazy" decoding="async">
+<p><strong>Year:</strong> {{movie.details.year}}</p>
+<p><strong>Director:</strong> {{movie.details.director}}</p>
+<p><strong>Stars:</strong> {{movie.details.stars}}</p>
+<p>{{movie.description}}</p>
+<iframe ng-if="movie.currentEmbedUrl" ng-src="{{movie.currentEmbedUrl}}" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" title="{{movie.name}}"></iframe>
+</div>
+</div>
+</div>
 </section>
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script>
+var app = angular.module('TomAndJerryApp', []);
 
+app.controller('MainController', ['$scope','$sce','$document','$timeout', function($scope,$sce,$document,$timeout){
 
+function withAutoplay(rawUrl){
+    if(!rawUrl) return '';
+    var url = String(rawUrl);
+    if(/[?&]autoplay=1\b/.test(url)) return url;
+    return url + (url.indexOf('?')===-1 ? '?autoplay=1' : '&autoplay=1');
+}
 
+function trust(u){ return u ? $sce.trustAsResourceUrl(u) : ''; }
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
-    <script>
-        var app = angular.module('TomAndJerryApp', []);
-
-        app.controller('MainController', ['$scope', '$sce', '$document', '$timeout', function ($scope, $sce, $document, $timeout) {
-				    $scope.currentSection = 'home'; // Default to home section
-    $scope.activeSection = 'home'; // Initially set active section
-    if ($scope.currentSection === 'home') {
-        // Convert the regular YouTube URL to the embed URL format
-        var videoId = "yvdPsHLbQRg";
-        var embedUrl = "https://www.youtube.com/embed/" + videoId;
-        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(embedUrl);
-    }		  
-
-
-
-
-
-// Function to center the focused image in the fan-art gallery
-$scope.centerFocusedImage = function() {
-  // Check if screen width is less than or equal to 768px (mobile breakpoint)
-  if (window.innerWidth <= 768) {
-    var gallery = $document[0].querySelector('.fan-art-gallery');
-    var images = gallery.querySelectorAll('img');
-    var galleryRect = gallery.getBoundingClientRect();
-    var closestImage = null;
-    var closestDistance = Infinity;
-
-    angular.forEach(images, function(img) {
-      img.classList.remove('centered'); // Remove centered class from all images
-      var imgRect = img.getBoundingClientRect();
-      var imgCenter = imgRect.left + imgRect.width / 2;
-      var galleryCenter = galleryRect.left + galleryRect.width / 2;
-      var distance = Math.abs(imgCenter - galleryCenter);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestImage = img;
-      }
-    });
-
-  if (closestImage) {
-    closestImage.classList.add('centered'); // Add centered class to the closest image
-    var scrollOffset = closestImage.offsetLeft - galleryRect.width / 2 + closestImage.width / 2;
-    gallery.scrollTo({ left: scrollOffset, behavior: 'smooth' });
-
-    // Simulate click event on Android
-    if (/Android/i.test(navigator.userAgent)) {
-      var clickEvent = new MouseEvent('click', {
-        view: window,
-        bubbles: true
-      });
-      closestImage.dispatchEvent(clickEvent);
+function stopAllMedia(){
+    if($scope.movies){
+        $scope.movies.forEach(function(m){
+            m.expanded = false;
+            m.currentEmbedUrl = '';
+        });
     }
-  }}
+    $scope.selectedEpisodeEmbedUrl = '';
+    $scope.featuredVideoUrl = '';
+}
 
-};
-// Initial centering when the page loads
-$timeout(function() {
-  $scope.centerFocusedImage();
-}, 0);
+$scope.currentSection = 'home';
+$scope.activeSection = 'home';
+$scope.selectedEpisodeName = '';
+$scope.selectedEpisodeEmbedUrl = '';
+$scope.searchEpisode = '';
+$scope.searchMovie = '';
+$scope.featuredVideoUrl = trust('https://www.youtube.com/embed/hYmPyaLWhL4?rel=0');
 
-// Listen for scroll events on the fan-art gallery and center images
-$document[0].querySelector('.fan-art-gallery').addEventListener('scroll', function() {
-  if ($scope.scrollTimeout) {
-    $timeout.cancel($scope.scrollTimeout);
-  }
-  $scope.scrollTimeout = $timeout($scope.centerFocusedImage, 100);
-});
-
-
-
-
-
-
-
-		  $scope.selectedEpisodeEmbedUrl = ''; // Initially empty, will be set when an episode is clicked
-
-
-$scope.searchEpisode = ''; // Initialize search model
-
-// Update the episode list filter to use the search model
-$scope.episodeListFilter = function(episode) {
-  var searchQuery = $scope.searchEpisode.toLowerCase();
-  return episode.name.toLowerCase().includes(searchQuery);
-};
-    $scope.featuredVideoUrl = $sce.trustAsResourceUrl("https://www.youtube.com/embed/yvdPsHLbQRg");
-
-
-
-    // Characters data
-    $scope.characters = [
-        {
-            name: 'Tom',
-            image: 'https://static.wikia.nocookie.net/tom-and-jerry-chase/images/8/8c/Tomrealposter.png',
-            description: 'Tom is a grey and white domestic shorthair cat who often chases Jerry.'
-        },
-        {
-            name: 'Jerry',
-            image: 'https://static.wikia.nocookie.net/tom-and-jerry-chase/images/8/82/Pirate_Jerry_Poster.png',
-            description: 'Jerry is a small, brown house mouse who always outsmarts Tom.'
-        },
-        {
-            name: 'Spike',
-            image: 'https://static.wikia.nocookie.net/tomandjerry/images/0/0e/Spike_Bulldog_%282006-2008%29.jpeg',
-            description: 'Spike is a muscular grey and white bulldog who sometimes helps Jerry.'
-        },
-        {
-            name: 'Butch',
-            image: 'https://static.wikia.nocookie.net/tomandjerry/images/1/13/Butch_in_Tom_and_Jerry_Tales_(Second_Design).png',
-            description: 'Butch is a black alley cat who is sometimes an antagonist to both Tom and Jerry.'
-        },
-        {
-            name: 'Tuffy',
-            image: 'https://static.wikia.nocookie.net/tom-and-jerry-chase/images/7/78/Tuffyrealposter.png/',
-            description: 'Tuffy is a small, grey, diaper-wearing mouse who is Jerry\'s nephew.'
-        },
-        // Add more characters as needed
-    ];
-
-    // Initialize empty object for random character
-    $scope.randomCharacter = {};
-
-    // Function to generate a random character
-    $scope.generateRandomCharacter = function() {
-        var randomIndex = Math.floor(Math.random() * $scope.characters.length);
-        $scope.randomCharacter = $scope.characters[randomIndex];
-    };
-
-    // Initialize random character on page load
-    $scope.generateRandomCharacter();
-
-
-            // Array of movies with detailed information
 $scope.movies = [
-    {
-        name: 'Tom and Jerry: The Movie',
-        description: 'Tom and Jerry are left homeless after their owners move out. As they search for a new home, they cross paths with a girl who has run away from home and her evil aunt.',
-        image: 'https://i.ytimg.com/vi/E7uzPr0jkcU/movieposter.jpg',
-        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/134oac27LfjgGdj0zIMVmRGBzeIUiLnkK/preview'),
-        expanded: false,
-        details: {
-            year: '1992',
-            director: 'Phil Roman',
-            stars: 'Richard Kind, Dana Hill, Anndi McAfee'
-        }
-    },
-    {
-        name: 'Tom and Jerry: The Lost Dragon',
-        description: 'Tom and Jerry discover a mysterious egg that hatches into a baby dragon. They must return the dragon to its rightful parents while avoiding a powerful witch.',
-        image: 'https://upload.wikimedia.org/wikipedia/en/c/ce/Tom_and_Jerry_The_Lost_Dragon.jpg',
-        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1g7okgPkPAOmlIGUnetDHRUWcvkQP7F4S/preview'),
-        expanded: false,
-        details: {
-            year: '2014',
-            director: 'Spike Brandt, Tony Cervone',
-            stars: 'Kelly Stables, Vicki Lewis, Jim Cummings'
-        }
-    },
-    {
-        name: 'Tom and Jerry: The Magic Ring',
-        description: 'Jerry finds a magical ring that grants him extraordinary powers. Tom and Jerry must join forces to protect the ring from falling into the wrong hands.',
-        image: 'https://upload.wikimedia.org/wikipedia/en/0/0f/Tom_and_Jerry_The_Magic_Ring_DVD_cover.jpg',
-        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1IcFhi1dee6aySvteALAx1XAdgo7t1yWC/preview'),
-        expanded: false,
-        details: {
-            year: '2002',
-            director: 'James T. Walker',
-            stars: 'Jeff Bennett, Frank Welker, Charlie Schlatter'
-        }
-    },
-    {
-        name: 'Tom and Jerry: Spy Quest',
-        description: 'Tom and Jerry join forces with Jonny Quest and his team to stop an evil conspiracy. They must recover the secret device before it falls into the wrong hands.',
-        image: 'https://upload.wikimedia.org/wikipedia/en/e/e4/Tom%2Band%2Bjerry%2Bspy%2Bquest%2Bbox.jpg',
-        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/14sGOhn3wqd6ajIxsd-JDkeJuGKbcw5Q0/preview'),
-        expanded: false,
-        details: {
-            year: '2015',
-            director: 'Spike Brandt, Tony Cervone',
-            stars: 'Reese Hartwig, Arnie Pantoja, James Hong'
-        }
-    },
-    {
-        name: 'Tom and Jerry: The Fast and the Furry',
-        description: 'Tom and Jerry enter an extreme car race around the world. They face off against colorful competitors while evading a villainous plot.',
-        image: 'https://upload.wikimedia.org/wikipedia/en/3/30/Tom_and_Jerry_The_Fast_and_the_Furry_cover.jpg',
-        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1PdcvDmu1SbcdRK8tcVXeEtP352W9LwRk/preview'),
-        expanded: false,
-        details: {
-            year: '2005',
-            director: 'Bill Kopp',
-            stars: 'Charles Adler, Jeff Bennett, John DiMaggio'
-        }
-    },
-    {
-        name: 'Tom and Jerry Meet Sherlock Holmes',
-        description: 'Tom and Jerry work together with Sherlock Holmes to solve the mystery of a diamond theft in London.',
-        image: 'https://static.wikia.nocookie.net/tomandjerry/images/7/70/Tom_and_Jerry_Meet_Sherlock_Holmes-1-.jpg/',
-        embedUrl: $sce.trustAsResourceUrl('https://drive.google.com/file/d/1sldfSQejLk1N2bXA0TUfzd55kZJRio6N/preview'),
-        expanded: false,
-        details: {
-            year: '2010',
-            director: 'Spike Brandt, Jeff Siergey',
-            stars: 'Michael York, Malcolm McDowell, John Rhys-Davies'
-        }
-    }
+    {name:'Tom and Jerry: The Movie',description:'Tom and Jerry are left homeless after their owners move out. As they search for a new home, they cross paths with a girl who has run away from home and her evil aunt.',image:'https://i.ytimg.com/vi/E7uzPr0jkcU/movieposter.jpg',embedUrlRaw:'https://drive.google.com/file/d/134oac27LfjgGdj0zIMVmRGBzeIUiLnkK/preview',expanded:false,currentEmbedUrl:'',details:{year:'1992',director:'Phil Roman',stars:'Richard Kind, Dana Hill, Anndi McAfee'}},
+    {name:'Tom and Jerry: The Lost Dragon',description:'Tom and Jerry discover a mysterious egg that hatches into a baby dragon. They must return the dragon to its rightful parents while avoiding a powerful witch.',image:'https://upload.wikimedia.org/wikipedia/en/c/ce/Tom_and_Jerry_The_Lost_Dragon.jpg',embedUrlRaw:'https://drive.google.com/file/d/1g7okgPkPAOmlIGUnetDHRUWcvkQP7F4S/preview',expanded:false,currentEmbedUrl:'',details:{year:'2014',director:'Spike Brandt, Tony Cervone',stars:'Kelly Stables, Vicki Lewis, Jim Cummings'}},
+    {name:'Tom and Jerry: The Magic Ring',description:'Jerry finds a magical ring that grants him extraordinary powers. Tom and Jerry must join forces to protect the ring from falling into the wrong hands.',image:'https://upload.wikimedia.org/wikipedia/en/0/0f/Tom_and_Jerry_The_Magic_Ring_DVD_cover.jpg',embedUrlRaw:'https://drive.google.com/file/d/1IcFhi1dee6aySvteALAx1XAdgo7t1yWC/preview',expanded:false,currentEmbedUrl:'',details:{year:'2002',director:'James T. Walker',stars:'Jeff Bennett, Frank Welker, Charlie Schlatter'}},
+    {name:'Tom and Jerry: Spy Quest',description:'Tom and Jerry join forces with Jonny Quest and his team to stop an evil conspiracy. They must recover the secret device before it falls into the wrong hands.',image:'https://upload.wikimedia.org/wikipedia/en/e/e4/Tom%2Band%2Bjerry%2Bspy%2Bquest%2Bbox.jpg',embedUrlRaw:'https://drive.google.com/file/d/14sGOhn3wqd6ajIxsd-JDkeJuGKbcw5Q0/preview',expanded:false,currentEmbedUrl:'',details:{year:'2015',director:'Spike Brandt, Tony Cervone',stars:'Reese Hartwig, Arnie Pantoja, James Hong'}},
+    {name:'Tom and Jerry: The Fast and the Furry',description:'Tom and Jerry enter an extreme car race around the world. They face off against colorful competitors while evading a villainous plot.',image:'https://upload.wikimedia.org/wikipedia/en/3/30/Tom_and_Jerry_The_Fast_and_the_Furry_cover.jpg',embedUrlRaw:'https://drive.google.com/file/d/1PdcvDmu1SbcdRK8tcVXeEtP352W9LwRk/preview',expanded:false,currentEmbedUrl:'',details:{year:'2005',director:'Bill Kopp',stars:'Charles Adler, Jeff Bennett, John DiMaggio'}},
+    {name:'Tom and Jerry Meet Sherlock Holmes',description:'Tom and Jerry work together with Sherlock Holmes to solve the mystery of a diamond theft in London.',image:'https://static.wikia.nocookie.net/tomandjerry/images/7/70/Tom_and_Jerry_Meet_Sherlock_Holmes-1-.jpg/',embedUrlRaw:'https://drive.google.com/file/d/1sldfSQejLk1N2bXA0TUfzd55kZJRio6N/preview',expanded:false,currentEmbedUrl:'',details:{year:'2010',director:'Spike Brandt, Jeff Siergey',stars:'Michael York, Malcolm McDowell, John Rhys-Davies'}}
 ];
 
+$scope.seasonGroups = {
+    'Classic':[
+        {name:'Puss Gets the Boot [1940]',embedUrl:'https://drive.google.com/file/d/1gh_COSapxo0WpIbQfpJtTlHr4BSe_5Wv/preview'},
+        {name:'The Midnight Snack [1941]',embedUrl:'https://drive.google.com/file/d/1lpy0TivPxZ_7M0mFSd3HhwAJuNydmwxz/preview'},
+        {name:'The Night Before Christmas [1941]',embedUrl:'https://drive.google.com/file/d/1vb4WWdgFIZxkeF1QKCA1dP3bppOtusDl/preview'},
+        {name:'Fraidy Cat [1942]',embedUrl:'https://drive.google.com/file/d/1rMNFuMdfNiyfeOeqr9W6Q4vknscCgS-2/preview'},
+        {name:'Dog Trouble [1942]',embedUrl:'https://drive.google.com/file/d/1go6zwOU9snfaBWoW2Ir9ixgarSRC0JQe/preview'},
+        {name:"Puss n' Toots [1942]",embedUrl:'https://drive.google.com/file/d/1cj3xhH5PyKS1zO49xuQzyBGLRj6xvsl4/preview'},
+        {name:'The Bowling Alley Cat [1942]',embedUrl:'https://drive.google.com/file/d/1CNRsJ0oLR5-cnCWCjikyhcX9Lx5020N9/preview'},
+        {name:"Sufferin' Cats! [1943]",embedUrl:'https://drive.google.com/file/d/1Yl0XOVxrT8oftu9z4UN-xpz_kLdoXWcG/preview'},
+        {name:'Fine Feathered Friend [1942]',embedUrl:'https://drive.google.com/file/d/1NmtcKBEk4YjUfzZB4mnjkmiLKZ4BU_la/preview'},
+        {name:'Baby Puss [1943]',embedUrl:'https://drive.google.com/file/d/1O2Ai8We2WOmDsoBf72-4AIUYofDXSG4s/preview'},
+        {name:'The Yankee Doodle Mouse [1943]',embedUrl:'https://drive.google.com/file/d/1Z2562adnymdyreYy2c9s8axxIs1m8oAL/preview'},
+        {name:'The Zoot Cat [1944]',embedUrl:'https://drive.google.com/file/d/1B8GTZpvPUkGjvWL5Ljy-nuilTLmPIHjD/preview'},
+        {name:'Mouse Trouble [1944]',embedUrl:'https://drive.google.com/file/d/15nD8gjU7oDXWD9Nm8odu724i86M8Aq_4/preview'},
+        {name:'The Million Dollar Cat [1944]',embedUrl:'https://drive.google.com/file/d/1GOcPyfuuALDKUsIOTfY-zPkGm4iqSCwb/preview'},
+        {name:'The Bodyguard [1944]',embedUrl:'https://drive.google.com/file/d/1fsUuRKjrnj-O3BG_lEnAlKdxWlko0YuT/preview'},
+        {name:'Flirty Birdy [1945]',embedUrl:'https://drive.google.com/file/d/1GkwO1icPQxHlfOhOaCYhgTBokbHsjOVh/preview'},
+        {name:'Tee for Two [1945]',embedUrl:'https://drive.google.com/file/d/1ffaq5ioD4URA4YhASseFYc3pT0ZL2m9_/preview'},
+        {name:'Mouse in Manhattan [1945]',embedUrl:'https://drive.google.com/file/d/1IAJBYXihBdAYD1HC8E3CehBnm8HpOHfp/preview'},
+        {name:'The Mouse Comes to Dinner [1945]',embedUrl:'https://drive.google.com/file/d/1PbJBSKGuMlsgmLZLNefonnmUeIVSOgRf/preview'},
+        {name:'Springtime for Thomas [1946]',embedUrl:'https://drive.google.com/file/d/129e6aSh8A5RlDj2iTfPOFDRFf8dUat-e/preview'},
+        {name:'Quiet Please! [1945]',embedUrl:'https://drive.google.com/file/d/1ysWIqUitRL1YYC0BOmszkinN1iMqx7Dz/preview'},
+        {name:'Trap Happy [1946]',embedUrl:'https://drive.google.com/file/d/1532VY-GdG_G6BDgGLONAwv4XWKXCxMrK/preview'},
+        {name:'The Milky Waif [1946]',embedUrl:'https://drive.google.com/file/d/1wco0ZJAq762z1nXjQow0BzFG-fiqhP9a/preview'},
+        {name:'Solid Serenade [1946]',embedUrl:'https://drive.google.com/file/d/1yVn8axngdzLZtNuWvKxc3Dyb0zJKPbMT/preview'},
+        {name:"Cat Fishin' [1947]",embedUrl:'https://drive.google.com/file/d/15TUhEskSyrUAyJM1Qczmov1AMN5NoUXr/preview'},
+        {name:'Part Time Pal [1947]',embedUrl:'https://drive.google.com/file/d/1dh4otZfQOjBESKC4V9ZWxLFpEE7fltpy/preview'},
+        {name:'The Cat Concerto [1947]',embedUrl:'https://drive.google.com/file/d/1yA-WE5c5OsDXp_k-xWG2nhE4rYhnqQFB/preview'},
+        {name:'Dr. Jekyll and Mr. Mouse [1947]',embedUrl:'https://drive.google.com/file/d/1srSjxPA1qmHutlkHMxn4CiHKYoQ8uitf/preview'},
+        {name:'A Mouse in the House [1947]',embedUrl:'https://drive.google.com/file/d/1OsDisHfFWPJTyYyjVe5GGkl-iXR3W5ER/preview'},
+        {name:'The Truce Hurts [1948]',embedUrl:'https://drive.google.com/file/d/1IPWuXo0QpGNsAWO97hXmjLNZdNTvjuZl/preview'},
+        {name:"Old Rockin' Chair Tom [1948]",embedUrl:'https://drive.google.com/file/d/1CUIMRm1kbE_W8k5tBgjOvoCNtJ-O3lXe/preview'},
+        {name:'Mouse Cleaning [1948]',embedUrl:'https://drive.google.com/file/d/19lein6sVA6_IOriiU87HBUX6Tz7gJ5pA/preview'},
+        {name:'Professor Tom [1948]',embedUrl:'https://drive.google.com/file/d/10FnVwLP7qEzJnNh9OA_AaMLaO_B0ACTJ/preview'},
+        {name:'The Little Orphan',embedUrl:'https://drive.google.com/file/d/1Nf6-tvUA9HxylSiZwmIqlWW2w_gDXJWx/preview'},
+        {name:'Polka Dot Puss',embedUrl:'https://drive.google.com/file/d/18TBJ9i4-IcIntowB-sqlV9KjLLp7QFTS/preview'},
+        {name:'Hatch Up Your Troubles',embedUrl:'https://drive.google.com/file/d/1p38wIwiuiXSouOiwEtrYjR6FcprgHg9r/preview'},
+        {name:'Heavenly Puss',embedUrl:'https://drive.google.com/file/d/1kxSAo-fVzeepbMU1G1KbtOsNAgi_6r45/preview'},
+        {name:'The Cat and the Mermouse',embedUrl:'https://drive.google.com/file/d/18qrOtRLXDb_xnBmeRmHCTa3RlmbGx_mE/preview'},
+        {name:"Jerry's Diary",embedUrl:'https://drive.google.com/file/d/1V0a78Wp4k2b_uskvWX_5bAKfpyvarA8j/preview'},
+        {name:'Love That Pup',embedUrl:'https://drive.google.com/file/d/1mxTFtEhELpC3NKzipKOHSpNhHFx84V9W/preview'},
+        {name:'Tennis Chumps',embedUrl:'https://drive.google.com/file/d/1I0eCt5QuBrHhkU1qMSpwR-RQzPbMRuWy/preview'},
+        {name:'Little Quacker',embedUrl:'https://drive.google.com/file/d/1IL8yVN-KgJIBjJbLvaP3mSaCGmqaFD9h/preview'},
+        {name:'Saturday Evening Puss',embedUrl:'https://drive.google.com/file/d/1fCqQ6ypq5tI1CXZT0s9ficbiMNs-UsDj/preview'},
+        {name:'Texas Tom',embedUrl:'https://drive.google.com/file/d/1iKgS4dqqhN0VBUtF3kGTPwf2jA06i9J3/preview'},
+        {name:'Safety Second',embedUrl:'https://drive.google.com/file/d/1Emkxlvw75npdTeJozBpcxUWMDnD5_Dlp/preview'},
+        {name:'Jerry and the Lion',embedUrl:'https://drive.google.com/file/d/1bNA56ppTL0IjSawgxfLH2URstD6vg41a/preview'},
+        {name:'Busy Buddies [1956]',embedUrl:'https://drive.google.com/file/d/1kPfHTh_pVabXX-eLVkJp7LGEbKt-4AbF/preview'},
+        {name:'The Flying Sorceress [1956]',embedUrl:'https://drive.google.com/file/d/19zRbGtmW0bY1T0lBzSUSysK7IAF2lnq7/preview'},
+        {name:'The Egg and Jerry [1956]',embedUrl:'https://drive.google.com/file/d/1QSk6cknRYtvvpeaCZ03yreEYsoChU-oX/preview'},
+        {name:"That's My Mommy",embedUrl:'https://drive.google.com/file/d/1387OMxZX1loOjZSRSrKHAgJHVIMLrLTX/preview'},
+        {name:'Smarty Cat',embedUrl:'https://drive.google.com/file/d/1c8SAeU6Kwvrg6pJUeCr1zE9IMf0sK-9p/preview'},
+        {name:'Pecos Pest',embedUrl:'https://drive.google.com/file/d/1rpf-yd5D9msR9OKLolRv2yGanqaWbUDT/preview'},
+        {name:'Tom and Chérie',embedUrl:'https://drive.google.com/file/d/1O7DDq5U2X0Omd14UZbwBSTvx2Ymz7IS1/preview'},
+        {name:'Designs on Jerry',embedUrl:'https://drive.google.com/file/d/1n2a-aTXqxgmD-Gd77s2rxeDiEKfsyTEk/preview'},
+        {name:'Mouse for Sale',embedUrl:'https://drive.google.com/file/d/1ekNbSCbFRQZkjCk102UjegXYI0h1XPVh/preview'},
+        {name:'Pup on a Picnic',embedUrl:'https://drive.google.com/file/d/1bcCyQ9Ya9uA2tMxWBLXnZs-PzpoPA_l-/preview'},
+        {name:'Southbound Duckling',embedUrl:'https://drive.google.com/file/d/1yZwPW6YCug89HeNr7cJenalzoLYN5FPC/preview'},
+        {name:'The Lonesome Mouse [1943]',embedUrl:'https://drive.google.com/file/d/1AA-kHXkw3KE0Qe3aye6YuW-rn2-zfkHe/preview'},
+        {name:'Touché, Pussy Cat!',embedUrl:'https://drive.google.com/file/d/1aM8CALbfkRivzwJvi9d9ULN97RZmDiHa/preview'},
+        {name:'Pet Peeve',embedUrl:'https://drive.google.com/file/d/1Izuks3VZ33OZCwRzCTrqhmcs_W95wWy6/preview'},
+        {name:'Downhearted Duckling',embedUrl:'https://drive.google.com/file/d/1E2ZVwECQu-xZV48OCrYgz_28tpi8yOtv/preview'},
+        {name:'Neapolitan Mouse',embedUrl:'https://drive.google.com/file/d/14NinvjecflP3_WzhIP8JTzULsZCh5y2F/preview'},
+        {name:'Mice Follies',embedUrl:'https://drive.google.com/file/d/1Ckhx59QVRo8KpdUeqUBRjCQ-_bSdcv5D/preview'},
+        {name:'Baby Butch',embedUrl:'https://drive.google.com/file/d/1sBkkRAMfANfLOza_TBCCsqDwvUbpxzJn/preview'},
+        {name:'Little School Mouse',embedUrl:'https://drive.google.com/file/d/1j2GznSt4xGAOoPQ9hQMwbWPIrFgvFaQ1/preview'},
+        {name:'Hic cup Pup',embedUrl:'https://drive.google.com/file/d/11q2J6HDoulhX69at4aB4o0qfHUueJWRk/preview'},
+        {name:'Triplet Trouble',embedUrl:'https://drive.google.com/file/d/1Ev0WRdKM3s8FXkk3vhMA_UNijjHt0mev/preview'},
+        {name:'Just Ducky',embedUrl:'https://drive.google.com/file/d/1cmiZEE_P2_FwpbcT1mUncNLCaGiQhJuz/preview'},
+        {name:"That's My Pup!",embedUrl:'https://drive.google.com/file/d/1D2qmCcpfTvpubtsX-gbtCYf3fWTy-h5h/preview'},
+        {name:'Johann Mouse',embedUrl:'https://drive.google.com/file/d/1ZX7nGFfu1oI_iF_sZo2p8PfkZSLRs2Vb/preview'},
+        {name:'Jerry and Jumbo',embedUrl:'https://drive.google.com/file/d/1uUQeHiEuLx5dK0REYOCmfG_xpEf2v-7Y/preview'},
+        {name:'The Missing Mouse',embedUrl:'https://drive.google.com/file/d/1utpP8_RhEqClPZP1yQwpbglUtcxtNmR6/preview'},
+        {name:'The Dog House',embedUrl:'https://drive.google.com/file/d/1iXKtkZqqwv49kIQWQyh3gKT1sohCMJoj/preview'},
+        {name:'Cruise Cat',embedUrl:'https://drive.google.com/file/d/1ce2q9xgsLlhIirSskgWiy6LycRpTwyDD/preview'},
+        {name:'Push Button Kitty',embedUrl:'https://drive.google.com/file/d/1Tgbs-OSPj_9mC9P-kAafv1MshQoFlpw6/preview'},
+        {name:'Fit to be Tied',embedUrl:'https://drive.google.com/file/d/1Qavh0a_bbJ5GAUfCvPJQeymLhBJ0kpps/preview'},
+        {name:'Little Runaway',embedUrl:'https://drive.google.com/file/d/10ImuX6n5p4tPNsofG-xoi6iJK0zErVuH/preview'},
+        {name:'Two Little Indians',embedUrl:'https://drive.google.com/file/d/1CfIz2yl-Fd186t5pZehlcDdHoFi5YB3o/preview'},
+        {name:'Life with Tom',embedUrl:'https://drive.google.com/file/d/1NGcPMlqbmh7ktIIwck7smcLplDfAC_9H/preview'},
+        {name:'Puppy Tale',embedUrl:'https://drive.google.com/file/d/1-6kmtAAJCr8h6nXucBVQwGyyvaUAhlup/preview'},
+        {name:'Posse Cat',embedUrl:'https://drive.google.com/file/d/18H7JbW56b5Nqr2yBqh6o0maElm8TMb4M/preview'},
+        {name:'Smitten Kitten',embedUrl:'https://drive.google.com/file/d/1aPH2KydU9kGvaZ95yplgtuzwcL6oW1EK/preview'},
+        {name:'The Two Mouseketeers',embedUrl:'https://drive.google.com/file/d/14-yRJ_c7ULukFKDdZ4QQJJN7bKRgudeQ/preview'},
+        {name:'The Duck Doctor',embedUrl:'https://drive.google.com/file/d/15fZi-p-jZGbS4fCv5flvq-AwhtxEevqY/preview'},
+        {name:'The Flying Cat',embedUrl:'https://drive.google.com/file/d/11etnMTdHGSRUIP1WUWNLkB3YhIZrsmXR/preview'},
+        {name:'Cat Napping',embedUrl:'https://drive.google.com/file/d/1ssCjB1QFuGOBsy-fDEreDgm4IToeQyXb/preview'},
+        {name:'Nit Witty Kitty',embedUrl:'https://drive.google.com/file/d/10ABbpN6LVxdo8VYVTaPGhnYieti5WZn7/preview'},
+        {name:'Slicked up Pup',embedUrl:'https://drive.google.com/file/d/19bNv99OSl2Yve7i05DK24fxsaY_RWf_6/preview'},
+        {name:'His Mouse Friday',embedUrl:'https://drive.google.com/file/d/1-6ClU4IBYq0GXu1HtGYYOpi0zLcBHqwP/preview'},
+        {name:'Sleepy Time Tom',embedUrl:'https://drive.google.com/file/d/1tPg0ZphFhq7RMgjHrGwp_Tr6lSPnAcNm/preview'},
+        {name:"Jerry's Cousin",embedUrl:'https://drive.google.com/file/d/1XDnM6W6rnYNwcVt5MwiKzWqutI4C46Ks/preview'},
+        {name:'Jerry and the Goldfish',embedUrl:'https://drive.google.com/file/d/1axSzh7MNfA4MntXNTd0c0KOLSPRak-6W/preview'},
+        {name:'Casanova Cat',embedUrl:'https://drive.google.com/file/d/18JmUdej7E9PKgq_nS0xQDh-JCla6Jkao/preview'},
+        {name:'Cue Ball Cat',embedUrl:'https://drive.google.com/file/d/1gkQKcdyrtRazMvjUjMdYr-HJt0K2kTZV/preview'},
+        {name:'The Framed Cat',embedUrl:'https://drive.google.com/file/d/1C_-VotAkD03euo4DkTwChTxx2YpD_30x/preview'},
+        {name:'The Hollywood Bowl',embedUrl:'https://drive.google.com/file/d/1PtIRkyncK3Po3TmDmymHWQE7z7Gl0Rnc/preview'}
+    ],
+    'Tales':[
+        {name:'Game Of Mouse And Cat; Babysitting Blues; Catfish Follies',embedUrl:'https://drive.google.com/file/d/1uhk6y01V1wpFIKEyUhxFUivvgPc1hSKq/preview'},
+        {name:'Youre Lion, Kangadoofus, Monkey Chow',embedUrl:'https://drive.google.com/file/d/1tN4ZR2UBRi8Afpv0PcBBhYDMVJPrGjyV/preview'},
+        {name:'Summer Squashing, Lleague Of Cats, Little Big Mouse',embedUrl:'https://drive.google.com/file/d/1ip4pJ7VPvIZlwy7fPiWC8gpbbIqbDf0H/preview'},
+        {name:'DJ Jerry, Kitty Cat Blues, Flamenco Fiasco',embedUrl:'https://drive.google.com/file/d/1gngSS3Ytab38EHWcPBGo0EZ44AhYf1A3/preview'},
+        {name:'Hockey Schtick, Snow Brawl, Snow Mouse',embedUrl:'https://drive.google.com/file/d/1_TKW70oTAgu_ZAFggRpzKH8aVl31ajj8/preview'},
+        {name:'Xtreme Trouble, A Life Less Guarded, Sasquashed',embedUrl:'https://drive.google.com/file/d/1UZ_534MpXMLjIs9wBfFAmUu8t0jAVgVL/preview'},
+        {name:'Bend It Like Thomas, Endless Bummer, Game Set Match',embedUrl:'https://drive.google.com/file/d/1AbFYWtoaxbYaE2izL17p985UZwC_Taw4/preview'},
+        {name:'The Declaration Of Ind, Kitty Hawked, 24 Karat Kat',embedUrl:'https://drive.google.com/file/d/12pHi2x7OKdykBIgJdvDzIhqKZC3KsPUE/preview'},
+        {name:'Din O Sores, Freaky Tiki, Prehisterics',embedUrl:'https://drive.google.com/file/d/1sfZwpSxW83IrWySpG8Q8_EijfMQoge49/preview'},
+        {name:'Tin Cat Of Tomorrow, Beefcat Tom, Tomcat Superstar',embedUrl:'https://drive.google.com/file/d/1qg4PMFfYf_n_hBeQH_kDyvl1FPnuC2_b/preview'},
+        {name:'More Powers To You, Catch Me Though You Cant, Power Tom',embedUrl:'https://drive.google.com/file/d/1qDdt2KQ_Cd6pf9RP3PSZZywiZqK0HjHd/preview'},
+        {name:'Destruction Junction, Battle Of Tools, Jackhammered',embedUrl:'https://drive.google.com/file/d/1eVfdck_kSvs13oYXMKGj7q_GZx5sIjHi/preview'},
+        {name:'Tiger Cat , Feeding Time, Polar Peril',embedUrl:'https://drive.google.com/file/d/1dWdpYdizfsOaAujG8eXVhqjLoZKbDaKA/preview'},
+        {name:'Dont Bring , Cat Show Catastrophe, The Cat Whisp',embedUrl:'https://drive.google.com/file/d/1Z7B4vx1dy9cJrpjRkR_ZvEDsLY-hzAGS/preview'},
+        {name:'Invasion Of The Body S, Monster Con, Over The',embedUrl:'https://drive.google.com/file/d/1LsnZGDHofwob1h89EbBv3vhJvMe6SwzY/preview'},
+        {name:'Zent Out Of Shape, I Dream Of Meanie, Which Witch',embedUrl:'https://drive.google.com/file/d/1Cv0DHEMe5prFPWj1p0VO1VIhHtS6-T_L/preview'},
+        {name:'Adventures In Penguin Sitting, Cat Of Prey, Jungle Love',embedUrl:'https://drive.google.com/file/d/1AyIf8CnO4QAa3iL7m4rfRUoHJE2iPPRE/preview'},
+        {name:'Digital Dilemma, Hi Robot, Tomcat Jetpack',embedUrl:'https://drive.google.com/file/d/1w8Mu02ucVWfU9c7cDxGhLoBga_l7yv-k/preview'},
+        {name:'Piranha Be Loved By You, Spook House Mouse, Abracadumb',embedUrl:'https://drive.google.com/file/d/1iGzggsfHLSyUzBnCxRqUBIrzSvD9ug8Q/preview'},
+        {name:'Cat Nebula, Martian Mice, Spaced Out Cat',embedUrl:'https://drive.google.com/file/d/1PCsfqKfQ31JiRqJLwWLBxGDIPSfxGixx/preview'},
+        {name:'Ho Ho Horrors, Doggone Hill Hog, Northern Light Fish Fight',embedUrl:'https://drive.google.com/file/d/1KQLPHp9bLlJq-9yIMQtbur2xezZVPDXr/preview'},
+        {name:'Bats What I Like About The South, Fraidycat Scat, Tomb It May',embedUrl:'https://drive.google.com/file/d/1I6y70eIoBjB8Dzor6ubSnpFPx2sEJWjv/preview'},
+        {name:'Joy Riding Jokers, Cat Got Your Luggage, City Dump Chumps',embedUrl:'https://drive.google.com/file/d/1G_fU-q4HOMSkGNucDudipwVeLOINOSZM/preview'},
+        {name:'Octo Suave, Beach Bully Bingo, Treasure Map Scrap',embedUrl:'https://drive.google.com/file/d/1FuXQgfplMdpmg7sxrednJhnvS5_MXzlH/preview'},
+        {name:'Way Off Broadway, Egg Beats, Cry Uncle',embedUrl:'https://drive.google.com/file/d/1BVJpAbd4IckYphFpzD2utEnH7GGeIex0/preview'},
+        {name:'Fire Breathing Tom Cat, Medieval Menace, The Itch',embedUrl:'https://drive.google.com/file/d/1B3tqRXdLOu97ODioEoumpGXvlPGgNhYn/preview'}
+    ]
+};
 
+$scope.activeSeason = 'Classic';
+$scope.toggleSeason = function(season){ $scope.activeSeason = ($scope.activeSeason===season) ? '' : season; };
+$scope.isSeasonActive = function(season){ return $scope.activeSeason===season; };
 
+$scope.selectEpisode = function(episode){
+    if(!episode || !episode.embedUrl) return;
+    $scope.selectedEpisodeName = episode.name;
+    $scope.selectedEpisodeEmbedUrl = '';
+    $timeout(function(){
+        $scope.selectedEpisodeEmbedUrl = trust(withAutoplay(episode.embedUrl));
+    },0);
+};
 
-
-
-
-
-
-
-
-
-$scope.toggleDetails = function(movie) {
-    // Check if the clicked movie is already expanded
-    var isExpanded = movie.expanded;
-
-    // Collapse all other expanded movies
-    $scope.movies.forEach(function (mov) {
-        if (mov !== movie && mov.expanded) {
-            mov.expanded = false;
-            $scope.stopPlayingIframe(mov);
-        }
+$scope.toggleDetails = function(movie){
+    var willExpand = !movie.expanded;
+    $scope.movies.forEach(function(m){
+        if(m !== movie){ m.expanded = false; m.currentEmbedUrl = ''; }
     });
-
-    // Toggle the clicked movie's expanded state
-    movie.expanded = !isExpanded;
-    $scope.selectedMovie = movie;
-
-    // Start playing the iframe if it was expanded
-    if (movie.expanded) {
-        $scope.startPlayingIframe(movie);
+    if(willExpand){
+        movie.currentEmbedUrl = trust(withAutoplay(movie.embedUrlRaw));
+        movie.expanded = true;
     } else {
-        $scope.stopPlayingIframe(movie);
+        movie.expanded = false;
+        movie.currentEmbedUrl = '';
     }
 };
 
-$scope.startPlayingIframe = function(movie) {
-    // Find the iframe element and start playback if possible
-    var iframe = document.getElementById('movieIframe-' + $scope.movies.indexOf(movie));
-    if (iframe) {
-        var iframeSrc = iframe.src;
-        iframe.src = iframeSrc; // Reset src to ensure playback continues
-    }
-};
-
-$scope.stopPlayingIframe = function(movie) {
-    // Find the iframe element and stop playback if possible
-    var iframe = document.getElementById('movieIframe-' + $scope.movies.indexOf(movie));
-    if (iframe) {
-        iframe.src = ''; // Set src to empty to stop playback
-    }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-$scope.activeSeason = ''; // Track active season
-$scope.toggleSeason = function(season) {
-  if ($scope.activeSeason === season) {
-    $scope.activeSeason = ''; // Collapse if already active
-  } else {
-    $scope.activeSeason = season; // Expand clicked season
-  }
-};
-$scope.isSeasonActive = function(season) {
-  return $scope.activeSeason === season;
-};
-
-
-$scope.selectEpisode = function(episode) {
-  var embedUrl = episode.embedUrl;
-  // Validate and sanitize embedUrl here
-  $scope.selectedEpisodeEmbedUrl = $sce.trustAsResourceUrl(embedUrl);
-};
-
-
-            // Initialize search input model (if needed for filtering)
-            $scope.searchMovie = '';
-
-            $scope.seasonGroups = {
-                'Classic': [
-                    {
-                        name: 'Puss Gets the Boot [1940]',
-                        embedUrl: 'https://drive.google.com/file/d/1gh_COSapxo0WpIbQfpJtTlHr4BSe_5Wv/preview'
-                    },
-                    {
-                        name: 'The Midnight Snack [1941]',
-                        embedUrl: 'https://drive.google.com/file/d/1lpy0TivPxZ_7M0mFSd3HhwAJuNydmwxz/preview'
-                    },
-    {
-        name: 'The Night Before Christmas [1941]',
-        embedUrl: 'https://drive.google.com/file/d/1vb4WWdgFIZxkeF1QKCA1dP3bppOtusDl/preview'
-    },
-    {
-        name: 'Fraidy Cat [1942]',
-        embedUrl: 'https://drive.google.com/file/d/1rMNFuMdfNiyfeOeqr9W6Q4vknscCgS-2/preview'
-    },
-    {
-        name: 'Dog Trouble [1942]',
-        embedUrl: 'https://drive.google.com/file/d/1go6zwOU9snfaBWoW2Ir9ixgarSRC0JQe/preview'
-    },
-    {
-        name: 'Puss n\' Toots [1942]',
-        embedUrl: 'https://drive.google.com/file/d/1cj3xhH5PyKS1zO49xuQzyBGLRj6xvsl4/preview'
-    },
-    {
-        name: 'The Bowling Alley Cat [1942]',
-        embedUrl: 'https://drive.google.com/file/d/1CNRsJ0oLR5-cnCWCjikyhcX9Lx5020N9/preview'
-    },
-    {
-        name: 'Sufferin\' Cats! [1943]',
-        embedUrl: 'https://drive.google.com/file/d/1Yl0XOVxrT8oftu9z4UN-xpz_kLdoXWcG/preview'
-    },
-    {
-        name: 'Fine Feathered Friend [1942]',
-        embedUrl: 'https://drive.google.com/file/d/1NmtcKBEk4YjUfzZB4mnjkmiLKZ4BU_la/preview'
-    },
-    {
-        name: 'Baby Puss [1943]',
-        embedUrl: 'https://drive.google.com/file/d/1O2Ai8We2WOmDsoBf72-4AIUYofDXSG4s/preview'
-    },
-    {
-        name: 'The Yankee Doodle Mouse [1943]',
-        embedUrl: 'https://drive.google.com/file/d/1Z2562adnymdyreYy2c9s8axxIs1m8oAL/preview'
-    },
-    {
-        name: 'The Zoot Cat [1944]',
-        embedUrl: 'https://drive.google.com/file/d/1B8GTZpvPUkGjvWL5Ljy-nuilTLmPIHjD/preview'
-    },
-    {
-        name: 'Mouse Trouble [1944]',
-        embedUrl: 'https://drive.google.com/file/d/15nD8gjU7oDXWD9Nm8odu724i86M8Aq_4/preview'
-    },
-    {
-        name: 'The Million Dollar Cat [1944]',
-        embedUrl: 'https://drive.google.com/file/d/1GOcPyfuuALDKUsIOTfY-zPkGm4iqSCwb/preview'
-    },
-    {
-        name: 'The Bodyguard [1944]',
-        embedUrl: 'https://drive.google.com/file/d/1fsUuRKjrnj-O3BG_lEnAlKdxWlko0YuT/preview'
-    },
-    {
-        name: 'Flirty Birdy [1945]',
-        embedUrl: 'https://drive.google.com/file/d/1GkwO1icPQxHlfOhOaCYhgTBokbHsjOVh/preview'
-    },
-    {
-        name: 'Tee for Two [1945]',
-        embedUrl: 'https://drive.google.com/file/d/1ffaq5ioD4URA4YhASseFYc3pT0ZL2m9_/preview'
-    },
-    {
-        name: 'Mouse in Manhattan [1945]',
-        embedUrl: 'https://drive.google.com/file/d/1IAJBYXihBdAYD1HC8E3CehBnm8HpOHfp/preview'
-    },
-    {
-        name: 'The Mouse Comes to Dinner [1945]',
-        embedUrl: 'https://drive.google.com/file/d/1PbJBSKGuMlsgmLZLNefonnmUeIVSOgRf/preview'
-    },
-    {
-        name: 'Flirty Birdy [1945]',
-        embedUrl: 'https://drive.google.com/file/d/1GkwO1icPQxHlfOhOaCYhgTBokbHsjOVh/preview'
-    },
-    {
-        name: 'Springtime for Thomas [1946]',
-        embedUrl: 'https://drive.google.com/file/d/129e6aSh8A5RlDj2iTfPOFDRFf8dUat-e/preview'
-    },
-    {
-        name: 'Quiet Please! [1945]',
-        embedUrl: 'https://drive.google.com/file/d/1ysWIqUitRL1YYC0BOmszkinN1iMqx7Dz/preview'
-    },
-    {
-        name: 'Trap Happy [1946]',
-        embedUrl: 'https://drive.google.com/file/d/1532VY-GdG_G6BDgGLONAwv4XWKXCxMrK/preview'
-    },
-    {
-        name: 'The Milky Waif [1946]',
-        embedUrl: 'https://drive.google.com/file/d/1wco0ZJAq762z1nXjQow0BzFG-fiqhP9a/preview'
-    },
-    {
-        name: 'Solid Serenade [1946]',
-        embedUrl: 'https://drive.google.com/file/d/1yVn8axngdzLZtNuWvKxc3Dyb0zJKPbMT/preview'
-    },
-    {
-        name: 'Cat Fishin\' [1947]',
-        embedUrl: 'https://drive.google.com/file/d/15TUhEskSyrUAyJM1Qczmov1AMN5NoUXr/preview'
-    },
-    {
-        name: 'Part Time Pal [1947]',
-        embedUrl: 'https://drive.google.com/file/d/1dh4otZfQOjBESKC4V9ZWxLFpEE7fltpy/preview'
-    },
-    {
-        name: 'The Cat Concerto [1947]',
-        embedUrl: 'https://drive.google.com/file/d/1yA-WE5c5OsDXp_k-xWG2nhE4rYhnqQFB/preview'
-    },
-    {
-        name: 'Dr. Jekyll and Mr. Mouse [1947]',
-        embedUrl: 'https://drive.google.com/file/d/1srSjxPA1qmHutlkHMxn4CiHKYoQ8uitf/preview'
-    },
-    {
-        name: 'A Mouse in the House [1947]',
-        embedUrl: 'https://drive.google.com/file/d/1OsDisHfFWPJTyYyjVe5GGkl-iXR3W5ER/preview'
-    },
-    {
-        name: 'The Truce Hurts [1948]',
-        embedUrl: 'https://drive.google.com/file/d/1IPWuXo0QpGNsAWO97hXmjLNZdNTvjuZl/preview'
-    },
-    {
-        name: 'Old Rockin\' Chair Tom [1948]',
-        embedUrl: 'https://drive.google.com/file/d/1CUIMRm1kbE_W8k5tBgjOvoCNtJ-O3lXe/preview'
-    },
-    {
-        name: 'Mouse Cleaning [1948]',
-        embedUrl: 'https://drive.google.com/file/d/19lein6sVA6_IOriiU87HBUX6Tz7gJ5pA/preview'
-    },
-    {
-        name: 'Professor Tom [1948]',
-        embedUrl: 'https://drive.google.com/file/d/10FnVwLP7qEzJnNh9OA_AaMLaO_B0ACTJ/preview'
-    },
-    {
-        name: 'The Little Orphan',
-        embedUrl: 'https://drive.google.com/file/d/1Nf6-tvUA9HxylSiZwmIqlWW2w_gDXJWx/preview'
-    },
-    {
-        name: 'Polka Dot Puss',
-        embedUrl: 'https://drive.google.com/file/d/18TBJ9i4-IcIntowB-sqlV9KjLLp7QFTS/preview'
-    },
-    {
-        name: 'Hatch Up Your Troubles',
-        embedUrl: 'https://drive.google.com/file/d/1p38wIwiuiXSouOiwEtrYjR6FcprgHg9r/preview'
-    },
-    {
-        name: 'Heavenly Puss',
-        embedUrl: 'https://drive.google.com/file/d/1kxSAo-fVzeepbMU1G1KbtOsNAgi_6r45/preview'
-    },
-    {
-        name: 'The Cat and the Mermouse',
-        embedUrl: 'https://drive.google.com/file/d/18qrOtRLXDb_xnBmeRmHCTa3RlmbGx_mE/preview'
-    },
-    {
-        name: 'Jerry\'s Diary',
-        embedUrl: 'https://drive.google.com/file/d/1V0a78Wp4k2b_uskvWX_5bAKfpyvarA8j/preview'
-    },
-    {
-        name: 'Love That Pup',
-        embedUrl: 'https://drive.google.com/file/d/1mxTFtEhELpC3NKzipKOHSpNhHFx84V9W/preview'
-    },
-    {
-        name: 'Tennis Chumps',
-        embedUrl: 'https://drive.google.com/file/d/1I0eCt5QuBrHhkU1qMSpwR-RQzPbMRuWy/preview'
-    },
-    {
-        name: 'Little Quacker',
-        embedUrl: 'https://drive.google.com/file/d/1IL8yVN-KgJIBjJbLvaP3mSaCGmqaFD9h/preview'
-    },
-    {
-        name: 'Saturday Evening Puss',
-        embedUrl: 'https://drive.google.com/file/d/1fCqQ6ypq5tI1CXZT0s9ficbiMNs-UsDj/preview'
-    },
-    {
-        name: 'Texas Tom',
-        embedUrl: 'https://drive.google.com/file/d/1iKgS4dqqhN0VBUtF3kGTPwf2jA06i9J3/preview'
-    },
-    {
-        name: 'Safety Second',
-        embedUrl: 'https://drive.google.com/file/d/1Emkxlvw75npdTeJozBpcxUWMDnD5_Dlp/preview'
-    },
-    {
-        name: 'Jerry and the Lion',
-        embedUrl: 'https://drive.google.com/file/d/1bNA56ppTL0IjSawgxfLH2URstD6vg41a/preview'
-    },
-	 {
-        name: 'Busy Buddies [1956]',
-        embedUrl: 'https://drive.google.com/file/d/1kPfHTh_pVabXX-eLVkJp7LGEbKt-4AbF/preview'
-    },
-    {
-        name: 'The Flying Sorceress [1956]',
-        embedUrl: 'https://drive.google.com/file/d/19zRbGtmW0bY1T0lBzSUSysK7IAF2lnq7/preview'
-    },
-    {
-        name: 'The Egg and Jerry [1956]',
-        embedUrl: 'https://drive.google.com/file/d/1QSk6cknRYtvvpeaCZ03yreEYsoChU-oX/preview'
-    },
-    {
-        name: 'That\'s My Mommy',
-        embedUrl: 'https://drive.google.com/file/d/1387OMxZX1loOjZSRSrKHAgJHVIMLrLTX/preview'
-    },
-    {
-        name: 'Smarty Cat',
-        embedUrl: 'https://drive.google.com/file/d/1c8SAeU6Kwvrg6pJUeCr1zE9IMf0sK-9p/preview'
-    },
-    {
-        name: 'Pecos Pest',
-        embedUrl: 'https://drive.google.com/file/d/1rpf-yd5D9msR9OKLolRv2yGanqaWbUDT/preview'
-    },
-    {
-        name: 'Tom and Chérie',
-        embedUrl: 'https://drive.google.com/file/d/1O7DDq5U2X0Omd14UZbwBSTvx2Ymz7IS1/preview'
-    },
-    {
-        name: 'Designs on Jerry',
-        embedUrl: 'https://drive.google.com/file/d/1n2a-aTXqxgmD-Gd77s2rxeDiEKfsyTEk/preview'
-    },
-    {
-        name: 'Mouse for Sale',
-        embedUrl: 'https://drive.google.com/file/d/1ekNbSCbFRQZkjCk102UjegXYI0h1XPVh/preview'
-    },
-    {
-        name: 'Pup on a Picnic',
-        embedUrl: 'https://drive.google.com/file/d/1bcCyQ9Ya9uA2tMxWBLXnZs-PzpoPA_l-/preview'
-    },
-    {
-        name: 'Southbound Duckling',
-        embedUrl: 'https://drive.google.com/file/d/1yZwPW6YCug89HeNr7cJenalzoLYN5FPC/preview'
-    },
-    {
-        name: 'The Lonesome Mouse [1943]',
-        embedUrl: 'https://drive.google.com/file/d/1AA-kHXkw3KE0Qe3aye6YuW-rn2-zfkHe/preview'
-    },
-    {
-        name: 'Touché, Pussy Cat!',
-        embedUrl: 'https://drive.google.com/file/d/1aM8CALbfkRivzwJvi9d9ULN97RZmDiHa/preview'
-    },
-    {
-        name: 'Pet Peeve',
-        embedUrl: 'https://drive.google.com/file/d/1Izuks3VZ33OZCwRzCTrqhmcs_W95wWy6/preview'
-    },
-    {
-        name: 'Downhearted Duckling',
-        embedUrl: 'https://drive.google.com/file/d/1E2ZVwECQu-xZV48OCrYgz_28tpi8yOtv/preview'
-    },
-    {
-        name: 'Neapolitan Mouse',
-        embedUrl: 'https://drive.google.com/file/d/14NinvjecflP3_WzhIP8JTzULsZCh5y2F/preview'
-    },
-    {
-        name: 'Mice Follies',
-        embedUrl: 'https://drive.google.com/file/d/1Ckhx59QVRo8KpdUeqUBRjCQ-_bSdcv5D/preview'
-    },
-    {
-        name: 'Baby Butch',
-        embedUrl: 'https://drive.google.com/file/d/1sBkkRAMfANfLOza_TBCCsqDwvUbpxzJn/preview'
-    },
-    {
-        name: 'Little School Mouse',
-        embedUrl: 'https://drive.google.com/file/d/1j2GznSt4xGAOoPQ9hQMwbWPIrFgvFaQ1/preview'
-    },
-    {
-        name: 'Hic cup Pup',
-        embedUrl: 'https://drive.google.com/file/d/11q2J6HDoulhX69at4aB4o0qfHUueJWRk/preview'
-    },
-    {
-        name: 'Triplet Trouble',
-        embedUrl: 'https://drive.google.com/file/d/1Ev0WRdKM3s8FXkk3vhMA_UNijjHt0mev/preview'
-    },
-    {
-        name: 'Just Ducky',
-        embedUrl: 'https://drive.google.com/file/d/1cmiZEE_P2_FwpbcT1mUncNLCaGiQhJuz/preview'
-    },
-    {
-        name: 'That\'s My Pup!',
-        embedUrl: 'https://drive.google.com/file/d/1D2qmCcpfTvpubtsX-gbtCYf3fWTy-h5h/preview'
-    },
-    {
-        name: 'Johann Mouse',
-        embedUrl: 'https://drive.google.com/file/d/1ZX7nGFfu1oI_iF_sZo2p8PfkZSLRs2Vb/preview'
-    },
-    {
-        name: 'Jerry and Jumbo',
-        embedUrl: 'https://drive.google.com/file/d/1uUQeHiEuLx5dK0REYOCmfG_xpEf2v-7Y/preview'
-    },
-    {
-        name: 'The Missing Mouse',
-        embedUrl: 'https://drive.google.com/file/d/1utpP8_RhEqClPZP1yQwpbglUtcxtNmR6/preview'
-    },
-    {
-        name: 'The Dog House',
-        embedUrl: 'https://drive.google.com/file/d/1iXKtkZqqwv49kIQWQyh3gKT1sohCMJoj/preview'
-    },
-    {
-        name: 'Cruise Cat',
-        embedUrl: 'https://drive.google.com/file/d/1ce2q9xgsLlhIirSskgWiy6LycRpTwyDD/preview'
-    },
-    {
-        name: 'Push Button Kitty',
-        embedUrl: 'https://drive.google.com/file/d/1Tgbs-OSPj_9mC9P-kAafv1MshQoFlpw6/preview'
-    },
-    {
-        name: 'Fit to be Tied',
-        embedUrl: 'https://drive.google.com/file/d/1Qavh0a_bbJ5GAUfCvPJQeymLhBJ0kpps/preview'
-    },
-    {
-        name: 'Little Runaway',
-        embedUrl: 'https://drive.google.com/file/d/10ImuX6n5p4tPNsofG-xoi6iJK0zErVuH/preview'
-    },
-    {
-        name: 'Two Little Indians',
-        embedUrl: 'https://drive.google.com/file/d/1CfIz2yl-Fd186t5pZehlcDdHoFi5YB3o/preview'
-    },
-    {
-        name: 'Life with Tom',
-        embedUrl: 'https://drive.google.com/file/d/1NGcPMlqbmh7ktIIwck7smcLplDfAC_9H/preview'
-    },
-    {
-        name: 'Puppy Tale',
-        embedUrl: 'https://drive.google.com/file/d/1-6kmtAAJCr8h6nXucBVQwGyyvaUAhlup/preview'
-    },
-    {
-        name: 'Posse Cat',
-        embedUrl: 'https://drive.google.com/file/d/18H7JbW56b5Nqr2yBqh6o0maElm8TMb4M/preview'
-    },
-    {
-        name: 'Smitten Kitten',
-        embedUrl: 'https://drive.google.com/file/d/1aPH2KydU9kGvaZ95yplgtuzwcL6oW1EK/preview'
-    },
-    {
-        name: 'The Two Mouseketeers',
-        embedUrl: 'https://drive.google.com/file/d/14-yRJ_c7ULukFKDdZ4QQJJN7bKRgudeQ/preview'
-    },
-    {
-        name: 'The Duck Doctor',
-        embedUrl: 'https://drive.google.com/file/d/15fZi-p-jZGbS4fCv5flvq-AwhtxEevqY/preview'
-    },
-    {
-        name: 'The Flying Cat',
-        embedUrl: 'https://drive.google.com/file/d/11etnMTdHGSRUIP1WUWNLkB3YhIZrsmXR/preview'
-    },
-    {
-        name: 'Cat Napping',
-        embedUrl: 'https://drive.google.com/file/d/1ssCjB1QFuGOBsy-fDEreDgm4IToeQyXb/preview'
-    },
-    {
-        name: 'Nit Witty Kitty',
-        embedUrl: 'https://drive.google.com/file/d/10ABbpN6LVxdo8VYVTaPGhnYieti5WZn7/preview'
-    },
-    {
-        name: 'Slicked up Pup',
-        embedUrl: 'https://drive.google.com/file/d/19bNv99OSl2Yve7i05DK24fxsaY_RWf_6/preview'
-    },
-    {
-        name: 'His Mouse Friday',
-        embedUrl: 'https://drive.google.com/file/d/1-6ClU4IBYq0GXu1HtGYYOpi0zLcBHqwP/preview'
-    },
-    {
-        name: 'Sleepy Time Tom',
-        embedUrl: 'https://drive.google.com/file/d/1tPg0ZphFhq7RMgjHrGwp_Tr6lSPnAcNm/preview'
-    },
-    {
-        name: 'Jerry\'s Cousin',
-        embedUrl: 'https://drive.google.com/file/d/1XDnM6W6rnYNwcVt5MwiKzWqutI4C46Ks/preview'
-    },
-    {
-        name: 'Jerry and the Goldfish',
-        embedUrl: 'https://drive.google.com/file/d/1axSzh7MNfA4MntXNTd0c0KOLSPRak-6W/preview'
-    },
-    {
-        name: 'Casanova Cat',
-        embedUrl: 'https://drive.google.com/file/d/18JmUdej7E9PKgq_nS0xQDh-JCla6Jkao/preview'
-    },
-    {
-        name: 'Cue Ball Cat',
-        embedUrl: 'https://drive.google.com/file/d/1gkQKcdyrtRazMvjUjMdYr-HJt0K2kTZV/preview'
-    },
-    {
-        name: 'The Framed Cat',
-        embedUrl: 'https://drive.google.com/file/d/1C_-VotAkD03euo4DkTwChTxx2YpD_30x/preview'
-    },
-    {
-        name: 'The Hollywood Bowl',
-        embedUrl: 'https://drive.google.com/file/d/1PtIRkyncK3Po3TmDmymHWQE7z7Gl0Rnc/preview'
-    }
-	
-	
-	
-]
-,
-'Tales': [
-    { name: 'Game Of Mouse And Cat; Babysitting Blues; Catfish Follies', embedUrl: 'https://drive.google.com/file/d/1uhk6y01V1wpFIKEyUhxFUivvgPc1hSKq/preview' },
-    { name: 'Youre Lion, Kangadoofus, Monkey Chow', embedUrl: 'https://drive.google.com/file/d/1tN4ZR2UBRi8Afpv0PcBBhYDMVJPrGjyV/preview' },
-    { name: 'Summer Squashing, Lleague Of Cats, Little Big Mouse', embedUrl: 'https://drive.google.com/file/d/1ip4pJ7VPvIZlwy7fPiWC8gpbbIqbDf0H/preview' },
-    { name: 'DJ Jerry, Kitty Cat Blues, Flamenco Fiasco', embedUrl: 'https://drive.google.com/file/d/1gngSS3Ytab38EHWcPBGo0EZ44AhYf1A3/preview' },
-    { name: 'Hockey Schtick, Snow Brawl, Snow Mouse', embedUrl: 'https://drive.google.com/file/d/1_TKW70oTAgu_ZAFggRpzKH8aVl31ajj8/preview' },
-    { name: 'Xtreme Trouble, A Life Less Guarded, Sasquashed', embedUrl: 'https://drive.google.com/file/d/1UZ_534MpXMLjIs9wBfFAmUu8t0jAVgVL/preview' },
-    { name: 'Bend It Like Thomas, Endless Bummer, Game Set Match', embedUrl: 'https://drive.google.com/file/d/1AbFYWtoaxbYaE2izL17p985UZwC_Taw4/preview' },
-    { name: 'The Declaration Of Ind, Kitty Hawked, 24 Karat Kat', embedUrl: 'https://drive.google.com/file/d/12pHi2x7OKdykBIgJdvDzIhqKZC3KsPUE/preview' },
-    { name: 'Din O Sores, Freaky Tiki, Prehisterics', embedUrl: 'https://drive.google.com/file/d/1sfZwpSxW83IrWySpG8Q8_EijfMQoge49/preview' },
-    { name: 'Tin Cat Of Tomorrow, Beefcat Tom, Tomcat Superstar', embedUrl: 'https://drive.google.com/file/d/1qg4PMFfYf_n_hBeQH_kDyvl1FPnuC2_b/preview' },
-    { name: 'More Powers To You, Catch Me Though You Cant, Power Tom', embedUrl: 'https://drive.google.com/file/d/1qDdt2KQ_Cd6pf9RP3PSZZywiZqK0HjHd/preview' },
-    { name: 'Destruction Junction, Battle Of Tools, Jackhammered', embedUrl: 'https://drive.google.com/file/d/1eVfdck_kSvs13oYXMKGj7q_GZx5sIjHi/preview' },
-    { name: 'Tiger Cat , Feeding Time, Polar Peril', embedUrl: 'https://drive.google.com/file/d/1dWdpYdizfsOaAujG8eXVhqjLoZKbDaKA/preview' },
-    { name: 'Dont Bring , Cat Show Catastrophe, The Cat Whisp', embedUrl: 'https://drive.google.com/file/d/1Z7B4vx1dy9cJrpjRkR_ZvEDsLY-hzAGS/preview' },
-    { name: 'Invasion Of The Body S, Monster Con, Over The', embedUrl: 'https://drive.google.com/file/d/1LsnZGDHofwob1h89EbBv3vhJvMe6SwzY/preview' },
-    { name: 'Zent Out Of Shape, I Dream Of Meanie, Which Witch', embedUrl: 'https://drive.google.com/file/d/1Cv0DHEMe5prFPWj1p0VO1VIhHtS6-T_L/preview' },
-    { name: 'Adventures In Penguin Sitting, Cat Of Prey, Jungle Love', embedUrl: 'https://drive.google.com/file/d/1AyIf8CnO4QAa3iL7m4rfRUoHJE2iPPRE/preview' },
-    { name: 'Digital Dilemma, Hi Robot, Tomcat Jetpack', embedUrl: 'https://drive.google.com/file/d/1w8Mu02ucVWfU9c7cDxGhLoBga_l7yv-k/preview' },
-    { name: 'Piranha Be Loved By You, Spook House Mouse, Abracadumb', embedUrl: 'https://drive.google.com/file/d/1iGzggsfHLSyUzBnCxRqUBIrzSvD9ug8Q/preview' },
-    { name: 'Cat Nebula, Martian Mice, Spaced Out Cat', embedUrl: 'https://drive.google.com/file/d/1PCsfqKfQ31JiRqJLwWLBxGDIPSfxGixx/preview' },
-    { name: 'Ho Ho Horrors, Doggone Hill Hog, Northern Light Fish Fight', embedUrl: 'https://drive.google.com/file/d/1KQLPHp9bLlJq-9yIMQtbur2xezZVPDXr/preview' },
-    { name: 'Bats What I Like About The South, Fraidycat Scat, Tomb It May', embedUrl: 'https://drive.google.com/file/d/1I6y70eIoBjB8Dzor6ubSnpFPx2sEJWjv/preview' },
-    { name: 'Joy Riding Jokers, Cat Got Your Luggage, City Dump Chumps', embedUrl: 'https://drive.google.com/file/d/1G_fU-q4HOMSkGNucDudipwVeLOINOSZM/preview' },
-    { name: 'Octo Suave, Beach Bully Bingo, Treasure Map Scrap', embedUrl: 'https://drive.google.com/file/d/1FuXQgfplMdpmg7sxrednJhnvS5_MXzlH/preview' },
-    { name: 'Way Off Broadway, Egg Beats, Cry Uncle', embedUrl: 'https://drive.google.com/file/d/1BVJpAbd4IckYphFpzD2utEnH7GGeIex0/preview' },
-    { name: 'Fire Breathing Tom Cat, Medieval Menace, The Itch', embedUrl: 'https://drive.google.com/file/d/1B3tqRXdLOu97ODioEoumpGXvlPGgNhYn/preview' },
-]
-
-                // Add more seasons as needed
-            };
-			
-
-
-  $scope.selectEpisode($scope.seasonGroups['Classic'][0]);
-
-
-
-
-$document.on('keydown', function (event) {
-  var iframe = document.getElementById('episodePlayer');
-  var currentUrl = $scope.selectedEpisodeEmbedUrl;
-  if (iframe && iframe.src === currentUrl) {
-    iframe.src = ''; // Stop playback if iframe is playing the current video
-  }
-
-
-        // Prevent default browser behavior for specific key combinations
-        switch (event.keyCode) {
-            // Ctrl + H: Switch to home section
-            case 72: // 'H' key
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    $scope.showSection('home');
-                    $scope.$apply();
-                }
-                break;
-            // Ctrl + E: Switch to episodes section
-            case 69: // 'E' key
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    $scope.showSection('episodes');
-                    $scope.$apply();
-                }
-                break;
-            // Ctrl + M: Switch to movies section
-            case 77: // 'M' key
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    $scope.showSection('movies');
-                    $scope.$apply();
-                }
-                break;
-            // Ctrl + S: Switch to home section and focus on search input
-            case 83: // 'S' key
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    $scope.showSection('home');
-                    $scope.$apply();
-                    $timeout(function() {
-                        angular.element('#searchInput').focus();
-                    });
-                }
-                break;
-        }
-    });
-
-
-
-
-
-
-
-
-
-    // Function to set the featured video URL for the 'home' section
-    $scope.setHomeFeaturedVideo = function() {
-        // Replace with your desired YouTube video ID
-        var videoId = "yvdPsHLbQRg";
-        var embedUrl = "https://www.youtube.com/embed/" + videoId;
-        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(embedUrl);
-    };
-
-
-
-
-
-
-
-
-    // Function to set the featured video URL for the 'home' section
-    $scope.setHomeFeaturedVideo = function() {
-        // Replace with your desired YouTube video ID
-        var videoId = "yvdPsHLbQRg";
-        var embedUrl = "https://www.youtube.com/embed/" + videoId;
-        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(embedUrl);
-    };
-
-    // Function to show a section and select the Puss episode
-    $scope.showSection = function(section) {
-        var videoUrl = '';
-        // Validate and sanitize videoUrl here
-        $scope.featuredVideoUrl = $sce.trustAsResourceUrl(videoUrl);
-
-        // Use $timeout to delay execution until the next digest cycle
-        $timeout(function() {
-            if ($scope.currentSection !== section) {
-                // Pause all active iframes on section switch
-                var iframes = document.querySelectorAll('iframe');
-                iframes.forEach(function(iframe) {
-                    iframe.src = ''; // Set src to empty string to stop loading content
+$scope.showSection = function(section){
+    if($scope.currentSection === section) return;
+    stopAllMedia();
+    $scope.currentSection = section;
+    $scope.activeSection = section;
+    if(section === 'home'){
+        $scope.featuredVideoUrl = trust('https://www.youtube.com/embed/yvdPsHLbQRg?rel=0');
+    } else if(section === 'episodes'){
+        $timeout(function(){
+            var name = $scope.selectedEpisodeName;
+            var found = null;
+            if(name){
+                Object.keys($scope.seasonGroups).forEach(function(k){
+                    if(found) return;
+                    $scope.seasonGroups[k].forEach(function(ep){ if(ep.name===name) found = ep; });
                 });
-
-                // Pause all active movies
-                if ($scope.movies) {
-                    $scope.movies.forEach(function(movie) {
-                        if (movie.expanded) {
-                            movie.expanded = false;
-                            $scope.stopPlayingIframe(movie);
-                        }
-                    });
-                }
-
-                // Check if episode iframe is active and stop it
-                if ($scope.selectedEpisodeEmbedUrl) {
-                    $scope.selectedEpisodeEmbedUrl = '';
-                }
-
-                // Update current section and active section
-                $scope.currentSection = section;
-                $scope.activeSection = section;
-
-                var iframe = document.getElementById('episodePlayer');
-                if (iframe) {
-                    iframe.innerHTML = ''; // Clear innerHTML if needed
-                }
             }
-
-  if (section === 'episodes') {
-    var pussEpisode = $scope.seasonGroups.Classic.find(function(episode) {
-      return episode.name === 'Puss Gets the Boot [1940]';
-    });
-    if (pussEpisode) {
-      $timeout(function() {
-        $scope.selectEpisode(pussEpisode);
-      }, 0);
-    }
-  }
- else if (section === 'home') {
-                // Set featured video for 'home' section
-                $scope.setHomeFeaturedVideo();
+            if(!found){ found = $scope.seasonGroups['Classic'][0]; $scope.activeSeason = 'Classic'; }
+            if(found){
+                $scope.selectedEpisodeName = found.name;
+                $scope.selectedEpisodeEmbedUrl = trust(withAutoplay(found.embedUrl));
             }
-        }, 0);
-    };
-
-
-
-
-
-
-	
-    // Clean up on scope destruction
-    $scope.$on('$destroy', function () {
-        $document.off('keydown'); // Remove event listener on controller destroy
-    });
-
-
-        }]);
-
-
-app.directive('hammerSwipe', function() {
-  return {
-    restrict: 'A',
-    link: function(scope, element) {
-      var hammer = new Hammer(document.body, {
-        swipeVelocityX: 0.6,
-        swipeVelocityY: 0.5,
-        swipe: {
-          direction: Hammer.DIRECTION_HORIZONTAL
-        }
-      });
-
-      hammer.on('swipeleft', function(event) {
-        if (isSwipeWithinFanArtGallery(event)) {
-          // Exclude Hammer.js gestures when swiping within fan art gallery
-          return;
-        }
-        // Handle swipe left gesture
-        var nextSection = {'home': 'episodes', 'episodes': 'movies', 'movies': 'home'}[scope.currentSection];
-        scope.$apply(function() {
-          scope.showSection(nextSection);
-        });
-      });
-
-      hammer.on('swiperight', function(event) {
-        if (isSwipeWithinFanArtGallery(event)) {
-          // Exclude Hammer.js gestures when swiping within fan art gallery
-          return;
-        }
-        // Handle swipe right gesture
-		 var previousSection = {'home': 'movies', 'episodes': 'home', 'movies': 'episodes'}[scope.currentSection];
-        scope.$apply(function() {
-          scope.showSection(previousSection);
-        });
-      });
+        },0);
     }
-  };
+};
 
-  function isSwipeWithinFanArtGallery(event) {
-    var target = event.target;
-    return target.closest('.fan-art-gallery') !== null;
-  }
+$scope.centerFocusedImage = function(){
+    if(window.innerWidth > 768) return;
+    var gallery = $document[0].querySelector('.fan-art-gallery');
+    if(!gallery) return;
+    var images = gallery.querySelectorAll('img');
+    var galleryRect = gallery.getBoundingClientRect();
+    var closestImage = null, closestDistance = Infinity;
+    angular.forEach(images, function(img){
+        img.classList.remove('centered');
+        var imgRect = img.getBoundingClientRect();
+        var imgCenter = imgRect.left + imgRect.width/2;
+        var galleryCenter = galleryRect.left + galleryRect.width/2;
+        var d = Math.abs(imgCenter - galleryCenter);
+        if(d < closestDistance){ closestDistance = d; closestImage = img; }
+    });
+    if(closestImage){
+        closestImage.classList.add('centered');
+        var scrollOffset = closestImage.offsetLeft - galleryRect.width/2 + closestImage.width/2;
+        gallery.scrollTo({left:scrollOffset, behavior:'smooth'});
+    }
+};
+
+var galleryScrollTimer = null;
+$scope.$watch('currentSection', function(s){
+    if(s !== 'home') return;
+    $timeout(function(){
+        $scope.centerFocusedImage();
+        var galleryEl = $document[0].querySelector('.fan-art-gallery');
+        if(galleryEl && !galleryEl._bound){
+            galleryEl._bound = true;
+            galleryEl.addEventListener('scroll', function(){
+                if(galleryScrollTimer) $timeout.cancel(galleryScrollTimer);
+                galleryScrollTimer = $timeout($scope.centerFocusedImage, 100);
+            }, {passive:true});
+        }
+    }, 50);
 });
 
+$timeout(function(){
+    var first = $scope.seasonGroups['Classic'][0];
+    if(first){
+        $scope.selectedEpisodeName = first.name;
+    }
+},0);
 
+var keyHandler = function(event){
+    switch(event.keyCode){
+        case 72: if(event.ctrlKey){ event.preventDefault(); $scope.$apply(function(){ $scope.showSection('home'); }); } break;
+        case 69: if(event.ctrlKey){ event.preventDefault(); $scope.$apply(function(){ $scope.showSection('episodes'); }); } break;
+        case 77: if(event.ctrlKey){ event.preventDefault(); $scope.$apply(function(){ $scope.showSection('movies'); }); } break;
+    }
+};
+$document.on('keydown', keyHandler);
+$scope.$on('$destroy', function(){ $document.off('keydown', keyHandler); });
 
-			   function refreshpage() {
-		window.scrollTo(0,0);
-            location.reload(); // Reload the entire page
+}]);
+
+app.directive('hammerSwipe', function(){
+    return {
+        restrict:'A',
+        link: function(scope, element){
+            function isWithinFanArt(event){
+                var t = event.target;
+                if(!t || t.nodeType !== 1) t = t && t.parentElement;
+                if(!t) return false;
+                return !!(t.closest && t.closest('.fan-art-gallery'));
+            }
+            var hammer = new Hammer(document.body, {
+                swipeVelocityX:0.6, swipeVelocityY:0.5,
+                swipe:{direction:Hammer.DIRECTION_HORIZONTAL}
+            });
+            var nextMap = {'home':'episodes','episodes':'movies','movies':'home'};
+            var prevMap = {'home':'movies','episodes':'home','movies':'episodes'};
+            hammer.on('swipeleft', function(event){
+                if(isWithinFanArt(event)) return;
+                scope.$apply(function(){ scope.showSection(nextMap[scope.currentSection]); });
+            });
+            hammer.on('swiperight', function(event){
+                if(isWithinFanArt(event)) return;
+                scope.$apply(function(){ scope.showSection(prevMap[scope.currentSection]); });
+            });
         }
+    };
+});
 
-
-    </script>
+function refreshpage(){ window.scrollTo(0,0); location.reload(); }
+</script>
 </body>
-
 </html>

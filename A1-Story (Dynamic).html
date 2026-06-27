@@ -1,354 +1,2318 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Story Telling</title>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans&display=swap">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ODYSSEY 301 — Tales from Earth-301</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=VT323&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-.warning-sign {
-    color: orange; /* Warning sign color */
+:root {
+  --parchment: #1a1410;
+  --parchment-light: #2a1f17;
+  --gold: #d4a85a;
+  --gold-bright: #f4c97a;
+  --blood: #8b1a1a;
+  --blood-bright: #c92a2a;
+  --teal: #2d8a8a;
+  --ink: #e8d8b8;
+  --ink-dim: #9a8a6a;
+  --shadow: rgba(0,0,0,0.7);
+  --magic: #a78bfa;
+  --health: #ef4444;
+  --mana: #3b82f6;
+  --stamina: #22c55e;
+  --xp: #eab308;
 }
 
+* { margin:0; padding:0; box-sizing:border-box; }
 
-#heading{
-	user-select:none;
-	cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-
+@keyframes flicker {
+  0%, 100% { opacity:1; }
+  50% { opacity:0.92; }
 }
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 20px rgba(212,168,90,0.4); }
+  50% { box-shadow: 0 0 40px rgba(212,168,90,0.8); }
+}
+@keyframes float-up {
+  0% { transform: translateY(0); opacity:1; }
+  100% { transform: translateY(-60px); opacity:0; }
+}
+@keyframes shake-hard {
+  0%,100% { transform: translate(0,0); }
+  25% { transform: translate(-8px,4px); }
+  50% { transform: translate(8px,-4px); }
+  75% { transform: translate(-4px,8px); }
+}
+@keyframes dice-roll {
+  0% { transform: rotateX(0) rotateY(0); }
+  100% { transform: rotateX(720deg) rotateY(720deg); }
+}
+@keyframes type-cursor {
+  0%,50% { opacity:1; }
+  51%,100% { opacity:0; }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity:0; }
+  to { transform: translateX(0); opacity:1; }
+}
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); opacity:0; }
+  to { transform: translateX(0); opacity:1; }
+}
+@keyframes fade-up {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes ember {
+  0% { transform: translateY(0) scale(1); opacity:1; }
+  100% { transform: translateY(-100vh) scale(0.3); opacity:0; }
+}
+@keyframes damage-flash {
+  0%,100% { background: var(--parchment); }
+  50% { background: rgba(139,26,26,0.3); }
+}
+
+html, body {
+  width:100%; min-height:100vh;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'Crimson Text', serif;
+  overflow-x:hidden;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f8f8;
-    margin: 0;
-    padding: 0;
-	cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-
+  background:
+    radial-gradient(ellipse at top, #2a1f17 0%, #1a1410 60%, #0a0805 100%),
+    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  background-attachment: fixed;
+  min-height:100vh;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-top: 20px;
+/* ============ EMBERS ============ */
+#embers {
+  position:fixed; inset:0; pointer-events:none; z-index:1;
+}
+.ember {
+  position:absolute;
+  width:3px; height:3px;
+  background: radial-gradient(circle, #ff6a00, transparent);
+  border-radius:50%;
+  bottom:-10px;
+  animation: ember linear infinite;
 }
 
-#storyContent {
-	display: none;
-    user-select:none;
-    max-width: 1000px;
-    margin: 20px auto;
-    left: 3%;
-    right: 3%;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    font-family: 'Google Sans', sans-serif; /* Specify Google Sans font */
-	cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
+/* ============ MAIN LAYOUT ============ */
+#gameContainer {
+  display:none;
+  min-height:100vh;
+  display:none;
+  grid-template-columns: 280px 1fr 280px;
+  gap:0;
+  position:relative;
+  z-index:2;
+}
+#gameContainer.active { display:grid; }
 
+@media(max-width:1100px){
+  #gameContainer.active { grid-template-columns: 1fr; }
+  .left-panel, .right-panel { display:none !important; }
+  .left-panel.mobile-open, .right-panel.mobile-open {
+    display:block !important;
+    position:fixed; top:0; bottom:0; width:85%; max-width:340px;
+    z-index:200;
+  }
 }
 
-
-#intro {
-	user-select:none;
-    max-width: 900px;
-    margin: 20px auto;
-	left: 3%;
-	right: 3%;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* ============ PANELS ============ */
+.panel {
+  background: linear-gradient(180deg, #1f1611 0%, #15100c 100%);
+  border: 1px solid rgba(212,168,90,0.2);
+  height:100vh;
+  overflow-y:auto;
+  position:sticky;
+  top:0;
 }
 
-form {
-    margin-bottom: 20px;
+.panel::-webkit-scrollbar { width:6px; }
+.panel::-webkit-scrollbar-track { background:transparent; }
+.panel::-webkit-scrollbar-thumb { background: var(--gold); border-radius:3px; opacity:0.5; }
+
+.panel-section {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(212,168,90,0.15);
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.panel-title {
+  font-family:'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight:700;
+  letter-spacing:3px;
+  color: var(--gold);
+  text-transform:uppercase;
+  margin-bottom:12px;
+  padding-bottom:6px;
+  border-bottom: 1px solid rgba(212,168,90,0.3);
+  display:flex; align-items:center; gap:8px;
+}
+.panel-title::before { content:'❖'; color: var(--gold-bright); }
+
+/* ============ CHARACTER PORTRAIT ============ */
+.char-portrait {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:14px;
+}
+.portrait-img {
+  width:60px; height:60px;
+  border-radius:50%;
+  background: radial-gradient(circle, var(--gold-bright), var(--gold) 60%, #6b4f2a);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.8rem;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 15px rgba(212,168,90,0.5), inset 0 0 10px rgba(0,0,0,0.4);
+  flex-shrink:0;
+}
+.char-name {
+  font-family:'Cinzel', serif;
+  font-weight:700;
+  color: var(--gold-bright);
+  font-size:1rem;
+  margin-bottom:2px;
+}
+.char-class {
+  font-size:0.78rem;
+  color: var(--ink-dim);
+  font-style:italic;
+}
+.char-level {
+  font-family:'Orbitron', sans-serif;
+  font-size:0.7rem;
+  color: var(--xp);
+  letter-spacing:1px;
+  margin-top:3px;
 }
 
-select, button {
-    font-size: 16px;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+/* ============ STAT BARS ============ */
+.stat-bar {
+  margin-bottom:10px;
 }
-/* Apply text-align: center; to all form elements */
-form {
-    text-align: center;
-	cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-
+.stat-label {
+  display:flex;
+  justify-content:space-between;
+  font-size:0.75rem;
+  margin-bottom:4px;
+  font-family:'Cinzel', serif;
+  letter-spacing:1px;
 }
-/* Change cursor to pointer when hovering over options */
-select option {
-    cursor: pointer;
+.stat-label .icon { color: var(--gold-bright); }
+.stat-track {
+  height:14px;
+  background: rgba(0,0,0,0.5);
+  border:1px solid rgba(212,168,90,0.3);
+  border-radius:2px;
+  overflow:hidden;
+  position:relative;
 }
-
-/* Change cursor to pointer when hovering over selection box */
-select {
-    cursor: pointer;
+.stat-fill {
+  height:100%;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+  position:relative;
 }
-
-
-button {
-    background-color: #4caf50;
-    color: #fff;
-    cursor: url('https://raw.githubusercontent.com/deekshith0509/deekshith0509.github.io/main/assets/cursor/c.cur'), auto;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-p {
-    margin-top: 0;
-    line-height: 1.5;
+.stat-fill.health { background: linear-gradient(90deg, #7f1d1d, var(--health)); }
+.stat-fill.mana { background: linear-gradient(90deg, #1e3a8a, var(--mana)); }
+.stat-fill.stamina { background: linear-gradient(90deg, #14532d, var(--stamina)); }
+.stat-fill.xp { background: linear-gradient(90deg, #713f12, var(--xp)); }
+.stat-fill::after {
+  content:'';
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,0.1) 4px, rgba(255,255,255,0.1) 8px);
 }
 
-/* Media query for smaller screens */
-@media screen and (max-width: 1000px) {
-    #storyContent {
-        max-width: 80%;
-    }
-
-    #intro {
-        max-width: 80%;
-    }
+/* ============ ATTRIBUTES ============ */
+.attributes {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:8px;
+}
+.attr {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(212,168,90,0.2);
+  padding: 8px 10px;
+  border-radius:3px;
+  text-align:center;
+  cursor:help;
+  transition: all 0.2s;
+}
+.attr:hover {
+  background: rgba(212,168,90,0.1);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.attr-name {
+  font-size:0.65rem;
+  letter-spacing:2px;
+  color: var(--ink-dim);
+  text-transform:uppercase;
+}
+.attr-value {
+  font-family:'Cinzel', serif;
+  font-size:1.4rem;
+  font-weight:700;
+  color: var(--gold-bright);
+}
+.attr-mod {
+  font-size:0.7rem;
+  color: var(--stamina);
 }
 
+/* ============ INVENTORY ============ */
+.inv-grid {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:6px;
+}
+.inv-slot {
+  aspect-ratio:1;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(212,168,90,0.3);
+  border-radius:3px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.3rem;
+  cursor:pointer;
+  position:relative;
+  transition:all 0.2s;
+}
+.inv-slot:hover {
+  background: rgba(212,168,90,0.15);
+  border-color: var(--gold);
+  transform:scale(1.08);
+}
+.inv-slot.empty { color: rgba(255,255,255,0.1); font-size:0.8rem; }
+.inv-slot .qty {
+  position:absolute;
+  bottom:1px; right:3px;
+  font-size:0.65rem;
+  color: var(--gold-bright);
+  font-family:'Orbitron',sans-serif;
+  text-shadow: 1px 1px 2px black;
+}
+
+/* tooltip */
+.tooltip {
+  position:absolute;
+  background: #0a0805;
+  border:1px solid var(--gold);
+  padding:8px 12px;
+  font-size:0.78rem;
+  white-space:nowrap;
+  z-index:300;
+  pointer-events:none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  border-radius:3px;
+  bottom: calc(100% + 8px);
+  left:50%;
+  transform: translateX(-50%);
+  display:none;
+  font-family:'Crimson Text',serif;
+}
+.inv-slot:hover .tooltip { display:block; }
+.tooltip-title {
+  color: var(--gold-bright);
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  margin-bottom:2px;
+}
+.tooltip-desc { color: var(--ink-dim); font-style:italic; font-size:0.72rem; }
+
+/* ============ QUEST LOG ============ */
+.quest {
+  background: rgba(0,0,0,0.3);
+  border-left: 3px solid var(--gold);
+  padding: 8px 12px;
+  margin-bottom:8px;
+  font-size:0.82rem;
+}
+.quest.complete {
+  border-left-color: var(--stamina);
+  opacity:0.6;
+  text-decoration: line-through;
+}
+.quest-title {
+  color: var(--gold-bright);
+  font-family:'Cinzel',serif;
+  font-size:0.78rem;
+  margin-bottom:2px;
+}
+.quest-desc { color: var(--ink-dim); font-size:0.74rem; }
+
+/* ============ JOURNAL ============ */
+.journal-entry {
+  background: rgba(0,0,0,0.25);
+  padding:8px 10px;
+  margin-bottom:6px;
+  border-left: 2px solid var(--ink-dim);
+  font-size:0.78rem;
+  font-style:italic;
+  color: var(--ink-dim);
+}
+
+/* ============ MIDDLE — STORY AREA ============ */
+.story-main {
+  padding: 30px 40px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+.location-banner {
+  background: linear-gradient(180deg, rgba(0,0,0,0.6), transparent);
+  padding: 14px 20px;
+  margin: -30px -40px 20px;
+  border-bottom: 2px solid var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-family:'Cinzel',serif;
+}
+.location-name {
+  font-size:1.1rem;
+  color: var(--gold-bright);
+  letter-spacing:2px;
+}
+.location-icon { font-size:1.4rem; }
+.time-of-day {
+  font-size:0.78rem;
+  color: var(--ink-dim);
+  letter-spacing:2px;
+}
+
+.scene-art {
+  height: 180px;
+  margin-bottom:20px;
+  border: 1px solid rgba(212,168,90,0.3);
+  border-radius:4px;
+  position:relative;
+  overflow:hidden;
+  background: #0a0805;
+  display:flex; align-items:center; justify-content:center;
+  font-size:5rem;
+}
+.scene-art::before {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(212,168,90,0.15), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(167,139,250,0.1), transparent 60%);
+}
+.scene-art-overlay {
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, transparent 60%, rgba(10,8,5,0.9));
+}
+
+.narration {
+  background: linear-gradient(180deg, rgba(31,22,17,0.9), rgba(21,16,12,0.9));
+  border: 1px solid rgba(212,168,90,0.25);
+  border-radius:4px;
+  padding: 28px 32px;
+  margin-bottom:20px;
+  position:relative;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.5);
+}
+.narration::before, .narration::after {
+  content:'';
+  position:absolute;
+  width:30px; height:30px;
+  border:2px solid var(--gold);
+}
+.narration::before { top:8px; left:8px; border-right:none; border-bottom:none; }
+.narration::after { bottom:8px; right:8px; border-left:none; border-top:none; }
+
+.scene-chapter {
+  font-family:'Cinzel',serif;
+  color: var(--gold);
+  letter-spacing:4px;
+  font-size:0.75rem;
+  margin-bottom:6px;
+}
+.scene-title {
+  font-family:'Cinzel',serif;
+  font-size: 1.6rem;
+  color: var(--gold-bright);
+  margin-bottom:18px;
+  font-weight:700;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+.scene-text {
+  font-size:1.05rem;
+  line-height:1.85;
+  color: var(--ink);
+  text-align:justify;
+  font-family:'Crimson Text',serif;
+}
+.scene-text .first-letter {
+  font-family:'Cinzel',serif;
+  float:left;
+  font-size: 3.5rem;
+  line-height:0.9;
+  margin: 6px 8px 0 0;
+  color: var(--gold-bright);
+  font-weight:900;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+}
+.scene-text .hl { color: var(--gold-bright); font-weight:600; }
+.scene-text .danger { color: var(--blood-bright); font-weight:600; }
+.scene-text .magic { color: var(--magic); font-style:italic; font-weight:600; }
+.scene-text .npc { color: #74c0fc; font-weight:600; }
+.scene-text .item { color: #51cf66; font-weight:600; }
+.scene-text em { color: var(--gold-bright); font-style:italic; }
+.scene-text blockquote {
+  border-left: 3px solid var(--gold);
+  padding: 6px 0 6px 16px;
+  margin: 14px 0;
+  color: var(--gold-bright);
+  font-style:italic;
+}
+
+/* ============ DIALOGUE ============ */
+.dialogue-box {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(116,192,252,0.4);
+  border-radius:4px;
+  padding: 14px 20px;
+  margin: 14px 0;
+  position:relative;
+  animation: slide-in-left 0.5s;
+}
+.dialogue-box::before {
+  content:'';
+  position:absolute;
+  left:-8px; top:20px;
+  width:0; height:0;
+  border-style:solid;
+  border-width: 6px 8px 6px 0;
+  border-color: transparent rgba(116,192,252,0.4) transparent transparent;
+}
+.dialogue-speaker {
+  font-family:'Cinzel',serif;
+  color: #74c0fc;
+  font-size:0.85rem;
+  letter-spacing:2px;
+  margin-bottom:6px;
+}
+.dialogue-text {
+  font-style:italic;
+  color: var(--ink);
+  font-size:0.98rem;
+  line-height:1.6;
+}
+
+/* ============ CHOICES ============ */
+.choices-wrap {
+  margin-top:auto;
+  padding-top:20px;
+}
+.choices-header {
+  font-family:'Cinzel',serif;
+  color: var(--gold);
+  letter-spacing:3px;
+  font-size:0.8rem;
+  margin-bottom:14px;
+  text-align:center;
+  padding: 8px;
+  border-top: 1px solid rgba(212,168,90,0.3);
+  border-bottom: 1px solid rgba(212,168,90,0.3);
+}
+
+.choice {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  background: linear-gradient(90deg, rgba(31,22,17,0.9), rgba(21,16,12,0.9));
+  border: 1px solid rgba(212,168,90,0.3);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  margin-bottom:10px;
+  cursor:pointer;
+  font-family:'Crimson Text',serif;
+  color: var(--ink);
+  font-size:1rem;
+  text-align:left;
+  transition:all 0.25s;
+  position:relative;
+  overflow:hidden;
+}
+.choice::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: linear-gradient(90deg, transparent, rgba(212,168,90,0.15), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+.choice:hover::before { transform: translateX(100%); }
+.choice:hover {
+  border-left-color: var(--gold-bright);
+  border-left-width:5px;
+  background: linear-gradient(90deg, rgba(212,168,90,0.1), rgba(31,22,17,0.9));
+  padding-left:22px;
+  color: var(--gold-bright);
+}
+.choice:disabled {
+  opacity:0.4;
+  cursor:not-allowed;
+}
+.choice-num {
+  font-family:'Cinzel',serif;
+  color: var(--gold);
+  font-weight:700;
+  font-size:1.1rem;
+  flex-shrink:0;
+  width:28px;
+}
+.choice-text { flex:1; }
+.choice-meta {
+  display:flex; gap:6px; flex-wrap:wrap; align-items:center;
+}
+.choice-tag {
+  font-family:'Cinzel',serif;
+  font-size:0.65rem;
+  letter-spacing:2px;
+  padding:3px 8px;
+  border-radius:2px;
+  background: rgba(212,168,90,0.15);
+  color: var(--gold);
+  border: 1px solid rgba(212,168,90,0.3);
+}
+.choice-tag.skill {
+  background: rgba(167,139,250,0.15);
+  color: var(--magic);
+  border-color: rgba(167,139,250,0.3);
+}
+.choice-tag.danger {
+  background: rgba(201,42,42,0.15);
+  color: var(--blood-bright);
+  border-color: rgba(201,42,42,0.3);
+}
+.choice-tag.req {
+  background: rgba(34,197,94,0.15);
+  color: var(--stamina);
+  border-color: rgba(34,197,94,0.3);
+}
+.choice-tag.locked {
+  background: rgba(100,100,100,0.15);
+  color: #777;
+  border-color: rgba(100,100,100,0.3);
+}
+
+/* ============ FLOATING NUMBERS ============ */
+.floater {
+  position:fixed;
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:1.2rem;
+  pointer-events:none;
+  z-index:999;
+  animation: float-up 1.4s ease-out forwards;
+  text-shadow: 2px 2px 4px black;
+}
+.floater.dmg { color: var(--blood-bright); }
+.floater.heal { color: var(--stamina); }
+.floater.xp { color: var(--xp); }
+.floater.item { color: #74c0fc; }
+
+/* ============ DICE ROLL OVERLAY ============ */
+.dice-overlay {
+  position:fixed; inset:0;
+  background: rgba(0,0,0,0.85);
+  display:none;
+  align-items:center; justify-content:center;
+  z-index:500;
+  flex-direction:column;
+}
+.dice-overlay.active { display:flex; }
+.dice {
+  width:120px; height:120px;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold) 50%, #6b4f2a);
+  border:3px solid var(--gold-bright);
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cinzel',serif;
+  font-size:4rem;
+  font-weight:900;
+  color: #1a1410;
+  box-shadow: 0 0 60px var(--gold-bright);
+}
+.dice.rolling { animation: dice-roll 0.1s linear infinite; }
+.dice-info {
+  margin-top:24px;
+  text-align:center;
+  color: var(--gold-bright);
+  font-family:'Cinzel',serif;
+  letter-spacing:3px;
+}
+.dice-result {
+  font-size:1.4rem;
+  margin-top:10px;
+  font-family:'Crimson Text',serif;
+  font-style:italic;
+}
+.dice-result.success { color: var(--stamina); }
+.dice-result.fail { color: var(--blood-bright); }
+
+/* ============ COMBAT ============ */
+.combat-overlay {
+  position:fixed; inset:0;
+  background: radial-gradient(ellipse, rgba(40,10,10,0.95), rgba(0,0,0,0.98));
+  display:none;
+  z-index:400;
+  flex-direction:column;
+  padding:30px;
+}
+.combat-overlay.active { display:flex; }
+
+.combat-arena {
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  padding:30px 0;
+}
+.combatant {
+  text-align:center;
+  width:200px;
+}
+.combatant-portrait {
+  width:140px; height:140px;
+  border:3px solid var(--gold);
+  border-radius:50%;
+  margin:0 auto 14px;
+  background: radial-gradient(circle, #2a1f17, #0a0805);
+  display:flex; align-items:center; justify-content:center;
+  font-size:5rem;
+  position:relative;
+  box-shadow: 0 0 30px rgba(212,168,90,0.4);
+}
+.combatant.enemy .combatant-portrait {
+  border-color: var(--blood);
+  box-shadow: 0 0 30px rgba(139,26,26,0.5);
+}
+.combatant-portrait.hit { animation: shake-hard 0.4s; }
+.combatant-name {
+  font-family:'Cinzel',serif;
+  font-size:1.1rem;
+  color: var(--gold-bright);
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+.combatant.enemy .combatant-name { color: var(--blood-bright); }
+.combatant-hp {
+  background: rgba(0,0,0,0.6);
+  border:1px solid rgba(212,168,90,0.3);
+  height:18px;
+  border-radius:2px;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+.combatant-hp-fill {
+  height:100%;
+  background: linear-gradient(90deg, #7f1d1d, var(--health));
+  transition: width 0.5s;
+}
+.combat-vs {
+  font-family:'Cinzel',serif;
+  font-size:3rem;
+  color: var(--blood-bright);
+  font-weight:900;
+  text-shadow: 0 0 20px var(--blood-bright);
+  animation: flicker 1.5s infinite;
+}
+.combat-log {
+  background: rgba(0,0,0,0.6);
+  border:1px solid var(--gold);
+  border-radius:4px;
+  padding:14px;
+  height:120px;
+  overflow-y:auto;
+  margin-bottom:14px;
+  font-family:'Crimson Text',serif;
+  font-style:italic;
+}
+.combat-log-entry { margin-bottom:4px; color: var(--ink); }
+.combat-log-entry .crit { color: var(--gold-bright); font-weight:700; }
+.combat-log-entry .miss { color: var(--ink-dim); }
+.combat-actions {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:10px;
+}
+.combat-btn {
+  background: linear-gradient(180deg, rgba(212,168,90,0.2), rgba(139,26,26,0.2));
+  border:1px solid var(--gold);
+  color: var(--gold-bright);
+  padding: 14px;
+  font-family:'Cinzel',serif;
+  letter-spacing:2px;
+  font-size:0.85rem;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.combat-btn:hover {
+  background: linear-gradient(180deg, rgba(212,168,90,0.4), rgba(139,26,26,0.4));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212,168,90,0.4);
+}
+.combat-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* ============ CHARACTER CREATION ============ */
+.creation-screen {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+  position:relative;
+  z-index:2;
+}
+.creation-card {
+  max-width:700px;
+  width:100%;
+  background: linear-gradient(180deg, rgba(31,22,17,0.95), rgba(21,16,12,0.95));
+  border: 2px solid var(--gold);
+  border-radius:6px;
+  padding:40px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.8), inset 0 0 60px rgba(0,0,0,0.4);
+  position:relative;
+  animation: fade-up 0.8s;
+}
+.creation-card::before {
+  content:'';
+  position:absolute;
+  inset:6px;
+  border:1px solid rgba(212,168,90,0.3);
+  pointer-events:none;
+}
+.creation-title {
+  font-family:'Cinzel',serif;
+  font-size:2.5rem;
+  text-align:center;
+  color: var(--gold-bright);
+  margin-bottom:6px;
+  letter-spacing:6px;
+  text-shadow: 0 4px 20px rgba(212,168,90,0.4);
+}
+.creation-subtitle {
+  text-align:center;
+  color: var(--ink-dim);
+  font-style:italic;
+  margin-bottom:30px;
+  letter-spacing:2px;
+}
+.form-group { margin-bottom:24px; }
+.form-label {
+  font-family:'Cinzel',serif;
+  color: var(--gold);
+  letter-spacing:3px;
+  font-size:0.85rem;
+  margin-bottom:10px;
+  display:block;
+}
+.form-input {
+  width:100%;
+  background: rgba(0,0,0,0.5);
+  border:1px solid var(--gold);
+  color: var(--gold-bright);
+  padding: 12px 16px;
+  font-family:'Crimson Text',serif;
+  font-size:1.1rem;
+  border-radius:3px;
+  outline:none;
+}
+.form-input:focus {
+  box-shadow: 0 0 15px rgba(212,168,90,0.4);
+  border-color: var(--gold-bright);
+}
+.class-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:12px;
+}
+.class-card {
+  background: rgba(0,0,0,0.5);
+  border:1px solid rgba(212,168,90,0.3);
+  padding: 16px 12px;
+  text-align:center;
+  cursor:pointer;
+  border-radius:4px;
+  transition:all 0.25s;
+}
+.class-card:hover {
+  border-color: var(--gold);
+  background: rgba(212,168,90,0.1);
+  transform: translateY(-3px);
+}
+.class-card.selected {
+  border-color: var(--gold-bright);
+  background: rgba(212,168,90,0.2);
+  box-shadow: 0 0 20px rgba(212,168,90,0.4);
+}
+.class-icon { font-size:2.4rem; margin-bottom:8px; }
+.class-name {
+  font-family:'Cinzel',serif;
+  color: var(--gold-bright);
+  letter-spacing:2px;
+  font-size:0.95rem;
+  margin-bottom:4px;
+}
+.class-desc {
+  font-size:0.78rem;
+  color: var(--ink-dim);
+  font-style:italic;
+  line-height:1.4;
+}
+.create-btn {
+  width:100%;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(212,168,90,0.3), rgba(139,26,26,0.2));
+  border: 2px solid var(--gold);
+  color: var(--gold-bright);
+  font-family:'Cinzel',serif;
+  letter-spacing:6px;
+  font-size:1.1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-transform:uppercase;
+  margin-top:10px;
+}
+.create-btn:hover {
+  background: linear-gradient(180deg, rgba(212,168,90,0.5), rgba(139,26,26,0.4));
+  box-shadow: 0 0 30px var(--gold);
+  letter-spacing:8px;
+}
+
+/* ============ TOAST NOTIFICATIONS ============ */
+#toasts {
+  position:fixed;
+  top:80px; right:20px;
+  z-index:600;
+  display:flex; flex-direction:column; gap:8px;
+  pointer-events:none;
+}
+.toast {
+  background: linear-gradient(90deg, rgba(31,22,17,0.95), rgba(21,16,12,0.95));
+  border-left: 3px solid var(--gold);
+  padding: 12px 18px;
+  min-width:250px;
+  font-size:0.88rem;
+  animation: slide-in-right 0.4s, slide-in-right 0.4s reverse 3.6s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+.toast.xp { border-left-color: var(--xp); }
+.toast.item { border-left-color: #74c0fc; }
+.toast.quest { border-left-color: var(--magic); }
+.toast.danger { border-left-color: var(--blood-bright); }
+.toast-title {
+  font-family:'Cinzel',serif;
+  font-size:0.7rem;
+  letter-spacing:2px;
+  color: var(--gold);
+  margin-bottom:3px;
+}
+.toast-msg { color: var(--ink); }
+
+/* ============ MOBILE TOGGLE ============ */
+.mobile-toggle {
+  display:none;
+  position:fixed;
+  bottom:20px;
+  z-index:150;
+  background: rgba(31,22,17,0.95);
+  border:1px solid var(--gold);
+  color: var(--gold-bright);
+  padding:12px 18px;
+  font-family:'Cinzel',serif;
+  letter-spacing:2px;
+  cursor:pointer;
+  border-radius:30px;
+  font-size:0.85rem;
+}
+.mobile-toggle.left { left:20px; }
+.mobile-toggle.right { right:20px; }
+@media(max-width:1100px){ .mobile-toggle { display:block; } }
+
+.mobile-close {
+  display:none;
+  position:absolute;
+  top:10px; right:10px;
+  background:transparent;
+  color: var(--gold-bright);
+  border:1px solid var(--gold);
+  width:30px; height:30px;
+  border-radius:50%;
+  cursor:pointer;
+}
+@media(max-width:1100px){ .mobile-close { display:block; } }
+
+/* ============ UTILITY ============ */
+.shake-screen { animation: shake-hard 0.5s; }
+.flash-damage { animation: damage-flash 0.5s; }
+
+.action-bar {
+  display:flex; gap:8px; flex-wrap:wrap;
+  margin-top:14px;
+}
+.action-btn {
+  background: rgba(0,0,0,0.4);
+  border:1px solid rgba(212,168,90,0.3);
+  color: var(--gold);
+  padding:8px 14px;
+  font-family:'Cinzel',serif;
+  font-size:0.78rem;
+  letter-spacing:2px;
+  cursor:pointer;
+  border-radius:3px;
+  transition:all 0.2s;
+}
+.action-btn:hover {
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  background: rgba(212,168,90,0.1);
+}
 
 </style>
 </head>
 <body>
-    <h1 id ="heading" onclick="refreshpage()"><u>Story Telling&#128214;</u></h1>
-    <div id="intro">
-        <p id="tt">
-            Once upon a time, in the future, Our protagonist is traveling in space to explore the vast universe as far as possible till his last breath. <br>
-            The lead saw a planet with a dense forest and refreshing waterfalls, erupting and active volcanoes. He then changed his direction towards the greenish earth like planet.<br>
-            He named it as "Earth-301&#127757;" He went near the planet's atmosphere and collected sample of air as he has technologically advanced machines and equipments. In the silent expanse of space, aboard their spaceship, an astronomer conducts research, analyzing air samples collected from a distant planet.<br> Amidst the hum of machinery and soft glow of instrument panels, they discover tantalizing clues hinting at the potential presence of life, igniting a surge of excitement and wonder.<br>
-            With his curiosity of having no bounds to know about the planet more widely he tries to enter into the level 1 stage of the atmosphere.<br>...THEN SUDDENLY....<br>
-            <br>"Alert! The spaceship has been hit by an asteroid."<br>
-            With an Emergency warning, the orbitor has been landed with a huge devastating noise and explosion. He slowly boarded the craft with intense fear.<br>
-            He found no issues with the craft, he assumed its a False alarm that triggered him.<br>
-            He found a note that describes trespassers will be prosecuted.⚠ 
-        </p>
-    </div>	
-    <div id="storyContent">
-	    <form id="choicesForm">
-            <label for="choice">What will you do?</label>
-            <select id="choice" name="choice">
-                <option value="1">Go into the dark cave &#127754;</option>
-                <option value="2">Follow the path through the forest &#127795;</option>
-                <option value="3">Climb the mountain &#127957;</option>
-            </select>
-            <button type="submit">Continue</button>
-        </form>
+
+<div id="embers"></div>
+
+<!-- ============ CHARACTER CREATION ============ -->
+<div class="creation-screen" id="creationScreen">
+  <div class="creation-card">
+    <h1 class="creation-title">ODYSSEY 301</h1>
+    <p class="creation-subtitle">— Forge Your Legend —</p>
+
+    <div class="form-group">
+      <label class="form-label">⚔ Hero's Name</label>
+      <input type="text" id="heroName" class="form-input" placeholder="Enter your name..." maxlength="20" value="Aria Voss">
     </div>
 
-	<script>
-	
-	document.getElementById("choicesForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    var choice = document.getElementById("choice").value;
-    var storyContent = document.getElementById("storyContent");
+    <div class="form-group">
+      <label class="form-label">⚜ Choose Your Path</label>
+      <div class="class-grid" id="classGrid">
+        <div class="class-card selected" data-class="explorer">
+          <div class="class-icon">🧭</div>
+          <div class="class-name">EXPLORER</div>
+          <div class="class-desc">High wisdom & perception. Skilled in discovery and lore.</div>
+        </div>
+        <div class="class-card" data-class="warrior">
+          <div class="class-icon">⚔</div>
+          <div class="class-name">WARRIOR</div>
+          <div class="class-desc">High strength & vitality. Master of arms and combat.</div>
+        </div>
+        <div class="class-card" data-class="mystic">
+          <div class="class-icon">🔮</div>
+          <div class="class-name">MYSTIC</div>
+          <div class="class-desc">High intelligence & charisma. Wielder of arcane energy.</div>
+        </div>
+      </div>
+    </div>
 
-    switch (choice) {
-        case "1":
-            storyContent.innerHTML = "As you step into the mouth of the cave, a cool, earthy scent fills your nostrils, carrying hints of dampness and ancient secrets. The dim light filtering in from outside barely penetrates the darkness within, casting eerie shadows that dance along the rocky walls. The sound of your footsteps reverberates softly, echoing off unseen chambers and passages that stretch into the unknown.";
-			storyContent.innerHTML += "With each step, the temperature drops, sending a shiver down your spine despite the layers of clothing you wear. The air feels heavy and still, as if holding its breath in anticipation of your intrusion. Your senses sharpen, attuned to the slightest rustle or drip echoing from the depths.";
-            storyContent.innerHTML += "As your eyes adjust to the darkness, shapes begin to emerge from the shadows – stalactites hanging like icicles from the ceiling, stalagmites rising like ancient sentinels from the floor. The walls of the cave are pockmarked with crevices and fissures, home to hidden creatures and delicate formations sculpted by time.";
-            storyContent.innerHTML += "A sense of awe and reverence washes over you as you contemplate the sheer magnitude and age of the cavern, realizing that you are but a fleeting visitor in a place that has existed for millennia. You can almost feel the weight of history pressing down upon you, a tangible presence that whispers of untold stories and forgotten mysteries.";
-            storyContent.innerHTML += `
-                <form id="innerChoicesForm1">
-                    <label for="c1">What will you do?</label>
-                    <select id="c1" name="c1">
-                        <option value="1">Go deeper inside with curiosity &#9760;</option>
-                        <option value="2">Try to get out of the cave for saving yourself from danger &#127793;</option>
-                    </select>
-                    <button type="button" id="innerButton1">Continue</button>
-                </form>
-            `;
+    <button class="create-btn" onclick="beginAdventure()">⚜ BEGIN THY JOURNEY ⚜</button>
+  </div>
+</div>
 
-            // Add event listener after form is created
-            document.getElementById('innerButton1').addEventListener('click', function(event) {
-                event.preventDefault();
-                var c1 = document.getElementById('c1').value;
+<!-- ============ MAIN GAME ============ -->
+<div id="gameContainer">
 
-                switch (c1) {
-                    case '1':
-                        storyContent.innerHTML += "<br><br>Driven by curiosity, he set out to explore his new surroundings, venturing deep into the heart of the planet verdant forests. As he delved deeper <br>into the wilderness, he stumbled upon a hidden cave concealed by thick foliage.";
-						storyContent.innerHTML += "Intrigued by the possibility of uncovering new discoveries, he ventured inside, the darkness enveloping him like a shroud.";
-						storyContent.innerHTML += "Undeterred by fear, the astronomer pressed forward, following the mysterious sounds deeper into the labyrinthine tunnels.";
-						storyContent.innerHTML += "Yet, his exploration was soon interrupted by an eerie sound echoing through the cavernous depths—a haunting melody of howls and growls that sent shivers down his spine.";
-                        storyContent.innerHTML += `
-                            <form id="innerChoicesForm2">
-                                <label for="c2">What will you do?</label>
-                                <select id="c2" name="innerChoice2">
-                                    <option value="1">Investigate the source of the sound</option>
-                                    <option value="2">Go on in the another direction</option>
-                                </select>
-                                <button type="button" id="innerButton2">Continue</button>
-                            </form>
-                        `;
+  <!-- LEFT PANEL: CHARACTER -->
+  <aside class="panel left-panel" id="leftPanel">
+    <button class="mobile-close" onclick="togglePanel('leftPanel')">✕</button>
 
-                        // Add event listener after form is created
-                        document.getElementById('innerButton2').addEventListener('click', function(event) {
-                            event.preventDefault();
-                            var c2 = document.getElementById('c2').value;
+    <div class="panel-section">
+      <div class="panel-title">Character</div>
+      <div class="char-portrait">
+        <div class="portrait-img" id="portraitImg">🧭</div>
+        <div>
+          <div class="char-name" id="charName">Aria Voss</div>
+          <div class="char-class" id="charClass">Explorer</div>
+          <div class="char-level" id="charLevel">LVL 1 • 0/100 XP</div>
+        </div>
+      </div>
 
-                            switch (c2) {
-                                case '1':
-								    storyContent.innerHTML +=" <br><br>With each step, the echoes grew louder, until finally, he came face to face with the source of the eerie cacophony—a creature unlike any he had ever seen. Standing before him was a majestic wolf-like being, its fur glistening in the dim light of the cave.";
+      <div class="stat-bar">
+        <div class="stat-label"><span><span class="icon">❤</span> Health</span><span id="hpText">100/100</span></div>
+        <div class="stat-track"><div class="stat-fill health" id="hpBar" style="width:100%"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span><span class="icon">✦</span> Mana</span><span id="mpText">50/50</span></div>
+        <div class="stat-track"><div class="stat-fill mana" id="mpBar" style="width:100%"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span><span class="icon">⚡</span> Stamina</span><span id="stText">100/100</span></div>
+        <div class="stat-track"><div class="stat-fill stamina" id="stBar" style="width:100%"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span><span class="icon">★</span> XP</span><span id="xpText">0/100</span></div>
+        <div class="stat-track"><div class="stat-fill xp" id="xpBar" style="width:0%"></div></div>
+      </div>
+    </div>
 
-									storyContent.innerHTML +="But this was no ordinary creature. With a sudden flash of recognition, the astronomer realized that he was staring at a being akin to Blitzwolfer, the werewolf-like alien from the popular series Ben 10.";
-									storyContent.innerHTML +="In awe and disbelief, the astronomer watched as the creature unleashed a powerful burst of ultrasonic waves, its eyes gleaming with an otherworldly intelligence. Yet, amidst the awe-inspiring sight, a sense of unease gnawed at the edges of his mind.";
-									storyContent.innerHTML +="For he knew that legends spoke of the creature's ability to transform others into its own kind with a single scratch—a fate too dreadful to contemplate. With bated breath, he watched as the creature prowled closer, its gaze locking with his own in a silent challenge.";
-									storyContent.innerHTML +="Caught between fascination and fear, the astronomer stood at the precipice of a new and unknown world, his fate hanging in the balance as he faced the enigmatic creature before him. And as the echoes of the cavern reverberated around him, he knew that his journey had only just begun, with the mysteries of the cosmos unfolding in ways he could never have imagined.";
-									storyContent.innerHTML += `
-                            <form id="innerChoicesForm3">
-                                <label for="c3">What will you do?</label>
-                                <select id="c3" name="c3">
-                                    <option value="1">Investigate the source of the sound</option>
-                                    <option value="2">Tries to leave the cave as soon as possible </option>
-                                </select>
-                                <button type="button" id="innerButton3">Continue</button>
-                            </form>
-                        `;
+    <div class="panel-section">
+      <div class="panel-title">Attributes</div>
+      <div class="attributes" id="attributes"></div>
+    </div>
 
-                        // Add event listener after form is created
-                        document.getElementById('innerButton3').addEventListener('click', function(event) {
-                            event.preventDefault();
-                            var c3 = document.getElementById('c3').value;
+    <div class="panel-section">
+      <div class="panel-title">Reputation</div>
+      <div class="stat-bar">
+        <div class="stat-label"><span>🐺 Sentinels</span><span id="repWolf">Neutral</span></div>
+        <div class="stat-track"><div class="stat-fill stamina" id="repWolfBar" style="width:50%"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span>✨ Lightborn</span><span id="repLight">Neutral</span></div>
+        <div class="stat-track"><div class="stat-fill mana" id="repLightBar" style="width:50%"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span>🔥 Sleepers</span><span id="repFire">Neutral</span></div>
+        <div class="stat-track"><div class="stat-fill health" id="repFireBar" style="width:50%"></div></div>
+      </div>
+    </div>
+  </aside>
 
-                            switch (c3) {
-                                case '1':
-                                    storyContent.innerHTML += '<br><br> after a while ,There  was a growling and howling sound.';
-                                    // Add more nested switch cases here
-                                    break;
-                                case '2':
-                                    storyContent.innerHTML += ' <br><br> You decided to ignore the sound and continue.';
-                                    // Add more nested switch cases here
-                                    break;
-                                default:
-                                    storyContent.innerHTML += '<br><br>  Please select a valid option.';
-                            }
+  <!-- CENTER: STORY -->
+  <main class="story-main" id="storyMain">
+    <div class="location-banner">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="location-icon" id="locIcon">🚀</span>
+        <span class="location-name" id="locName">The Void</span>
+      </div>
+      <span class="time-of-day" id="timeOfDay">⊹ Stellar Drift ⊹</span>
+    </div>
 
-                            // Remove the inner form from the DOM
-                            var innerChoicesForm3 = document.getElementById("innerChoicesForm3");
-                            innerChoicesForm3.parentNode.removeChild(innerChoicesForm3);
-                        });
+    <div class="scene-art" id="sceneArt">
+      <span style="position:relative; z-index:2;">🌌</span>
+      <div class="scene-art-overlay"></div>
+    </div>
 
-                        break;
-                                    storyContent.innerHTML += ' <br><br> You decided to investigate the source of the sound.<br> and tried to find some elements for saving my self ';
-                                    // Add more nested switch cases here
-                                    break;
-                                case '2':
-                                    storyContent.innerHTML += ' <br><br> You decided to ignore the sound and continue.';
-                                    // Add more nested switch cases here
-                                    break;
-                                default:
-                                    storyContent.innerHTML += ' Please select a valid option.';
-                            }
+    <div class="narration" id="narrationBox">
+      <div class="scene-chapter" id="sceneChapter">PROLOGUE</div>
+      <div class="scene-title" id="sceneTitle">The Silent Voyager</div>
+      <div class="scene-text" id="sceneText"></div>
+    </div>
 
-                            // Remove the inner form from the DOM
-                            var innerChoicesForm2 = document.getElementById("innerChoicesForm2");
-                            innerChoicesForm2.parentNode.removeChild(innerChoicesForm2);
-                        });
+    <div class="choices-wrap" id="choicesWrap"></div>
+  </main>
 
-                        break;
-                    case '2':
-                        storyContent.innerHTML += '<br><br>  You tried to get out of the cave for saving yourself from danger.';
-                        // Add more nested switch cases here
-                        break;
-                    default:
-                        storyContent.innerHTML += ' Please select a valid option.';
-                }
+  <!-- RIGHT PANEL: INVENTORY/QUESTS -->
+  <aside class="panel right-panel" id="rightPanel">
+    <button class="mobile-close" onclick="togglePanel('rightPanel')">✕</button>
 
-                // Remove the inner form from the DOM
-                var innerChoicesForm1 = document.getElementById("innerChoicesForm1");
-                innerChoicesForm1.parentNode.removeChild(innerChoicesForm1);
-            });
+    <div class="panel-section">
+      <div class="panel-title">Inventory</div>
+      <div class="inv-grid" id="inventory"></div>
+      <div style="margin-top:10px; font-size:0.78rem; color: var(--ink-dim); text-align:center;">
+        Gold: <span style="color:var(--gold-bright); font-family:'Orbitron',sans-serif;" id="goldAmt">0</span> ⛁
+      </div>
+    </div>
 
-            break;
-        case "2":
-            storyContent.textContent = "< You followed the path through the forest.";
-            // Add more nested switch cases here
-            break;
-        case "3":
-            storyContent.textContent = "You decided to climb the mountain.";
-            // Add more nested switch cases here
-            break;
-        default:
-            storyContent.textContent = "Please select a valid option.";
-    }
+    <div class="panel-section">
+      <div class="panel-title">Active Quests</div>
+      <div id="questLog"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-title">Journal</div>
+      <div id="journal"></div>
+    </div>
+  </aside>
+</div>
+
+<button class="mobile-toggle left" onclick="togglePanel('leftPanel')">⚔ Char</button>
+<button class="mobile-toggle right" onclick="togglePanel('rightPanel')">📜 Quests</button>
+
+<!-- DICE OVERLAY -->
+<div class="dice-overlay" id="diceOverlay">
+  <div class="dice rolling" id="dice">?</div>
+  <div class="dice-info">
+    <div id="diceCheckLabel">SKILL CHECK</div>
+    <div class="dice-result" id="diceResult"></div>
+  </div>
+</div>
+
+<!-- COMBAT OVERLAY -->
+<div class="combat-overlay" id="combatOverlay">
+  <h2 style="text-align:center; font-family:'Cinzel',serif; color:var(--blood-bright); letter-spacing:6px; font-size:1.6rem;">⚔ COMBAT ⚔</h2>
+
+  <div class="combat-arena">
+    <div class="combatant" id="playerCombatant">
+      <div class="combatant-portrait" id="playerPort">🧭</div>
+      <div class="combatant-name" id="playerCName">Hero</div>
+      <div class="combatant-hp"><div class="combatant-hp-fill" id="playerCHp" style="width:100%"></div></div>
+      <div style="font-size:0.78rem; color:var(--ink-dim);" id="playerCHpText">100/100</div>
+    </div>
+    <div class="combat-vs">VS</div>
+    <div class="combatant enemy" id="enemyCombatant">
+      <div class="combatant-portrait" id="enemyPort">🐺</div>
+      <div class="combatant-name" id="enemyCName">Beast</div>
+      <div class="combatant-hp"><div class="combatant-hp-fill" id="enemyCHp" style="width:100%"></div></div>
+      <div style="font-size:0.78rem; color:var(--ink-dim);" id="enemyCHpText">80/80</div>
+    </div>
+  </div>
+
+  <div class="combat-log" id="combatLog"></div>
+
+  <div class="combat-actions">
+    <button class="combat-btn" onclick="combatAction('attack')">⚔ Attack</button>
+    <button class="combat-btn" onclick="combatAction('skill')">✦ Skill</button>
+    <button class="combat-btn" onclick="combatAction('item')">⚱ Item</button>
+    <button class="combat-btn" onclick="combatAction('flee')">↺ Flee</button>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div id="toasts"></div>
+
+<script>
+/* ============================================================
+   ODYSSEY 301 — Native RPG Engine
+   ============================================================ */
+
+// ============ EMBERS ============
+const embersBox = document.getElementById('embers');
+for (let i = 0; i < 30; i++) {
+  const e = document.createElement('div');
+  e.className = 'ember';
+  e.style.left = Math.random()*100 + '%';
+  e.style.animationDuration = (8 + Math.random()*10) + 's';
+  e.style.animationDelay = Math.random()*8 + 's';
+  embersBox.appendChild(e);
+}
+
+// ============ AUDIO ENGINE ============
+let actx = null;
+function sfx(type) {
+  try {
+    if (!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.connect(g); g.connect(actx.destination);
+
+    const presets = {
+      click:    { f:[800,400], d:0.08, t:'square', v:0.04 },
+      page:     { f:[300,500], d:0.15, t:'sine',   v:0.05 },
+      coin:     { f:[988,1318], d:0.12, t:'sine',  v:0.06 },
+      hit:      { f:[200,80],  d:0.18, t:'sawtooth', v:0.08 },
+      crit:     { f:[600,1200,1800], d:0.3, t:'square', v:0.07 },
+      heal:     { f:[523,659,784], d:0.4, t:'sine', v:0.05 },
+      level:    { f:[523,659,784,1047], d:0.6, t:'triangle', v:0.07 },
+      dice:     { f:[440,660], d:0.1, t:'square', v:0.04 },
+      success:  { f:[523,659,784], d:0.3, t:'sine', v:0.06 },
+      fail:     { f:[330,220,165], d:0.4, t:'sawtooth', v:0.06 },
+      type:     { f:[1200], d:0.02, t:'square', v:0.015 },
+      danger:   { f:[150,100,150], d:0.4, t:'sawtooth', v:0.08 },
+      magic:    { f:[800,1200,1600], d:0.3, t:'triangle', v:0.05 }
+    };
+    const p = presets[type] || presets.click;
+    o.type = p.t;
+    o.frequency.value = p.f[0];
+    g.gain.value = p.v;
+    p.f.slice(1).forEach((f,i)=> o.frequency.setValueAtTime(f, actx.currentTime + (i+1)*p.d/p.f.length));
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + p.d);
+    o.stop(actx.currentTime + p.d);
+  } catch(e){}
+}
+
+// ============ GAME STATE ============
+const CLASSES = {
+  explorer: { icon:'🧭', name:'Explorer', hp:100, mp:50, st:100,
+    attrs: { STR:10, DEX:14, CON:12, INT:13, WIS:16, CHA:11 },
+    skills:['Perception','Survival','Lore'] },
+  warrior:  { icon:'⚔', name:'Warrior', hp:130, mp:30, st:120,
+    attrs: { STR:16, DEX:13, CON:15, INT:9, WIS:10, CHA:11 },
+    skills:['Athletics','Intimidation','Combat'] },
+  mystic:   { icon:'🔮', name:'Mystic', hp:80, mp:90, st:80,
+    attrs: { STR:8, DEX:12, CON:10, INT:16, WIS:14, CHA:15 },
+    skills:['Arcana','Persuasion','Insight'] }
+};
+
+const ITEMS = {
+  potion:    { icon:'🧪', name:'Healing Potion', desc:'Restores 30 HP', use:'heal30' },
+  ether:     { icon:'💎', name:'Ether Crystal',  desc:'Restores 25 MP', use:'mana25' },
+  ration:    { icon:'🍞', name:'Field Ration',   desc:'Restores 20 Stamina', use:'stam20' },
+  blade:     { icon:'⚔',  name:'Plasma Blade',   desc:'+5 Attack damage' },
+  shield:    { icon:'🛡', name:'Energy Shield',  desc:'+10 Defense' },
+  scanner:   { icon:'📡', name:'Bio-Scanner',    desc:'Reveals hidden truths' },
+  fang:      { icon:'🦷', name:'Sentinel Fang',  desc:'A trophy of respect' },
+  seed:      { icon:'🌱', name:'Lightborn Seed', desc:'Pulses with life-force' },
+  shard:     { icon:'💠', name:'Sleeper Shard',  desc:'Crystalline fragment of starlight' },
+  amulet:    { icon:'🔱', name:'Star Amulet',    desc:'Ancient ward against ill fortune' }
+};
+
+let G = {
+  name:'Aria Voss',
+  cls:'explorer',
+  level:1,
+  hp:100, hpMax:100,
+  mp:50, mpMax:50,
+  st:100, stMax:100,
+  xp:0, xpNext:100,
+  attrs: {...CLASSES.explorer.attrs},
+  inv: [],
+  invMax: 16,
+  gold: 25,
+  quests: [],
+  journal: [],
+  rep: { wolf:50, light:50, fire:50 },
+  flags: {},
+  scene: 'start',
+  combat: null
+};
+
+// ============ CHARACTER CREATION ============
+document.querySelectorAll('.class-card').forEach(c => {
+  c.onclick = () => {
+    sfx('click');
+    document.querySelectorAll('.class-card').forEach(x=>x.classList.remove('selected'));
+    c.classList.add('selected');
+  };
 });
 
-// Get the paragraph element
-const paragraph = document.getElementById('tt');
+function beginAdventure() {
+  sfx('level');
+  const name = document.getElementById('heroName').value.trim() || 'Wanderer';
+  const cls = document.querySelector('.class-card.selected').dataset.class;
+  const C = CLASSES[cls];
 
-// Get the text content of the paragraph
-const text = paragraph.innerHTML;
+  G.name = name;
+  G.cls = cls;
+  G.hp = G.hpMax = C.hp;
+  G.mp = G.mpMax = C.mp;
+  G.st = G.stMax = C.st;
+  G.attrs = {...C.attrs};
 
-// Clear the text content of the paragraph
-paragraph.innerHTML = '';
+  G.inv = [
+    {id:'potion', qty:2},
+    {id:'ration', qty:3},
+    {id:'scanner', qty:1}
+  ];
 
-// Split the text content into an array of lines based on the <br> tags
-const lines = text.split('<br>');
+  document.getElementById('creationScreen').style.display='none';
+  document.getElementById('gameContainer').classList.add('active');
 
-// Initialize line index to 0
-let lineIndex = 0;
+  document.getElementById('charName').textContent = name;
+  document.getElementById('charClass').textContent = C.name;
+  document.getElementById('portraitImg').textContent = C.icon;
+  document.getElementById('playerPort').textContent = C.icon;
+  document.getElementById('playerCName').textContent = name;
 
-// Initialize character index to 0
-let charIndex = 0;
+  addQuest('q_main','The Forsaken World','Survive Earth-301 and uncover its secrets.');
+  addJournal('Day 1: My ship has crashed on an unknown world. I must survive.');
 
-// Define typing function
-function type() {
-  // Check if there are still lines to type
-  if (lineIndex < lines.length) {
-    // Get the current line
-    const line = lines[lineIndex];
-    // Add the next character to the paragraph element
-    paragraph.innerHTML += line[charIndex];
-    // Increment character index
-    charIndex++;
-    // Check if character index exceeds the length of the current line
-    if (charIndex >= line.length) {
-      // Move to the next line
-      paragraph.innerHTML += '<br>';
-      // Reset character index
-      charIndex = 0;
-      // Move to the next line index
-      lineIndex++;
+  refreshUI();
+  loadScene('start');
+}
+
+// ============ UI REFRESH ============
+function refreshUI() {
+  // Stats
+  setBar('hp', G.hp, G.hpMax);
+  setBar('mp', G.mp, G.mpMax);
+  setBar('st', G.st, G.stMax);
+  document.getElementById('xpBar').style.width = (G.xp/G.xpNext*100)+'%';
+  document.getElementById('xpText').textContent = G.xp+'/'+G.xpNext;
+  document.getElementById('charLevel').textContent = `LVL ${G.level} • ${G.xp}/${G.xpNext} XP`;
+
+  // Attributes
+  const attrBox = document.getElementById('attributes');
+  attrBox.innerHTML='';
+  for (const [k,v] of Object.entries(G.attrs)) {
+    const mod = Math.floor((v-10)/2);
+    const div = document.createElement('div');
+    div.className='attr';
+    div.title = `${k}: ${v} (${mod>=0?'+':''}${mod})`;
+    div.innerHTML = `<div class="attr-name">${k}</div><div class="attr-value">${v}</div><div class="attr-mod">${mod>=0?'+':''}${mod}</div>`;
+    attrBox.appendChild(div);
+  }
+
+  // Inventory
+  const invBox = document.getElementById('inventory');
+  invBox.innerHTML='';
+  for (let i=0; i<G.invMax; i++) {
+    const slot = document.createElement('div');
+    slot.className='inv-slot';
+    if (G.inv[i]) {
+      const it = ITEMS[G.inv[i].id];
+      slot.innerHTML = `${it.icon}<span class="qty">${G.inv[i].qty>1?G.inv[i].qty:''}</span>
+        <div class="tooltip"><div class="tooltip-title">${it.name}</div><div class="tooltip-desc">${it.desc}</div></div>`;
+      slot.onclick = () => useItem(i);
+    } else {
+      slot.classList.add('empty');
+      slot.textContent='·';
     }
-    // Call the type function again after a certain delay
-    setTimeout(type, 1); // Adjust typing speed (milliseconds per character)
+    invBox.appendChild(slot);
+  }
+  document.getElementById('goldAmt').textContent = G.gold;
+
+  // Quests
+  const ql = document.getElementById('questLog');
+  ql.innerHTML='';
+  G.quests.forEach(q=>{
+    const d = document.createElement('div');
+    d.className='quest'+(q.complete?' complete':'');
+    d.innerHTML = `<div class="quest-title">${q.title}</div><div class="quest-desc">${q.desc}</div>`;
+    ql.appendChild(d);
+  });
+
+  // Journal
+  const jl = document.getElementById('journal');
+  jl.innerHTML='';
+  G.journal.slice(-5).reverse().forEach(j=>{
+    const d = document.createElement('div');
+    d.className='journal-entry';
+    d.textContent = '"'+j+'"';
+    jl.appendChild(d);
+  });
+
+  // Reputation
+  setRep('wolf', G.rep.wolf, 'repWolf', 'repWolfBar');
+  setRep('light', G.rep.light, 'repLight', 'repLightBar');
+  setRep('fire', G.rep.fire, 'repFire', 'repFireBar');
+}
+
+function setBar(stat, cur, max) {
+  document.getElementById(stat+'Bar').style.width = (cur/max*100)+'%';
+  document.getElementById(stat+'Text').textContent = cur+'/'+max;
+}
+
+function setRep(faction, val, txtId, barId) {
+  const labels = ['Hated','Hostile','Neutral','Friendly','Allied','Revered'];
+  const idx = Math.min(5, Math.floor(val/20));
+  document.getElementById(txtId).textContent = labels[idx];
+  document.getElementById(barId).style.width = val+'%';
+}
+
+// ============ INVENTORY ============
+function addItem(id, qty=1) {
+  const ex = G.inv.find(s=>s.id===id);
+  if (ex) ex.qty += qty;
+  else if (G.inv.length < G.invMax) G.inv.push({id, qty});
+  toast('item', 'Item Acquired', `${ITEMS[id].icon} ${ITEMS[id].name} ×${qty}`);
+  sfx('coin');
+  refreshUI();
+}
+
+function removeItem(id, qty=1) {
+  const i = G.inv.findIndex(s=>s.id===id);
+  if (i<0) return false;
+  G.inv[i].qty -= qty;
+  if (G.inv[i].qty<=0) G.inv.splice(i,1);
+  refreshUI();
+  return true;
+}
+
+function hasItem(id) { return G.inv.some(s=>s.id===id); }
+
+function useItem(idx) {
+  const slot = G.inv[idx];
+  if (!slot) return;
+  const it = ITEMS[slot.id];
+  if (it.use === 'heal30') {
+    if (G.hp >= G.hpMax) { toast('danger','Already full health',''); return; }
+    healHP(30);
+    sfx('heal');
+    removeItem(slot.id);
+  } else if (it.use === 'mana25') {
+    G.mp = Math.min(G.mpMax, G.mp+25);
+    sfx('magic');
+    floater(`+25 MP`,'heal');
+    removeItem(slot.id);
+    refreshUI();
+  } else if (it.use === 'stam20') {
+    G.st = Math.min(G.stMax, G.st+20);
+    sfx('heal');
+    floater(`+20 ST`,'heal');
+    removeItem(slot.id);
+    refreshUI();
   } else {
-    // Typing animation is completed, show the storyContent div
-    document.getElementById("storyContent").style.display = "block";
+    toast('item', it.name, it.desc);
+    sfx('click');
   }
 }
 
-// Call the type function to start typing
-type();
-
-    document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.key === 'r') {
-            event.preventDefault(); // Prevent default browser behavior (reloading the page)
-            refreshpage(); // Call the refreshpage() function
-        }
-    });
-function refreshpage() {
-    var confirmReload = confirm("Are you sure you want to refresh the page?");
-    if (confirmReload) {
-        window.scrollTo(0,0);
-        location.reload(); // Reload the entire page
-    }
+function healHP(amount) {
+  G.hp = Math.min(G.hpMax, G.hp+amount);
+  floater(`+${amount} HP`, 'heal');
+  refreshUI();
 }
 
-	</script>
+function damageHP(amount, msg='') {
+  G.hp = Math.max(0, G.hp-amount);
+  floater(`-${amount} HP`, 'dmg');
+  document.body.classList.add('flash-damage');
+  setTimeout(()=>document.body.classList.remove('flash-damage'),500);
+  sfx('hit');
+  if (msg) toast('danger','Damage Taken',msg);
+  refreshUI();
+  if (G.hp<=0) gameOver();
+}
+
+// ============ QUESTS / JOURNAL ============
+function addQuest(id, title, desc) {
+  G.quests.push({id, title, desc, complete:false});
+  toast('quest','New Quest', title);
+  sfx('magic');
+  refreshUI();
+}
+function completeQuest(id) {
+  const q = G.quests.find(x=>x.id===id);
+  if (q) { q.complete = true; toast('quest','Quest Complete', q.title); sfx('level'); refreshUI(); }
+}
+function addJournal(entry) {
+  G.journal.push(entry);
+  refreshUI();
+}
+
+// ============ XP / LEVEL ============
+function gainXP(amount) {
+  G.xp += amount;
+  floater(`+${amount} XP`,'xp');
+  sfx('coin');
+  toast('xp','Experience Gained',`+${amount} XP`);
+  while (G.xp >= G.xpNext) levelUp();
+  refreshUI();
+}
+
+function levelUp() {
+  G.xp -= G.xpNext;
+  G.level++;
+  G.xpNext = Math.floor(G.xpNext * 1.5);
+  G.hpMax += 15; G.hp = G.hpMax;
+  G.mpMax += 8;  G.mp = G.mpMax;
+  G.stMax += 10; G.st = G.stMax;
+  // boost a random attr
+  const keys = Object.keys(G.attrs);
+  const bk = keys[Math.floor(Math.random()*keys.length)];
+  G.attrs[bk]++;
+  toast('xp','LEVEL UP!',`Reached Level ${G.level}! +1 ${bk}`);
+  sfx('level');
+  floater('LEVEL UP!', 'xp');
+}
+
+// ============ FLOATER ============
+function floater(text, cls) {
+  const el = document.createElement('div');
+  el.className = 'floater '+cls;
+  el.textContent = text;
+  el.style.left = (40 + Math.random()*30) + '%';
+  el.style.top = '40%';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1400);
+}
+
+// ============ TOAST ============
+function toast(type, title, msg) {
+  const t = document.createElement('div');
+  t.className = 'toast '+type;
+  t.innerHTML = `<div class="toast-title">${title}</div><div class="toast-msg">${msg}</div>`;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>t.remove(),4200);
+}
+
+// ============ DICE ROLL (Skill Check) ============
+function skillCheck(attr, dc, label='Skill Check') {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('diceOverlay');
+    const dice = document.getElementById('dice');
+    const result = document.getElementById('diceResult');
+    const labelEl = document.getElementById('diceCheckLabel');
+
+    overlay.classList.add('active');
+    dice.classList.add('rolling');
+    dice.textContent = '?';
+    result.textContent = '';
+    labelEl.textContent = `${label} • DC ${dc}`;
+    sfx('dice');
+
+    let ticks = 0;
+    const tickInt = setInterval(()=>{
+      dice.textContent = Math.floor(Math.random()*20)+1;
+      sfx('dice');
+      ticks++;
+      if (ticks>15) clearInterval(tickInt);
+    }, 80);
+
+    setTimeout(()=>{
+      const roll = Math.floor(Math.random()*20)+1;
+      const mod = Math.floor((G.attrs[attr]-10)/2);
+      const total = roll + mod;
+      const success = total >= dc;
+
+      dice.classList.remove('rolling');
+      dice.textContent = roll;
+      result.innerHTML = `Roll: <strong>${roll}</strong> ${mod>=0?'+':''}${mod} (${attr}) = <strong>${total}</strong><br>` +
+        `<span class="${success?'success':'fail'}">${success?'✓ SUCCESS':'✗ FAILURE'}</span>`;
+      result.className = 'dice-result ' + (success?'success':'fail');
+      sfx(success?'success':'fail');
+
+      setTimeout(()=>{
+        overlay.classList.remove('active');
+        resolve({roll, total, success, mod});
+      }, 2200);
+    }, 1500);
+  });
+}
+
+// ============ COMBAT SYSTEM ============
+function startCombat(enemy) {
+  G.combat = {
+    enemy: {...enemy},
+    turn:'player',
+    log:[]
+  };
+  document.getElementById('enemyPort').textContent = enemy.icon;
+  document.getElementById('enemyCName').textContent = enemy.name;
+  document.getElementById('combatLog').innerHTML='';
+  updateCombatUI();
+  cLog(`${enemy.name} appears, ready for battle!`);
+  document.getElementById('combatOverlay').classList.add('active');
+  sfx('danger');
+}
+
+function updateCombatUI() {
+  if (!G.combat) return;
+  const e = G.combat.enemy;
+  document.getElementById('playerCHp').style.width = (G.hp/G.hpMax*100)+'%';
+  document.getElementById('playerCHpText').textContent = `${G.hp}/${G.hpMax}`;
+  document.getElementById('enemyCHp').style.width = (e.hp/e.hpMax*100)+'%';
+  document.getElementById('enemyCHpText').textContent = `${e.hp}/${e.hpMax}`;
+}
+
+function cLog(msg, cls='') {
+  const log = document.getElementById('combatLog');
+  const e = document.createElement('div');
+  e.className='combat-log-entry';
+  e.innerHTML = cls?`<span class="${cls}">${msg}</span>`:msg;
+  log.appendChild(e);
+  log.scrollTop = log.scrollHeight;
+}
+
+function combatAction(action) {
+  if (!G.combat || G.combat.turn!=='player') return;
+  const e = G.combat.enemy;
+  const strMod = Math.floor((G.attrs.STR-10)/2);
+  const dexMod = Math.floor((G.attrs.DEX-10)/2);
+  const intMod = Math.floor((G.attrs.INT-10)/2);
+
+  if (action === 'attack') {
+    const roll = Math.floor(Math.random()*20)+1;
+    const crit = roll === 20;
+    const miss = roll === 1;
+    if (miss) {
+      cLog(`You swing wildly and miss!`,'miss');
+      sfx('click');
+    } else {
+      let dmg = Math.floor(Math.random()*8)+5+strMod;
+      if (crit) { dmg *= 2; cLog(`💥 CRITICAL HIT! You deal ${dmg} damage!`,'crit'); sfx('crit'); }
+      else { cLog(`You strike for ${dmg} damage.`); sfx('hit'); }
+      e.hp = Math.max(0, e.hp-dmg);
+      shake('enemyPort');
+    }
+  } else if (action === 'skill') {
+    if (G.mp < 15) { cLog('Not enough mana!','miss'); return; }
+    G.mp -= 15;
+    const dmg = Math.floor(Math.random()*15)+10+intMod*2;
+    e.hp = Math.max(0, e.hp-dmg);
+    cLog(`✦ You unleash a power-strike for ${dmg} damage!`,'crit');
+    sfx('magic');
+    shake('enemyPort');
+  } else if (action === 'item') {
+    const potIdx = G.inv.findIndex(s=>s.id==='potion');
+    if (potIdx<0) { cLog('No healing potions!','miss'); return; }
+    healHP(30);
+    removeItem('potion');
+    cLog('🧪 You drink a healing potion. (+30 HP)','crit');
+  } else if (action === 'flee') {
+    if (Math.random() < 0.5) {
+      cLog('You flee successfully!');
+      sfx('page');
+      setTimeout(endCombat.bind(null,'flee'),1000);
+      return;
+    } else {
+      cLog('Failed to escape!','miss');
+    }
+  }
+
+  updateCombatUI();
+  refreshUI();
+
+  if (e.hp <= 0) {
+    cLog(`${e.name} is defeated!`,'crit');
+    setTimeout(endCombat.bind(null,'win'),1200);
+    return;
+  }
+
+  G.combat.turn = 'enemy';
+  setTimeout(enemyTurn, 1200);
+}
+
+function enemyTurn() {
+  if (!G.combat) return;
+  const e = G.combat.enemy;
+  const roll = Math.floor(Math.random()*20)+1;
+  if (roll<=3) {
+    cLog(`${e.name} misses you!`,'miss');
+    sfx('click');
+  } else {
+    let dmg = Math.floor(Math.random()*e.dmg)+3;
+    if (roll === 20) { dmg*=2; cLog(`💢 ${e.name} CRITS you for ${dmg}!`,'crit'); }
+    else { cLog(`${e.name} hits you for ${dmg}.`); }
+    damageHP(dmg);
+    shake('playerPort');
+    sfx('hit');
+  }
+  updateCombatUI();
+  if (G.hp<=0) { endCombat('lose'); return; }
+  G.combat.turn = 'player';
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.classList.add('hit');
+  setTimeout(()=>el.classList.remove('hit'),400);
+}
+
+function endCombat(result) {
+  document.getElementById('combatOverlay').classList.remove('active');
+  const cb = G.combat?.cb;
+  G.combat = null;
+  if (cb) cb(result);
+}
+
+// ============ STORY / SCENES ============
+function setLocation(icon, name, time, art) {
+  document.getElementById('locIcon').textContent = icon;
+  document.getElementById('locName').textContent = name;
+  document.getElementById('timeOfDay').textContent = time;
+  document.getElementById('sceneArt').firstElementChild.textContent = art || icon;
+}
+
+function loadScene(key) {
+  const s = SCENES[key];
+  if (!s) return;
+  G.scene = key;
+  if (s.location) setLocation(...s.location);
+
+  document.getElementById('sceneChapter').textContent = s.chapter || '';
+  document.getElementById('sceneTitle').textContent = s.title || '';
+
+  const txt = document.getElementById('sceneText');
+  txt.innerHTML = '';
+  document.getElementById('choicesWrap').innerHTML = '';
+
+  // Add drop cap to first letter
+  const fullText = s.text;
+  typewrite(txt, fullText, () => {
+    if (s.onEnter) s.onEnter();
+    renderChoices(s);
+  });
+
+  sfx('page');
+  document.getElementById('storyMain').scrollTop = 0;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function typewrite(el, html, cb) {
+  el.innerHTML='';
+  // Parse the html into tokens (text + tags)
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const queue = [];
+  function walk(n, parentTarget) {
+    n.childNodes.forEach(c => {
+      if (c.nodeType === 3) {
+        queue.push({type:'text', text:c.textContent, parent:parentTarget});
+      } else {
+        const clone = c.cloneNode(false);
+        queue.push({type:'open', node:clone, parent:parentTarget});
+        walk(c, clone);
+        queue.push({type:'close'});
+      }
+    });
+  }
+  walk(tmp, el);
+
+  let stack = [el];
+  let qi = 0, ci = 0;
+  let curTask = null;
+
+  function step() {
+    if (!curTask) {
+      if (qi >= queue.length) {
+        cb && cb();
+        return;
+      }
+      curTask = queue[qi++];
+      if (curTask.type === 'open') {
+        stack[stack.length-1].appendChild(curTask.node);
+        stack.push(curTask.node);
+        curTask = null;
+        return step();
+      } else if (curTask.type === 'close') {
+        stack.pop();
+        curTask = null;
+        return step();
+      } else {
+        ci = 0;
+      }
+    }
+    if (ci < curTask.text.length) {
+      curTask.parent.appendChild(document.createTextNode(curTask.text[ci]));
+      ci++;
+      if (ci%5===0) sfx('type');
+      setTimeout(step, 14);
+    } else {
+      curTask = null;
+      step();
+    }
+  }
+  step();
+}
+
+function renderChoices(s) {
+  const wrap = document.getElementById('choicesWrap');
+  if (!s.choices) return;
+  const header = document.createElement('div');
+  header.className='choices-header';
+  header.textContent = s.choicesHeader || '— What dost thou choose? —';
+  wrap.appendChild(header);
+
+  s.choices.forEach((c, idx) => {
+    // Check requirement
+    let locked = false;
+    let lockReason = '';
+    if (c.req) {
+      if (c.req.item && !hasItem(c.req.item)) { locked=true; lockReason='Requires '+ITEMS[c.req.item].name; }
+      if (c.req.attr && G.attrs[c.req.attr] < c.req.val) { locked=true; lockReason=`Requires ${c.req.attr} ${c.req.val}+`; }
+      if (c.req.cls && G.cls !== c.req.cls) { locked=true; lockReason=`${CLASSES[c.req.cls].name} only`; }
+    }
+
+    const btn = document.createElement('button');
+    btn.className='choice';
+    btn.disabled = locked;
+
+    let tagsHtml = '';
+    if (c.skill) tagsHtml += `<span class="choice-tag skill">[${c.skill.attr} DC${c.skill.dc}]</span>`;
+    if (c.tag) tagsHtml += `<span class="choice-tag ${c.tagClass||''}">${c.tag}</span>`;
+    if (locked) tagsHtml += `<span class="choice-tag locked">🔒 ${lockReason}</span>`;
+
+    btn.innerHTML = `
+      <span class="choice-num">${idx+1}.</span>
+      <span class="choice-text">${c.text}</span>
+      <span class="choice-meta">${tagsHtml}</span>
+    `;
+
+    btn.onclick = () => handleChoice(c);
+    wrap.appendChild(btn);
+  });
+}
+
+async function handleChoice(c) {
+  sfx('click');
+  if (c.skill) {
+    const r = await skillCheck(c.skill.attr, c.skill.dc, c.skill.label||'Skill Check');
+    if (r.success && c.onSuccess) c.onSuccess();
+    else if (!r.success && c.onFail) c.onFail();
+    if (c.next && r.success) loadScene(c.next);
+    else if (c.failNext && !r.success) loadScene(c.failNext);
+    return;
+  }
+  if (c.combat) {
+    G.combat = G.combat || {};
+    startCombat(c.combat);
+    G.combat.cb = (result) => {
+      if (result==='win') { gainXP(c.combat.xp||50); if (c.combat.loot) c.combat.loot.forEach(l=>addItem(l)); loadScene(c.next); }
+      else if (result==='lose') gameOver();
+      else loadScene(c.fleeNext || c.next);
+    };
+    return;
+  }
+  if (c.effect) applyEffect(c.effect);
+  if (c.next) loadScene(c.next);
+}
+
+function applyEffect(e) {
+  if (e.hp) { if (e.hp>0) healHP(e.hp); else damageHP(-e.hp); }
+  if (e.mp) { G.mp = Math.max(0, Math.min(G.mpMax, G.mp+e.mp)); floater(`${e.mp>0?'+':''}${e.mp} MP`, e.mp>0?'heal':'dmg'); }
+  if (e.st) { G.st = Math.max(0, Math.min(G.stMax, G.st+e.st)); }
+  if (e.xp) gainXP(e.xp);
+  if (e.gold) { G.gold += e.gold; toast('item','Gold',`${e.gold>0?'+':''}${e.gold} ⛁`); }
+  if (e.item) addItem(e.item, e.itemQty||1);
+  if (e.removeItem) removeItem(e.removeItem);
+  if (e.rep) for (const k in e.rep) G.rep[k] = Math.max(0, Math.min(100, G.rep[k]+e.rep[k]));
+  if (e.flag) G.flags[e.flag] = true;
+  if (e.quest) addQuest(e.quest.id, e.quest.title, e.quest.desc);
+  if (e.completeQuest) completeQuest(e.completeQuest);
+  if (e.journal) addJournal(e.journal);
+  refreshUI();
+}
+
+function gameOver() {
+  loadScene('death');
+}
+
+// ============ TOGGLE PANELS (mobile) ============
+function togglePanel(id) {
+  document.getElementById(id).classList.toggle('mobile-open');
+}
+
+// ============================================================
+// SCENES — THE STORY
+// ============================================================
+const SCENES = {
+  start: {
+    chapter:'PROLOGUE',
+    title:'The Silent Voyager',
+    location:['🚀','SOLARIS-IX • Deep Space','⊹ Stellar Drift ⊹','🌌'],
+    text:`<span class="hl">Year 2387.</span> Three months alone in the obsidian void.
+
+The starship <span class="hl">SOLARIS-IX</span> drifts through unmapped quadrants — and you, <em>${G.name||'Captain'}</em>, are humanity's farthest-flung soul.
+
+Then the proximity alarms scream. A world materializes in your viewport: forests of impossible green, oceans like polished sapphire, volcanoes spewing molten gold along the equator.
+
+Your scanner detects <span class="hl">complex organic compounds</span> — the chemical signature of <span class="magic">life</span>.
+
+<blockquote>"I name thee... <span class="hl">EARTH-301</span>."</blockquote>
+
+You initiate descent. But as you breach the upper atmosphere, every console flares red—`,
+    choices:[
+      { text:'Engage emergency thrusters', tag:'INSTINCT', tagClass:'', next:'crash' },
+      { text:'Scan for atmospheric anomaly', skill:{attr:'INT',dc:14,label:'Intelligence Check'},
+        onSuccess:()=>{ applyEffect({xp:15, journal:'Detected an EM pulse before crash — this world is not natural.', flag:'detected_pulse'}); },
+        onFail:()=>{ applyEffect({journal:'The scanners failed me when I needed them most.'}); },
+        next:'crash', failNext:'crash' }
+    ]
+  },
+
+  crash: {
+    chapter:'CHAPTER I',
+    title:'The Wreckage',
+    location:['🌲','Crash Site • Verdant Wilds','☀ Mid-day ☀','💥'],
+    text:`<span class="danger">An asteroid storm tears through your hull.</span>
+
+SOLARIS-IX cartwheels through the atmosphere. Heat. Fire. The screams of dying machinery. Then — darkness.
+
+You awaken hours later, ribs bruised, helmet cracked. Your ship lies in a smoldering crater, half-swallowed by moss-covered rock. Strange birds cry in alien tongues.
+
+A weathered <span class="hl">stone monolith</span> rises nearby, its glyphs <span class="magic">shifting</span> when you blink. The translation is unmistakable:
+
+<blockquote class="danger">"TRESPASSERS WILL BE JUDGED."</blockquote>
+
+Three paths split the ancient forest before you. You must choose.`,
+    onEnter:()=>{ damageHP(15,'Crash injuries.'); applyEffect({journal:'Day 1: Crashed on Earth-301. Three paths await me.', quest:{id:'q_explore',title:'Explore the Wilds',desc:'Investigate the cave, forest, or volcano.'}}); },
+    choices:[
+      { text:'Enter the bioluminescent cave system',
+        tag:'MYSTERY', next:'cave_entrance',
+        effect:{ st:-10, journal:'I chose the cave. Something glows in the dark.' } },
+      { text:'Follow the whispering forest path',
+        tag:'EXPLORE', tagClass:'', next:'forest_path',
+        effect:{ st:-5, journal:'I chose the forest. The trees... watch me.' } },
+      { text:'Climb the smoldering volcanic ridge',
+        tag:'PERIL', tagClass:'danger', next:'volcano_climb',
+        effect:{ st:-20, hp:-5, journal:'I chose the volcano. The heat is unbearable.' } },
+      { text:'Examine the monolith carefully', skill:{attr:'WIS',dc:13,label:'Lore Check'},
+        onSuccess:()=>{ applyEffect({xp:20, item:'amulet', journal:'The monolith revealed a hidden compartment with an ancient amulet.'}); },
+        onFail:()=>{ applyEffect({hp:-10, journal:'Touching the monolith burned me.'}); },
+        next:'crash', failNext:'crash', tag:'INVESTIGATE', tagClass:'skill' }
+    ]
+  },
+
+  // ============ CAVE BRANCH ============
+  cave_entrance: {
+    chapter:'CHAPTER II',
+    title:'The Glowing Depths',
+    location:['🦇','Cave of Echoes','◐ Eternal Twilight ◑','🦇'],
+    text:`<span class="hl">The cavern breathes.</span>
+
+Bioluminescent fungi pulse on the walls — turquoise, violet, amber. Veins of unknown crystal hum at a frequency just below hearing. Your boots crunch on phosphorescent silt.
+
+Then you see them: <span class="hl">paw-prints</span>. Four times the size of your boots. <span class="danger">Fresh.</span>
+
+A sound echoes from the deep — not quite a growl, not quite a song. Something <em>intelligent</em>.
+
+A massive shape emerges: a wolf-like beast of impossible elegance, fur shimmering with starlight, eyes containing swirling galaxies. It does not attack. It tilts its head, studying you.`,
+    choices:[
+      { text:'Approach slowly, hands open, palms up', tag:'PEACE', tagClass:'req',
+        skill:{attr:'CHA',dc:12,label:'Diplomacy'},
+        onSuccess:()=>{ applyEffect({xp:30, rep:{wolf:25}, item:'fang', journal:'The Sentinel accepted me. It gave me one of its fangs as a token.'}); },
+        onFail:()=>{ applyEffect({hp:-15, rep:{wolf:-10}, journal:'My approach was misread. The beast wounded me before vanishing.'}); },
+        next:'wolf_ally', failNext:'wolf_wary' },
+      { text:'Offer it a field ration', tag:'KINDNESS', tagClass:'req',
+        req:{item:'ration'},
+        effect:{ removeItem:'ration', rep:{wolf:15}, xp:15, journal:'I shared my food with the creature. It accepted.', flag:'fed_wolf' },
+        next:'wolf_ally' },
+      { text:'Draw your weapon and attack',
+        tag:'COMBAT', tagClass:'danger',
+        combat:{ name:'Star-Sentinel', icon:'🐺', hp:60, hpMax:60, dmg:12, xp:80, loot:['fang'] },
+        effect:{ rep:{wolf:-30} },
+        next:'wolf_defeated', fleeNext:'wolf_wary' },
+      { text:'Slip into the shadows and observe', tag:'STEALTH',
+        skill:{attr:'DEX',dc:14,label:'Stealth'},
+        onSuccess:()=>{ applyEffect({xp:25, journal:'I watched the Sentinel commune with the cave itself. This place is alive.', flag:'witnessed_ritual'}); },
+        onFail:()=>{ applyEffect({hp:-10, rep:{wolf:-10}}); },
+        next:'cave_deep', failNext:'wolf_wary' }
+    ]
+  },
+
+  wolf_ally: {
+    chapter:'CHAPTER III',
+    title:'The Pact of Vharn',
+    location:['🐺','Sanctum of Sentinels','◐ Sacred Hour ◑','✨'],
+    text:`The beast steps closer. Its breath smells of ozone and starlight. It presses its forehead to your visor, and a flood of memory cascades through your mind.
+
+You see: an ancient civilization. A cataclysm. A guardian race sworn to protect this world from <span class="danger">those who would exploit it</span>.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">🐺 VHARN, of the Sentinels</div>
+  <div class="dialogue-text">"You came as a stranger, ${G.name}. You leave as kin. Follow me — there is something you must see."</div>
+</div>
+
+Vharn leads you deep into the cavern, past chambers no human has witnessed. Ahead: a <span class="magic">pulsating sphere of pure consciousness</span> — the Heart of the World.`,
+    onEnter:()=>{ applyEffect({completeQuest:'q_explore', quest:{id:'q_heart',title:'The Heart of the World',desc:'Vharn leads you to the planet\'s soul.'}, xp:50}); },
+    choices:[
+      { text:'Approach the Heart with reverence', tag:'DESTINY', tagClass:'req', next:'heart_chamber',
+        effect:{ rep:{wolf:10}, journal:'Vharn deems me worthy of the Heart.' } },
+      { text:'Ask Vharn about the volcano sleeper', tag:'INQUIRE', next:'heart_chamber',
+        effect:{ xp:20, journal:'Vharn warned me: the sleeper is the last of the First Ones. Wake him only with caution.' } }
+    ]
+  },
+
+  wolf_wary: {
+    chapter:'CHAPTER III',
+    title:'The Watching Beast',
+    location:['🦇','Cave of Echoes','◐ Twilight ◑','👁'],
+    text:`The Sentinel growls — a low, ancient sound. It does not attack, but its eyes follow your every move. Trust will not come easily here.
+
+You retreat deeper, finding a hidden glyph-wall. The carvings show a sleeping figure on a mountain of fire — the volcano. Beneath: a warning, or perhaps a plea.`,
+    choices:[
+      { text:'Press deeper into the caverns', next:'cave_deep' },
+      { text:'Retreat to find another path', next:'crash' }
+    ]
+  },
+
+  wolf_defeated: {
+    chapter:'CHAPTER III',
+    title:'A Hollow Victory',
+    location:['🦇','Cave of Echoes','◐ Stained Twilight ◑','💀'],
+    text:`The Sentinel falls. As its starlit eyes dim, you feel the entire cave <span class="danger">hum with grief</span>. The fungi extinguish one by one.
+
+You have killed a guardian. The world remembers.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">⊹ A voice from nowhere ⊹</div>
+  <div class="dialogue-text">"Murderer. The pact is broken. The pack will hunt you to the world's end."</div>
+</div>`,
+    onEnter:()=>{ applyEffect({rep:{wolf:-50}, journal:'I killed a Sentinel. I feel the weight of this.', flag:'wolf_killer'}); },
+    choices:[
+      { text:'Press on through the dying caves', next:'cave_deep',
+        effect:{ st:-15 } },
+      { text:'Flee back to the surface', next:'crash',
+        effect:{ st:-10 } }
+    ]
+  },
+
+  cave_deep: {
+    chapter:'CHAPTER III',
+    title:'The Crystal Caverns',
+    location:['💎','Crystal Caverns','◐ Deep Echo ◑','💎'],
+    text:`The crystals here are the size of cathedral spires. Their hum vibrates in your teeth. You find a cluster small enough to harvest — <span class="hl">Sleeper Shards</span> — but as you reach for them, the cave trembles.
+
+A <span class="danger">cave-beast</span>, mindless and crystalline, erupts from the floor!`,
+    choices:[
+      { text:'Fight the crystal beast', tag:'COMBAT', tagClass:'danger',
+        combat:{ name:'Crystal Stalker', icon:'💎', hp:50, hpMax:50, dmg:10, xp:60, loot:['shard','shard'] },
+        next:'after_crystal', fleeNext:'crash' },
+      { text:'Use Bio-Scanner to find weakness', req:{item:'scanner'},
+        skill:{attr:'INT',dc:13,label:'Tech Check'},
+        onSuccess:()=>{ applyEffect({xp:40, item:'shard', itemQty:2, journal:'I disabled the construct without bloodshed.'}); },
+        onFail:()=>{ applyEffect({hp:-15}); },
+        next:'after_crystal', failNext:'cave_deep' }
+    ]
+  },
+
+  after_crystal: {
+    chapter:'CHAPTER IV',
+    title:'The Path Onward',
+    location:['💎','Crystal Caverns','◐ Echoing ◑','🌋'],
+    text:`The cavern opens onto a precipice. Far below, you see the smoldering volcano. The crystal you carry now hums in <span class="hl">harmony</span> with the mountain.
+
+You must decide your next move.`,
+    choices:[
+      { text:'Descend toward the volcano', next:'volcano_climb' },
+      { text:'Return to surface and try the forest', next:'forest_path' }
+    ]
+  },
+
+  // ============ FOREST BRANCH ============
+  forest_path: {
+    chapter:'CHAPTER II',
+    title:'The Whispering Woods',
+    location:['🌲','Whispering Woods','☀ Dappled Light ☀','🌲'],
+    text:`Leaves the size of dinner plates filter sunlight into prismatic shafts. The air is thick with floral perfume — and <span class="magic">whispers</span>, in a language your translator cannot parse.
+
+Vines coil and uncoil. The trees, you realize with a jolt, are <em>moving</em> — slowly, deliberately leaning toward you with sentient curiosity.
+
+A clearing opens. At its center stands a being woven from <span class="magic">pure light</span>, vaguely humanoid, extending a hand of luminous tendrils.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">✨ SYLVANE, Eldest of the Lightborn</div>
+  <div class="dialogue-text">"Visitor from the void. Why have you come to our world?"</div>
+</div>`,
+    choices:[
+      { text:'"I came to explore. To learn. Nothing more."',
+        tag:'TRUTH', tagClass:'req',
+        effect:{ rep:{light:25}, xp:30, journal:'Sylvane sensed my truth. The Lightborn welcomed me.', item:'seed' },
+        next:'lightborn_ally' },
+      { text:'"I demand to know your intentions first."',
+        tag:'BOLD',
+        skill:{attr:'CHA',dc:14,label:'Intimidation'},
+        onSuccess:()=>{ applyEffect({xp:25, rep:{light:5}, journal:'My boldness amused Sylvane.'}); },
+        onFail:()=>{ applyEffect({hp:-10, rep:{light:-15}}); },
+        next:'lightborn_test', failNext:'lightborn_test' },
+      { text:'(Secretly scan it with your suit)',
+        tag:'DECEIVE', tagClass:'danger',
+        skill:{attr:'DEX',dc:16,label:'Sleight of Hand'},
+        onSuccess:()=>{ applyEffect({xp:20, journal:'I scanned Sylvane undetected. Pure energy — no biology at all.'}); },
+        onFail:()=>{ applyEffect({hp:-25, rep:{light:-40}, journal:'Sylvane caught my deception. The forest turned against me.'}); },
+        next:'lightborn_ally', failNext:'forest_betrayed' }
+    ]
+  },
+
+  lightborn_ally: {
+    chapter:'CHAPTER III',
+    title:'The Luminous Council',
+    location:['✨','Heart of the Grove','☀ Sacred Light ☀','✨'],
+    text:`Sylvane gifts you a <span class="hl">Lightborn Seed</span> — a fragment of their living essence.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">✨ SYLVANE</div>
+  <div class="dialogue-text">"There is a sleeper, trapped in the mountain of fire. He is the last of the First Ones — the architects of this world. Wake him, and you shall learn its true purpose. But beware: he has slept for ten thousand years, and not all who slumber, slumber gently."</div>
+</div>
+
+A path of glowing petals materializes, leading toward the volcano.`,
+    onEnter:()=>{ applyEffect({completeQuest:'q_explore', quest:{id:'q_sleeper',title:'Wake the Sleeper',desc:'Travel to the volcano and free the First One.'}, xp:40}); },
+    choices:[
+      { text:'Walk the path of petals to the volcano', next:'volcano_climb', tag:'DESTINY' }
+    ]
+  },
+
+  lightborn_test: {
+    chapter:'CHAPTER III',
+    title:'A Test of Worth',
+    location:['🌲','Trial Grove','☀ Filtered Light ☀','⚡'],
+    text:`The forest tests you. Vines lash. Roots erupt. You must prove your worth through trial of body and spirit.`,
+    choices:[
+      { text:'Stand your ground against the trial', tag:'COMBAT', tagClass:'danger',
+        combat:{ name:'Forest Spirit', icon:'🌿', hp:55, hpMax:55, dmg:9, xp:70, loot:['seed'] },
+        next:'lightborn_ally', fleeNext:'forest_path' },
+      { text:'Speak words of peace', skill:{attr:'WIS',dc:15,label:'Insight'},
+        onSuccess:()=>{ applyEffect({xp:50, rep:{light:30}, item:'seed', journal:'I passed the trial without violence.'}); },
+        onFail:()=>{ applyEffect({hp:-20}); },
+        next:'lightborn_ally', failNext:'forest_path' }
+    ]
+  },
+
+  forest_betrayed: {
+    chapter:'CHAPTER III',
+    title:'Banished',
+    location:['🌲','Whispering Woods','☁ Blackened Sky ☁','💢'],
+    text:`Every leaf, every vine, every blade of grass turns against you with <span class="danger">murderous intent</span>. You flee, branches whipping your armor, leaving a trail of blood.
+
+The forest will never welcome you again.`,
+    onEnter:()=>{ applyEffect({hp:-20, rep:{light:-50}, journal:'I betrayed Sylvane. The forest hates me now.', flag:'forest_enemy'}); },
+    choices:[
+      { text:'Stagger toward the volcano', next:'volcano_climb' },
+      { text:'Hide in the cave for safety', next:'cave_entrance' }
+    ]
+  },
+
+  // ============ VOLCANO BRANCH ============
+  volcano_climb: {
+    chapter: G.flags?.q_sleeper ? 'CHAPTER IV' : 'CHAPTER II',
+    title:'The Burning Throne',
+    location:['🌋','Volcano Rim','🔥 Crater Heat 🔥','🌋'],
+    text:`Each step toward the summit is agony. Heat shimmers warp the air. Obsidian shards crunch beneath your boots. Your suit's coolant whines in protest.
+
+At the crater's edge, you behold wonder: a lake of <span class="danger">incandescent lava</span> swirling in deliberate spirals — not the chaos of nature, but the pattern of <span class="magic">design</span>.
+
+Embedded in the rim: a <span class="hl">crystalline obelisk</span>, untouched by heat. Inside it, encased like an insect in amber, floats a <span class="magic">humanoid figure</span> — eyes closed, mouth slightly parted, as if dreaming for ten thousand years.`,
+    onEnter:()=>{ applyEffect({hp:-10, st:-15, journal:'The volcano nearly killed me, but I made it.'}); },
+    choices:[
+      { text:'Touch the obelisk with your gauntlet', tag:'BOLD', tagClass:'danger', next:'sleeper_awakens',
+        effect:{ flag:'touched_obelisk' } },
+      { text:'Use the Lightborn Seed on the obelisk', req:{item:'seed'}, tag:'MAGIC', tagClass:'skill',
+        effect:{ removeItem:'seed', flag:'used_seed', xp:30, journal:'The seed bonded with the obelisk. It pulsed with new life.' },
+        next:'sleeper_awakens' },
+      { text:'Harvest crystal shards for fuel', tag:'PRAGMATIC', tagClass:'danger',
+        effect:{ item:'shard', itemQty:3, rep:{fire:-30, wolf:-10, light:-10}, journal:'I took what I needed. The world watched.' },
+        next:'fuel_path' },
+      { text:'Document and retreat', tag:'CAUTION', skill:{attr:'INT',dc:12,label:'Investigation'},
+        onSuccess:()=>{ applyEffect({xp:25, journal:'I cataloged the obelisk fully. There is much to learn.'}); },
+        next:'sleeper_awakens', failNext:'sleeper_awakens' }
+    ]
+  },
+
+  sleeper_awakens: {
+    chapter:'CHAPTER V',
+    title:'The First One Awakens',
+    location:['👁‍🗨','Crater of Awakening','🔥 Eternal Flame 🔥','✨'],
+    text:`The obelisk cracks. Golden light cascades outward. The figure inside opens his eyes — eyes that have witnessed the birth and death of stars.
+
+He drifts gently to the ground. The volcano falls silent. Even time seems to pause.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">🔥 KAIROS, Last of the First Ones</div>
+  <div class="dialogue-text">"Ten thousand years I have slept. Ten thousand years I have waited for one with the courage to free me. Tell me, child of the stars — why have you come to our world?"</div>
+</div>`,
+    onEnter:()=>{ applyEffect({completeQuest:'q_sleeper', xp:80}); },
+    choices:[
+      { text:'"I came to explore. To learn. To understand."',
+        tag:'TRUTH', tagClass:'req',
+        effect:{ rep:{fire:30}, xp:50 },
+        next:'ending_alliance' },
+      { text:'"My ship is broken. I only wish to return home."',
+        tag:'HONEST',
+        effect:{ rep:{fire:10}, xp:30 },
+        next:'ending_neutral' },
+      { text:'"This world\'s power could save my people."',
+        tag:'AMBITION', tagClass:'danger',
+        effect:{ rep:{fire:-40}, journal:'Kairos\'s eyes turned to stone at my words.' },
+        next:'ending_dark' },
+      { text:'(Attack while he is weak)', tag:'BETRAYAL', tagClass:'danger',
+        combat:{ name:'Kairos, the First One', icon:'🔥', hp:120, hpMax:120, dmg:18, xp:200 },
+        effect:{ rep:{fire:-100, wolf:-50, light:-50} },
+        next:'ending_dark', fleeNext:'ending_neutral' }
+    ]
+  },
+
+  fuel_path: {
+    chapter:'CHAPTER V',
+    title:'Stolen Power',
+    location:['🌋','Volcano Rim','🔥 Bleak Heat 🔥','💀'],
+    text:`You harvest the crystals. Your ship roars back to life — but as you lift off, the obelisk <span class="danger">shatters</span>. The figure inside crumbles to dust.
+
+In space, you watch Earth-301 grow distant. A civilization-ending mistake, made in moments.`,
+    choices:[
+      { text:'Continue your journey, alone with your guilt', next:'ending_dark' }
+    ]
+  },
+
+  // ============ ENDINGS ============
+  ending_alliance: {
+    chapter:'EPILOGUE',
+    title:'⚜ THE PACT OF STARS ⚜',
+    location:['🌟','New Dawn','✦ Triumph ✦','🌟'],
+    text:`Kairos smiles — the first smile in ten thousand years.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">🔥 KAIROS</div>
+  <div class="dialogue-text">"Then we shall walk together, you and I. Your people and mine. The galaxy has been silent too long."</div>
+</div>
+
+He restores your ship with a gesture. Vharn howls in farewell from the cliffs. Sylvane sings benediction through the trees. Together, you ascend into the heavens.
+
+<span class="hl">You return to Earth — not as a conqueror, but as a humble messenger. Earth-301 becomes humanity's greatest ally.</span>
+
+<em>Generations will remember the day a single curious soul chose understanding over greed.</em>
+
+— END —`,
+    onEnter:()=>{ applyEffect({xp:200, completeQuest:'q_main', journal:'The end. The galaxy will never be the same.'}); sfx('level'); },
+    choices:[
+      { text:'⚜ Begin a New Odyssey ⚜', next:'restart' }
+    ]
+  },
+
+  ending_neutral: {
+    chapter:'EPILOGUE',
+    title:'⊹ THE WATCHER ⊹',
+    location:['🌠','Departing Stars','✦ Quiet Pride ✦','🌠'],
+    text:`Kairos nods sadly.
+
+<div class="dialogue-box">
+  <div class="dialogue-speaker">🔥 KAIROS</div>
+  <div class="dialogue-text">"Then go. But remember — this world chose you for a reason. When the time comes, you will know."</div>
+</div>
+
+He vanishes in a column of light. Your ship hums to life. Earth-301 fades behind you, but its memory burns brighter than any star.
+
+<span class="hl">You leave Earth-301 untouched — its mysteries preserved, its sentinels undisturbed. You carry its secret in silence, watching the stars at night.</span>
+
+<em>Some doors are meant to remain ajar.</em>
+
+— END —`,
+    onEnter:()=>{ applyEffect({xp:150, completeQuest:'q_main', journal:'I left in peace. I will return one day.'}); sfx('success'); },
+    choices:[
+      { text:'⊹ Begin a New Odyssey ⊹', next:'restart' }
+    ]
+  },
+
+  ending_dark: {
+    chapter:'EPILOGUE',
+    title:'☠ A SHADOW IN THE STARS ☠',
+    location:['💀','The Abyss','✦ Eternal Cold ✦','☠'],
+    text:`The volcano <span class="danger">erupts</span>. The wolves descend. The forest closes in.
+
+You never leave Earth-301. Your last transmission, recovered centuries later, contains only one word, repeated:
+
+<blockquote class="danger">"...mercy... mercy... mercy..."</blockquote>
+
+<span class="hl">Greed has a cost. You paid it in full. Earth-301 falls silent. When humanity finally reaches the stars in earnest, they find doors closed everywhere they turn.</span>
+
+<em>One explorer's choice. A civilization's burden.</em>
+
+— END —`,
+    onEnter:()=>{ applyEffect({journal:'I deserved this. May others learn from my fall.'}); sfx('fail'); },
+    choices:[
+      { text:'☠ Try Again ☠', next:'restart' }
+    ]
+  },
+
+  death: {
+    chapter:'GAME OVER',
+    title:'☠ Your Tale Ends Here ☠',
+    location:['💀','The Void','✦ Silence ✦','💀'],
+    text:`Your vision dims. The world of Earth-301 spins away from you.
+
+Somewhere, Vharn howls a mournful farewell. Sylvane weeps petals of light. Kairos returns to his slumber.
+
+<em>Even heroes fall. But every fall plants the seed of another rising.</em>
+
+— END —`,
+    choices:[
+      { text:'⟲ Rise Again', next:'restart' }
+    ]
+  },
+
+  restart: {
+    text:'',
+    onEnter:()=>{ setTimeout(()=>location.reload(),100); },
+    choices:[]
+  }
+};
+
+// ============ KEYBOARD ============
+document.addEventListener('keydown', e=>{
+  if (['1','2','3','4'].includes(e.key)) {
+    const choices = document.querySelectorAll('.choices-wrap .choice');
+    const idx = parseInt(e.key)-1;
+    if (choices[idx] && !choices[idx].disabled) choices[idx].click();
+  }
+});
+
+</script>
 </body>
 </html>
